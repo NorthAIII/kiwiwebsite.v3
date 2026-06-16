@@ -4,15 +4,18 @@
     "howItWorks": "How it works",
     "sectors": "Sectors",
     "bunker": "Bunker OS",
+    "forum": "Community",
     "contact": "Contact",
     "cta": "Book a call"
   },
   "hero": {
-    "lineOne": "We listen to your business.",
+    "eyebrow": "AI automation, measured",
+    "lineOne": "We analyze your business.",
     "lineTwo": "Then we automate it.",
     "sub": "We find where repetitive work drains your team — recurring tasks, messages, approval chains — and wire it to automation you can measure.",
     "ctaPrimary": "Book a free discovery call",
     "ctaSecondary": "See it live",
+    "scroll": "Scroll",
     "stats": {
       "products": "sector-ready products",
       "assistants": "assistants, running",
@@ -29,12 +32,12 @@
     "steps": {
       "listen": {
         "n": "01",
-        "title": "Listen",
+        "title": "Analyze",
         "body": "We map how your operation actually runs — every recurring task, message, and approval — not how an org chart says it does."
       },
       "find": {
         "n": "02",
-        "title": "Find",
+        "title": "Identify",
         "body": "We locate where work leaks: the steps repeated by hand, the follow-ups that slip, the hours spent moving data between tools."
       },
       "automate": {
@@ -48,38 +51,37 @@
     "label": "Sector solutions",
     "title": "One real automation. The outcome it drives.",
     "sub": "Pick a sector. Every example below is a single automation we ship — not a feature list.",
+    "oneAutomation": "one automation",
+    "projected": "Projected · placeholder",
+    "note": "Figures are projected targets, clearly marked, until live client data replaces them.",
     "items": {
       "gyms": {
         "name": "Gyms",
         "automation": "Win-back for lapsed members",
         "body": "When a member stops checking in for 14 days, Bunker OS opens a WhatsApp thread with a tailored offer and books the return session — no front-desk effort.",
         "metric": "lapsed members re-activated",
-        "metricValue": "31%",
-        "marker": "placeholder"
+        "metricValue": "31%"
       },
       "clinics": {
         "name": "Clinics",
         "automation": "No-show recovery",
         "body": "Unconfirmed appointments get a two-step reminder, then auto-offer the slot to the waitlist if it stays open — the calendar fills itself.",
         "metric": "fewer empty slots",
-        "metricValue": "42%",
-        "marker": "placeholder"
+        "metricValue": "42%"
       },
       "ecommerce": {
         "name": "E-commerce",
         "automation": "Abandoned-cart that actually replies",
         "body": "A cart left for an hour triggers a conversation — not a coupon blast — that answers the real objection and routes payment links back in-thread.",
         "metric": "recovered revenue",
-        "metricValue": "+18%",
-        "marker": "placeholder"
+        "metricValue": "+18%"
       },
       "realestate": {
         "name": "Real estate",
         "automation": "Lead-to-viewing in minutes",
         "body": "Every portal inquiry is qualified, matched to live listings, and offered a viewing slot before a competitor calls back — the agent only sees ready buyers.",
         "metric": "faster first response",
-        "metricValue": "9× ",
-        "marker": "placeholder"
+        "metricValue": "9×"
       }
     }
   },
@@ -91,12 +93,36 @@
       "one": "Every automation in one place",
       "two": "Runs 7/24, watched, with alerts",
       "three": "Outcomes measured, not assumed"
+    },
+    "statusLive": "live",
+    "statusActive": "active",
+    "statusQueued": "queued",
+    "flowsLabel": "flows",
+    "flows": {
+      "one": "Lapsed-member win-back",
+      "two": "No-show recovery",
+      "three": "Abandoned-cart reply",
+      "four": "Lead → viewing"
+    }
+  },
+  "forum": {
+    "label": "Community",
+    "title": "We talk automation, together.",
+    "sub": "Founders and ops teams share real builds, the gains, and where they got stuck in the Kiwi community.",
+    "cta": "Join the community",
+    "note": "Sample threads — the community opens soon.",
+    "repliesLabel": "replies",
+    "threads": {
+      "one": { "title": "Cut our WhatsApp approval chain from 2 days to 10 minutes", "tag": "E-commerce", "replies": "24" },
+      "two": { "title": "How we halved no-shows at the clinic", "tag": "Clinic", "replies": "18" },
+      "three": { "title": "Building your first flow in Bunker OS", "tag": "Getting started", "replies": "41" },
+      "four": { "title": "Which work is worth automating — and which isn't?", "tag": "Strategy", "replies": "33" }
     }
   },
   "chat": {
     "label": "Live demo",
     "title": "Talk to a Kiwi assistant.",
-    "sub": "Real, streaming, multilingual — ask in English, Arabic, German, or Spanish. It knows what we do and can route you to a call.",
+    "sub": "Real, streaming, multilingual — ask in Turkish, English, Arabic, German, or Spanish. It knows what we do and can route you to a call.",
     "placeholder": "Ask about automating your business…",
     "send": "Send",
     "thinking": "Thinking",
@@ -105,7 +131,7 @@
     "suggestions": {
       "one": "How would you automate a gym?",
       "two": "What is Bunker OS?",
-      "three": "¿Cómo funciona?"
+      "three": "How does cart recovery work?"
     }
   },
   "credibility": {
@@ -124,7 +150,7 @@
     }
   },
   "footer": {
-    "tagline": "We listen. Then we automate.",
+    "tagline": "We analyze. Then we automate.",
     "cta": "Book a free discovery call",
     "language": "Language",
     "rights": "Kiwi AI Lab"

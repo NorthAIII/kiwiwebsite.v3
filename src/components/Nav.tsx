@@ -19,6 +19,7 @@ export default function Nav() {
     { href: "#how", label: t("howItWorks") },
     { href: "#sectors", label: t("sectors") },
     { href: "#bunker", label: t("bunker") },
+    { href: "#forum", label: t("forum") },
   ];
 
   return (

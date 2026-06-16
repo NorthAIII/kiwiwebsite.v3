@@ -1,9 +1,10 @@
 import { defineRouting } from "next-intl/routing";
 
 export const routing = defineRouting({
-  // EN default; AR (RTL), DE, ES scaffolded for Phase 2 + geo-detected switch (§2).
-  locales: ["en", "ar", "de", "es"],
-  defaultLocale: "en",
+  // TR is the primary language (client decision). EN live; AR (RTL), DE, ES
+  // scaffolded for Phase 2 + geo-detected switch (§2).
+  locales: ["tr", "en", "ar", "de", "es"],
+  defaultLocale: "tr",
   localePrefix: "as-needed",
 });
 

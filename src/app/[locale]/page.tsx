@@ -6,6 +6,7 @@ import Hero from "@/components/Hero";
 import HowItWorks from "@/components/HowItWorks";
 import SectorSolutions from "@/components/SectorSolutions";
 import Bunker from "@/components/Bunker";
+import Forum from "@/components/Forum";
 import Chatbot from "@/components/Chatbot";
 import Credibility from "@/components/Credibility";
 import Footer from "@/components/Footer";
@@ -27,6 +28,7 @@ export default async function Home({
         <HowItWorks />
         <SectorSolutions />
         <Bunker />
+        <Forum />
         <Chatbot />
         <Credibility />
       </main>

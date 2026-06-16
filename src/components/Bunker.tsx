@@ -3,16 +3,16 @@
 import { useTranslations } from "next-intl";
 import Reveal from "./Reveal";
 
-const RUNNING = [
-  { name: "Lapsed-member win-back", state: "running" },
-  { name: "No-show recovery", state: "running" },
-  { name: "Abandoned-cart reply", state: "running" },
-  { name: "Lead → viewing", state: "queued" },
-];
-
 export default function Bunker() {
   const t = useTranslations("bunker");
   const points = ["one", "two", "three"] as const;
+
+  const running = [
+    { key: "one", state: "running" },
+    { key: "two", state: "running" },
+    { key: "three", state: "running" },
+    { key: "four", state: "queued" },
+  ] as const;
 
   return (
     <section id="bunker" className="mx-auto max-w-[1400px] px-6 py-28 lg:px-10 lg:py-40">
@@ -45,12 +45,14 @@ export default function Bunker() {
           >
             <div className="mb-6 flex items-center justify-between">
               <span className="font-display text-lg">Bunker OS</span>
-              <span className="text-xs text-canvas/50">live · 4 flows</span>
+              <span className="text-xs text-canvas/50">
+                {t("statusLive")} · 4 {t("flowsLabel")}
+              </span>
             </div>
             <div className="space-y-2.5">
-              {RUNNING.map((r, i) => (
+              {running.map((r, i) => (
                 <div
-                  key={r.name}
+                  key={r.key}
                   className="flex items-center gap-3 rounded-xl bg-canvas/[0.06] px-4 py-3.5"
                 >
                   <span className="relative h-2 w-2 shrink-0">
@@ -60,7 +62,7 @@ export default function Bunker() {
                       }`}
                     />
                   </span>
-                  <span className="flex-1 text-sm text-canvas/85">{r.name}</span>
+                  <span className="flex-1 text-sm text-canvas/85">{t(`flows.${r.key}`)}</span>
                   {/* travelling pulse along a track — the Living Flow motif */}
                   <span className="relative hidden h-px w-24 overflow-hidden bg-canvas/15 sm:block">
                     {r.state === "running" && (
@@ -71,7 +73,7 @@ export default function Bunker() {
                     )}
                   </span>
                   <span className="w-16 text-right text-xs tabular-nums text-canvas/45">
-                    {r.state === "running" ? "active" : "queued"}
+                    {r.state === "running" ? t("statusActive") : t("statusQueued")}
                   </span>
                 </div>
               ))}

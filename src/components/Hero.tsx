@@ -39,7 +39,7 @@ export default function Hero() {
             className="mb-5 flex items-center gap-3 text-sm font-medium uppercase tracking-[0.18em] text-green"
           >
             <span className="h-px w-8 bg-green/50" />
-            AI automation, measured
+            {t("eyebrow")}
           </p>
 
           <h1 className="font-display text-[clamp(2.6rem,7vw,6rem)] leading-[0.98]">
@@ -96,7 +96,7 @@ export default function Hero() {
       </div>
 
       <div className="absolute bottom-7 left-1/2 z-10 hidden -translate-x-1/2 flex-col items-center gap-2 text-ink-faint md:flex">
-        <span className="text-[11px] uppercase tracking-[0.2em]">Scroll</span>
+        <span className="text-[11px] uppercase tracking-[0.2em]">{t("scroll")}</span>
         <span className="h-10 w-px animate-pulse bg-ink-faint/40" />
       </div>
     </section>

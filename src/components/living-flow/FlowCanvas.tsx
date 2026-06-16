@@ -161,14 +161,21 @@ const dotVert = /* glsl */ `
   uniform float uTime;
   uniform float uPixelRatio;
   uniform float uStatic;
+  uniform vec2 uMouse;
+  uniform float uMouseR;
   attribute float aSize;
   attribute float aSeed;
   varying float vSeed;
+  varying float vNear;
   void main() {
     vSeed = aSeed;
+    // proximity to cursor (0..1), 1 right under the pointer
+    float md = distance(position.xy, uMouse);
+    vNear = (uMouseR > 0.01) ? smoothstep(uMouseR, 0.0, md) : 0.0;
     vec4 mv = modelViewMatrix * vec4(position, 1.0);
     float pulse = mix(0.7 + 0.3 * sin(uTime * 2.2 + aSeed * 6.2831), 1.0, uStatic);
-    gl_PointSize = aSize * uPixelRatio * pulse * (300.0 / -mv.z);
+    float size = aSize * pulse * (1.0 + vNear * 1.6);
+    gl_PointSize = size * uPixelRatio * (300.0 / -mv.z);
     gl_Position = projectionMatrix * mv;
   }
 `;
@@ -176,13 +183,17 @@ const dotFrag = /* glsl */ `
   uniform vec3 uCore;
   uniform vec3 uHalo;
   uniform float uAlpha;
+  varying float vNear;
   void main() {
     vec2 uv = gl_PointCoord - 0.5;
     float d = length(uv);
     if (d > 0.5) discard;
     float core = smoothstep(0.5, 0.0, d);
+    // soft colored halo + brighter core; cursor-near pulses brighten toward core
     vec3 col = mix(uHalo, uCore, pow(core, 2.0));
-    gl_FragColor = vec4(col, pow(core, 1.6) * uAlpha);
+    col = mix(col, uCore, vNear * 0.6);
+    float a = (pow(core, 1.5) + 0.18 * core) * uAlpha * (1.0 + vNear * 0.5);
+    gl_FragColor = vec4(col, a);
   }
 `;
 
@@ -194,8 +205,8 @@ function FlowField({ quality }: { quality: "high" | "low" }) {
   const { viewport, gl } = useThree();
   const w = Math.round(viewport.width);
   const h = Math.round(viewport.height);
-  const curveCount = quality === "high" ? 13 : 7;
-  const particles = quality === "high" ? 440 : 150;
+  const curveCount = quality === "high" ? 16 : 9;
+  const particles = quality === "high" ? 560 : 200;
 
   const field = useMemo(
     () => buildField(w || 16, h || 9, curveCount, particles),
@@ -208,8 +219,8 @@ function FlowField({ quality }: { quality: "high" | "low" }) {
     () => ({
       uMouse: { value: new THREE.Vector2(999, 999) },
       uTime: { value: 0 },
-      uBendRadius: { value: Math.min(w, h) * 0.2 || 2 },
-      uBendStrength: { value: Math.min(w, h) * 0.03 || 0.25 },
+      uBendRadius: { value: Math.min(w, h) * 0.26 || 2 },
+      uBendStrength: { value: Math.min(w, h) * 0.045 || 0.3 },
       uColor: { value: INK },
     }),
     [w, h]
@@ -219,17 +230,21 @@ function FlowField({ quality }: { quality: "high" | "low" }) {
       uTime: { value: 0 },
       uPixelRatio: { value: Math.min(gl.getPixelRatio(), 1.6) },
       uStatic: { value: 0 },
+      uMouse: { value: new THREE.Vector2(999, 999) },
+      uMouseR: { value: Math.min(w, h) * 0.22 || 2 },
       uCore: { value: PULSE_CORE },
       uHalo: { value: PULSE_HALO },
       uAlpha: { value: 0.95 },
     }),
-    [gl]
+    [gl, w, h]
   );
   const nodeUniforms = useMemo(
     () => ({
       uTime: { value: 0 },
       uPixelRatio: { value: Math.min(gl.getPixelRatio(), 1.6) },
       uStatic: { value: 0 },
+      uMouse: { value: new THREE.Vector2(999, 999) },
+      uMouseR: { value: 0 },
       uCore: { value: INK },
       uHalo: { value: INK },
       uAlpha: { value: 0.22 },
@@ -249,6 +264,7 @@ function FlowField({ quality }: { quality: "high" | "low" }) {
     mouse.current.x += (mx - mouse.current.x) * 0.12;
     mouse.current.y += (my - mouse.current.y) * 0.12;
     lineUniforms.uMouse.value.copy(mouse.current);
+    pulseUniforms.uMouse.value.copy(mouse.current);
     lineUniforms.uTime.value = t;
     pulseUniforms.uTime.value = t;
     nodeUniforms.uTime.value = t;

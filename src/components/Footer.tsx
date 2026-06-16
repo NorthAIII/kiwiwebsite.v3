@@ -39,7 +39,7 @@ export default function Footer() {
           </div>
           <div className="flex items-center gap-6">
             <span className="text-canvas/40">{t("language")}</span>
-            <LanguageSwitcher tone="soft" />
+            <LanguageSwitcher tone="soft" drop="up" />
             <span className="text-canvas/40">
               © {year} {t("rights")}
             </span>

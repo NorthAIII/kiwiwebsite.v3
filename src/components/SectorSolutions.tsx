@@ -78,7 +78,7 @@ export default function SectorSolutions() {
         >
           <div>
             <p className="mb-3 text-xs font-medium uppercase tracking-[0.16em] text-ink-faint">
-              {t(`items.${active}.name`)} · one automation
+              {t(`items.${active}.name`)} · {t("oneAutomation")}
             </p>
             <h3 className="font-display text-[clamp(1.6rem,3vw,2.6rem)] leading-tight">
               {t(`items.${active}.automation`)}
@@ -90,7 +90,7 @@ export default function SectorSolutions() {
 
           <div className="flex flex-col justify-between gap-6 rounded-2xl bg-ink p-8 text-canvas">
             <span className="inline-flex w-fit items-center gap-2 rounded-full border border-canvas/20 px-3 py-1 text-[11px] uppercase tracking-[0.14em] text-canvas/60">
-              Projected · placeholder
+              {t("projected")}
             </span>
             <div>
               <div className="font-display text-[clamp(3rem,7vw,5rem)] leading-none text-pulse">
@@ -101,9 +101,7 @@ export default function SectorSolutions() {
           </div>
         </div>
 
-        <p className="mt-4 text-xs text-ink-faint">
-          Figures are projected targets, clearly marked, until live client data replaces them.
-        </p>
+        <p className="mt-4 text-xs text-ink-faint">{t("note")}</p>
       </div>
     </section>
   );
