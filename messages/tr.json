@@ -82,6 +82,13 @@
         "body": "Her portal talebi nitelenir, canlı ilanlarla eşleştirilir ve rakip aramadan önce bir görüntüleme slotu sunulur — danışman yalnızca hazır alıcıyı görür.",
         "metric": "daha hızlı ilk yanıt",
         "metricValue": "9×"
+      },
+      "education": {
+        "name": "Eğitim & danışmanlık",
+        "automation": "Adaydan kayda otomatik takip",
+        "body": "Form dolduran her aday anında nitelenir, programa uygun bilgi WhatsApp’tan iletilir ve bir danışmanlık görüşmesi ayarlanır — kayıt olana dek takip kendiliğinden ilerler.",
+        "metric": "daha yüksek kayıt dönüşümü",
+        "metricValue": "+%27"
       }
     }
   },
@@ -103,6 +110,45 @@
       "two": "Gelmeyen randevu kurtarma",
       "three": "Sepet yanıtı",
       "four": "Aday → görüntüleme"
+    },
+    "explore": "Bunker OS’u keşfet"
+  },
+  "bunkerOs": {
+    "back": "Ana sayfa",
+    "eyebrow": "İşletim katmanı",
+    "title": "Bunker OS",
+    "lead": "Otomasyonlarınızın yaşadığı, çalıştığı ve ölçüldüğü tek yer. Araçlarınızı bağlar, tekrarlayan işi akışlara döker ve sonucu sayılarla önünüze koyar.",
+    "cta": "Ücretsiz keşif görüşmesi al",
+    "diagram": {
+      "title": "Tek katman, uçtan uca",
+      "sources": "Kaynaklar",
+      "core": "Bunker OS",
+      "coreNote": "akışlar burada çalışır",
+      "channels": "Kanallar",
+      "measure": "Ölçüm",
+      "sourceItems": { "one": "Form", "two": "CRM", "three": "Takvim", "four": "Mesaj" },
+      "channelItems": { "one": "WhatsApp", "two": "SMS", "three": "E-posta" }
+    },
+    "how": {
+      "title": "Nasıl çalışır",
+      "steps": {
+        "connect": { "n": "01", "title": "Bağla", "body": "Araçlarınızı, kanallarınızı ve verinizi tek katmana bağlarız — WhatsApp, SMS, e-posta, CRM, takvim." },
+        "build": { "n": "02", "title": "Akışları kur", "body": "Tekrarlayan işi otomasyon akışlarına döküyoruz: tetikleyici → adımlar → onay → sonuç." },
+        "run": { "n": "03", "title": "7/24 çalıştır", "body": "Akışlar kendi başına çalışır; izlenir, hata olursa sizi uyarır ve işi sıraya alır." },
+        "measure": { "n": "04", "title": "Ölç & iyileştir", "body": "Her akışın ne kazandırdığını görür, zayıf adımları sürekli iyileştiririz." }
+      }
+    },
+    "panel": {
+      "title": "Canlı operasyon",
+      "live": "canlı",
+      "flowsLabel": "akış",
+      "metricsNote": "Örnek panel — gerçek müşteri verisiyle değişir.",
+      "metrics": {
+        "flows": { "value": "12", "label": "çalışan akış" },
+        "triggered": { "value": "1.430", "label": "bu ay tetiklenen" },
+        "hours": { "value": "320", "label": "kazandırılan saat / ay" },
+        "attention": { "value": "2", "label": "müdahale gereken" }
+      }
     }
   },
   "forum": {

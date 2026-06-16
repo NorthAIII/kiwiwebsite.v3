@@ -1,6 +1,7 @@
 "use client";
 
 import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
 import Reveal from "./Reveal";
 
 export default function Bunker() {
@@ -35,6 +36,15 @@ export default function Bunker() {
               </li>
             ))}
           </ul>
+          <Link
+            data-reveal
+            href="/bunker-os"
+            data-cursor="hover"
+            className="group mt-8 inline-flex items-center gap-2 text-[15px] font-medium text-green"
+          >
+            {t("explore")}
+            <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
+          </Link>
         </Reveal>
 
         {/* the one strong visual — the operating layer, alive */}

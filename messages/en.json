@@ -103,6 +103,45 @@
       "two": "No-show recovery",
       "three": "Abandoned-cart reply",
       "four": "Lead → viewing"
+    },
+    "explore": "Explore Bunker OS"
+  },
+  "bunkerOs": {
+    "back": "Home",
+    "eyebrow": "Operating layer",
+    "title": "Bunker OS",
+    "lead": "The one place your automations live, run, and get measured. It connects your tools, turns repetitive work into flows, and puts the result in front of you as numbers.",
+    "cta": "Book a free discovery call",
+    "diagram": {
+      "title": "One layer, end to end",
+      "sources": "Sources",
+      "core": "Bunker OS",
+      "coreNote": "flows run here",
+      "channels": "Channels",
+      "measure": "Measurement",
+      "sourceItems": { "one": "Form", "two": "CRM", "three": "Calendar", "four": "Message" },
+      "channelItems": { "one": "WhatsApp", "two": "SMS", "three": "Email" }
+    },
+    "how": {
+      "title": "How it works",
+      "steps": {
+        "connect": { "n": "01", "title": "Connect", "body": "We connect your tools, channels, and data into one layer — WhatsApp, SMS, email, CRM, calendar." },
+        "build": { "n": "02", "title": "Build flows", "body": "We turn repetitive work into automation flows: trigger → steps → approval → outcome." },
+        "run": { "n": "03", "title": "Run 7/24", "body": "Flows run on their own; watched, alerting you on errors, queuing the work." },
+        "measure": { "n": "04", "title": "Measure & improve", "body": "We see what each flow saved and keep improving the weak steps." }
+      }
+    },
+    "panel": {
+      "title": "Live operation",
+      "live": "live",
+      "flowsLabel": "flows",
+      "metricsNote": "Sample panel — changes with real client data.",
+      "metrics": {
+        "flows": { "value": "12", "label": "flows running" },
+        "triggered": { "value": "1,430", "label": "triggered this month" },
+        "hours": { "value": "320", "label": "hours saved / month" },
+        "attention": { "value": "2", "label": "need attention" }
+      }
     }
   },
   "forum": {
