@@ -126,7 +126,17 @@ export default function SectorSolutions() {
           </div>
         </div>
 
-        <p className="mt-4 text-xs text-ink-faint">{t("note")}</p>
+        <div className="mt-6 flex flex-wrap items-center justify-between gap-4">
+          <p className="text-xs text-ink-faint">{t("note")}</p>
+          <Link
+            href="/vaka-calismalari"
+            data-cursor="hover"
+            className="group inline-flex items-center gap-2 text-sm font-medium text-ink transition-colors hover:text-green"
+          >
+            {t("allCases")}
+            <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
+          </Link>
+        </div>
       </div>
     </section>
   );

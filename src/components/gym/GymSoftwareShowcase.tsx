@@ -1,6 +1,7 @@
 "use client";
 
 import { useLocale } from "next-intl";
+import Image from "next/image";
 import LivingFlow from "@/components/living-flow/LivingFlow";
 import FlowScrim from "@/components/living-flow/FlowScrim";
 import Reveal from "@/components/Reveal";
@@ -26,14 +27,17 @@ const FEATURES_EN = [
   { t: "Staff & roles", d: "Role-based permissions, shifts and staff management." },
 ];
 
-const SHOTS_TR = ["Gösterge paneli", "Üye profili", "Ders & PT takvimi", "Mesajlaşma akışı"];
-const SHOTS_EN = ["Dashboard", "Member profile", "Class & PT calendar", "Messaging flow"];
+const SHOTS = [
+  { tr: "Çok-şube gösterge paneli", en: "Multi-branch dashboard", src: "/gym/dashboard.png" },
+  { tr: "Üye profili", en: "Member profile", src: "/gym/member.png" },
+  { tr: "Ders & PT takvimi", en: "Class & PT calendar", src: "/gym/calendar.png" },
+  { tr: "Kampanya & mesajlaşma", en: "Campaigns & messaging", src: "/gym/messaging.png" },
+];
 
 export default function GymSoftwareShowcase() {
   const locale = useLocale();
   const tr = locale === "tr";
   const features = tr ? FEATURES_TR : FEATURES_EN;
-  const shots = tr ? SHOTS_TR : SHOTS_EN;
 
   return (
     <main className="pt-16">
@@ -106,43 +110,30 @@ export default function GymSoftwareShowcase() {
             </h2>
             <p data-reveal className="mt-4 text-lg text-ink-soft">
               {tr
-                ? "Gerçek ürün arayüzleri Alpfit demosundan buraya eklenecek."
-                : "Real product interfaces from the Alpfit demo will be placed here."}
+                ? "Alpfit demosundan gerçek ürün arayüzleri — çok-şube panelinden takvime ve mesajlaşmaya."
+                : "Real product interfaces from the Alpfit demo — from the multi-branch panel to scheduling and messaging."}
             </p>
           </Reveal>
 
           <Reveal className="grid gap-6 sm:grid-cols-2" stagger={0.08}>
-            {shots.map((s) => (
+            {SHOTS.map((s) => (
               <figure
-                key={s}
+                key={s.src}
                 data-reveal
                 className="group relative overflow-hidden rounded-2xl border border-line bg-canvas"
               >
-                <div className="relative grid aspect-[16/10] place-items-center">
-                  {/* faint flow backdrop until the real screenshot lands */}
-                  <div
-                    className="absolute inset-0 opacity-60"
-                    style={{
-                      background:
-                        "radial-gradient(60% 60% at 50% 40%, rgba(111,227,111,0.10), transparent 70%)",
-                    }}
+                <div className="relative aspect-[16/10] overflow-hidden">
+                  <Image
+                    src={s.src}
+                    alt={tr ? s.tr : s.en}
+                    fill
+                    sizes="(max-width: 640px) 100vw, 50vw"
+                    className="object-cover object-top transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.02]"
                   />
-                  <svg width="34" height="34" viewBox="0 0 22 22" aria-hidden className="relative text-green/60">
-                    <path
-                      d="M4 16 C 8 16, 9 6, 14 6 M11 12 C 14 12, 15 16, 18 16"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="1.2"
-                      strokeLinecap="round"
-                    />
-                    <circle cx="11" cy="11" r="2" fill="currentColor" />
-                  </svg>
                 </div>
                 <figcaption className="flex items-center justify-between border-t border-line px-5 py-3 text-sm">
-                  <span className="font-medium text-ink">{s}</span>
-                  <span className="text-xs uppercase tracking-[0.12em] text-ink-faint">
-                    {tr ? "görsel eklenecek" : "image pending"}
-                  </span>
+                  <span className="font-medium text-ink">{tr ? s.tr : s.en}</span>
+                  <span className="text-xs uppercase tracking-[0.12em] text-ink-faint">Alpfit demo</span>
                 </figcaption>
               </figure>
             ))}

@@ -3,6 +3,7 @@
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import Reveal from "./Reveal";
+import BulletinSubscribe from "./BulletinSubscribe";
 
 const ARTICLES = ["one", "two", "three", "four"] as const;
 
@@ -27,7 +28,7 @@ export default function Forum() {
         {/* Featured content — the first real article */}
         <Reveal className="mb-5">
           <Link
-            href="/forum/ai-sdr-araclari"
+            href="/bulten/ai-sdr-araclari"
             data-reveal
             data-cursor="hover"
             className="group block overflow-hidden rounded-3xl border border-line bg-canvas p-8 transition-colors hover:border-ink/30 lg:p-10"
@@ -48,6 +49,35 @@ export default function Forum() {
               <span className="text-ink-faint">{t("featured.readingTime")}</span>
               <span className="ml-auto flex items-center gap-2 font-medium text-ink transition-transform duration-300 group-hover:translate-x-1">
                 {t("featured.cta")} →
+              </span>
+            </div>
+          </Link>
+        </Reveal>
+
+        {/* Second published article — Claude models news */}
+        <Reveal className="mb-5">
+          <Link
+            href="/bulten/claude-opus-4-8-fable-5"
+            data-reveal
+            data-cursor="hover"
+            className="group block overflow-hidden rounded-3xl border border-line bg-canvas p-8 transition-colors hover:border-ink/30 lg:p-10"
+          >
+            <p className="mb-4 text-xs font-medium uppercase tracking-[0.16em] text-green">
+              {t("featured2.kicker")}
+            </p>
+            <h3 className="max-w-2xl font-display text-[clamp(1.5rem,3.2vw,2.4rem)] leading-[1.05] transition-colors group-hover:text-green">
+              {t("featured2.title")}
+            </h3>
+            <p className="mt-4 max-w-xl text-[15px] leading-relaxed text-ink-soft">
+              {t("featured2.excerpt")}
+            </p>
+            <div className="mt-6 flex items-center gap-4 text-sm">
+              <span className="rounded-full bg-canvas-deep px-3 py-1 text-xs text-ink-soft">
+                {t("featured2.tag")}
+              </span>
+              <span className="text-ink-faint">{t("featured2.readingTime")}</span>
+              <span className="ml-auto flex items-center gap-2 font-medium text-ink transition-transform duration-300 group-hover:translate-x-1">
+                {t("featured2.cta")} →
               </span>
             </div>
           </Link>
@@ -88,15 +118,11 @@ export default function Forum() {
         </Reveal>
 
         <div className="mt-8 flex flex-wrap items-center justify-between gap-4">
-          <p className="text-xs text-ink-faint">{t("note")}</p>
-          <a
-            href="#contact"
-            data-cursor="hover"
-            className="group inline-flex items-center gap-2 rounded-full bg-ink px-6 py-3 text-sm font-medium text-canvas transition-transform duration-300 hover:scale-[1.03]"
-          >
-            {t("cta")}
-            <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
-          </a>
+          <div className="max-w-xs">
+            <p className="text-sm font-medium text-ink">{t("cta")}</p>
+            <p className="mt-1 text-xs text-ink-faint">{t("note")}</p>
+          </div>
+          <BulletinSubscribe />
         </div>
       </div>
     </section>

@@ -103,7 +103,8 @@
         "metric": "fewer no-show reservations",
         "metricValue": "35%"
       }
-    }
+    },
+    "allCases": "All case studies"
   },
   "bunker": {
     "label": "Bunker OS",
@@ -237,6 +238,20 @@
         "tag": "Strategy",
         "readingTime": "7 min read"
       }
+    },
+    "featured2": {
+      "kicker": "New · News",
+      "tag": "Models",
+      "title": "Claude’s new models: Opus 4.8 and Fable 5",
+      "excerpt": "Anthropic’s new Claude models — Opus 4.8 as the everyday flagship and Fable 5 for the hardest work — directly set what automation can reliably do. Which goes where, and what it means.",
+      "readingTime": "5 min read",
+      "cta": "Read the article"
+    },
+    "subscribe": {
+      "placeholder": "Your email",
+      "button": "Subscribe",
+      "done": "Thanks — opening your email app.",
+      "subject": "Kiwi AI Lab bulletin subscription"
     }
   },
   "chat": {

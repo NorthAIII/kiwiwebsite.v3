@@ -103,7 +103,8 @@
         "metric": "daha az gelmeyen rezervasyon",
         "metricValue": "%35"
       }
-    }
+    },
+    "allCases": "Tüm vaka çalışmaları"
   },
   "bunker": {
     "label": "Bunker OS",
@@ -237,6 +238,20 @@
         "tag": "Strateji",
         "readingTime": "7 dk okuma"
       }
+    },
+    "featured2": {
+      "kicker": "Yeni · Haber",
+      "tag": "Modeller",
+      "title": "Claude’un yeni modelleri: Opus 4.8 ve Fable 5",
+      "excerpt": "Anthropic’in yeni Claude modelleri — günlük işin amiral gemisi Opus 4.8 ve en zorlu işler için Fable 5 — otomasyonun neyi güvenilir yapabileceğini doğrudan belirliyor. Hangisi nerede kullanılır, ne anlama gelir?",
+      "readingTime": "5 dk okuma",
+      "cta": "Yazıyı oku"
+    },
+    "subscribe": {
+      "placeholder": "E-posta adresiniz",
+      "button": "Abone ol",
+      "done": "Teşekkürler — e-posta uygulamanız açılıyor.",
+      "subject": "Kiwi AI Lab bülten aboneliği"
     }
   },
   "chat": {

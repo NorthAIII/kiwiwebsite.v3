@@ -2,7 +2,14 @@ import type { MetadataRoute } from "next";
 import { routing } from "@/i18n/routing";
 
 const BASE = "https://kiwiailab.com";
-const PATHS = ["", "/bunker-os", "/spor-salonu-yazilimi", "/forum/ai-sdr-araclari"];
+const PATHS = [
+  "",
+  "/bunker-os",
+  "/spor-salonu-yazilimi",
+  "/vaka-calismalari",
+  "/bulten/ai-sdr-araclari",
+  "/bulten/claude-opus-4-8-fable-5",
+];
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const entries: MetadataRoute.Sitemap = [];

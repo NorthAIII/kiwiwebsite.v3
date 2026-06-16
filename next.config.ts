@@ -9,6 +9,13 @@ const nextConfig: NextConfig = {
   },
   // three.js ships untranspiled ESM; let Next handle it cleanly
   transpilePackages: ["three"],
+  // The community section became the "Bülten"; keep old /forum links alive.
+  async redirects() {
+    return [
+      { source: "/forum", destination: "/bulten", permanent: true },
+      { source: "/forum/:slug*", destination: "/bulten/:slug*", permanent: true },
+    ];
+  },
 };
 
 export default withNextIntl(nextConfig);
