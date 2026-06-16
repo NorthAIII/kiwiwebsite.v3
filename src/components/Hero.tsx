@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react";
 import { useTranslations } from "next-intl";
 import gsap from "gsap";
 import LivingFlow from "./living-flow/LivingFlow";
+import Magnetic from "./Magnetic";
 
 export default function Hero() {
   const t = useTranslations("hero");
@@ -59,14 +60,16 @@ export default function Hero() {
           </p>
 
           <div data-hero="cta" className="mt-10 flex flex-wrap items-center gap-4">
-            <a
-              href="#contact"
-              data-cursor="hover"
-              className="group relative overflow-hidden rounded-full bg-ink px-7 py-3.5 text-[15px] font-medium text-canvas"
-            >
-              <span className="relative z-10">{t("ctaPrimary")}</span>
-              <span className="absolute inset-0 -translate-x-full bg-green transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:translate-x-0" />
-            </a>
+            <Magnetic>
+              <a
+                href="#contact"
+                data-cursor="hover"
+                className="group relative inline-block overflow-hidden rounded-full bg-ink px-7 py-3.5 text-[15px] font-medium text-canvas"
+              >
+                <span className="relative z-10">{t("ctaPrimary")}</span>
+                <span className="absolute inset-0 -translate-x-full bg-green transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:translate-x-0" />
+              </a>
+            </Magnetic>
             <a
               href="#sectors"
               data-cursor="hover"

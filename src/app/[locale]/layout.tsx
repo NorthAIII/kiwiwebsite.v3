@@ -26,8 +26,12 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://kiwiailab.com"),
   openGraph: {
     title: "Kiwi AI Lab",
-    description: "We listen to your business. Then we automate it.",
+    description: "İşinizi analiz ederiz. Sonra otomatikleştiririz.",
     type: "website",
+  },
+  alternates: {
+    canonical: "/",
+    languages: { tr: "/", en: "/en", ar: "/ar", de: "/de", es: "/es" },
   },
 };
 

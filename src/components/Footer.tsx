@@ -2,6 +2,7 @@
 
 import { useTranslations } from "next-intl";
 import LanguageSwitcher from "./LanguageSwitcher";
+import Magnetic from "./Magnetic";
 import Reveal from "./Reveal";
 
 // Profile URLs are placeholders for now — wired to real handles later.
@@ -51,15 +52,18 @@ export default function Footer() {
           >
             {t("tagline")}
           </h2>
-          <a
-            data-reveal
-            href="mailto:kivanc@kiwiailab.com"
-            data-cursor="hover"
-            className="group mt-10 inline-flex items-center gap-3 rounded-full bg-canvas px-7 py-4 text-[15px] font-medium text-ink transition-transform duration-300 hover:scale-[1.03]"
-          >
-            {t("cta")}
-            <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
-          </a>
+          <div data-reveal className="mt-10">
+            <Magnetic>
+              <a
+                href="mailto:kivanc@kiwiailab.com"
+                data-cursor="hover"
+                className="group inline-flex items-center gap-3 rounded-full bg-canvas px-7 py-4 text-[15px] font-medium text-ink"
+              >
+                {t("cta")}
+                <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
+              </a>
+            </Magnetic>
+          </div>
         </Reveal>
 
         <div className="mt-20 flex flex-col gap-6 border-t border-canvas/15 pt-8 text-sm text-canvas/60 sm:flex-row sm:items-center sm:justify-between">

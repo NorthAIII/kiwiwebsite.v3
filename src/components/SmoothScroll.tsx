@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react";
 import { ReactLenis, type LenisRef } from "lenis/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import ScrollProgress from "./ScrollProgress";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
@@ -41,6 +42,7 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
       ref={lenisRef}
       options={{ autoRaf: false, lerp: 0.1, smoothWheel: true, anchors: true }}
     >
+      <ScrollProgress />
       {children}
     </ReactLenis>
   );
