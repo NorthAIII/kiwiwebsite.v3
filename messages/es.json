@@ -52,15 +52,17 @@
     "title": "One real automation. The outcome it drives.",
     "sub": "Pick a sector. Every example below is a single automation we ship — not a feature list.",
     "oneAutomation": "one automation",
+    "viewApp": "Explore the app",
+    "talk": "Let's talk about this",
     "projected": "Projected · placeholder",
     "note": "Figures are projected targets, clearly marked, until live client data replaces them.",
     "items": {
       "gyms": {
         "name": "Gyms",
-        "automation": "Win-back for lapsed members",
-        "body": "When a member stops checking in for 14 days, Bunker OS opens a WhatsApp thread with a tailored offer and books the return session — no front-desk effort.",
-        "metric": "lapsed members re-activated",
-        "metricValue": "31%"
+        "automation": "Gym Management Software",
+        "body": "Memberships, payments, check-ins, class & PT scheduling, automated reminders and member win-back — all in one panel. A comprehensive, sector-specific management platform.",
+        "metric": "operations, one panel",
+        "metricValue": "7/24"
       },
       "clinics": {
         "name": "Clinics",

@@ -3,10 +3,16 @@
 import { useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import gsap from "gsap";
+import { Link } from "@/i18n/navigation";
 import Reveal from "./Reveal";
 
 const KEYS = ["gyms", "clinics", "ecommerce", "realestate", "education", "restaurants"] as const;
 type Key = (typeof KEYS)[number];
+
+// Sectors that have a dedicated product/detail page.
+const PAGES: Partial<Record<Key, string>> = {
+  gyms: "/spor-salonu-yazilimi",
+};
 
 export default function SectorSolutions() {
   const t = useTranslations("sectors");
@@ -86,6 +92,25 @@ export default function SectorSolutions() {
             <p className="mt-5 max-w-md text-[15px] leading-relaxed text-ink-soft">
               {t(`items.${active}.body`)}
             </p>
+            {PAGES[active] ? (
+              <Link
+                href={PAGES[active]!}
+                data-cursor="hover"
+                className="group mt-7 inline-flex items-center gap-2 rounded-full bg-ink px-6 py-3 text-sm font-medium text-canvas transition-transform duration-300 hover:scale-[1.03]"
+              >
+                {t("viewApp")}
+                <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
+              </Link>
+            ) : (
+              <a
+                href="#contact"
+                data-cursor="hover"
+                className="group mt-7 inline-flex items-center gap-2 text-sm font-medium text-green"
+              >
+                {t("talk")}
+                <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
+              </a>
+            )}
           </div>
 
           <div className="flex flex-col justify-between gap-6 rounded-2xl bg-ink p-8 text-canvas">

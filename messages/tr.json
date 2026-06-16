@@ -52,15 +52,17 @@
     "title": "Tek bir gerçek otomasyon. Getirdiği sonuç.",
     "sub": "Bir sektör seçin. Aşağıdaki her örnek, kurduğumuz tek bir otomasyon — özellik listesi değil.",
     "oneAutomation": "tek otomasyon",
+    "viewApp": "Uygulamayı incele",
+    "talk": "Bu çözümü konuşalım",
     "projected": "Öngörü · örnek",
     "note": "Rakamlar, gerçek müşteri verisi gelene dek açıkça işaretlenmiş öngörülerdir.",
     "items": {
       "gyms": {
         "name": "Spor salonları",
-        "automation": "Kaçan üyeyi geri kazanma",
-        "body": "Bir üye 14 gün giriş yapmazsa, Bunker OS WhatsApp’tan kişiye özel bir teklifle yazışma açar ve dönüş seansını ayarlar — resepsiyon eforu olmadan.",
-        "metric": "geri kazanılan kaçan üye",
-        "metricValue": "%31"
+        "automation": "Spor Salonu Yönetim Yazılımı",
+        "body": "Üyelik, ödeme, yoklama, ders ve PT takvimi, otomatik hatırlatma ve kaçan üye geri kazanımı — hepsi tek panelde. Kapsamlı, sektöre özel yönetim yazılımı.",
+        "metric": "tek panelde operasyon",
+        "metricValue": "7/24"
       },
       "clinics": {
         "name": "Klinikler",
