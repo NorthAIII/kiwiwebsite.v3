@@ -1,0 +1,132 @@
+{
+  "nav": {
+    "work": "Work",
+    "howItWorks": "How it works",
+    "sectors": "Sectors",
+    "bunker": "Bunker OS",
+    "contact": "Contact",
+    "cta": "Book a call"
+  },
+  "hero": {
+    "lineOne": "We listen to your business.",
+    "lineTwo": "Then we automate it.",
+    "sub": "We find where repetitive work drains your team — recurring tasks, messages, approval chains — and wire it to automation you can measure.",
+    "ctaPrimary": "Book a free discovery call",
+    "ctaSecondary": "See it live",
+    "stats": {
+      "products": "sector-ready products",
+      "assistants": "assistants, running",
+      "founder": "with the founder"
+    }
+  },
+  "proof": {
+    "label": "Outcomes we're wiring up",
+    "note": "Honest placeholders until client data lands."
+  },
+  "how": {
+    "label": "How it works",
+    "title": "Three moves, one running system.",
+    "steps": {
+      "listen": {
+        "n": "01",
+        "title": "Listen",
+        "body": "We map how your operation actually runs — every recurring task, message, and approval — not how an org chart says it does."
+      },
+      "find": {
+        "n": "02",
+        "title": "Find",
+        "body": "We locate where work leaks: the steps repeated by hand, the follow-ups that slip, the hours spent moving data between tools."
+      },
+      "automate": {
+        "n": "03",
+        "title": "Automate",
+        "body": "We wire those steps to automation that runs 7/24 inside Bunker OS — and hand you the numbers so you can measure the gain."
+      }
+    }
+  },
+  "sectors": {
+    "label": "Sector solutions",
+    "title": "One real automation. The outcome it drives.",
+    "sub": "Pick a sector. Every example below is a single automation we ship — not a feature list.",
+    "items": {
+      "gyms": {
+        "name": "Gyms",
+        "automation": "Win-back for lapsed members",
+        "body": "When a member stops checking in for 14 days, Bunker OS opens a WhatsApp thread with a tailored offer and books the return session — no front-desk effort.",
+        "metric": "lapsed members re-activated",
+        "metricValue": "31%",
+        "marker": "placeholder"
+      },
+      "clinics": {
+        "name": "Clinics",
+        "automation": "No-show recovery",
+        "body": "Unconfirmed appointments get a two-step reminder, then auto-offer the slot to the waitlist if it stays open — the calendar fills itself.",
+        "metric": "fewer empty slots",
+        "metricValue": "42%",
+        "marker": "placeholder"
+      },
+      "ecommerce": {
+        "name": "E-commerce",
+        "automation": "Abandoned-cart that actually replies",
+        "body": "A cart left for an hour triggers a conversation — not a coupon blast — that answers the real objection and routes payment links back in-thread.",
+        "metric": "recovered revenue",
+        "metricValue": "+18%",
+        "marker": "placeholder"
+      },
+      "realestate": {
+        "name": "Real estate",
+        "automation": "Lead-to-viewing in minutes",
+        "body": "Every portal inquiry is qualified, matched to live listings, and offered a viewing slot before a competitor calls back — the agent only sees ready buyers.",
+        "metric": "faster first response",
+        "metricValue": "9× ",
+        "marker": "placeholder"
+      }
+    }
+  },
+  "bunker": {
+    "label": "Bunker OS",
+    "title": "Where your automations live and run.",
+    "body": "Every flow we ship runs inside one operating layer — observable, measurable, always on. You see what ran, what it saved, and what's next.",
+    "points": {
+      "one": "Every automation in one place",
+      "two": "Runs 7/24, watched, with alerts",
+      "three": "Outcomes measured, not assumed"
+    }
+  },
+  "chat": {
+    "label": "Live demo",
+    "title": "Talk to a Kiwi assistant.",
+    "sub": "Real, streaming, multilingual — ask in English, Arabic, German, or Spanish. It knows what we do and can route you to a call.",
+    "placeholder": "Ask about automating your business…",
+    "send": "Send",
+    "thinking": "Thinking",
+    "greeting": "Hi — I'm Kiwi's assistant. Tell me what your team does by hand most often, and I'll show you where automation fits.",
+    "error": "The assistant is offline right now. Add an ANTHROPIC_API_KEY to bring it online.",
+    "suggestions": {
+      "one": "How would you automate a gym?",
+      "two": "What is Bunker OS?",
+      "three": "¿Cómo funciona?"
+    }
+  },
+  "credibility": {
+    "title": "How we engage.",
+    "founder": {
+      "title": "1:1 with the founder",
+      "body": "You work directly with the person who builds it. No account-manager relay."
+    },
+    "always": {
+      "title": "7/24 assistants",
+      "body": "Your automations don't clock out. They run, watch, and escalate around the clock."
+    },
+    "measured": {
+      "title": "Measured, not promised",
+      "body": "Every engagement ships with the numbers attached. You'll know exactly what it moved."
+    }
+  },
+  "footer": {
+    "tagline": "We listen. Then we automate.",
+    "cta": "Book a free discovery call",
+    "language": "Language",
+    "rights": "Kiwi AI Lab"
+  }
+}

@@ -1,0 +1,103 @@
+@import "tailwindcss";
+
+/* ─────────────────────────────────────────────────────────────
+   Kiwi AI Lab — design tokens (§3 "Light but immersive")
+   ───────────────────────────────────────────────────────────── */
+@theme {
+  --color-canvas: #f7f6f1;
+  --color-canvas-deep: #efede4;
+  --color-ink: #12140f;
+  --color-ink-soft: #4a4d44;
+  --color-ink-faint: #8b8d83;
+  --color-green: #1f7a3d;
+  --color-green-deep: #155a2c;
+  --color-pulse: #6fe36f;
+  --color-line: rgba(18, 20, 15, 0.1);
+
+  --font-display: var(--font-fraunces), ui-serif, Georgia, serif;
+  --font-sans: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
+
+  --ease-flow: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+:root {
+  color-scheme: light;
+}
+
+* {
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+html {
+  scroll-behavior: auto; /* Lenis owns scrolling */
+}
+
+body {
+  background-color: var(--color-canvas);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  font-feature-settings: "ss01", "cv01";
+  overflow-x: hidden;
+}
+
+/* Display type: tight optical kerning, editorial weight */
+.font-display {
+  font-family: var(--font-display);
+  font-optical-sizing: auto;
+  letter-spacing: -0.02em;
+  font-weight: 380;
+}
+
+::selection {
+  background: var(--color-pulse);
+  color: var(--color-ink);
+}
+
+/* Faint film grain over the whole canvas — never clipart, just texture */
+.grain::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Hide native cursor only where the custom one is active (desktop, fine pointer) */
+@media (pointer: fine) {
+  html.has-custom-cursor,
+  html.has-custom-cursor * {
+    cursor: none;
+  }
+}
+
+/* Reveal-on-scroll baseline (GSAP toggles .is-in) */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  will-change: transform, opacity;
+}
+
+/* Full graceful fallback (§3, §6.4) */
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* Focus states — keyboard nav (§6.4) */
+:focus-visible {
+  outline: 2px solid var(--color-green);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
