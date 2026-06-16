@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react";
 import { useTranslations } from "next-intl";
 import gsap from "gsap";
 import LivingFlow from "./living-flow/LivingFlow";
+import FlowScrim from "./living-flow/FlowScrim";
 import Magnetic from "./Magnetic";
 
 export default function Hero() {
@@ -32,6 +33,7 @@ export default function Hero() {
       className="relative flex min-h-[100svh] items-center overflow-hidden"
     >
       <LivingFlow />
+      <FlowScrim />
 
       <div className="relative z-10 mx-auto w-full max-w-[1400px] px-6 pt-24 lg:px-10">
         <div className="max-w-4xl">

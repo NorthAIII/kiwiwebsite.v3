@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { NextIntlClientProvider, hasLocale } from "next-intl";
-import { setRequestLocale } from "next-intl/server";
+import { setRequestLocale, getTranslations } from "next-intl/server";
 import { Fraunces, Geist } from "next/font/google";
 import { routing, rtlLocales, type Locale } from "@/i18n/routing";
 import "../globals.css";
@@ -19,21 +19,31 @@ const geist = Geist({
   display: "swap",
 });
 
-export const metadata: Metadata = {
-  title: "Kiwi AI Lab — We listen. Then we automate.",
-  description:
-    "An AI automation agency. We map your business, find where repetitive work leaks time and money, and wire it to automation you can measure.",
-  metadataBase: new URL("https://kiwiailab.com"),
-  openGraph: {
-    title: "Kiwi AI Lab",
-    description: "İşinizi analiz ederiz. Sonra otomatikleştiririz.",
-    type: "website",
-  },
-  alternates: {
-    canonical: "/",
-    languages: { tr: "/", en: "/en", ar: "/ar", de: "/de", es: "/es" },
-  },
-};
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "meta" });
+  const title = t("title");
+  const description = t("description");
+  return {
+    title,
+    description,
+    metadataBase: new URL("https://kiwiailab.com"),
+    openGraph: {
+      title,
+      description,
+      type: "website",
+      locale,
+    },
+    alternates: {
+      canonical: locale === "tr" ? "/" : `/${locale}`,
+      languages: { tr: "/", en: "/en", ar: "/ar", de: "/de", es: "/es" },
+    },
+  };
+}
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));

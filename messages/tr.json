@@ -1,4 +1,8 @@
 {
+  "meta": {
+    "title": "Kiwi AI Lab — İşinizi analiz ederiz. Sonra otomatikleştiririz.",
+    "description": "AI otomasyon ajansı. İşinizi analiz eder, tekrarlayan işin zaman ve para kaybettirdiği yerleri bulur ve bunu ölçebileceğiniz bir otomasyona bağlarız."
+  },
   "nav": {
     "work": "İşler",
     "howItWorks": "Nasıl çalışır",

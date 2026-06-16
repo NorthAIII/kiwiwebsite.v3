@@ -2,6 +2,7 @@
 
 import { useLocale } from "next-intl";
 import LivingFlow from "@/components/living-flow/LivingFlow";
+import FlowScrim from "@/components/living-flow/FlowScrim";
 import Reveal from "@/components/Reveal";
 
 const FEATURES_TR = [
@@ -39,6 +40,7 @@ export default function GymSoftwareShowcase() {
       {/* Hero */}
       <section className="relative flex min-h-[68svh] items-center overflow-hidden">
         <LivingFlow />
+        <FlowScrim />
         <div className="relative z-10 mx-auto w-full max-w-[1400px] px-6 py-24 lg:px-10">
           <Reveal className="max-w-3xl">
             <p
