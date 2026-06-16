@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
 
@@ -198,6 +198,7 @@ const dotFrag = /* glsl */ `
 `;
 
 const INK = new THREE.Color("#12140f");
+const LIGHT_INK = new THREE.Color("#f2f1e8");
 const PULSE_CORE = new THREE.Color("#9bf29b");
 const PULSE_HALO = new THREE.Color("#1f7a3d");
 
@@ -221,7 +222,7 @@ function FlowField({ quality }: { quality: "high" | "low" }) {
       uTime: { value: 0 },
       uBendRadius: { value: Math.min(w, h) * 0.26 || 2 },
       uBendStrength: { value: Math.min(w, h) * 0.045 || 0.3 },
-      uColor: { value: INK },
+      uColor: { value: new THREE.Color(INK) },
     }),
     [w, h]
   );
@@ -245,12 +246,27 @@ function FlowField({ quality }: { quality: "high" | "low" }) {
       uStatic: { value: 0 },
       uMouse: { value: new THREE.Vector2(999, 999) },
       uMouseR: { value: 0 },
-      uCore: { value: INK },
-      uHalo: { value: INK },
+      uCore: { value: new THREE.Color(INK) },
+      uHalo: { value: new THREE.Color(INK) },
       uAlpha: { value: 0.22 },
     }),
     [gl]
   );
+
+  // Theme-aware line/node color: dark ink on light canvas, light ink on dark.
+  useEffect(() => {
+    const apply = () => {
+      const dark = document.documentElement.classList.contains("dark");
+      const c = dark ? LIGHT_INK : INK;
+      lineUniforms.uColor.value.copy(c);
+      nodeUniforms.uCore.value.copy(c);
+      nodeUniforms.uHalo.value.copy(c);
+    };
+    apply();
+    const obs = new MutationObserver(apply);
+    obs.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
+    return () => obs.disconnect();
+  }, [lineUniforms, nodeUniforms]);
 
   const mouse = useRef(new THREE.Vector2(999, 999));
 

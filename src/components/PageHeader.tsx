@@ -2,6 +2,7 @@
 
 import { Link } from "@/i18n/navigation";
 import LanguageSwitcher from "./LanguageSwitcher";
+import ThemeToggle from "./ThemeToggle";
 
 /** Lightweight header for sub-pages (logo → home, language, CTA). */
 export default function PageHeader({ back, cta }: { back: string; cta: string }) {
@@ -23,7 +24,7 @@ export default function PageHeader({ back, cta }: { back: string; cta: string })
           <span className="text-[15px] font-semibold tracking-tight">Kiwi AI Lab</span>
         </Link>
 
-        <div className="flex items-center gap-5">
+        <div className="flex items-center gap-4">
           <Link
             href="/"
             data-cursor="hover"
@@ -31,6 +32,7 @@ export default function PageHeader({ back, cta }: { back: string; cta: string })
           >
             ← {back}
           </Link>
+          <ThemeToggle />
           <LanguageSwitcher />
           <a
             href="/#contact"

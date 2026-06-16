@@ -49,7 +49,20 @@ export default async function LocaleLayout({
   const dir = rtlLocales.includes(locale as Locale) ? "rtl" : "ltr";
 
   return (
-    <html lang={locale} dir={dir} className={`${fraunces.variable} ${geist.variable}`}>
+    <html
+      lang={locale}
+      dir={dir}
+      className={`${fraunces.variable} ${geist.variable}`}
+      suppressHydrationWarning
+    >
+      <head>
+        <script
+          // set the theme before first paint to avoid a flash
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var t=localStorage.getItem('theme');var d=t?t==='dark':window.matchMedia('(prefers-color-scheme: dark)').matches;if(d)document.documentElement.classList.add('dark');}catch(e){}})();`,
+          }}
+        />
+      </head>
       <body className="grain">
         <NextIntlClientProvider>{children}</NextIntlClientProvider>
       </body>

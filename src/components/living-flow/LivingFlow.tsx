@@ -67,8 +67,9 @@ function StaticFlow() {
       className="absolute inset-0 h-full w-full"
       viewBox="0 0 1200 800"
       preserveAspectRatio="xMidYMid slice"
+      style={{ color: "var(--color-ink)" }}
     >
-      <g fill="none" stroke="#12140f" strokeOpacity="0.12">
+      <g fill="none" stroke="currentColor" strokeOpacity="0.12">
         <path d="M-50 120 C 250 180, 380 420, 700 360 S 1100 520, 1300 460" />
         <path d="M120 -40 C 200 220, 480 300, 520 560 S 760 760, 980 720" />
         <path d="M-30 520 C 260 480, 420 620, 760 600 S 1080 540, 1260 640" />

@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import LanguageSwitcher from "./LanguageSwitcher";
+import ThemeToggle from "./ThemeToggle";
 
 export default function Nav() {
   const t = useTranslations("nav");
@@ -60,7 +61,8 @@ export default function Nav() {
           ))}
         </div>
 
-        <div className="flex items-center gap-5">
+        <div className="flex items-center gap-4">
+          <ThemeToggle />
           <LanguageSwitcher />
           <a
             href="#contact"

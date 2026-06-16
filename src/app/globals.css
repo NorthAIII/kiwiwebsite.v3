@@ -24,6 +24,25 @@
   color-scheme: light;
 }
 
+/* Dark theme — light is default; this is the opt-in alternative.
+   Tokens flip so every bg-canvas/text-ink utility adapts automatically. */
+html.dark {
+  color-scheme: dark;
+  --color-canvas: #131510;
+  --color-canvas-deep: #1c1e17;
+  --color-ink: #f2f1e8;
+  --color-ink-soft: #b7b9ac;
+  --color-ink-faint: #7d8073;
+  --color-green: #4fb06a;
+  --color-green-deep: #2f7d45;
+  --color-pulse: #8af28a;
+  --color-line: rgba(242, 241, 232, 0.12);
+}
+
+body {
+  transition: background-color 0.45s var(--ease-flow), color 0.45s var(--ease-flow);
+}
+
 * {
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
