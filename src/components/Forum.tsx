@@ -1,6 +1,7 @@
 "use client";
 
 import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
 import Reveal from "./Reveal";
 
 const THREADS = ["one", "two", "three", "four"] as const;
@@ -21,6 +22,35 @@ export default function Forum() {
           <p data-reveal className="mt-4 text-lg text-ink-soft">
             {t("sub")}
           </p>
+        </Reveal>
+
+        {/* Featured content — the first real article */}
+        <Reveal className="mb-5">
+          <Link
+            href="/forum/ai-sdr-araclari"
+            data-reveal
+            data-cursor="hover"
+            className="group block overflow-hidden rounded-3xl border border-line bg-canvas p-8 transition-colors hover:border-ink/30 lg:p-10"
+          >
+            <p className="mb-4 text-xs font-medium uppercase tracking-[0.16em] text-green">
+              {t("featured.kicker")}
+            </p>
+            <h3 className="max-w-2xl font-display text-[clamp(1.5rem,3.2vw,2.4rem)] leading-[1.05] transition-colors group-hover:text-green">
+              {t("featured.title")}
+            </h3>
+            <p className="mt-4 max-w-xl text-[15px] leading-relaxed text-ink-soft">
+              {t("featured.excerpt")}
+            </p>
+            <div className="mt-6 flex items-center gap-4 text-sm">
+              <span className="rounded-full bg-canvas-deep px-3 py-1 text-xs text-ink-soft">
+                {t("featured.tag")}
+              </span>
+              <span className="text-ink-faint">{t("featured.readingTime")}</span>
+              <span className="ml-auto flex items-center gap-2 font-medium text-ink transition-transform duration-300 group-hover:translate-x-1">
+                {t("featured.cta")} →
+              </span>
+            </div>
+          </Link>
         </Reveal>
 
         <Reveal className="grid gap-px overflow-hidden rounded-3xl border border-line bg-line" stagger={0.08}>

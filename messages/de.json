@@ -82,6 +82,20 @@
         "body": "Every portal inquiry is qualified, matched to live listings, and offered a viewing slot before a competitor calls back — the agent only sees ready buyers.",
         "metric": "faster first response",
         "metricValue": "9×"
+      },
+      "education": {
+        "name": "Education & consulting",
+        "automation": "Lead-to-enrollment follow-up",
+        "body": "Every form fill is qualified instantly, the right program info goes out on WhatsApp, and a consultation is booked — the follow-up runs itself until enrollment.",
+        "metric": "higher enrollment conversion",
+        "metricValue": "+27%"
+      },
+      "restaurants": {
+        "name": "Restaurants & cafés",
+        "automation": "Reservation confirms, no-show recovery",
+        "body": "Reservations get automatic confirmation and reminders; if one cancels, the slot opens to the waitlist and regulars get a tailored offer — tables fill without anyone on the phone.",
+        "metric": "fewer no-show reservations",
+        "metricValue": "35%"
       }
     }
   },
@@ -151,6 +165,14 @@
     "cta": "Join the community",
     "note": "Sample threads — the community opens soon.",
     "repliesLabel": "replies",
+    "featured": {
+      "kicker": "Featured · Guide",
+      "tag": "Sales automation",
+      "title": "AI SDR tools in 2026: a comparison with pricing",
+      "excerpt": "A human SDR runs $110,000+/year; AI SDR tools promise similar work 7/24 at a fraction of the cost. We rounded up the leading platforms, their pricing models, and realistic results.",
+      "cta": "Read the article",
+      "readingTime": "8 min read"
+    },
     "threads": {
       "one": { "title": "Cut our WhatsApp approval chain from 2 days to 10 minutes", "tag": "E-commerce", "replies": "24" },
       "two": { "title": "How we halved no-shows at the clinic", "tag": "Clinic", "replies": "18" },

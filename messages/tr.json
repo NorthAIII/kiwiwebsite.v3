@@ -89,6 +89,13 @@
         "body": "Form dolduran her aday anında nitelenir, programa uygun bilgi WhatsApp’tan iletilir ve bir danışmanlık görüşmesi ayarlanır — kayıt olana dek takip kendiliğinden ilerler.",
         "metric": "daha yüksek kayıt dönüşümü",
         "metricValue": "+%27"
+      },
+      "restaurants": {
+        "name": "Restoran & kafe",
+        "automation": "Rezervasyon onayı, no-show’u kapatma",
+        "body": "Rezervasyonlara otomatik onay ve hatırlatma gider; iptal olursa slot bekleme listesine açılır, düzenli misafirlere kişisel kampanya iletilir — masalar telefon başında beklenmeden dolar.",
+        "metric": "daha az gelmeyen rezervasyon",
+        "metricValue": "%35"
       }
     }
   },
@@ -158,6 +165,14 @@
     "cta": "Topluluğa katıl",
     "note": "Örnek başlıklar — topluluk yakında açılıyor.",
     "repliesLabel": "yanıt",
+    "featured": {
+      "kicker": "Öne çıkan içerik · Rehber",
+      "tag": "Satış otomasyonu",
+      "title": "2026’da AI SDR araçları: fiyatlarıyla karşılaştırma",
+      "excerpt": "İnsan bir SDR yılda 110.000$+ tutarken, AI SDR araçları 7/24 çalışıp maliyetin küçük bir kısmına benzer işi vaat ediyor. Öne çıkan platformları, fiyat modellerini ve gerçekçi sonuçları derledik.",
+      "cta": "Yazıyı oku",
+      "readingTime": "8 dk okuma"
+    },
     "threads": {
       "one": { "title": "WhatsApp onay zincirini 2 günden 10 dakikaya indirdik", "tag": "E-ticaret", "replies": "24" },
       "two": { "title": "Klinikte no-show’u nasıl yarıya düşürdük", "tag": "Klinik", "replies": "18" },

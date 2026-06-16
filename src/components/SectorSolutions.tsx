@@ -5,7 +5,7 @@ import { useTranslations } from "next-intl";
 import gsap from "gsap";
 import Reveal from "./Reveal";
 
-const KEYS = ["gyms", "clinics", "ecommerce", "realestate"] as const;
+const KEYS = ["gyms", "clinics", "ecommerce", "realestate", "education", "restaurants"] as const;
 type Key = (typeof KEYS)[number];
 
 export default function SectorSolutions() {
