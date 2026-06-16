@@ -4,7 +4,7 @@ import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import Reveal from "./Reveal";
 
-const THREADS = ["one", "two", "three", "four"] as const;
+const ARTICLES = ["one", "two", "three", "four"] as const;
 
 export default function Forum() {
   const t = useTranslations("forum");
@@ -54,7 +54,7 @@ export default function Forum() {
         </Reveal>
 
         <Reveal className="grid gap-px overflow-hidden rounded-3xl border border-line bg-line" stagger={0.08}>
-          {THREADS.map((k) => (
+          {ARTICLES.map((k) => (
             <a
               key={k}
               href="#contact"
@@ -71,12 +71,15 @@ export default function Forum() {
               </span>
               <div className="min-w-0 flex-1">
                 <h3 className="truncate text-[15px] font-medium text-ink transition-colors group-hover:text-green sm:text-base">
-                  {t(`threads.${k}.title`)}
+                  {t(`articles.${k}.title`)}
                 </h3>
                 <p className="mt-1 text-xs uppercase tracking-[0.12em] text-ink-faint">
-                  {t(`threads.${k}.tag`)} · {t(`threads.${k}.replies`)} {t("repliesLabel")}
+                  {t(`articles.${k}.tag`)} · {t(`articles.${k}.readingTime`)}
                 </p>
               </div>
+              <span className="shrink-0 rounded-full border border-line px-2.5 py-1 text-[10px] font-medium uppercase tracking-[0.12em] text-ink-faint">
+                {t("soon")}
+              </span>
               <span className="shrink-0 text-ink-faint transition-transform duration-300 group-hover:translate-x-1 group-hover:text-ink">
                 →
               </span>

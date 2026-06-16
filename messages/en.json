@@ -8,7 +8,7 @@
     "howItWorks": "How it works",
     "sectors": "Sectors",
     "bunker": "Bunker OS",
-    "forum": "Community",
+    "forum": "Bulletin",
     "contact": "Contact",
     "cta": "Book a call"
   },
@@ -139,16 +139,41 @@
       "coreNote": "flows run here",
       "channels": "Channels",
       "measure": "Measurement",
-      "sourceItems": { "one": "Form", "two": "CRM", "three": "Calendar", "four": "Message" },
-      "channelItems": { "one": "WhatsApp", "two": "SMS", "three": "Email" }
+      "sourceItems": {
+        "one": "Form",
+        "two": "CRM",
+        "three": "Calendar",
+        "four": "Message"
+      },
+      "channelItems": {
+        "one": "WhatsApp",
+        "two": "SMS",
+        "three": "Email"
+      }
     },
     "how": {
       "title": "How it works",
       "steps": {
-        "connect": { "n": "01", "title": "Connect", "body": "We connect your tools, channels, and data into one layer — WhatsApp, SMS, email, CRM, calendar." },
-        "build": { "n": "02", "title": "Build flows", "body": "We turn repetitive work into automation flows: trigger → steps → approval → outcome." },
-        "run": { "n": "03", "title": "Run 7/24", "body": "Flows run on their own; watched, alerting you on errors, queuing the work." },
-        "measure": { "n": "04", "title": "Measure & improve", "body": "We see what each flow saved and keep improving the weak steps." }
+        "connect": {
+          "n": "01",
+          "title": "Connect",
+          "body": "We connect your tools, channels, and data into one layer — WhatsApp, SMS, email, CRM, calendar."
+        },
+        "build": {
+          "n": "02",
+          "title": "Build flows",
+          "body": "We turn repetitive work into automation flows: trigger → steps → approval → outcome."
+        },
+        "run": {
+          "n": "03",
+          "title": "Run 7/24",
+          "body": "Flows run on their own; watched, alerting you on errors, queuing the work."
+        },
+        "measure": {
+          "n": "04",
+          "title": "Measure & improve",
+          "body": "We see what each flow saved and keep improving the weak steps."
+        }
       }
     },
     "panel": {
@@ -157,33 +182,61 @@
       "flowsLabel": "flows",
       "metricsNote": "Sample panel — changes with real client data.",
       "metrics": {
-        "flows": { "value": "12", "label": "flows running" },
-        "triggered": { "value": "1,430", "label": "triggered this month" },
-        "hours": { "value": "320", "label": "hours saved / month" },
-        "attention": { "value": "2", "label": "need attention" }
+        "flows": {
+          "value": "12",
+          "label": "flows running"
+        },
+        "triggered": {
+          "value": "1,430",
+          "label": "triggered this month"
+        },
+        "hours": {
+          "value": "320",
+          "label": "hours saved / month"
+        },
+        "attention": {
+          "value": "2",
+          "label": "need attention"
+        }
       }
     }
   },
   "forum": {
-    "label": "Community",
-    "title": "We talk automation, together.",
-    "sub": "Founders and ops teams share real builds, the gains, and where they got stuck in the Kiwi community.",
-    "cta": "Join the community",
-    "note": "Sample threads — the community opens soon.",
-    "repliesLabel": "replies",
+    "label": "Bulletin",
+    "title": "Short reads on automation.",
+    "sub": "Lessons from real builds, tool comparisons and sector notes — a 3–8 minute read on average.",
+    "cta": "Subscribe to the bulletin",
+    "note": "New articles in the works — publishing soon.",
+    "soon": "Soon",
     "featured": {
-      "kicker": "Featured · Guide",
+      "kicker": "Featured article · Guide",
       "tag": "Sales automation",
       "title": "AI SDR tools in 2026: a comparison with pricing",
       "excerpt": "A human SDR runs $110,000+/year; AI SDR tools promise similar work 7/24 at a fraction of the cost. We rounded up the leading platforms, their pricing models, and realistic results.",
       "cta": "Read the article",
       "readingTime": "8 min read"
     },
-    "threads": {
-      "one": { "title": "Cut our WhatsApp approval chain from 2 days to 10 minutes", "tag": "E-commerce", "replies": "24" },
-      "two": { "title": "How we halved no-shows at the clinic", "tag": "Clinic", "replies": "18" },
-      "three": { "title": "Building your first flow in Bunker OS", "tag": "Getting started", "replies": "41" },
-      "four": { "title": "Which work is worth automating — and which isn't?", "tag": "Strategy", "replies": "33" }
+    "articles": {
+      "one": {
+        "title": "Cut our WhatsApp approval chain from 2 days to 10 minutes",
+        "tag": "E-commerce",
+        "readingTime": "5 min read"
+      },
+      "two": {
+        "title": "How we halved no-shows at the clinic",
+        "tag": "Clinic",
+        "readingTime": "4 min read"
+      },
+      "three": {
+        "title": "Building your first flow in Bunker OS",
+        "tag": "Getting started",
+        "readingTime": "6 min read"
+      },
+      "four": {
+        "title": "Which work is worth automating — and which isn’t?",
+        "tag": "Strategy",
+        "readingTime": "7 min read"
+      }
     }
   },
   "chat": {

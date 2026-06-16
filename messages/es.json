@@ -8,7 +8,7 @@
     "howItWorks": "How it works",
     "sectors": "Sectors",
     "bunker": "Bunker OS",
-    "forum": "Community",
+    "forum": "Bulletin",
     "contact": "Contact",
     "cta": "Book a call"
   },
@@ -202,40 +202,40 @@
     }
   },
   "forum": {
-    "label": "Community",
-    "title": "We talk automation, together.",
-    "sub": "Founders and ops teams share real builds, the gains, and where they got stuck in the Kiwi community.",
-    "cta": "Join the community",
-    "note": "Sample threads — the community opens soon.",
-    "repliesLabel": "replies",
+    "label": "Bulletin",
+    "title": "Short reads on automation.",
+    "sub": "Lessons from real builds, tool comparisons and sector notes — a 3–8 minute read on average.",
+    "cta": "Subscribe to the bulletin",
+    "note": "New articles in the works — publishing soon.",
+    "soon": "Soon",
     "featured": {
-      "kicker": "Featured · Guide",
+      "kicker": "Featured article · Guide",
       "tag": "Sales automation",
       "title": "AI SDR tools in 2026: a comparison with pricing",
       "excerpt": "A human SDR runs $110,000+/year; AI SDR tools promise similar work 7/24 at a fraction of the cost. We rounded up the leading platforms, their pricing models, and realistic results.",
       "cta": "Read the article",
       "readingTime": "8 min read"
     },
-    "threads": {
+    "articles": {
       "one": {
         "title": "Cut our WhatsApp approval chain from 2 days to 10 minutes",
         "tag": "E-commerce",
-        "replies": "24"
+        "readingTime": "5 min read"
       },
       "two": {
         "title": "How we halved no-shows at the clinic",
         "tag": "Clinic",
-        "replies": "18"
+        "readingTime": "4 min read"
       },
       "three": {
         "title": "Building your first flow in Bunker OS",
         "tag": "Getting started",
-        "replies": "41"
+        "readingTime": "6 min read"
       },
       "four": {
-        "title": "Which work is worth automating — and which isn't?",
+        "title": "Which work is worth automating — and which isn’t?",
         "tag": "Strategy",
-        "replies": "33"
+        "readingTime": "7 min read"
       }
     }
   },
