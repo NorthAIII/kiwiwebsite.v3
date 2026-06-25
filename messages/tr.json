@@ -58,50 +58,70 @@
     "oneAutomation": "tek otomasyon",
     "viewApp": "Uygulamayı incele",
     "talk": "Bu çözümü konuşalım",
-    "projected": "Öngörü · örnek",
-    "note": "Rakamlar, gerçek müşteri verisi gelene dek açıkça işaretlenmiş öngörülerdir.",
+    "live": "Canlı — Alpfit",
+    "flowLabel": "Akış",
+    "seeLive": "Canlı ürünü gör",
+    "note": "Spor salonu yazılımı (Alpfit) şu an canlıda; diğer akışları işletmenizin gerçekte nasıl yürüdüğüne göre kuruyoruz.",
     "items": {
       "gyms": {
         "name": "Spor salonları",
         "automation": "Spor Salonu Yönetim Yazılımı",
         "body": "Üyelik, ödeme, yoklama, ders ve PT takvimi, otomatik hatırlatma ve kaçan üye geri kazanımı — hepsi tek panelde. Kapsamlı, sektöre özel yönetim yazılımı.",
-        "metric": "tek panelde operasyon",
-        "metricValue": "7/24"
+        "flow": {
+          "trigger": "Bir üye 30 gündür giriş yapmadı",
+          "action": "Kişisel bir teklif ve PT randevusu WhatsApp’tan gider",
+          "result": "Dönüş tahmin edilmez, takip edilir"
+        }
       },
       "clinics": {
         "name": "Klinikler",
         "automation": "Gelmeyen randevuyu kurtarma",
         "body": "Onaylanmayan randevulara iki adımlı hatırlatma gider; boş kalırsa slot otomatik olarak bekleme listesine açılır — takvim kendini doldurur.",
-        "metric": "daha az boş slot",
-        "metricValue": "%42"
+        "flow": {
+          "trigger": "Bir randevu onaylanmadan kalır",
+          "action": "İki adımlı hatırlatma gider, sonra slot bekleme listesine açılır",
+          "result": "Takvim kendini doldurur"
+        }
       },
       "ecommerce": {
         "name": "E-ticaret",
         "automation": "Gerçekten yanıt veren sepet hatırlatma",
         "body": "Bir saat terk edilen sepet, kupon bombardımanı değil; gerçek itirazı yanıtlayan ve ödeme linkini aynı yazışmada ileten bir konuşma başlatır.",
-        "metric": "kurtarılan ciro",
-        "metricValue": "+%18"
+        "flow": {
+          "trigger": "Sepet bir saat dokunulmadan bekler",
+          "action": "Gerçek itirazı yanıtlayan bir konuşma başlar — kupon bombardımanı yok",
+          "result": "Ödeme linki aynı yazışmada iletilir"
+        }
       },
       "realestate": {
         "name": "Emlak",
         "automation": "Dakikalar içinde adaydan görüntülemeye",
         "body": "Her portal talebi nitelenir, canlı ilanlarla eşleştirilir ve rakip aramadan önce bir görüntüleme slotu sunulur — danışman yalnızca hazır alıcıyı görür.",
-        "metric": "daha hızlı ilk yanıt",
-        "metricValue": "9×"
+        "flow": {
+          "trigger": "Bir portal talebi gelir",
+          "action": "Nitelenir ve canlı ilanlarla eşleştirilir",
+          "result": "Rakip aramadan önce görüntüleme slotu sunulur"
+        }
       },
       "education": {
         "name": "Eğitim & danışmanlık",
         "automation": "Adaydan kayda otomatik takip",
         "body": "Form dolduran her aday anında nitelenir, programa uygun bilgi WhatsApp’tan iletilir ve bir danışmanlık görüşmesi ayarlanır — kayıt olana dek takip kendiliğinden ilerler.",
-        "metric": "daha yüksek kayıt dönüşümü",
-        "metricValue": "+%27"
+        "flow": {
+          "trigger": "Bir form doldurulur",
+          "action": "Programa uygun bilgi WhatsApp’tan iletilir",
+          "result": "Görüşme ayarlanır — takip kendiliğinden ilerler"
+        }
       },
       "restaurants": {
         "name": "Restoran & kafe",
         "automation": "Rezervasyon onayı, no-show’u kapatma",
         "body": "Rezervasyonlara otomatik onay ve hatırlatma gider; iptal olursa slot bekleme listesine açılır, düzenli misafirlere kişisel kampanya iletilir — masalar telefon başında beklenmeden dolar.",
-        "metric": "daha az gelmeyen rezervasyon",
-        "metricValue": "%35"
+        "flow": {
+          "trigger": "Bir rezervasyon yapılır",
+          "action": "Otomatik onay ve hatırlatma; iptalde slot bekleme listesine açılır",
+          "result": "Masalar telefon başında beklenmeden dolar"
+        }
       }
     },
     "allCases": "Tüm vaka çalışmaları"
@@ -181,7 +201,7 @@
       "title": "Canlı operasyon",
       "live": "canlı",
       "flowsLabel": "akış",
-      "metricsNote": "Örnek panel — gerçek müşteri verisiyle değişir.",
+      "metricsNote": "Operasyon paneli — her akış ve ne kazandırdığı tek ekranda.",
       "metrics": {
         "flows": {
           "value": "12",

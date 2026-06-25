@@ -16,8 +16,8 @@ export async function generateMetadata({
   return {
     title: tr ? "Vaka çalışmaları — Kiwi AI Lab" : "Case studies — Kiwi AI Lab",
     description: tr
-      ? "Sektör sektör kurduğumuz otomasyonlar: durum, akış ve getirdiği sonuç. Rakamlar işaretli öngörülerdir."
-      : "The automations we ship, sector by sector: situation, flow, and outcome. Figures are marked projections.",
+      ? "Sektör sektör kurduğumuz otomasyonlar: durum, akış ve getirdiği sonuç. Spor salonu yazılımı Alpfit canlıda."
+      : "The automations we ship, sector by sector: situation, flow, and the outcome it drives. The gym software, Alpfit, is live.",
   };
 }
 
