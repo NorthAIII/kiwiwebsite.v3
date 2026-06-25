@@ -21,9 +21,10 @@
     "ctaSecondary": "See it live",
     "scroll": "Scroll",
     "stats": {
-      "products": "sector-ready products",
-      "assistants": "assistants, running",
-      "founder": "with the founder"
+      "liveLabel": "مباشر الآن",
+      "liveProduct": "Alpfit — برنامج النوادي الرياضية",
+      "assistants": "أتمتة تعمل باستمرار",
+      "founder": "مباشرةً مع المؤسّس"
     }
   },
   "proof": {
@@ -58,53 +59,73 @@
     "oneAutomation": "one automation",
     "viewApp": "Explore the app",
     "talk": "Let's talk about this",
-    "projected": "Projected · placeholder",
-    "note": "Figures are projected targets, clearly marked, until live client data replaces them.",
+    "note": "برنامج النوادي الرياضية (Alpfit) متاح الآن؛ والباقي نبنيه حسب طريقة عمل نشاطك فعليًا.",
     "items": {
       "gyms": {
         "name": "Gyms",
         "automation": "Gym Management Software",
         "body": "Memberships, payments, check-ins, class & PT scheduling, automated reminders and member win-back — all in one panel. A comprehensive, sector-specific management platform.",
-        "metric": "operations, one panel",
-        "metricValue": "7/24"
+        "flow": {
+          "trigger": "عضو لم يحضر منذ 30 يومًا",
+          "action": "عرض مخصّص وموعد مع المدرّب يُرسلان عبر واتساب",
+          "result": "العودة تُتابَع، لا تُخمَّن"
+        }
       },
       "clinics": {
         "name": "Clinics",
         "automation": "No-show recovery",
         "body": "Unconfirmed appointments get a two-step reminder, then auto-offer the slot to the waitlist if it stays open — the calendar fills itself.",
-        "metric": "fewer empty slots",
-        "metricValue": "42%"
+        "flow": {
+          "trigger": "موعد يبقى دون تأكيد",
+          "action": "يُرسَل تذكير من خطوتين، ثم يُفتح الموعد لقائمة الانتظار",
+          "result": "الجدول يملأ نفسه"
+        }
       },
       "ecommerce": {
         "name": "E-commerce",
         "automation": "Abandoned-cart that actually replies",
         "body": "A cart left for an hour triggers a conversation — not a coupon blast — that answers the real objection and routes payment links back in-thread.",
-        "metric": "recovered revenue",
-        "metricValue": "+18%"
+        "flow": {
+          "trigger": "سلّة تُترَك ساعة دون لمس",
+          "action": "محادثة تردّ على الاعتراض الحقيقي — دون وابل من الكوبونات",
+          "result": "رابط الدفع يعود في المحادثة نفسها"
+        }
       },
       "realestate": {
         "name": "Real estate",
         "automation": "Lead-to-viewing in minutes",
         "body": "Every portal inquiry is qualified, matched to live listings, and offered a viewing slot before a competitor calls back — the agent only sees ready buyers.",
-        "metric": "faster first response",
-        "metricValue": "9×"
+        "flow": {
+          "trigger": "يصل استفسار من المنصّة",
+          "action": "يُؤهَّل ويُطابَق مع العقارات المتاحة",
+          "result": "يُعرَض موعد معاينة قبل أن يتّصل المنافس"
+        }
       },
       "education": {
         "name": "Education & consulting",
         "automation": "Lead-to-enrollment follow-up",
         "body": "Every form fill is qualified instantly, the right program info goes out on WhatsApp, and a consultation is booked — the follow-up runs itself until enrollment.",
-        "metric": "higher enrollment conversion",
-        "metricValue": "+27%"
+        "flow": {
+          "trigger": "يُملأ نموذج",
+          "action": "معلومات البرنامج المناسب تُرسَل عبر واتساب",
+          "result": "يُحجَز موعد استشارة — والمتابعة تجري تلقائيًا"
+        }
       },
       "restaurants": {
         "name": "Restaurants & cafés",
         "automation": "Reservation confirms, no-show recovery",
         "body": "Reservations get automatic confirmation and reminders; if one cancels, the slot opens to the waitlist and regulars get a tailored offer — tables fill without anyone on the phone.",
-        "metric": "fewer no-show reservations",
-        "metricValue": "35%"
+        "flow": {
+          "trigger": "يُجرى حجز",
+          "action": "تأكيد وتذكير تلقائيان؛ والإلغاء يفتح الموعد لقائمة الانتظار",
+          "result": "الطاولات تمتلئ دون أن يردّ أحد على الهاتف"
+        }
       }
     },
-    "allCases": "All case studies"
+    "allCases": "All case studies",
+    "live": "مباشر — Alpfit",
+    "flowLabel": "المسار",
+    "seeLive": "شاهد المنتج المباشر"
   },
   "bunker": {
     "label": "Bunker OS",
@@ -181,23 +202,23 @@
       "title": "Live operation",
       "live": "live",
       "flowsLabel": "flows",
-      "metricsNote": "Sample panel — changes with real client data.",
+      "metricsNote": "لوحة تشغيل — كل مسار وما وفّره، في شاشة واحدة.",
       "metrics": {
         "flows": {
-          "value": "12",
-          "label": "flows running"
+          "value": "مباشر",
+          "label": "كل مسار في شاشة واحدة"
         },
         "triggered": {
-          "value": "1,430",
-          "label": "triggered this month"
+          "value": "24/7",
+          "label": "يعمل من تلقاء نفسه"
         },
         "hours": {
-          "value": "320",
-          "label": "hours saved / month"
+          "value": "توفير",
+          "label": "ساعات تُقاس، لا تُفترَض"
         },
         "attention": {
-          "value": "2",
-          "label": "need attention"
+          "value": "تنبيهات",
+          "label": "عندما يحتاجك مسار"
         }
       }
     }
@@ -207,7 +228,7 @@
     "title": "Short reads on automation.",
     "sub": "Lessons from real builds, tool comparisons and sector notes — a 3–8 minute read on average.",
     "cta": "Subscribe to the bulletin",
-    "note": "New articles in the works — publishing soon.",
+    "note": "بين الحين والآخر، قراءة قصيرة عن الأتمتة. بلا إزعاج.",
     "soon": "Soon",
     "featured": {
       "kicker": "Featured article · Guide",
