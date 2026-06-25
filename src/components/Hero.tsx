@@ -108,17 +108,31 @@ export default function Hero() {
 
             <span className="h-8 w-px bg-line" />
 
-            <div className="flex items-baseline gap-2.5">
-              <dt className="font-display text-2xl text-green">24/7</dt>
-              <dd className="max-w-[9rem] text-sm leading-tight text-ink-soft">{t("stats.assistants")}</dd>
-            </div>
-
-            <span className="h-8 w-px bg-line" />
-
-            <div className="flex items-baseline gap-2.5">
-              <dt className="font-display text-2xl text-green">1:1</dt>
-              <dd className="max-w-[9rem] text-sm leading-tight text-ink-soft">{t("stats.founder")}</dd>
-            </div>
+            <Link
+              href="/bunker-os"
+              data-cursor="hover"
+              className="group flex items-center gap-2.5"
+            >
+              <svg width="18" height="18" viewBox="0 0 22 22" aria-hidden className="shrink-0 text-green">
+                <path
+                  d="M4 16 C 8 16, 9 6, 14 6 M11 12 C 14 12, 15 16, 18 16"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.6"
+                  strokeLinecap="round"
+                  opacity="0.85"
+                />
+                <circle cx="11" cy="11" r="2.1" fill="currentColor" />
+              </svg>
+              <span className="leading-tight">
+                <dd className="text-sm font-medium text-ink transition-colors group-hover:text-green">
+                  {t("stats.crewOs")}
+                </dd>
+                <dt className="text-xs uppercase tracking-[0.12em] text-ink-faint">
+                  {t("stats.crewOsLabel")}
+                </dt>
+              </span>
+            </Link>
           </dl>
         </div>
       </div>

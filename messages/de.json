@@ -7,7 +7,7 @@
     "work": "Work",
     "howItWorks": "How it works",
     "sectors": "Sectors",
-    "bunker": "Bunker OS",
+    "bunker": "Crew OS",
     "forum": "Bulletin",
     "contact": "Contact",
     "cta": "Book a call"
@@ -23,8 +23,8 @@
     "stats": {
       "liveLabel": "Jetzt live",
       "liveProduct": "Alpfit — Studio-Software",
-      "assistants": "Automationen, die laufen",
-      "founder": "direkt mit dem Gründer"
+      "crewOs": "Crew OS",
+      "crewOsLabel": "Betriebsebene"
     }
   },
   "proof": {
@@ -48,7 +48,7 @@
       "automate": {
         "n": "03",
         "title": "Automate",
-        "body": "We wire those steps to automation that runs 7/24 inside Bunker OS — and hand you the numbers so you can measure the gain."
+        "body": "We wire those steps to automation that runs 7/24 inside Crew OS — and hand you the numbers so you can measure the gain."
       }
     }
   },
@@ -128,7 +128,7 @@
     "seeLive": "Live-Produkt ansehen"
   },
   "bunker": {
-    "label": "Bunker OS",
+    "label": "Crew OS",
     "title": "Where your automations live and run.",
     "body": "Every flow we ship runs inside one operating layer — observable, measurable, always on. You see what ran, what it saved, and what's next.",
     "points": {
@@ -146,18 +146,18 @@
       "three": "Abandoned-cart reply",
       "four": "Lead → viewing"
     },
-    "explore": "Explore Bunker OS"
+    "explore": "Explore Crew OS"
   },
   "bunkerOs": {
     "back": "Home",
     "eyebrow": "Operating layer",
-    "title": "Bunker OS",
+    "title": "Crew OS",
     "lead": "The one place your automations live, run, and get measured. It connects your tools, turns repetitive work into flows, and puts the result in front of you as numbers.",
     "cta": "Book a free discovery call",
     "diagram": {
       "title": "One layer, end to end",
       "sources": "Sources",
-      "core": "Bunker OS",
+      "core": "Crew OS",
       "coreNote": "flows run here",
       "channels": "Channels",
       "measure": "Measurement",
@@ -250,7 +250,7 @@
         "readingTime": "4 min read"
       },
       "three": {
-        "title": "Building your first flow in Bunker OS",
+        "title": "Building your first flow in Crew OS",
         "tag": "Getting started",
         "readingTime": "6 min read"
       },
@@ -286,7 +286,7 @@
     "error": "The assistant is offline right now. Add an ANTHROPIC_API_KEY to bring it online.",
     "suggestions": {
       "one": "How would you automate a gym?",
-      "two": "What is Bunker OS?",
+      "two": "What is Crew OS?",
       "three": "How does cart recovery work?"
     }
   },

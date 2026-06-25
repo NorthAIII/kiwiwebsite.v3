@@ -94,8 +94,8 @@ export default function ArticleAiSdr() {
       <div className="mt-12 rounded-2xl border border-line bg-canvas-deep/50 p-7">
         <p className="text-[15px] leading-relaxed text-ink">
           {tr
-            ? "Kiwi AI Lab’de hangi aracın işinize oturduğunu birlikte seçer, kurulumunu yapar ve Bunker OS içinde ölçülebilir bir akışa bağlarız — araç değil, sonuç teslim ederiz."
-            : "At Kiwi AI Lab we help you pick the tool that fits, set it up, and wire it into a measurable flow inside Bunker OS — we ship outcomes, not tools."}
+            ? "Kiwi AI Lab’de hangi aracın işinize oturduğunu birlikte seçer, kurulumunu yapar ve Crew OS içinde ölçülebilir bir akışa bağlarız — araç değil, sonuç teslim ederiz."
+            : "At Kiwi AI Lab we help you pick the tool that fits, set it up, and wire it into a measurable flow inside Crew OS — we ship outcomes, not tools."}
         </p>
         <a
           href="/#contact"

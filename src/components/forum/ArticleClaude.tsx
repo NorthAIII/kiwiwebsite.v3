@@ -95,8 +95,8 @@ export default function ArticleClaude() {
       <div className="mt-12 rounded-2xl border border-line bg-canvas-deep/50 p-7">
         <p className="text-[15px] leading-relaxed text-ink">
           {tr
-            ? "Kiwi AI Lab’de otomasyonlarınızı bu modellerin üstüne kurar, her adımı doğru modele bağlar ve sonucu Bunker OS içinde ölçeriz — model değil, sonuç teslim ederiz."
-            : "At Kiwi AI Lab we build your automations on these models, route each step to the right one, and measure the result inside Bunker OS — we ship outcomes, not models."}
+            ? "Kiwi AI Lab’de otomasyonlarınızı bu modellerin üstüne kurar, her adımı doğru modele bağlar ve sonucu Crew OS içinde ölçeriz — model değil, sonuç teslim ederiz."
+            : "At Kiwi AI Lab we build your automations on these models, route each step to the right one, and measure the result inside Crew OS — we ship outcomes, not models."}
         </p>
         <a
           href="/#contact"
