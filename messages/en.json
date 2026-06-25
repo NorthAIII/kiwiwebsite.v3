@@ -21,8 +21,9 @@
     "ctaSecondary": "See it live",
     "scroll": "Scroll",
     "stats": {
-      "products": "sector-ready products",
-      "assistants": "assistants, running",
+      "liveLabel": "Live now",
+      "liveProduct": "Alpfit — gym software",
+      "assistants": "automations that run",
       "founder": "with the founder"
     }
   },
@@ -204,20 +205,20 @@
       "metricsNote": "An operations panel — every flow and what it saved, in one view.",
       "metrics": {
         "flows": {
-          "value": "12",
-          "label": "flows running"
+          "value": "Live",
+          "label": "every flow in one view"
         },
         "triggered": {
-          "value": "1,430",
-          "label": "triggered this month"
+          "value": "24/7",
+          "label": "runs on its own"
         },
         "hours": {
-          "value": "320",
-          "label": "hours saved / month"
+          "value": "Saved",
+          "label": "hours measured, not assumed"
         },
         "attention": {
-          "value": "2",
-          "label": "need attention"
+          "value": "Alerts",
+          "label": "when a flow needs you"
         }
       }
     }
@@ -227,7 +228,7 @@
     "title": "Short reads on automation.",
     "sub": "Lessons from real builds, tool comparisons and sector notes — a 3–8 minute read on average.",
     "cta": "Subscribe to the bulletin",
-    "note": "New articles in the works — publishing soon.",
+    "note": "A short read on automation now and then. No spam.",
     "soon": "Soon",
     "featured": {
       "kicker": "Featured article · Guide",

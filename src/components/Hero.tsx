@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import { useTranslations } from "next-intl";
 import gsap from "gsap";
+import { Link } from "@/i18n/navigation";
 import LivingFlow from "./living-flow/LivingFlow";
 import FlowScrim from "./living-flow/FlowScrim";
 import Magnetic from "./Magnetic";
@@ -84,18 +85,40 @@ export default function Hero() {
 
           <dl
             data-hero="stats"
-            className="mt-16 flex max-w-2xl flex-wrap gap-x-10 gap-y-5 border-t border-line pt-6"
+            className="mt-16 flex max-w-2xl flex-wrap items-center gap-x-8 gap-y-5 border-t border-line pt-6"
           >
-            {[
-              { n: "3", label: t("stats.products") },
-              { n: "7/24", label: t("stats.assistants") },
-              { n: "1:1", label: t("stats.founder") },
-            ].map((s) => (
-              <div key={s.label} className="flex items-baseline gap-2.5">
-                <dt className="font-display text-2xl text-green">{s.n}</dt>
-                <dd className="max-w-[9rem] text-sm leading-tight text-ink-soft">{s.label}</dd>
-              </div>
-            ))}
+            <Link
+              href="/spor-salonu-yazilimi"
+              data-cursor="hover"
+              className="group flex items-center gap-2.5"
+            >
+              <span className="relative h-2 w-2 shrink-0">
+                <span className="absolute inset-0 rounded-full bg-green" />
+                <span className="absolute inset-0 animate-ping rounded-full bg-green opacity-60" />
+              </span>
+              <span className="leading-tight">
+                <dd className="text-sm font-medium text-ink transition-colors group-hover:text-green">
+                  {t("stats.liveProduct")}
+                </dd>
+                <dt className="text-xs uppercase tracking-[0.12em] text-ink-faint">
+                  {t("stats.liveLabel")}
+                </dt>
+              </span>
+            </Link>
+
+            <span className="h-8 w-px bg-line" />
+
+            <div className="flex items-baseline gap-2.5">
+              <dt className="font-display text-2xl text-green">24/7</dt>
+              <dd className="max-w-[9rem] text-sm leading-tight text-ink-soft">{t("stats.assistants")}</dd>
+            </div>
+
+            <span className="h-8 w-px bg-line" />
+
+            <div className="flex items-baseline gap-2.5">
+              <dt className="font-display text-2xl text-green">1:1</dt>
+              <dd className="max-w-[9rem] text-sm leading-tight text-ink-soft">{t("stats.founder")}</dd>
+            </div>
           </dl>
         </div>
       </div>

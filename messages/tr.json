@@ -21,8 +21,9 @@
     "ctaSecondary": "Canlı gör",
     "scroll": "Kaydır",
     "stats": {
-      "products": "sektöre hazır ürün",
-      "assistants": "çalışan asistan",
+      "liveLabel": "Şu an canlı",
+      "liveProduct": "Alpfit — spor salonu yazılımı",
+      "assistants": "çalışan otomasyon",
       "founder": "kurucuyla birebir"
     }
   },
@@ -204,20 +205,20 @@
       "metricsNote": "Operasyon paneli — her akış ve ne kazandırdığı tek ekranda.",
       "metrics": {
         "flows": {
-          "value": "12",
-          "label": "çalışan akış"
+          "value": "Canlı",
+          "label": "her akış tek ekranda"
         },
         "triggered": {
-          "value": "1.430",
-          "label": "bu ay tetiklenen"
+          "value": "7/24",
+          "label": "kendi başına çalışır"
         },
         "hours": {
-          "value": "320",
-          "label": "kazandırılan saat / ay"
+          "value": "Kazanç",
+          "label": "saatler tahmin değil, ölçülür"
         },
         "attention": {
-          "value": "2",
-          "label": "müdahale gereken"
+          "value": "Uyarı",
+          "label": "bir akış gerektiğinde"
         }
       }
     }
@@ -227,7 +228,7 @@
     "title": "Otomasyon üzerine kısa yazılar.",
     "sub": "Gerçek kurulumlardan dersler, araç karşılaştırmaları ve sektör notları — ortalama 3–8 dakikada okunur.",
     "cta": "Bültene abone ol",
-    "note": "Yeni yazılar hazırlanıyor — yakında yayında.",
+    "note": "Ara sıra otomasyon üzerine kısa bir yazı. Spam yok.",
     "soon": "Yakında",
     "featured": {
       "kicker": "Öne çıkan yazı · Rehber",
