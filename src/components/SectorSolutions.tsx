@@ -113,16 +113,39 @@ export default function SectorSolutions() {
             )}
           </div>
 
-          <div className="flex flex-col justify-between gap-6 rounded-2xl bg-ink p-8 text-canvas">
+          <div className="flex flex-col gap-7 rounded-2xl bg-ink p-8 text-canvas">
             <span className="inline-flex w-fit items-center gap-2 rounded-full border border-canvas/20 px-3 py-1 text-[11px] uppercase tracking-[0.14em] text-canvas/60">
-              {t("projected")}
+              {active === "gyms" ? (
+                <>
+                  <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-pulse" />
+                  {t("live")}
+                </>
+              ) : (
+                t("flowLabel")
+              )}
             </span>
-            <div>
-              <div className="font-display text-[clamp(3rem,7vw,5rem)] leading-none text-pulse">
-                {t(`items.${active}.metricValue`)}
-              </div>
-              <p className="mt-3 text-[15px] text-canvas/70">{t(`items.${active}.metric`)}</p>
-            </div>
+
+            <ol className="space-y-5">
+              {(["trigger", "action", "result"] as const).map((step, i) => (
+                <li key={step} className="flex gap-4">
+                  <span className="font-display text-sm leading-6 text-pulse">{`0${i + 1}`}</span>
+                  <span className="text-[15px] leading-snug text-canvas/85">
+                    {t(`items.${active}.flow.${step}`)}
+                  </span>
+                </li>
+              ))}
+            </ol>
+
+            {active === "gyms" && (
+              <Link
+                href={PAGES.gyms!}
+                data-cursor="hover"
+                className="group inline-flex items-center gap-2 text-sm font-medium text-pulse"
+              >
+                {t("seeLive")}
+                <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
+              </Link>
+            )}
           </div>
         </div>
 

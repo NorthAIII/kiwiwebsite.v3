@@ -138,8 +138,8 @@ export default function CaseStudies() {
           </h1>
           <p data-reveal className="mt-5 text-lg leading-relaxed text-ink-soft">
             {tr
-              ? "Her vaka tek bir gerçek otomasyon: durum, kurduğumuz akış ve getirdiği sonuç. Rakamlar gerçek müşteri verisi gelene dek açıkça işaretlenmiş öngörülerdir."
-              : "Each case is a single real automation: the situation, the flow we built, and the outcome. Figures are clearly marked projections until live client data replaces them."}
+              ? "Her vaka tek bir gerçek otomasyon: durum, kurduğumuz akış ve getirdiği sonuç. Spor salonu yazılımı Alpfit şu an canlıda."
+              : "Each case is a single real automation: the situation, the flow we built, and the outcome it drives. The gym software, Alpfit, is live today."}
           </p>
         </Reveal>
 
@@ -169,15 +169,26 @@ export default function CaseStudies() {
                 </div>
 
                 <div className="mt-auto flex items-end justify-between gap-4 border-t border-line pt-6">
-                  <div className="flex items-baseline gap-3">
-                    <span className="font-display text-3xl text-green">{s.metric}</span>
-                    <span className="max-w-[10rem] text-sm leading-tight text-ink-soft">
-                      {tr ? s.metricLabelTr : s.metricLabelEn}
+                  <p className="max-w-[14rem] text-sm leading-snug text-ink-soft">
+                    <span className="font-medium text-ink">{tr ? "Sonuç. " : "Outcome. "}</span>
+                    {tr ? s.metricLabelTr : s.metricLabelEn}
+                  </p>
+                  {s.sectorEn === "Gym" ? (
+                    <a
+                      href="https://alpfit.vercel.app"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      data-cursor="hover"
+                      className="inline-flex shrink-0 items-center gap-1.5 rounded-full border border-green/40 px-3 py-1 text-[10px] font-medium uppercase tracking-[0.12em] text-green"
+                    >
+                      <span className="h-1.5 w-1.5 rounded-full bg-green" />
+                      {tr ? "Canlı — Alpfit" : "Live — Alpfit"}
+                    </a>
+                  ) : (
+                    <span className="shrink-0 rounded-full border border-line px-3 py-1 text-[10px] font-medium uppercase tracking-[0.12em] text-ink-faint">
+                      {tr ? s.sectorTr : s.sectorEn}
                     </span>
-                  </div>
-                  <span className="shrink-0 rounded-full border border-line px-3 py-1 text-[10px] font-medium uppercase tracking-[0.12em] text-ink-faint">
-                    {tr ? "Öngörü · örnek" : "Projected · sample"}
-                  </span>
+                  )}
                 </div>
               </article>
             </Reveal>
