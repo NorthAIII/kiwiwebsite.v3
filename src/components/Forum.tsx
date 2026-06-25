@@ -5,8 +5,6 @@ import { Link } from "@/i18n/navigation";
 import Reveal from "./Reveal";
 import BulletinSubscribe from "./BulletinSubscribe";
 
-const ARTICLES = ["one", "two", "three", "four"] as const;
-
 export default function Forum() {
   const t = useTranslations("forum");
 
@@ -83,41 +81,7 @@ export default function Forum() {
           </Link>
         </Reveal>
 
-        <Reveal className="grid gap-px overflow-hidden rounded-3xl border border-line bg-line" stagger={0.08}>
-          {ARTICLES.map((k) => (
-            <a
-              key={k}
-              href="#contact"
-              data-reveal
-              data-cursor="hover"
-              className="group flex items-center gap-5 bg-canvas px-6 py-6 transition-colors hover:bg-canvas-deep/50 lg:px-8"
-            >
-              <span className="hidden h-10 w-10 shrink-0 place-items-center rounded-full border border-line text-green sm:grid">
-                {/* flow-node mark */}
-                <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden>
-                  <circle cx="8" cy="8" r="2.4" fill="currentColor" />
-                  <path d="M2 8h3M11 8h3" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" />
-                </svg>
-              </span>
-              <div className="min-w-0 flex-1">
-                <h3 className="truncate text-[15px] font-medium text-ink transition-colors group-hover:text-green sm:text-base">
-                  {t(`articles.${k}.title`)}
-                </h3>
-                <p className="mt-1 text-xs uppercase tracking-[0.12em] text-ink-faint">
-                  {t(`articles.${k}.tag`)} · {t(`articles.${k}.readingTime`)}
-                </p>
-              </div>
-              <span className="shrink-0 rounded-full border border-line px-2.5 py-1 text-[10px] font-medium uppercase tracking-[0.12em] text-ink-faint">
-                {t("soon")}
-              </span>
-              <span className="shrink-0 text-ink-faint transition-transform duration-300 group-hover:translate-x-1 group-hover:text-ink">
-                →
-              </span>
-            </a>
-          ))}
-        </Reveal>
-
-        <div className="mt-8 flex flex-wrap items-center justify-between gap-4">
+        <div className="mt-10 flex flex-wrap items-center justify-between gap-4 border-t border-line pt-8">
           <div className="max-w-xs">
             <p className="text-sm font-medium text-ink">{t("cta")}</p>
             <p className="mt-1 text-xs text-ink-faint">{t("note")}</p>

@@ -7,7 +7,7 @@
     "work": "Work",
     "howItWorks": "How it works",
     "sectors": "Sectors",
-    "bunker": "Bunker OS",
+    "bunker": "Crew OS",
     "forum": "Bulletin",
     "contact": "Contact",
     "cta": "Book a call"
@@ -21,9 +21,10 @@
     "ctaSecondary": "See it live",
     "scroll": "Scroll",
     "stats": {
-      "products": "sector-ready products",
-      "assistants": "assistants, running",
-      "founder": "with the founder"
+      "liveLabel": "Live now",
+      "liveProduct": "Alpfit — gym software",
+      "crewOs": "Crew OS",
+      "crewOsLabel": "Operating layer"
     }
   },
   "proof": {
@@ -47,7 +48,7 @@
       "automate": {
         "n": "03",
         "title": "Automate",
-        "body": "We wire those steps to automation that runs 7/24 inside Bunker OS — and hand you the numbers so you can measure the gain."
+        "body": "We wire those steps to automation that runs 7/24 inside Crew OS — and hand you the numbers so you can measure the gain."
       }
     }
   },
@@ -127,7 +128,7 @@
     "allCases": "All case studies"
   },
   "bunker": {
-    "label": "Bunker OS",
+    "label": "Crew OS",
     "title": "Where your automations live and run.",
     "body": "Every flow we ship runs inside one operating layer — observable, measurable, always on. You see what ran, what it saved, and what's next.",
     "points": {
@@ -145,18 +146,18 @@
       "three": "Abandoned-cart reply",
       "four": "Lead → viewing"
     },
-    "explore": "Explore Bunker OS"
+    "explore": "Explore Crew OS"
   },
   "bunkerOs": {
     "back": "Home",
     "eyebrow": "Operating layer",
-    "title": "Bunker OS",
+    "title": "Crew OS",
     "lead": "The one place your automations live, run, and get measured. It connects your tools, turns repetitive work into flows, and puts the result in front of you as numbers.",
     "cta": "Book a free discovery call",
     "diagram": {
       "title": "One layer, end to end",
       "sources": "Sources",
-      "core": "Bunker OS",
+      "core": "Crew OS",
       "coreNote": "flows run here",
       "channels": "Channels",
       "measure": "Measurement",
@@ -204,20 +205,20 @@
       "metricsNote": "An operations panel — every flow and what it saved, in one view.",
       "metrics": {
         "flows": {
-          "value": "12",
-          "label": "flows running"
+          "value": "Live",
+          "label": "every flow in one view"
         },
         "triggered": {
-          "value": "1,430",
-          "label": "triggered this month"
+          "value": "24/7",
+          "label": "runs on its own"
         },
         "hours": {
-          "value": "320",
-          "label": "hours saved / month"
+          "value": "Saved",
+          "label": "hours measured, not assumed"
         },
         "attention": {
-          "value": "2",
-          "label": "need attention"
+          "value": "Alerts",
+          "label": "when a flow needs you"
         }
       }
     }
@@ -227,7 +228,7 @@
     "title": "Short reads on automation.",
     "sub": "Lessons from real builds, tool comparisons and sector notes — a 3–8 minute read on average.",
     "cta": "Subscribe to the bulletin",
-    "note": "New articles in the works — publishing soon.",
+    "note": "A short read on automation now and then. No spam.",
     "soon": "Soon",
     "featured": {
       "kicker": "Featured article · Guide",
@@ -249,7 +250,7 @@
         "readingTime": "4 min read"
       },
       "three": {
-        "title": "Building your first flow in Bunker OS",
+        "title": "Building your first flow in Crew OS",
         "tag": "Getting started",
         "readingTime": "6 min read"
       },
@@ -285,7 +286,7 @@
     "error": "The assistant is offline right now. Add an ANTHROPIC_API_KEY to bring it online.",
     "suggestions": {
       "one": "How would you automate a gym?",
-      "two": "What is Bunker OS?",
+      "two": "What is Crew OS?",
       "three": "How does cart recovery work?"
     }
   },

@@ -7,7 +7,7 @@
     "work": "İşler",
     "howItWorks": "Nasıl çalışır",
     "sectors": "Sektörler",
-    "bunker": "Bunker OS",
+    "bunker": "Crew OS",
     "forum": "Bülten",
     "contact": "İletişim",
     "cta": "Görüşme al"
@@ -21,9 +21,10 @@
     "ctaSecondary": "Canlı gör",
     "scroll": "Kaydır",
     "stats": {
-      "products": "sektöre hazır ürün",
-      "assistants": "çalışan asistan",
-      "founder": "kurucuyla birebir"
+      "liveLabel": "Şu an canlı",
+      "liveProduct": "Alpfit — spor salonu yazılımı",
+      "crewOs": "Crew OS",
+      "crewOsLabel": "İşletim katmanı"
     }
   },
   "proof": {
@@ -47,7 +48,7 @@
       "automate": {
         "n": "03",
         "title": "Otomasyon",
-        "body": "Bu adımları Bunker OS içinde 7/24 çalışan otomasyona bağlarız — ve kazancı ölçebilmeniz için sayıları size veririz."
+        "body": "Bu adımları Crew OS içinde 7/24 çalışan otomasyona bağlarız — ve kazancı ölçebilmeniz için sayıları size veririz."
       }
     }
   },
@@ -127,7 +128,7 @@
     "allCases": "Tüm vaka çalışmaları"
   },
   "bunker": {
-    "label": "Bunker OS",
+    "label": "Crew OS",
     "title": "Otomasyonlarınızın yaşadığı ve çalıştığı yer.",
     "body": "Kurduğumuz her akış tek bir operasyon katmanında çalışır — gözlemlenebilir, ölçülebilir, hep açık. Neyin çalıştığını, ne kazandırdığını ve sıradakini görürsünüz.",
     "points": {
@@ -145,18 +146,18 @@
       "three": "Sepet yanıtı",
       "four": "Aday → görüntüleme"
     },
-    "explore": "Bunker OS’u keşfet"
+    "explore": "Crew OS’u keşfet"
   },
   "bunkerOs": {
     "back": "Ana sayfa",
     "eyebrow": "İşletim katmanı",
-    "title": "Bunker OS",
+    "title": "Crew OS",
     "lead": "Otomasyonlarınızın yaşadığı, çalıştığı ve ölçüldüğü tek yer. Araçlarınızı bağlar, tekrarlayan işi akışlara döker ve sonucu sayılarla önünüze koyar.",
     "cta": "Ücretsiz keşif görüşmesi al",
     "diagram": {
       "title": "Tek katman, uçtan uca",
       "sources": "Kaynaklar",
-      "core": "Bunker OS",
+      "core": "Crew OS",
       "coreNote": "akışlar burada çalışır",
       "channels": "Kanallar",
       "measure": "Ölçüm",
@@ -204,20 +205,20 @@
       "metricsNote": "Operasyon paneli — her akış ve ne kazandırdığı tek ekranda.",
       "metrics": {
         "flows": {
-          "value": "12",
-          "label": "çalışan akış"
+          "value": "Canlı",
+          "label": "her akış tek ekranda"
         },
         "triggered": {
-          "value": "1.430",
-          "label": "bu ay tetiklenen"
+          "value": "7/24",
+          "label": "kendi başına çalışır"
         },
         "hours": {
-          "value": "320",
-          "label": "kazandırılan saat / ay"
+          "value": "Kazanç",
+          "label": "saatler tahmin değil, ölçülür"
         },
         "attention": {
-          "value": "2",
-          "label": "müdahale gereken"
+          "value": "Uyarı",
+          "label": "bir akış gerektiğinde"
         }
       }
     }
@@ -227,7 +228,7 @@
     "title": "Otomasyon üzerine kısa yazılar.",
     "sub": "Gerçek kurulumlardan dersler, araç karşılaştırmaları ve sektör notları — ortalama 3–8 dakikada okunur.",
     "cta": "Bültene abone ol",
-    "note": "Yeni yazılar hazırlanıyor — yakında yayında.",
+    "note": "Ara sıra otomasyon üzerine kısa bir yazı. Spam yok.",
     "soon": "Yakında",
     "featured": {
       "kicker": "Öne çıkan yazı · Rehber",
@@ -249,7 +250,7 @@
         "readingTime": "4 dk okuma"
       },
       "three": {
-        "title": "Bunker OS’ta ilk akışınızı kurmak",
+        "title": "Crew OS’ta ilk akışınızı kurmak",
         "tag": "Başlangıç",
         "readingTime": "6 dk okuma"
       },
@@ -285,7 +286,7 @@
     "error": "Asistan şu an çevrimdışı. Çevrimiçi olması için bir ANTHROPIC_API_KEY ekleyin.",
     "suggestions": {
       "one": "Bir spor salonunu nasıl otomatikleştirirsiniz?",
-      "two": "Bunker OS nedir?",
+      "two": "Crew OS nedir?",
       "three": "Sepet hatırlatma nasıl çalışır?"
     }
   },

@@ -7,7 +7,7 @@
     "work": "Work",
     "howItWorks": "How it works",
     "sectors": "Sectors",
-    "bunker": "Bunker OS",
+    "bunker": "Crew OS",
     "forum": "Bulletin",
     "contact": "Contact",
     "cta": "Book a call"
@@ -21,9 +21,10 @@
     "ctaSecondary": "See it live",
     "scroll": "Scroll",
     "stats": {
-      "products": "sector-ready products",
-      "assistants": "assistants, running",
-      "founder": "with the founder"
+      "liveLabel": "En vivo ahora",
+      "liveProduct": "Alpfit — software para gimnasios",
+      "crewOs": "Crew OS",
+      "crewOsLabel": "Capa operativa"
     }
   },
   "proof": {
@@ -47,7 +48,7 @@
       "automate": {
         "n": "03",
         "title": "Automate",
-        "body": "We wire those steps to automation that runs 7/24 inside Bunker OS — and hand you the numbers so you can measure the gain."
+        "body": "We wire those steps to automation that runs 7/24 inside Crew OS — and hand you the numbers so you can measure the gain."
       }
     }
   },
@@ -58,56 +59,76 @@
     "oneAutomation": "one automation",
     "viewApp": "Explore the app",
     "talk": "Let's talk about this",
-    "projected": "Projected · placeholder",
-    "note": "Figures are projected targets, clearly marked, until live client data replaces them.",
+    "note": "El software para gimnasios (Alpfit) ya está en vivo; el resto lo construimos según cómo funciona realmente tu negocio.",
     "items": {
       "gyms": {
         "name": "Gyms",
         "automation": "Gym Management Software",
         "body": "Memberships, payments, check-ins, class & PT scheduling, automated reminders and member win-back — all in one panel. A comprehensive, sector-specific management platform.",
-        "metric": "operations, one panel",
-        "metricValue": "7/24"
+        "flow": {
+          "trigger": "Un socio lleva 30 días sin venir",
+          "action": "Una oferta personalizada y una cita con el entrenador salen por WhatsApp",
+          "result": "El regreso se mide, no se adivina"
+        }
       },
       "clinics": {
         "name": "Clinics",
         "automation": "No-show recovery",
         "body": "Unconfirmed appointments get a two-step reminder, then auto-offer the slot to the waitlist if it stays open — the calendar fills itself.",
-        "metric": "fewer empty slots",
-        "metricValue": "42%"
+        "flow": {
+          "trigger": "Una cita queda sin confirmar",
+          "action": "Sale un recordatorio en dos pasos y luego el hueco se abre a la lista de espera",
+          "result": "La agenda se llena sola"
+        }
       },
       "ecommerce": {
         "name": "E-commerce",
         "automation": "Abandoned-cart that actually replies",
         "body": "A cart left for an hour triggers a conversation — not a coupon blast — that answers the real objection and routes payment links back in-thread.",
-        "metric": "recovered revenue",
-        "metricValue": "+18%"
+        "flow": {
+          "trigger": "Un carrito queda sin tocar una hora",
+          "action": "Una conversación responde la objeción real — sin bombardeo de cupones",
+          "result": "El enlace de pago vuelve en el mismo hilo"
+        }
       },
       "realestate": {
         "name": "Real estate",
         "automation": "Lead-to-viewing in minutes",
         "body": "Every portal inquiry is qualified, matched to live listings, and offered a viewing slot before a competitor calls back — the agent only sees ready buyers.",
-        "metric": "faster first response",
-        "metricValue": "9×"
+        "flow": {
+          "trigger": "Llega una consulta del portal",
+          "action": "Se califica y se cruza con propiedades disponibles",
+          "result": "Se ofrece una visita antes de que llame la competencia"
+        }
       },
       "education": {
         "name": "Education & consulting",
         "automation": "Lead-to-enrollment follow-up",
         "body": "Every form fill is qualified instantly, the right program info goes out on WhatsApp, and a consultation is booked — the follow-up runs itself until enrollment.",
-        "metric": "higher enrollment conversion",
-        "metricValue": "+27%"
+        "flow": {
+          "trigger": "Se completa un formulario",
+          "action": "La información del programa correcto sale por WhatsApp",
+          "result": "Se agenda una consulta — el seguimiento corre solo"
+        }
       },
       "restaurants": {
         "name": "Restaurants & cafés",
         "automation": "Reservation confirms, no-show recovery",
         "body": "Reservations get automatic confirmation and reminders; if one cancels, the slot opens to the waitlist and regulars get a tailored offer — tables fill without anyone on the phone.",
-        "metric": "fewer no-show reservations",
-        "metricValue": "35%"
+        "flow": {
+          "trigger": "Se hace una reserva",
+          "action": "Confirmación y recordatorio automáticos; una cancelación abre el hueco a la lista de espera",
+          "result": "Las mesas se llenan sin que nadie esté al teléfono"
+        }
       }
     },
-    "allCases": "All case studies"
+    "allCases": "All case studies",
+    "live": "En vivo — Alpfit",
+    "flowLabel": "El flujo",
+    "seeLive": "Ver el producto en vivo"
   },
   "bunker": {
-    "label": "Bunker OS",
+    "label": "Crew OS",
     "title": "Where your automations live and run.",
     "body": "Every flow we ship runs inside one operating layer — observable, measurable, always on. You see what ran, what it saved, and what's next.",
     "points": {
@@ -125,18 +146,18 @@
       "three": "Abandoned-cart reply",
       "four": "Lead → viewing"
     },
-    "explore": "Explore Bunker OS"
+    "explore": "Explore Crew OS"
   },
   "bunkerOs": {
     "back": "Home",
     "eyebrow": "Operating layer",
-    "title": "Bunker OS",
+    "title": "Crew OS",
     "lead": "The one place your automations live, run, and get measured. It connects your tools, turns repetitive work into flows, and puts the result in front of you as numbers.",
     "cta": "Book a free discovery call",
     "diagram": {
       "title": "One layer, end to end",
       "sources": "Sources",
-      "core": "Bunker OS",
+      "core": "Crew OS",
       "coreNote": "flows run here",
       "channels": "Channels",
       "measure": "Measurement",
@@ -181,23 +202,23 @@
       "title": "Live operation",
       "live": "live",
       "flowsLabel": "flows",
-      "metricsNote": "Sample panel — changes with real client data.",
+      "metricsNote": "Un panel de operaciones — cada flujo y lo que ahorró, en una vista.",
       "metrics": {
         "flows": {
-          "value": "12",
-          "label": "flows running"
+          "value": "En vivo",
+          "label": "cada flujo en una vista"
         },
         "triggered": {
-          "value": "1,430",
-          "label": "triggered this month"
+          "value": "24/7",
+          "label": "funciona solo"
         },
         "hours": {
-          "value": "320",
-          "label": "hours saved / month"
+          "value": "Ahorro",
+          "label": "horas medidas, no supuestas"
         },
         "attention": {
-          "value": "2",
-          "label": "need attention"
+          "value": "Alertas",
+          "label": "cuando un flujo te necesita"
         }
       }
     }
@@ -207,7 +228,7 @@
     "title": "Short reads on automation.",
     "sub": "Lessons from real builds, tool comparisons and sector notes — a 3–8 minute read on average.",
     "cta": "Subscribe to the bulletin",
-    "note": "New articles in the works — publishing soon.",
+    "note": "De vez en cuando, una lectura corta sobre automatización. Sin spam.",
     "soon": "Soon",
     "featured": {
       "kicker": "Featured article · Guide",
@@ -229,7 +250,7 @@
         "readingTime": "4 min read"
       },
       "three": {
-        "title": "Building your first flow in Bunker OS",
+        "title": "Building your first flow in Crew OS",
         "tag": "Getting started",
         "readingTime": "6 min read"
       },
@@ -265,7 +286,7 @@
     "error": "The assistant is offline right now. Add an ANTHROPIC_API_KEY to bring it online.",
     "suggestions": {
       "one": "How would you automate a gym?",
-      "two": "What is Bunker OS?",
+      "two": "What is Crew OS?",
       "three": "How does cart recovery work?"
     }
   },

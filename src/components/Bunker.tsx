@@ -54,7 +54,7 @@ export default function Bunker() {
             className="relative overflow-hidden rounded-3xl border border-line bg-ink p-7 text-canvas shadow-[0_30px_80px_-40px_rgba(18,20,15,0.5)]"
           >
             <div className="mb-6 flex items-center justify-between">
-              <span className="font-display text-lg">Bunker OS</span>
+              <span className="font-display text-lg">Crew OS</span>
               <span className="text-xs text-canvas/50">
                 {t("statusLive")} · 4 {t("flowsLabel")}
               </span>
