@@ -1,25 +1,25 @@
 {
   "meta": {
-    "title": "Kiwi AI Lab — We analyze. Then we automate.",
-    "description": "An AI automation agency. We map your business, find where repetitive work leaks time and money, and wire it to automation you can measure."
+    "title": "Kiwi AI Lab — نحلّل عملك. ثم نُؤتمته.",
+    "description": "وكالة أتمتة بالذكاء الاصطناعي. نرسم خريطة عملك، ونكتشف أين يستنزف العمل المتكرّر وقتك ومالك، ونربطه بأتمتة يمكنك قياسها."
   },
   "nav": {
-    "work": "Work",
-    "howItWorks": "How it works",
-    "sectors": "Sectors",
+    "work": "الأعمال",
+    "howItWorks": "كيف نعمل",
+    "sectors": "القطاعات",
     "bunker": "Crew OS",
-    "forum": "Bulletin",
-    "contact": "Contact",
-    "cta": "Book a call"
+    "forum": "النشرة",
+    "contact": "تواصل",
+    "cta": "احجز مكالمة"
   },
   "hero": {
-    "eyebrow": "AI automation, measured",
-    "lineOne": "We analyze your business.",
-    "lineTwo": "Then we automate it.",
-    "sub": "We find where repetitive work drains your team — recurring tasks, messages, approval chains — and wire it to automation you can measure.",
-    "ctaPrimary": "Book a free discovery call",
-    "ctaSecondary": "See it live",
-    "scroll": "Scroll",
+    "eyebrow": "أتمتة بالذكاء الاصطناعي، مقيسة",
+    "lineOne": "نحلّل عملك.",
+    "lineTwo": "ثم نُؤتمته.",
+    "sub": "نكتشف أين يستنزف العمل المتكرّر طاقة فريقك — مهام دورية، رسائل، سلاسل موافقات — ونربطه بأتمتة يمكنك قياسها.",
+    "ctaPrimary": "احجز مكالمة استكشافية مجانية",
+    "ctaSecondary": "شاهدها مباشرةً",
+    "scroll": "مرّر",
     "stats": {
       "liveLabel": "مباشر الآن",
       "liveProduct": "Alpfit — برنامج النوادي الرياضية",
@@ -28,43 +28,43 @@
     }
   },
   "proof": {
-    "label": "Outcomes we're wiring up",
-    "note": "Honest placeholders until client data lands."
+    "label": "النتائج التي نبنيها",
+    "note": "أرقام تقديرية صادقة إلى أن تصل بيانات العملاء."
   },
   "how": {
-    "label": "How it works",
-    "title": "Three moves, one running system.",
+    "label": "كيف نعمل",
+    "title": "ثلاث خطوات، نظامٌ واحد يعمل.",
     "steps": {
       "listen": {
         "n": "01",
-        "title": "Analyze",
-        "body": "We map how your operation actually runs — every recurring task, message, and approval — not how an org chart says it does."
+        "title": "التحليل",
+        "body": "نرسم كيف تسير عملياتك فعليًا — كل مهمة متكرّرة ورسالة وموافقة — لا كما يقول الهيكل التنظيمي، بل كما يجري الأمر حقًا."
       },
       "find": {
         "n": "02",
-        "title": "Identify",
-        "body": "We locate where work leaks: the steps repeated by hand, the follow-ups that slip, the hours spent moving data between tools."
+        "title": "التشخيص",
+        "body": "نحدّد أين يتسرّب العمل: الخطوات المكرّرة يدويًا، والمتابعات التي تضيع، والساعات المنفقة في نقل البيانات بين الأدوات."
       },
       "automate": {
         "n": "03",
-        "title": "Automate",
-        "body": "We wire those steps to automation that runs 7/24 inside Crew OS — and hand you the numbers so you can measure the gain."
+        "title": "الأتمتة",
+        "body": "نربط هذه الخطوات بأتمتة تعمل 7/24 داخل Crew OS — ونمنحك الأرقام لتقيس المكسب."
       }
     }
   },
   "sectors": {
-    "label": "Sector solutions",
-    "title": "One real automation. The outcome it drives.",
-    "sub": "Pick a sector. Every example below is a single automation we ship — not a feature list.",
-    "oneAutomation": "one automation",
-    "viewApp": "Explore the app",
-    "talk": "Let's talk about this",
+    "label": "حلول قطاعية",
+    "title": "أتمتة واحدة حقيقية. والنتيجة التي تحقّقها.",
+    "sub": "اختر قطاعًا. كل مثال أدناه أتمتة واحدة نبنيها — لا قائمة ميزات.",
+    "oneAutomation": "أتمتة واحدة",
+    "viewApp": "استكشف التطبيق",
+    "talk": "لنتحدّث عن هذا الحل",
     "note": "برنامج النوادي الرياضية (Alpfit) متاح الآن؛ والباقي نبنيه حسب طريقة عمل نشاطك فعليًا.",
     "items": {
       "gyms": {
-        "name": "Gyms",
-        "automation": "Gym Management Software",
-        "body": "Memberships, payments, check-ins, class & PT scheduling, automated reminders and member win-back — all in one panel. A comprehensive, sector-specific management platform.",
+        "name": "الصالات الرياضية",
+        "automation": "برنامج إدارة الصالات الرياضية",
+        "body": "العضويات والمدفوعات وتسجيل الدخول وجدولة الحصص والتدريب الشخصي والتذكيرات التلقائية واستعادة الأعضاء المنقطعين — كل ذلك في لوحة واحدة. منصّة إدارة شاملة ومخصّصة للقطاع.",
         "flow": {
           "trigger": "عضو لم يحضر منذ 30 يومًا",
           "action": "عرض مخصّص وموعد مع المدرّب يُرسلان عبر واتساب",
@@ -72,9 +72,9 @@
         }
       },
       "clinics": {
-        "name": "Clinics",
-        "automation": "No-show recovery",
-        "body": "Unconfirmed appointments get a two-step reminder, then auto-offer the slot to the waitlist if it stays open — the calendar fills itself.",
+        "name": "العيادات",
+        "automation": "استعادة المواعيد الفائتة",
+        "body": "تتلقّى المواعيد غير المؤكّدة تذكيرًا من خطوتين، ثم يُعرض الموعد تلقائيًا على قائمة الانتظار إن بقي شاغرًا — فيملأ التقويم نفسه بنفسه.",
         "flow": {
           "trigger": "موعد يبقى دون تأكيد",
           "action": "يُرسَل تذكير من خطوتين، ثم يُفتح الموعد لقائمة الانتظار",
@@ -82,9 +82,9 @@
         }
       },
       "ecommerce": {
-        "name": "E-commerce",
-        "automation": "Abandoned-cart that actually replies",
-        "body": "A cart left for an hour triggers a conversation — not a coupon blast — that answers the real objection and routes payment links back in-thread.",
+        "name": "التجارة الإلكترونية",
+        "automation": "تذكير سلّة يردّ فعلًا",
+        "body": "السلّة المتروكة لساعة تُطلق محادثة — لا وابلًا من الكوبونات — تجيب عن الاعتراض الحقيقي وتعيد روابط الدفع داخل المحادثة نفسها.",
         "flow": {
           "trigger": "سلّة تُترَك ساعة دون لمس",
           "action": "محادثة تردّ على الاعتراض الحقيقي — دون وابل من الكوبونات",
@@ -92,9 +92,9 @@
         }
       },
       "realestate": {
-        "name": "Real estate",
-        "automation": "Lead-to-viewing in minutes",
-        "body": "Every portal inquiry is qualified, matched to live listings, and offered a viewing slot before a competitor calls back — the agent only sees ready buyers.",
+        "name": "العقارات",
+        "automation": "من العميل المحتمل إلى المعاينة في دقائق",
+        "body": "كل استفسار من المنصّات يُؤهَّل، ويُطابَق بالعقارات المتاحة، ويُعرض عليه موعد معاينة قبل أن يعاود منافس الاتصال — فلا يرى الوكيل سوى المشترين الجاهزين.",
         "flow": {
           "trigger": "يصل استفسار من المنصّة",
           "action": "يُؤهَّل ويُطابَق مع العقارات المتاحة",
@@ -102,9 +102,9 @@
         }
       },
       "education": {
-        "name": "Education & consulting",
-        "automation": "Lead-to-enrollment follow-up",
-        "body": "Every form fill is qualified instantly, the right program info goes out on WhatsApp, and a consultation is booked — the follow-up runs itself until enrollment.",
+        "name": "التعليم والاستشارات",
+        "automation": "متابعة من العميل المحتمل إلى التسجيل",
+        "body": "يُؤهَّل كل من يملأ النموذج فورًا، وتُرسَل معلومات البرنامج المناسبة عبر WhatsApp، ويُحجَز موعد استشارة — وتسير المتابعة من تلقاء نفسها حتى التسجيل.",
         "flow": {
           "trigger": "يُملأ نموذج",
           "action": "معلومات البرنامج المناسب تُرسَل عبر واتساب",
@@ -112,9 +112,9 @@
         }
       },
       "restaurants": {
-        "name": "Restaurants & cafés",
-        "automation": "Reservation confirms, no-show recovery",
-        "body": "Reservations get automatic confirmation and reminders; if one cancels, the slot opens to the waitlist and regulars get a tailored offer — tables fill without anyone on the phone.",
+        "name": "المطاعم والمقاهي",
+        "automation": "تأكيد الحجوزات واستعادة الفائتة منها",
+        "body": "تتلقّى الحجوزات تأكيدًا وتذكيرًا تلقائيًا؛ وعند الإلغاء يُفتح الموعد لقائمة الانتظار ويصل الزبائن الدائمون عرض مخصّص — فتمتلئ الطاولات دون أن يجلس أحد أمام الهاتف.",
         "flow": {
           "trigger": "يُجرى حجز",
           "action": "تأكيد وتذكير تلقائيان؛ والإلغاء يفتح الموعد لقائمة الانتظار",
@@ -122,86 +122,86 @@
         }
       }
     },
-    "allCases": "All case studies",
+    "allCases": "كل دراسات الحالة",
     "live": "مباشر — Alpfit",
     "flowLabel": "المسار",
     "seeLive": "شاهد المنتج المباشر"
   },
   "bunker": {
     "label": "Crew OS",
-    "title": "Where your automations live and run.",
-    "body": "Every flow we ship runs inside one operating layer — observable, measurable, always on. You see what ran, what it saved, and what's next.",
+    "title": "حيث تعيش أتمتتك وتعمل.",
+    "body": "كل تدفّق نبنيه يعمل داخل طبقة تشغيل واحدة — قابلة للمراقبة والقياس، وتعمل دائمًا. ترى ما الذي جرى، وما الذي وفّره، وما التالي.",
     "points": {
-      "one": "Every automation in one place",
-      "two": "Runs 7/24, watched, with alerts",
-      "three": "Outcomes measured, not assumed"
+      "one": "كل أتمتة في مكان واحد",
+      "two": "تعمل 7/24، مُراقَبة، مع تنبيهات",
+      "three": "نتائج مقيسة، لا مفترضة"
     },
-    "statusLive": "live",
-    "statusActive": "active",
-    "statusQueued": "queued",
-    "flowsLabel": "flows",
+    "statusLive": "مباشر",
+    "statusActive": "نشط",
+    "statusQueued": "في الانتظار",
+    "flowsLabel": "تدفّقات",
     "flows": {
-      "one": "Lapsed-member win-back",
-      "two": "No-show recovery",
-      "three": "Abandoned-cart reply",
-      "four": "Lead → viewing"
+      "one": "استعادة الأعضاء المنقطعين",
+      "two": "استعادة المواعيد الفائتة",
+      "three": "الردّ على السلّة المتروكة",
+      "four": "عميل محتمل → معاينة"
     },
-    "explore": "Explore Crew OS"
+    "explore": "استكشف Crew OS"
   },
   "bunkerOs": {
-    "back": "Home",
-    "eyebrow": "Operating layer",
+    "back": "الرئيسية",
+    "eyebrow": "طبقة التشغيل",
     "title": "Crew OS",
-    "lead": "The one place your automations live, run, and get measured. It connects your tools, turns repetitive work into flows, and puts the result in front of you as numbers.",
-    "cta": "Book a free discovery call",
+    "lead": "المكان الوحيد حيث تعيش أتمتتك وتعمل وتُقاس. يربط أدواتك، ويحوّل العمل المتكرّر إلى تدفّقات، ويضع النتيجة أمامك أرقامًا.",
+    "cta": "احجز مكالمة استكشافية مجانية",
     "diagram": {
-      "title": "One layer, end to end",
-      "sources": "Sources",
+      "title": "طبقة واحدة، من البداية إلى النهاية",
+      "sources": "المصادر",
       "core": "Crew OS",
-      "coreNote": "flows run here",
-      "channels": "Channels",
-      "measure": "Measurement",
+      "coreNote": "تعمل التدفّقات هنا",
+      "channels": "القنوات",
+      "measure": "القياس",
       "sourceItems": {
         "one": "Form",
         "two": "CRM",
-        "three": "Calendar",
-        "four": "Message"
+        "three": "التقويم",
+        "four": "رسالة"
       },
       "channelItems": {
         "one": "WhatsApp",
         "two": "SMS",
-        "three": "Email"
+        "three": "البريد الإلكتروني"
       }
     },
     "how": {
-      "title": "How it works",
+      "title": "كيف نعمل",
       "steps": {
         "connect": {
           "n": "01",
-          "title": "Connect",
-          "body": "We connect your tools, channels, and data into one layer — WhatsApp, SMS, email, CRM, calendar."
+          "title": "اربط",
+          "body": "نربط أدواتك وقنواتك وبياناتك في طبقة واحدة — WhatsApp وSMS والبريد الإلكتروني وCRM والتقويم."
         },
         "build": {
           "n": "02",
-          "title": "Build flows",
-          "body": "We turn repetitive work into automation flows: trigger → steps → approval → outcome."
+          "title": "ابنِ التدفّقات",
+          "body": "نحوّل العمل المتكرّر إلى تدفّقات أتمتة: مُطلِق → خطوات → موافقة → نتيجة."
         },
         "run": {
           "n": "03",
-          "title": "Run 7/24",
-          "body": "Flows run on their own; watched, alerting you on errors, queuing the work."
+          "title": "شغّل 7/24",
+          "body": "تعمل التدفّقات وحدها؛ مُراقَبة، تنبّهك عند الأخطاء، وتُرتّب العمل في طابور."
         },
         "measure": {
           "n": "04",
-          "title": "Measure & improve",
-          "body": "We see what each flow saved and keep improving the weak steps."
+          "title": "قِس وحسّن",
+          "body": "نرى ما وفّره كل تدفّق ونواصل تحسين الخطوات الضعيفة."
         }
       }
     },
     "panel": {
-      "title": "Live operation",
-      "live": "live",
-      "flowsLabel": "flows",
+      "title": "تشغيل مباشر",
+      "live": "مباشر",
+      "flowsLabel": "تدفّقات",
       "metricsNote": "لوحة تشغيل — كل مسار وما وفّره، في شاشة واحدة.",
       "metrics": {
         "flows": {
@@ -224,91 +224,91 @@
     }
   },
   "forum": {
-    "label": "Bulletin",
-    "title": "Short reads on automation.",
-    "sub": "Lessons from real builds, tool comparisons and sector notes — a 3–8 minute read on average.",
-    "cta": "Subscribe to the bulletin",
+    "label": "النشرة",
+    "title": "قراءات قصيرة عن الأتمتة.",
+    "sub": "دروس من مشاريع حقيقية، ومقارنات أدوات، وملاحظات قطاعية — قراءة 3–8 دقائق في المتوسط.",
+    "cta": "اشترك في النشرة",
     "note": "بين الحين والآخر، قراءة قصيرة عن الأتمتة. بلا إزعاج.",
-    "soon": "Soon",
+    "soon": "قريبًا",
     "featured": {
-      "kicker": "Featured article · Guide",
-      "tag": "Sales automation",
-      "title": "AI SDR tools in 2026: a comparison with pricing",
-      "excerpt": "A human SDR runs $110,000+/year; AI SDR tools promise similar work 7/24 at a fraction of the cost. We rounded up the leading platforms, their pricing models, and realistic results.",
-      "cta": "Read the article",
-      "readingTime": "8 min read"
+      "kicker": "مقال مميّز · دليل",
+      "tag": "أتمتة المبيعات",
+      "title": "أدوات AI SDR في 2026: مقارنة بالأسعار",
+      "excerpt": "يكلّف SDR بشري أكثر من $110,000+ سنويًا؛ بينما تَعِد أدوات AI SDR بعمل مماثل 7/24 بجزء بسيط من التكلفة. جمعنا أبرز المنصّات ونماذج تسعيرها ونتائجها الواقعية.",
+      "cta": "اقرأ المقال",
+      "readingTime": "قراءة 8 دقائق"
     },
     "articles": {
       "one": {
-        "title": "Cut our WhatsApp approval chain from 2 days to 10 minutes",
-        "tag": "E-commerce",
-        "readingTime": "5 min read"
+        "title": "اختصرنا سلسلة موافقات WhatsApp من يومين إلى 10 دقائق",
+        "tag": "التجارة الإلكترونية",
+        "readingTime": "قراءة 5 دقائق"
       },
       "two": {
-        "title": "How we halved no-shows at the clinic",
-        "tag": "Clinic",
-        "readingTime": "4 min read"
+        "title": "كيف خفّضنا المواعيد الفائتة في العيادة إلى النصف",
+        "tag": "العيادات",
+        "readingTime": "قراءة 4 دقائق"
       },
       "three": {
-        "title": "Building your first flow in Crew OS",
-        "tag": "Getting started",
-        "readingTime": "6 min read"
+        "title": "بناء أول تدفّق لك في Crew OS",
+        "tag": "البداية",
+        "readingTime": "قراءة 6 دقائق"
       },
       "four": {
-        "title": "Which work is worth automating — and which isn’t?",
-        "tag": "Strategy",
-        "readingTime": "7 min read"
+        "title": "أي عمل يستحقّ الأتمتة — وأيّها لا؟",
+        "tag": "الاستراتيجية",
+        "readingTime": "قراءة 7 دقائق"
       }
     },
     "featured2": {
-      "kicker": "New · News",
-      "tag": "Models",
-      "title": "Claude’s new models: Opus 4.8 and Fable 5",
-      "excerpt": "Anthropic’s new Claude models — Opus 4.8 as the everyday flagship and Fable 5 for the hardest work — directly set what automation can reliably do. Which goes where, and what it means.",
-      "readingTime": "5 min read",
-      "cta": "Read the article"
+      "kicker": "جديد · خبر",
+      "tag": "النماذج",
+      "title": "نماذج Claude الجديدة: Opus 4.8 وFable 5",
+      "excerpt": "نماذج Claude الجديدة من Anthropic — Opus 4.8 الرائد لعمل كل يوم وFable 5 للمهام الأصعب — تحدّد مباشرةً ما يمكن للأتمتة أن تفعله بموثوقية. أيّها يُستخدَم أين، وماذا يعني ذلك.",
+      "readingTime": "قراءة 5 دقائق",
+      "cta": "اقرأ المقال"
     },
     "subscribe": {
-      "placeholder": "Your email",
-      "button": "Subscribe",
-      "done": "Thanks — opening your email app.",
-      "subject": "Kiwi AI Lab bulletin subscription"
+      "placeholder": "بريدك الإلكتروني",
+      "button": "اشترك",
+      "done": "شكرًا — يجري فتح تطبيق بريدك.",
+      "subject": "اشتراك نشرة Kiwi AI Lab"
     }
   },
   "chat": {
-    "label": "Live demo",
-    "title": "Talk to a Kiwi assistant.",
-    "sub": "Real, streaming, multilingual — ask in Turkish, English, Arabic, German, or Spanish. It knows what we do and can route you to a call.",
-    "placeholder": "Ask about automating your business…",
-    "send": "Send",
-    "thinking": "Thinking",
-    "greeting": "Hi — I'm Kiwi's assistant. Tell me what your team does by hand most often, and I'll show you where automation fits.",
-    "error": "The assistant is offline right now. Add an ANTHROPIC_API_KEY to bring it online.",
+    "label": "عرض مباشر",
+    "title": "تحدّث مع مساعد Kiwi.",
+    "sub": "حقيقي، متدفّق، متعدّد اللغات — اسأل بالتركية أو الإنجليزية أو العربية أو الألمانية أو الإسبانية. يعرف ما نقدّمه ويمكنه توجيهك إلى مكالمة.",
+    "placeholder": "اسأل عن أتمتة عملك…",
+    "send": "إرسال",
+    "thinking": "يفكّر",
+    "greeting": "مرحبًا — أنا مساعد Kiwi. أخبرني بما يفعله فريقك يدويًا في أغلب الأحيان، وسأريك أين تناسب الأتمتة.",
+    "error": "المساعد غير متّصل الآن. أضِف ANTHROPIC_API_KEY لتفعيله.",
     "suggestions": {
-      "one": "How would you automate a gym?",
-      "two": "What is Crew OS?",
-      "three": "How does cart recovery work?"
+      "one": "كيف تؤتمتون صالة رياضية؟",
+      "two": "ما هو Crew OS؟",
+      "three": "كيف تعمل استعادة السلّة؟"
     }
   },
   "credibility": {
-    "title": "How we engage.",
+    "title": "كيف نعمل معك.",
     "founder": {
-      "title": "1:1 with the founder",
-      "body": "You work directly with the person who builds it. No account-manager relay."
+      "title": "تعامل مباشر مع المؤسّس",
+      "body": "تعمل مباشرةً مع من يبني الحل. دون وسيط من مديري الحسابات."
     },
     "always": {
-      "title": "7/24 assistants",
-      "body": "Your automations don't clock out. They run, watch, and escalate around the clock."
+      "title": "مساعدون 7/24",
+      "body": "أتمتتك لا تنهي دوامها. تعمل وتراقب وتُصعّد على مدار الساعة."
     },
     "measured": {
-      "title": "Measured, not promised",
-      "body": "Every engagement ships with the numbers attached. You'll know exactly what it moved."
+      "title": "مقيسة، لا موعودة",
+      "body": "كل تعاون يُسلَّم بأرقامه. ستعرف بالضبط ما الذي غيّره."
     }
   },
   "footer": {
-    "tagline": "We analyze. Then we automate.",
-    "cta": "Book a free discovery call",
-    "language": "Language",
+    "tagline": "نحلّل. ثم نُؤتمت.",
+    "cta": "احجز مكالمة استكشافية مجانية",
+    "language": "اللغة",
     "rights": "Kiwi AI Lab"
   }
 }

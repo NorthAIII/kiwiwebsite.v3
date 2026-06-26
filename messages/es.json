@@ -1,25 +1,25 @@
 {
   "meta": {
-    "title": "Kiwi AI Lab — We analyze. Then we automate.",
-    "description": "An AI automation agency. We map your business, find where repetitive work leaks time and money, and wire it to automation you can measure."
+    "title": "Kiwi AI Lab — Analizamos. Luego automatizamos.",
+    "description": "Una agencia de automatización con AI. Mapeamos tu negocio, encontramos dónde el trabajo repetitivo fuga tiempo y dinero, y lo conectamos a una automatización que puedes medir."
   },
   "nav": {
-    "work": "Work",
-    "howItWorks": "How it works",
-    "sectors": "Sectors",
+    "work": "Proyectos",
+    "howItWorks": "Cómo funciona",
+    "sectors": "Sectores",
     "bunker": "Crew OS",
-    "forum": "Bulletin",
-    "contact": "Contact",
-    "cta": "Book a call"
+    "forum": "Boletín",
+    "contact": "Contacto",
+    "cta": "Agenda una llamada"
   },
   "hero": {
-    "eyebrow": "AI automation, measured",
-    "lineOne": "We analyze your business.",
-    "lineTwo": "Then we automate it.",
-    "sub": "We find where repetitive work drains your team — recurring tasks, messages, approval chains — and wire it to automation you can measure.",
-    "ctaPrimary": "Book a free discovery call",
-    "ctaSecondary": "See it live",
-    "scroll": "Scroll",
+    "eyebrow": "Automatización con AI, medible",
+    "lineOne": "Analizamos tu negocio.",
+    "lineTwo": "Luego lo automatizamos.",
+    "sub": "Encontramos dónde el trabajo repetitivo agota a tu equipo —tareas recurrentes, mensajes, cadenas de aprobación— y lo conectamos a una automatización que puedes medir.",
+    "ctaPrimary": "Agenda una llamada de descubrimiento gratuita",
+    "ctaSecondary": "Míralo en vivo",
+    "scroll": "Desplázate",
     "stats": {
       "liveLabel": "En vivo ahora",
       "liveProduct": "Alpfit — software para gimnasios",
@@ -28,43 +28,43 @@
     }
   },
   "proof": {
-    "label": "Outcomes we're wiring up",
-    "note": "Honest placeholders until client data lands."
+    "label": "Resultados que estamos conectando",
+    "note": "Estimaciones honestas hasta que lleguen los datos de clientes."
   },
   "how": {
-    "label": "How it works",
-    "title": "Three moves, one running system.",
+    "label": "Cómo funciona",
+    "title": "Tres pasos, un solo sistema en marcha.",
     "steps": {
       "listen": {
         "n": "01",
-        "title": "Analyze",
-        "body": "We map how your operation actually runs — every recurring task, message, and approval — not how an org chart says it does."
+        "title": "Analizar",
+        "body": "Mapeamos cómo funciona realmente tu operación —cada tarea recurrente, mensaje y aprobación— no como dice el organigrama."
       },
       "find": {
         "n": "02",
-        "title": "Identify",
-        "body": "We locate where work leaks: the steps repeated by hand, the follow-ups that slip, the hours spent moving data between tools."
+        "title": "Identificar",
+        "body": "Localizamos dónde se fuga el trabajo: los pasos que se repiten a mano, los seguimientos que se escapan, las horas que se van en mover datos entre herramientas."
       },
       "automate": {
         "n": "03",
-        "title": "Automate",
-        "body": "We wire those steps to automation that runs 7/24 inside Crew OS — and hand you the numbers so you can measure the gain."
+        "title": "Automatizar",
+        "body": "Conectamos esos pasos a una automatización que corre 7/24 dentro de Crew OS — y te entregamos los números para que midas la ganancia."
       }
     }
   },
   "sectors": {
-    "label": "Sector solutions",
-    "title": "One real automation. The outcome it drives.",
-    "sub": "Pick a sector. Every example below is a single automation we ship — not a feature list.",
-    "oneAutomation": "one automation",
-    "viewApp": "Explore the app",
-    "talk": "Let's talk about this",
+    "label": "Soluciones por sector",
+    "title": "Una automatización real. El resultado que genera.",
+    "sub": "Elige un sector. Cada ejemplo de abajo es una única automatización que entregamos —no una lista de funciones.",
+    "oneAutomation": "una automatización",
+    "viewApp": "Explora la app",
+    "talk": "Hablemos de esto",
     "note": "El software para gimnasios (Alpfit) ya está en vivo; el resto lo construimos según cómo funciona realmente tu negocio.",
     "items": {
       "gyms": {
-        "name": "Gyms",
-        "automation": "Gym Management Software",
-        "body": "Memberships, payments, check-ins, class & PT scheduling, automated reminders and member win-back — all in one panel. A comprehensive, sector-specific management platform.",
+        "name": "Gimnasios",
+        "automation": "Software de Gestión de Gimnasios",
+        "body": "Membresías, pagos, registros de entrada, agenda de clases y entrenamiento personal, recordatorios automáticos y recuperación de socios — todo en un solo panel. Una plataforma de gestión completa y específica del sector.",
         "flow": {
           "trigger": "Un socio lleva 30 días sin venir",
           "action": "Una oferta personalizada y una cita con el entrenador salen por WhatsApp",
@@ -72,9 +72,9 @@
         }
       },
       "clinics": {
-        "name": "Clinics",
-        "automation": "No-show recovery",
-        "body": "Unconfirmed appointments get a two-step reminder, then auto-offer the slot to the waitlist if it stays open — the calendar fills itself.",
+        "name": "Clínicas",
+        "automation": "Recuperación de inasistencias",
+        "body": "Las citas sin confirmar reciben un recordatorio de dos pasos y, si el hueco sigue libre, se ofrece automáticamente a la lista de espera — la agenda se llena sola.",
         "flow": {
           "trigger": "Una cita queda sin confirmar",
           "action": "Sale un recordatorio en dos pasos y luego el hueco se abre a la lista de espera",
@@ -83,8 +83,8 @@
       },
       "ecommerce": {
         "name": "E-commerce",
-        "automation": "Abandoned-cart that actually replies",
-        "body": "A cart left for an hour triggers a conversation — not a coupon blast — that answers the real objection and routes payment links back in-thread.",
+        "automation": "Carrito abandonado que de verdad responde",
+        "body": "Un carrito abandonado durante una hora dispara una conversación —no un bombardeo de cupones— que responde la objeción real y devuelve los enlaces de pago en el mismo hilo.",
         "flow": {
           "trigger": "Un carrito queda sin tocar una hora",
           "action": "Una conversación responde la objeción real — sin bombardeo de cupones",
@@ -92,9 +92,9 @@
         }
       },
       "realestate": {
-        "name": "Real estate",
-        "automation": "Lead-to-viewing in minutes",
-        "body": "Every portal inquiry is qualified, matched to live listings, and offered a viewing slot before a competitor calls back — the agent only sees ready buyers.",
+        "name": "Inmobiliaria",
+        "automation": "Del prospecto a la visita en minutos",
+        "body": "Cada consulta del portal se califica, se cruza con propiedades en vivo y se le ofrece un horario de visita antes de que un competidor llame de vuelta — el agente solo ve compradores listos.",
         "flow": {
           "trigger": "Llega una consulta del portal",
           "action": "Se califica y se cruza con propiedades disponibles",
@@ -102,9 +102,9 @@
         }
       },
       "education": {
-        "name": "Education & consulting",
-        "automation": "Lead-to-enrollment follow-up",
-        "body": "Every form fill is qualified instantly, the right program info goes out on WhatsApp, and a consultation is booked — the follow-up runs itself until enrollment.",
+        "name": "Educación y consultoría",
+        "automation": "Seguimiento del prospecto a la inscripción",
+        "body": "Cada formulario completado se califica al instante, la información correcta del programa sale por WhatsApp y se agenda una consulta — el seguimiento corre solo hasta la inscripción.",
         "flow": {
           "trigger": "Se completa un formulario",
           "action": "La información del programa correcto sale por WhatsApp",
@@ -112,9 +112,9 @@
         }
       },
       "restaurants": {
-        "name": "Restaurants & cafés",
-        "automation": "Reservation confirms, no-show recovery",
-        "body": "Reservations get automatic confirmation and reminders; if one cancels, the slot opens to the waitlist and regulars get a tailored offer — tables fill without anyone on the phone.",
+        "name": "Restaurantes y cafés",
+        "automation": "Confirmación de reservas, recuperación de inasistencias",
+        "body": "Las reservas reciben confirmación y recordatorios automáticos; si alguien cancela, el hueco se abre a la lista de espera y los clientes habituales reciben una oferta a medida — las mesas se llenan sin nadie al teléfono.",
         "flow": {
           "trigger": "Se hace una reserva",
           "action": "Confirmación y recordatorio automáticos; una cancelación abre el hueco a la lista de espera",
@@ -122,50 +122,50 @@
         }
       }
     },
-    "allCases": "All case studies",
+    "allCases": "Todos los casos de estudio",
     "live": "En vivo — Alpfit",
     "flowLabel": "El flujo",
     "seeLive": "Ver el producto en vivo"
   },
   "bunker": {
     "label": "Crew OS",
-    "title": "Where your automations live and run.",
-    "body": "Every flow we ship runs inside one operating layer — observable, measurable, always on. You see what ran, what it saved, and what's next.",
+    "title": "Donde tus automatizaciones viven y corren.",
+    "body": "Cada flujo que entregamos corre dentro de una sola capa operativa — observable, medible, siempre activa. Ves qué corrió, qué ahorró y qué sigue.",
     "points": {
-      "one": "Every automation in one place",
-      "two": "Runs 7/24, watched, with alerts",
-      "three": "Outcomes measured, not assumed"
+      "one": "Todas las automatizaciones en un solo lugar",
+      "two": "Corre 7/24, vigilada, con alertas",
+      "three": "Resultados medidos, no supuestos"
     },
-    "statusLive": "live",
-    "statusActive": "active",
-    "statusQueued": "queued",
-    "flowsLabel": "flows",
+    "statusLive": "en vivo",
+    "statusActive": "activo",
+    "statusQueued": "en cola",
+    "flowsLabel": "flujos",
     "flows": {
-      "one": "Lapsed-member win-back",
-      "two": "No-show recovery",
-      "three": "Abandoned-cart reply",
-      "four": "Lead → viewing"
+      "one": "Recuperación de socios inactivos",
+      "two": "Recuperación de inasistencias",
+      "three": "Respuesta a carrito abandonado",
+      "four": "Prospecto → visita"
     },
-    "explore": "Explore Crew OS"
+    "explore": "Explora Crew OS"
   },
   "bunkerOs": {
-    "back": "Home",
-    "eyebrow": "Operating layer",
+    "back": "Inicio",
+    "eyebrow": "Capa operativa",
     "title": "Crew OS",
-    "lead": "The one place your automations live, run, and get measured. It connects your tools, turns repetitive work into flows, and puts the result in front of you as numbers.",
-    "cta": "Book a free discovery call",
+    "lead": "El único lugar donde tus automatizaciones viven, corren y se miden. Conecta tus herramientas, convierte el trabajo repetitivo en flujos y pone el resultado frente a ti en números.",
+    "cta": "Agenda una llamada de descubrimiento gratuita",
     "diagram": {
-      "title": "One layer, end to end",
-      "sources": "Sources",
+      "title": "Una capa, de punta a punta",
+      "sources": "Fuentes",
       "core": "Crew OS",
-      "coreNote": "flows run here",
-      "channels": "Channels",
-      "measure": "Measurement",
+      "coreNote": "los flujos corren aquí",
+      "channels": "Canales",
+      "measure": "Medición",
       "sourceItems": {
         "one": "Form",
         "two": "CRM",
-        "three": "Calendar",
-        "four": "Message"
+        "three": "Calendario",
+        "four": "Mensaje"
       },
       "channelItems": {
         "one": "WhatsApp",
@@ -174,34 +174,34 @@
       }
     },
     "how": {
-      "title": "How it works",
+      "title": "Cómo funciona",
       "steps": {
         "connect": {
           "n": "01",
-          "title": "Connect",
-          "body": "We connect your tools, channels, and data into one layer — WhatsApp, SMS, email, CRM, calendar."
+          "title": "Conectar",
+          "body": "Conectamos tus herramientas, canales y datos en una sola capa — WhatsApp, SMS, email, CRM, calendario."
         },
         "build": {
           "n": "02",
-          "title": "Build flows",
-          "body": "We turn repetitive work into automation flows: trigger → steps → approval → outcome."
+          "title": "Construir flujos",
+          "body": "Convertimos el trabajo repetitivo en flujos de automatización: disparador → pasos → aprobación → resultado."
         },
         "run": {
           "n": "03",
-          "title": "Run 7/24",
-          "body": "Flows run on their own; watched, alerting you on errors, queuing the work."
+          "title": "Correr 7/24",
+          "body": "Los flujos corren solos; vigilados, alertándote ante errores, encolando el trabajo."
         },
         "measure": {
           "n": "04",
-          "title": "Measure & improve",
-          "body": "We see what each flow saved and keep improving the weak steps."
+          "title": "Medir y mejorar",
+          "body": "Vemos cuánto ahorró cada flujo y mejoramos sin parar los pasos débiles."
         }
       }
     },
     "panel": {
-      "title": "Live operation",
-      "live": "live",
-      "flowsLabel": "flows",
+      "title": "Operación en vivo",
+      "live": "en vivo",
+      "flowsLabel": "flujos",
       "metricsNote": "Un panel de operaciones — cada flujo y lo que ahorró, en una vista.",
       "metrics": {
         "flows": {
@@ -224,91 +224,91 @@
     }
   },
   "forum": {
-    "label": "Bulletin",
-    "title": "Short reads on automation.",
-    "sub": "Lessons from real builds, tool comparisons and sector notes — a 3–8 minute read on average.",
-    "cta": "Subscribe to the bulletin",
+    "label": "Boletín",
+    "title": "Lecturas breves sobre automatización.",
+    "sub": "Lecciones de proyectos reales, comparativas de herramientas y notas de sector — una lectura de 3–8 minutos en promedio.",
+    "cta": "Suscríbete al boletín",
     "note": "De vez en cuando, una lectura corta sobre automatización. Sin spam.",
-    "soon": "Soon",
+    "soon": "Pronto",
     "featured": {
-      "kicker": "Featured article · Guide",
-      "tag": "Sales automation",
-      "title": "AI SDR tools in 2026: a comparison with pricing",
-      "excerpt": "A human SDR runs $110,000+/year; AI SDR tools promise similar work 7/24 at a fraction of the cost. We rounded up the leading platforms, their pricing models, and realistic results.",
-      "cta": "Read the article",
-      "readingTime": "8 min read"
+      "kicker": "Artículo destacado · Guía",
+      "tag": "Automatización de ventas",
+      "title": "Herramientas AI SDR en 2026: una comparativa con precios",
+      "excerpt": "Un SDR humano cuesta $110,000+/año; las herramientas AI SDR prometen un trabajo similar 7/24 a una fracción del costo. Reunimos las plataformas líderes, sus modelos de precios y resultados realistas.",
+      "cta": "Lee el artículo",
+      "readingTime": "8 min de lectura"
     },
     "articles": {
       "one": {
-        "title": "Cut our WhatsApp approval chain from 2 days to 10 minutes",
+        "title": "Redujimos nuestra cadena de aprobación de WhatsApp de 2 días a 10 minutos",
         "tag": "E-commerce",
-        "readingTime": "5 min read"
+        "readingTime": "5 min de lectura"
       },
       "two": {
-        "title": "How we halved no-shows at the clinic",
-        "tag": "Clinic",
-        "readingTime": "4 min read"
+        "title": "Cómo redujimos a la mitad las inasistencias en la clínica",
+        "tag": "Clínica",
+        "readingTime": "4 min de lectura"
       },
       "three": {
-        "title": "Building your first flow in Crew OS",
-        "tag": "Getting started",
-        "readingTime": "6 min read"
+        "title": "Cómo construir tu primer flujo en Crew OS",
+        "tag": "Primeros pasos",
+        "readingTime": "6 min de lectura"
       },
       "four": {
-        "title": "Which work is worth automating — and which isn’t?",
-        "tag": "Strategy",
-        "readingTime": "7 min read"
+        "title": "¿Qué trabajo vale la pena automatizar — y cuál no?",
+        "tag": "Estrategia",
+        "readingTime": "7 min de lectura"
       }
     },
     "featured2": {
-      "kicker": "New · News",
-      "tag": "Models",
-      "title": "Claude’s new models: Opus 4.8 and Fable 5",
-      "excerpt": "Anthropic’s new Claude models — Opus 4.8 as the everyday flagship and Fable 5 for the hardest work — directly set what automation can reliably do. Which goes where, and what it means.",
-      "readingTime": "5 min read",
-      "cta": "Read the article"
+      "kicker": "Nuevo · Noticia",
+      "tag": "Modelos",
+      "title": "Los nuevos modelos de Claude: Opus 4.8 y Fable 5",
+      "excerpt": "Los nuevos modelos Claude de Anthropic —Opus 4.8 como el buque insignia del día a día y Fable 5 para el trabajo más difícil— definen directamente lo que la automatización puede hacer de forma fiable. Cuál va dónde y qué significa.",
+      "readingTime": "5 min de lectura",
+      "cta": "Lee el artículo"
     },
     "subscribe": {
-      "placeholder": "Your email",
-      "button": "Subscribe",
-      "done": "Thanks — opening your email app.",
-      "subject": "Kiwi AI Lab bulletin subscription"
+      "placeholder": "Tu email",
+      "button": "Suscríbete",
+      "done": "Gracias — abriendo tu aplicación de correo.",
+      "subject": "Suscripción al boletín de Kiwi AI Lab"
     }
   },
   "chat": {
-    "label": "Live demo",
-    "title": "Talk to a Kiwi assistant.",
-    "sub": "Real, streaming, multilingual — ask in Turkish, English, Arabic, German, or Spanish. It knows what we do and can route you to a call.",
-    "placeholder": "Ask about automating your business…",
-    "send": "Send",
-    "thinking": "Thinking",
-    "greeting": "Hi — I'm Kiwi's assistant. Tell me what your team does by hand most often, and I'll show you where automation fits.",
-    "error": "The assistant is offline right now. Add an ANTHROPIC_API_KEY to bring it online.",
+    "label": "Demo en vivo",
+    "title": "Habla con un asistente de Kiwi.",
+    "sub": "Real, en streaming, multilingüe — pregunta en turco, inglés, árabe, alemán o español. Sabe lo que hacemos y puede dirigirte a una llamada.",
+    "placeholder": "Pregunta sobre automatizar tu negocio…",
+    "send": "Enviar",
+    "thinking": "Pensando",
+    "greeting": "Hola — soy el asistente de Kiwi. Dime qué hace tu equipo a mano con más frecuencia y te muestro dónde encaja la automatización.",
+    "error": "El asistente está fuera de línea ahora mismo. Añade una ANTHROPIC_API_KEY para ponerlo en línea.",
     "suggestions": {
-      "one": "How would you automate a gym?",
-      "two": "What is Crew OS?",
-      "three": "How does cart recovery work?"
+      "one": "¿Cómo automatizarías un gimnasio?",
+      "two": "¿Qué es Crew OS?",
+      "three": "¿Cómo funciona la recuperación de carritos?"
     }
   },
   "credibility": {
-    "title": "How we engage.",
+    "title": "Cómo trabajamos.",
     "founder": {
-      "title": "1:1 with the founder",
-      "body": "You work directly with the person who builds it. No account-manager relay."
+      "title": "Uno a uno con el fundador",
+      "body": "Trabajas directamente con la persona que lo construye. Sin intermediarios de cuenta."
     },
     "always": {
-      "title": "7/24 assistants",
-      "body": "Your automations don't clock out. They run, watch, and escalate around the clock."
+      "title": "Asistentes 7/24",
+      "body": "Tus automatizaciones no fichan salida. Corren, vigilan y escalan a toda hora."
     },
     "measured": {
-      "title": "Measured, not promised",
-      "body": "Every engagement ships with the numbers attached. You'll know exactly what it moved."
+      "title": "Medido, no prometido",
+      "body": "Cada proyecto se entrega con los números adjuntos. Sabrás exactamente qué movió."
     }
   },
   "footer": {
-    "tagline": "We analyze. Then we automate.",
-    "cta": "Book a free discovery call",
-    "language": "Language",
+    "tagline": "Analizamos. Luego automatizamos.",
+    "cta": "Agenda una llamada de descubrimiento gratuita",
+    "language": "Idioma",
     "rights": "Kiwi AI Lab"
   }
 }
