@@ -12,7 +12,7 @@ export default function HowItWorks() {
   const t = useTranslations("how");
   const pathRef = useRef<SVGPathElement>(null);
 
-  const steps = (["listen", "find", "automate"] as const).map((k) => ({
+  const steps = (["analyze", "design", "automate", "report"] as const).map((k) => ({
     n: t(`steps.${k}.n`),
     title: t(`steps.${k}.title`),
     body: t(`steps.${k}.body`),
@@ -64,7 +64,7 @@ export default function HowItWorks() {
       >
         <path
           ref={pathRef}
-          d="M120 90 C 320 30, 400 130, 600 80 S 880 30, 1080 90"
+          d="M60 90 C 180 30, 320 30, 450 90 S 620 150, 750 90 S 920 30, 1140 90"
           fill="none"
           stroke="#1f7a3d"
           strokeWidth="1.5"
@@ -72,7 +72,7 @@ export default function HowItWorks() {
         />
       </svg>
 
-      <Reveal className="relative grid gap-px sm:grid-cols-3" stagger={0.12}>
+      <Reveal className="relative grid gap-px grid-cols-1 sm:grid-cols-2 lg:grid-cols-4" stagger={0.12}>
         {steps.map((s) => (
           <div
             key={s.n}

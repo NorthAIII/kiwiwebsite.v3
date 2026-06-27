@@ -33,22 +33,27 @@
   },
   "how": {
     "label": "So funktioniert's",
-    "title": "Drei Schritte, ein laufendes System.",
+    "title": "Vier Schritte, ein laufendes System.",
     "steps": {
-      "listen": {
+      "analyze": {
         "n": "01",
         "title": "Analysieren",
         "body": "Wir bilden ab, wie Ihr Betrieb wirklich läuft — jede wiederkehrende Aufgabe, Nachricht und Freigabe — nicht, wie es das Organigramm behauptet."
       },
-      "find": {
+      "design": {
         "n": "02",
-        "title": "Erkennen",
-        "body": "Wir finden, wo Arbeit verloren geht: die manuell wiederholten Schritte, die liegen gebliebenen Follow-ups, die Stunden, die das Verschieben von Daten zwischen Tools kostet."
+        "title": "Entwerfen",
+        "body": "Wir entscheiden gemeinsam, was sich zu automatisieren lohnt, und entwerfen die Lösung Schritt für Schritt: welcher Ablauf, welcher Kanal, welche Freigabekette."
       },
       "automate": {
         "n": "03",
         "title": "Automatisieren",
-        "body": "Wir verbinden diese Schritte mit Automatisierung, die 7/24 in Crew OS läuft — und liefern Ihnen die Zahlen, damit Sie den Gewinn messen können."
+        "body": "Wir verbinden diese Schritte mit Automatisierung, die 7/24 in Crew OS läuft."
+      },
+      "report": {
+        "n": "04",
+        "title": "Berichten",
+        "body": "Wir liefern Ihnen die Zahlen, damit Sie den Gewinn messen können."
       }
     }
   },

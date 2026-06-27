@@ -33,22 +33,27 @@
   },
   "how": {
     "label": "Cómo funciona",
-    "title": "Tres pasos, un solo sistema en marcha.",
+    "title": "Cuatro pasos, un solo sistema en marcha.",
     "steps": {
-      "listen": {
+      "analyze": {
         "n": "01",
         "title": "Analizar",
         "body": "Mapeamos cómo funciona realmente tu operación —cada tarea recurrente, mensaje y aprobación— no como dice el organigrama."
       },
-      "find": {
+      "design": {
         "n": "02",
-        "title": "Identificar",
-        "body": "Localizamos dónde se fuga el trabajo: los pasos que se repiten a mano, los seguimientos que se escapan, las horas que se van en mover datos entre herramientas."
+        "title": "Diseñar",
+        "body": "Decidimos juntos qué vale la pena automatizar y diseñamos la solución paso a paso: qué flujo, qué canal, qué cadena de aprobación."
       },
       "automate": {
         "n": "03",
         "title": "Automatizar",
-        "body": "Conectamos esos pasos a una automatización que corre 7/24 dentro de Crew OS — y te entregamos los números para que midas la ganancia."
+        "body": "Conectamos esos pasos a una automatización que corre 7/24 dentro de Crew OS."
+      },
+      "report": {
+        "n": "04",
+        "title": "Informar",
+        "body": "Te entregamos los números para que midas la ganancia."
       }
     }
   },

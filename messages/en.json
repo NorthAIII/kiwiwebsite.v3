@@ -33,22 +33,27 @@
   },
   "how": {
     "label": "How it works",
-    "title": "Three moves, one running system.",
+    "title": "Four moves, one running system.",
     "steps": {
-      "listen": {
+      "analyze": {
         "n": "01",
         "title": "Analyze",
         "body": "We map how your operation actually runs — every recurring task, message, and approval — not how an org chart says it does."
       },
-      "find": {
+      "design": {
         "n": "02",
-        "title": "Identify",
-        "body": "We locate where work leaks: the steps repeated by hand, the follow-ups that slip, the hours spent moving data between tools."
+        "title": "Design",
+        "body": "We decide together what's worth automating, then design the solution step by step: which flow, which channel, which approval chain."
       },
       "automate": {
         "n": "03",
         "title": "Automate",
-        "body": "We wire those steps to automation that runs 7/24 inside Crew OS — and hand you the numbers so you can measure the gain."
+        "body": "We wire those steps to automation that runs 7/24 inside Crew OS."
+      },
+      "report": {
+        "n": "04",
+        "title": "Report",
+        "body": "We hand you the numbers so you can measure the gain."
       }
     }
   },

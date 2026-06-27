@@ -33,22 +33,27 @@
   },
   "how": {
     "label": "Nasıl çalışır",
-    "title": "Üç adım, çalışan tek bir sistem.",
+    "title": "Dört adım, çalışan tek bir sistem.",
     "steps": {
-      "listen": {
+      "analyze": {
         "n": "01",
         "title": "Analiz",
-        "body": "Operasyonunuzun gerçekte nasıl yürüdüğünü çıkarırız — her tekrarlayan görev, mesaj ve onay — organizasyon şemasının dediği gibi değil, gerçekte nasılsa öyle."
+        "body": "Operasyonunuzun gerçekte nasıl yürüdüğünü çıkarırız — organizasyon şemasının dediği gibi değil, gerçekte nasılsa öyle — ve işin nerede sızdığını buluruz: elle tekrarlanan adımlar, kaçan takipler, araçlar arasında veri taşımaya giden saatler."
       },
-      "find": {
+      "design": {
         "n": "02",
-        "title": "Tespit",
-        "body": "İşin nerede sızdığını buluruz: elle tekrarlanan adımlar, kaçan takipler, araçlar arasında veri taşımaya giden saatler."
+        "title": "Çözüm",
+        "body": "Neyin otomasyona değdiğine birlikte karar verir, çözümü adım adım tasarlarız: hangi akış, hangi kanal, hangi onay zinciri."
       },
       "automate": {
         "n": "03",
         "title": "Otomasyon",
-        "body": "Bu adımları Crew OS içinde 7/24 çalışan otomasyona bağlarız — ve kazancı ölçebilmeniz için sayıları size veririz."
+        "body": "Tasarladığımız akışı Crew OS içinde 7/24 çalışan otomasyona bağlarız."
+      },
+      "report": {
+        "n": "04",
+        "title": "Raporlama",
+        "body": "Her akışın ne kazandırdığını sayılarla görürsünüz — kazanç varsayılmaz, ölçülür."
       }
     }
   },

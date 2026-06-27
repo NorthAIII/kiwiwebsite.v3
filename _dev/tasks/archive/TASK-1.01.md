@@ -1,6 +1,6 @@
 # TASK-1.01: "Nasıl Çalışır" 3→4 Adım (component + 5-dil i18n restructure)
 
-**Durum:** ⬜ Bekliyor
+**Durum:** ✅ Tamamlandı
 **Modül:** M2 (HowItWorks) + M4 (i18n) — `modules/M2-Sayfalar-Bolumler.md` (F2.3), `modules/M4-i18n.md` (F4.2)
 **Feature:** R1 — Nasıl Çalışır 3→4 adım (Analiz · Çözüm · Otomasyon · Raporlama)
 **Faz:** Phase 1 (`phases/PHASE-1.md`)
@@ -40,7 +40,7 @@ Versiyon-sınırı politikası gereği nihai çeviri ertelenmiştir; ama R1 bir 
 
 ## Alt Görevler
 
-- [ ] **1. TR i18n — `how` namespace'i 4 adıma getir**
+- [x] **1. TR i18n — `how` namespace'i 4 adıma getir**
   - Dosya: `messages/tr.json` (`how`, satır 34-54)
   - `how.title`: "Üç adım, çalışan tek bir sistem." → "Dört adım, çalışan tek bir sistem."
   - `how.steps` anahtarlarını yeniden adlandır + içerik haritası:
@@ -51,7 +51,7 @@ Versiyon-sınırı politikası gereği nihai çeviri ertelenmiştir; ama R1 bir 
   - Eski `listen`/`find` anahtarları **silinir** (soft-delete yok).
   - TR metni marka sesinde: çıktı-odaklı, sade, kendinden emin; yasak metafor yok (doktor/teşhis/reçete), zayıf/edilgen ad yok ("Dinle/Listen" yasağı). Taslak metinler bu dokümanda (aşağıda) — execution'da cilalanır.
 
-- [ ] **2. Non-TR i18n — 4 dilde anahtar seti hizala (en/ar/de/es)**
+- [x] **2. Non-TR i18n — 4 dilde anahtar seti hizala (en/ar/de/es)**
   - Dosyalar: `messages/en.json`, `messages/ar.json`, `messages/de.json`, `messages/es.json` (`how` namespace)
   - Her dilde anahtar setini `{analyze, design, automate, report}` yap (her biri `{n, title, body}`).
   - **Stale-kopya** (eski metin, versiyon-sınırında çevrilecek):
@@ -63,7 +63,7 @@ Versiyon-sınırı politikası gereği nihai çeviri ertelenmiştir; ama R1 bir 
   - `how.title`: sayı sözcüğü 4'e güncellenir (four/أربع/vier/cuatro) — gövde çevirileri stale kalır (craft: 4 kart üstünde "üç adım" başlığı tutarsızlığını önle, → Karar Noktaları).
   - Eski `listen`/`find` anahtarları 4 dilde de silinir.
 
-- [ ] **3. Component — `HowItWorks.tsx`'i 4 adıma göre güncelle**
+- [x] **3. Component — `HowItWorks.tsx`'i 4 adıma göre güncelle**
   - Dosya: `src/components/HowItWorks.tsx`
   - Adım dizisi (satır 15): `["listen", "find", "automate"]` → `["analyze", "design", "automate", "report"]`
   - Grid (satır 75): `sm:grid-cols-3` → 4-adım responsive (aday: `grid-cols-1 sm:grid-cols-2 lg:grid-cols-4`; → Karar Noktaları)
@@ -112,13 +112,13 @@ messages/
 
 ## Test Kriterleri
 
-- [ ] `next build` temiz geçer (TypeScript strict + i18n yükleme hatası yok).
-- [ ] 5 dilde `how.steps` anahtar seti tam: `{analyze, design, automate, report}` × `{n, title, body}`; eski `listen`/`find` hiçbir dilde kalmadı.
-- [ ] Ana sayfa (TR `/`) "Nasıl Çalışır" bölümü **4 kart** render eder: 01 Analiz · 02 Çözüm · 03 Otomasyon · 04 Raporlama; başlık "Dört adım…".
-- [ ] Diğer 4 dilde (`/en`, `/ar`, `/de`, `/es`) bölüm 4 kart render eder, boş/eksik metin yok (stale kabul, eksik yasak); `design` adımı o dilde çevrilmiş görünür; **03 Otomasyon ve 04 Raporlama ölçüm cümlesini tekrar etmez** (automate bölündü, kopyalanmadı).
-- [ ] Grid 4 adımı bozulmadan dizer (mobil/tablet/masaüstü); bağlayıcı SVG masaüstünde 4 düğümle hizalı.
-- [ ] `prefers-reduced-motion: reduce`'da bağlayıcı animasyonu çalışmaz, içerik statik okunur kalır.
-- [ ] AR'de (`/ar`) bölüm RTL'de tutarlı (4 kart, okunabilir).
+- [x] `next build` temiz geçer (TypeScript strict + i18n yükleme hatası yok).
+- [x] 5 dilde `how.steps` anahtar seti tam: `{analyze, design, automate, report}` × `{n, title, body}`; eski `listen`/`find` hiçbir dilde kalmadı.
+- [x] Ana sayfa (TR `/`) "Nasıl Çalışır" bölümü **4 kart** render eder: 01 Analiz · 02 Çözüm · 03 Otomasyon · 04 Raporlama; başlık "Dört adım…".
+- [x] Diğer 4 dilde (`/en`, `/ar`, `/de`, `/es`) bölüm 4 kart render eder, boş/eksik metin yok (stale kabul, eksik yasak); `design` adımı o dilde çevrilmiş görünür; **03 Otomasyon ve 04 Raporlama ölçüm cümlesini tekrar etmez** (automate bölündü, kopyalanmadı).
+- [x] Grid 4 adımı bozulmadan dizer (mobil/tablet/masaüstü); bağlayıcı SVG masaüstünde 4 düğümle hizalı.
+- [x] `prefers-reduced-motion: reduce`'da bağlayıcı animasyonu çalışmaz, içerik statik okunur kalır.
+- [x] AR'de (`/ar`) bölüm RTL'de tutarlı (4 kart, okunabilir).
 
 ---
 
@@ -140,31 +140,56 @@ messages/
 
 ## Tamamlanma Kriterleri
 
-- [ ] Tüm alt görevler tamamlandı
-- [ ] Tüm test kriterleri karşılandı
-- [ ] Git commit & push yapıldı (`feat(TASK-1.01): ...`)
-- [ ] Bu doküman güncellendi (oturum kaydı)
-- [ ] DURUM.md + PHASE-1.md güncellendi
+- [x] Tüm alt görevler tamamlandı
+- [x] Tüm test kriterleri karşılandı
+- [x] Git commit & push yapıldı (`feat(TASK-1.01): ...`)
+- [x] Bu doküman güncellendi (oturum kaydı)
+- [x] DURUM.md + PHASE-1.md güncellendi
 
 ---
 
 ## Oturum Kayıtları
 
-### Oturum — [TARİH]
+### Oturum — 2026-06-28
 
-**Durum:** 🔄 Devam edecek
+**Durum:** ✅ Tamamlandı
 
 **Yapılanlar:**
-- [doldurulacak]
+- TR (`messages/tr.json`) `how` namespace 4 adıma getirildi: başlık "Üç adım…" → "Dört adım…"; anahtarlar `analyze`/`design`/`automate`/`report` olarak yeniden adlandırıldı. Analiz = eski `listen`+`find` eritilmiş (güçlü "şema gibi değil, gerçekte nasılsa" çapası korundu); `design` (Çözüm) yeni; `automate` ölçüm kuyruğu çıkarıldı; `report` (Raporlama) ölçümü ayrı adıma taşıdı (F5 dürüstlük çerçevesi: "kazanç varsayılmaz, ölçülür").
+- 4 non-TR dil (en/ar/de/es) anahtar seti `{analyze, design, automate, report}` ile hizalandı (cerrahi): `analyze`/`automate` stale-kopya, `design` 4 dilde gerçek çeviri, başlık sayı-sözcüğü güncellendi (Four/أربع/Vier/Cuatro). **Tekrar önleme:** non-TR `automate` gövdesinin `[otomasyon] — [ölçüm]` cümlesi bölündü (kopyalanmadı) → `automate` yalnız otomasyon, `report` yalnız ölçüm; standalone hâle getirmek için minimal gramer (özne ekleme).
+- `HowItWorks.tsx`: adım dizisi (`["analyze","design","automate","report"]`), grid `grid-cols-1 sm:grid-cols-2 lg:grid-cols-4`, dekoratif bağlayıcı SVG path 4 düğüme göre yeniden çizildi. reduced-motion guard değişmeden korundu.
+
+**Sorunlar:**
+- `BunkerShowcase.tsx` da `how.steps.${k}` okuyor görünüyordu → grep ile doğrulandı: `useTranslations("bunkerOs")` ile **ayrı** namespace (`bunkerOs.how`, platform 4-adımı Bağla/Akış kur/Çalıştır/Ölç); üst-seviye `how` yalnız `HowItWorks.tsx:15` tüketicisi. `/bunker-os` etkilenmedi.
+
+**Kararlar:**
+- Adım adları `analyze`/`design`/`automate`/`report` (araştırma adayı teyit edildi). Responsive grid kademeli (`grid-cols-1 sm:grid-cols-2 lg:grid-cols-4`). Non-TR başlık yalnız sayı-sözcüğü güncellendi, gövdeler stale.
+- docs/DECISIONS.md'ye eklendi: Hayır — discuss/research kararından sapma yok, adlandırma planlanan adayla aynı (özel karar kaydı gerekmez).
+
+**Dosya Değişiklikleri:**
+- `messages/tr.json` → `how` namespace: başlık + 4 adım tam TR metin (tek kaynak)
+- `messages/{en,ar,de,es}.json` → `how` namespace: anahtar seti hizalama (stale-kopya + `design` çevirisi + automate/report bölme + başlık sayı sözcüğü)
+- `src/components/HowItWorks.tsx` → adım dizisi (15) + grid (75) + bağlayıcı SVG path (67)
+
+**Test Sonuçları:**
+- `next build` temiz (Compiled successfully, TS strict + lint geçti, exit 0; `MISSING_MESSAGE`/`IntlError` yok). Ana sayfa SSG olduğundan 5 locale prerender'ının geçmesi = eksik anahtar yok.
+- 5 dilde anahtar seti `{analyze,design,automate,report}×{n,title,body}` tam; `listen`/`find` hiçbir dilde kalmadı (script doğrulaması).
+- Production preview (port 3137) + Playwright: 5 locale'de 4 kart, doğru başlıklar + 01–04; TR "Dört adım…", `design` 4 dilde çevrili; non-TR'de 03/04 ölçüm cümlesi tekrar etmiyor (script teyidi). Desktop grid 4 eşit sütun (317px×4), bağlayıcı SVG görünür/hizalı. AR `dir="rtl"`, 4 kart aynalı + okunabilir.
 
 ---
 
 ## Sonuç Özeti
 
-**Tamamlanma Tarihi:** [Tarih]
+**Tamamlanma Tarihi:** 2026-06-28
 
 **Ne Yapıldı:**
-- [doldurulacak]
+- Ana sayfa "Nasıl Çalışır" bölümü örtüşmesiz 4 adıma getirildi (Analiz · Çözüm · Otomasyon · Raporlama); ölçüm ayırt edici "Raporlama" adımı oldu; `how.title` "Dört adım…".
+- 5 dilde anahtar seti `analyze`/`design`/`automate`/`report` olarak yeniden adlandırıldı (atomik, tek commit); TR tam metin tek kaynak, non-TR cerrahi stale + yalnız `design` çevirisi; eksik anahtar yok.
+- `HowItWorks.tsx` 4-adım responsive grid + 4-düğüm bağlayıcıyla güncellendi; reduced-motion fallback korundu.
+
+**Öğrenilenler:**
+- next-intl ile aynı `how.steps` token şekli farklı namespace'lerde (`how` vs `bunkerOs.how`) yaşar; anahtar değiştirirken tüketiciyi namespace bağlamıyla (`useTranslations(...)`) doğrula — düz grep yanıltabilir.
+- Stale-kopya çevirilerde cümle bölmek (em-dash) tekrar üretebilir; bölünen parça standalone yapılırken minimal gramer düzeltmesi gerekir (yeni çeviri değil).
 
 ---
 
