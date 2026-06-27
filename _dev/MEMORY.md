@@ -7,7 +7,7 @@
 >
 > Bu yapı şişmeyi önler: index ince kalır (hep yüklü), detay yalnızca gerekince okunur.
 
-**Son Güncelleme:** 2026-06-27 — map-codebase: hafıza index'i oluşturuldu (henüz öğrenim yok).
+**Son Güncelleme:** 2026-06-27 — ortam notları + "entegrasyonu canlıda gözle doğrula" süreç disiplini eklendi (Umami vesilesiyle).
 
 <!-- KURAL: Bu satır her güncellemede ÜZERİNE YAZILIR. "Önceki:" prefix ile kümülatif yığma YASAK (CLAUDE.md → Doküman Disiplini). -->
 
@@ -46,6 +46,7 @@
 <!-- Retrospektiften çıkan, proje genelinde geçerli "şunu yaparken şu kontrolü her zaman yap" tipi iş-akışı kuralları. -->
 
 - Görünür metin değişiminde 5 dilin (tr/en/ar/de/es) hepsi senkron güncellenmeli (eksik anahtar = boşluk/hata).
+- Entegrasyon/analytics/3rd-party script eklerken **canlıda (production) gerçekten çalıştığını gözle doğrula** — "kod ekledim, tamamdır" deme; etkiyi panelde/ağ sekmesinde gör. (Bu projede daha önce tam bu atlanmıştı; örn. Umami → `docs/UMAMI-ANALYTICS.md`.)
 
 ---
 

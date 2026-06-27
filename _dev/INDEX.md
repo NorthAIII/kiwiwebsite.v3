@@ -63,6 +63,7 @@
 |---------|--------|
 | `docs/DECISIONS.md` | Önemli mimari ve tasarım kararları |
 | `docs/REVIZE-BACKLOG.md` | Güçlü revize ham girdisi: kullanıcı tespitleri + bekleyen işler (PRD tohumu) |
+| `docs/UMAMI-ANALYTICS.md` | Umami analytics entegrasyon spec'i (bekliyor — kod, değerler, uyarılar) |
 
 ---
 

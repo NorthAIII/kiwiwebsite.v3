@@ -42,6 +42,12 @@
 | D1 | Test altyapısı yok | Projede hiç test yok; kümülatif test ilkesi (ILKELER) için sıfırdan kurulum gerek. |
 | D2 | Performans bütçesi doğrulaması | Lighthouse ≥95 perf / ≥100 a11y, LCP < 2.5s hedefleri ölçülmeli (revize sonrası regresyon kontrolü). |
 
+## E. Yeni Entegrasyonlar
+
+| # | Konu | Notlar |
+|---|------|--------|
+| E1 | Umami analytics (self-hosted) | Site trafiğini ölçmek için `umami.kiwiailab.com` script'i html/head layout'una eklenecek. Kullanıcı onayladı, "sonra ekle" dedi. Tam spec (kod + değerler + uyarılar + uygulama notu): `docs/UMAMI-ANALYTICS.md`. **Kritik:** canlıda gerçekten saydığını gözle doğrula. Modül: M6. |
+
 ---
 
 **Son Güncelleme:** 2026-06-27 — map-codebase: kullanıcı tespitleri + brief bekleyen işleri toplandı (PRD tohumu).
