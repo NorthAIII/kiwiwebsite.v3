@@ -2,7 +2,11 @@
 
 **Amaç:** Güçlü revize için ham girdi — kullanıcı tespitleri ve brief'ten gelen bekleyen işler. Bu liste **PRD'ye tohum**dur; fazlara/feature'lara dönüşümü `/devflow:prd` ve `discuss-phase`'de yapılır. Burası kararların evi değil (o `DECISIONS.md`), aktif durumun evi de değil (o `DURUM.md`); burası "neyi ele alacağız" ham listesidir.
 
-**Not:** Henüz hiçbiri faza/feature'a bağlanmadı. Bağlandıkça ilgili satır PRD/MODULE-MAP'e taşınır ve burada işaretlenir/silinir.
+**Not:** Bağlandıkça ilgili satır PRD/MODULE-MAP'e taşınır ve burada işaretlenir/silinir.
+
+**PRD'ye bağlananlar (v0.1):** A2 (kopya) → `PRD/features/kopya-revizesi.md`; A4 (nasıl çalışır 3→4) → `PRD/features/nasil-calisir-4-adim.md`; A5 (sektörler) → `PRD/features/sektorler-derinlestirme.md`; A6 (Crew OS içerik) → `PRD/features/crew-os-bolumu.md`. (Satırlar execution detayı için duruyor; faza girince silinir.) Ürün taksonomisi (Bunker/Crew OS/Alpfit) ve dil stratejisi → `docs/DECISIONS.md` + `PRD/VIZYON.md`.
+
+**prd-refine doğrulaması (2026-06-28, kodla teyit edildi):** A2 premise *"genel kopya zayıf"* abartılı — canlı TR kopya büyük ölçüde güçlü; v0.1 cerrahi (ana sayfa, F1–F6). **A5** *"hepsi sığ"* abartılı — 5 sektör güçlü, asıl sorun gym paneli desen-dışı. **A6** büyük ölçüde **çözülmüş** — Crew OS ana metni doğru; kalan tek kalem panel akış adları (bırakıldı). **A3** kopya değil **görsel** (kartlar zaten `<Link>`) → görsel cila versiyonu.
 
 ---
 

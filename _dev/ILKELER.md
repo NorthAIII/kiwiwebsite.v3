@@ -45,16 +45,25 @@ Kickoff/PRD sırasında doldurulur. Boş bir alan "henüz konuşulmadı" demekti
 
 ### Proje Ufku
 
-[Henüz konuşulmadı — prd/kickoff'ta netleşecek. Bu proje ne kadar uzun ömürlü? Kararlar hangi zaman ölçeğine göre alınmalı?]
+**Uzun ömürlü amiral vitrin.** Bu site ajansın imza/amiral vitrinidir — kararlar yıllar ölçeğinde sağlamlığa göre alınır, kampanyalık/tek-kullanımlık değil. "Şimdilik çalışıyor" bir bitiş kriteri değildir; Awwwards SOTD çıtası kalıcı tutulur. İki yol arasında kararsızken daha kalıcı/sağlam olana eğil (mevcut sofistike altyapıyı — custom GLSL, 5 dilli i18n, tema sistemi — çöpe atmadan üstüne inşa et).
 
 ### En Yüksek Öncelikli Eksenler
 
-[Henüz konuşulmadı — prd/kickoff'ta netleşecek. Hangi kalite eksenleri (QUALITY.md'den) diğerlerinin önüne geçer? Yalnızca öncelik sıralaması.]
+Çatışmada öne geçen sıralama (eksen tanımları → QUALITY.md):
+
+1. **Marka & Craft (imza)** — *tek ve net üst eksen.* Craft başka herhangi bir eksenle çatışınca craft kazanır. (QUALITY §1)
+2. **Performans & Erişilebilirlik** — üst eksen değil ama **korunması gereken taban**: brief hedefleri (Lighthouse ≥95 perf / ≥100 a11y / LCP < 2.5s) her revize sonrası korunur — regresyona izin yok. (QUALITY §2, §3)
+3. **Yerelleştirme & RTL** — kalite ekseni geçerli ama **sürekli senkron değil**: TR tek kaynak, çeviri versiyon-sınırında yapılır (bkz. `docs/DECISIONS.md` — dil stratejisi). (QUALITY §4)
 
 ### Pazarlık Konusu Olmayanlar
 
-[Henüz konuşulmadı — prd/kickoff'ta netleşecek. Asla feda edilmeyecek, asla "sonra hallederiz" denmeyecek şeyler.]
+- **Zero template smell / Awwwards çıtası** — şablon/page-builder hissi, generic SaaS özellik-kartı ızgarası, stok robot/AI klipart, cheapness asla girmez. Bu, feda edilmeyecek tek kırmızı çizgidir: gerekirse **kapsam daralır** ama bu çıta düşmez.
+- **Marka sesi yasakları** (craft'ın dil tarafı, brief §0/§9) — doktor/teşhis/hekim/reçete metaforu yok, **sahte "● online/canlı" presence-tiyatrosu yok**, zayıf adım adı ("Dinle/Listen") yok, lorem hissi veren dolgu metin yok.
+
+> **"● online/canlı" yasağının kapsamı (niyet-bazlı, prd-refine 2026-06-28):** Yasak *sahte canlılık tiyatrosu* içindir — gerçekte olmayan bir "şu an aktif" hissi uydurmak. **Gerçekten canlı** bir ürünün (örn. Alpfit, canlıda) dürüst canlı göstergesi bu yasağın **dışındadır**; o, dürüstlük konvansiyonuyla (gerçek = gerçek gibi, kurgu = öngörü/örnek) uyumludur. Gerekçe → `docs/DECISIONS.md`.
+
+> Not: Perf/a11y bütçesi "pazarlık dışı" değil ama "korunması gereken taban"dır (yukarıda, Öncelikli Eksenler). Fark: pazarlık-dışı = asla; taban = regresyon yapılmaz ama üst eksen craft'ın gerisindedir.
 
 ---
 
-**Son Güncelleme:** 2026-06-27
+**Son Güncelleme:** 2026-06-28 — prd-refine: "● online/canlı" yasağına niyet-bazlı kapsam notu eklendi (sahte presence yasak; dürüst canlı ürün göstergesi serbest).
