@@ -33,7 +33,17 @@
 
 ### PRD Dokümanları (PRD Oturumlarında OKU)
 
-> PRD/ klasörü henüz **oluşturulmadı** — `/devflow:prd` ile başlatılacak. Tohum girdi: `docs/REVIZE-BACKLOG.md`.
+> PRD/ oluşturuldu (`/devflow:prd` + `prd-refine`). Ham girdi/tohum: `docs/REVIZE-BACKLOG.md`.
+
+| Doküman | İçerik |
+|---------|--------|
+| `PRD/VIZYON.md` | Merkezi vizyon — ne/kime/**ürün taksonomisi** (Crew OS public, Bunker OS iç ad, Alpfit ayrı ürün)/mesaj stratejisi & marka sesi/dil stratejisi/kapsam. Karar kaynağı. |
+| `PRD/VERSIONS.md` | Feature→versiyon haritası (MODULE-MAP Versiyon sütununun kaynağı); v0.1 + sıradaki versiyon adayları. |
+| `PRD/features/nasil-calisir-4-adim.md` | "Nasıl çalışır" 3→4 adım (Analiz·Çözüm·Otomasyon·Raporlama) — R1. |
+| `PRD/features/sektorler-derinlestirme.md` | Sektörler: gym paneli tek-otomasyona; diğer 5 sektör güçlü/korunur — R2. |
+| `PRD/features/crew-os-bolumu.md` | Crew OS bölümü: ana metin doğru, panel akışları bırakıldı — R3. |
+| `PRD/features/kopya-revizesi.md` | Site-geneli TR ses/ton + F5 dürüstlük konvansiyonu + F6 hero ikincil CTA — R4. |
+| `PRD/SESSION-NOTES.md` | PRD çalışma kanvası: anlık durum, açık sorular (Crew OS URL, Living Flow kapsamı), keşfedilmemiş alanlar. |
 
 ### Modül Dokümanları (İlgili Modül Gerektiğinde OKU)
 
@@ -148,7 +158,7 @@ kiwiwebsite.v3/
     ├── PHASES.md
     ├── QUALITY.md
     │
-    ├── PRD/                  # (henüz yok — /devflow:prd ile)
+    ├── PRD/                  # VIZYON, VERSIONS, features/, SESSION-NOTES
     │
     ├── modules/
     │   ├── M1-LivingFlow-TasarimSistemi.md
@@ -180,7 +190,7 @@ kiwiwebsite.v3/
 
 ---
 
-**Son Güncelleme:** 2026-06-27 — map-codebase: INDEX oluşturuldu; M1–M6 modül dokümanları ve docs/ (DECISIONS, REVIZE-BACKLOG) kaydedildi.
+**Son Güncelleme:** 2026-06-28 — kickoff-docs: PRD/ içerik dokümanları (VIZYON, VERSIONS, 4 feature, SESSION-NOTES) INDEX'e eklendi.
 
 <!-- KURAL: Bu satır her güncellemede ÜZERİNE YAZILIR. "Önceki:" prefix ile kümülatif yığma YASAK (CLAUDE.md → Doküman Disiplini). -->
 <!-- KURAL: Tamamlanmış fazların task arşiv listesini INDEX'e ekleme — `ls _dev/tasks/archive/` zaten görür. INDEX yalnızca aktif klasör konumlarını gösterir; statik liste dokümanı değildir. -->

@@ -19,14 +19,14 @@
 Kiwi AI Lab (bir AI otomasyon ajansı) için "award-winning" (Awwwards Site of the Day) kalibresinde tanıtım sitesi. İmza fikir **The Living Flow**: aydınlık zeminde ince yarı-saydam mürekkep çizgileri ve çizgiler boyunca ilerleyen yeşil otomasyon nabızlarından oluşan, cursor ve scroll'a tepki veren custom WebGL alanı.
 
 ### Hangi Problemi Çözüyor?
-Ajansın teklifini (analiz → tekrarlayan işin tespiti → otomasyona bağlama; sektöre hazır ürünler, 7/24 asistanlar, kurucuyla birebir, bayrak katman **Bunker OS / Crew OS**) şablon kokusu olmayan, çıktı-odaklı, kendinden emin bir dille ve immersive ama performanslı bir deneyimle anlatır. Keşif görüşmesine ve canlı chatbot'a yönlendirir.
+Ajansın teklifini (analiz → tekrarlayan işin tespiti → otomasyona bağlama; sektöre hazır ürünler, 7/24 asistanlar, kurucuyla birebir, bayrak katman **Crew OS** — public ad; iç kod adı *Bunker OS*, kullanıcıya görünmez) şablon kokusu olmayan, çıktı-odaklı, kendinden emin bir dille ve immersive ama performanslı bir deneyimle anlatır. Keşif görüşmesine ve canlı chatbot'a yönlendirir.
 
 ### Hedef Kitle
 Tekrarlayan operasyonel işi otomatikleştirmek isteyen işletmeler (spor salonu, klinik, e-ticaret, emlak, eğitim/danışmanlık, restoran/kafe) ve karar vericileri. Çok dilli kitle: TR (varsayılan), EN, AR, DE, ES.
 
 ### Kapsam
-**Dahil:** Tanıtım/pazarlama sitesi — ana sayfa + alt sayfalar (Bunker OS, Alpfit spor salonu yazılımı, vaka çalışmaları, bülten makaleleri), Living Flow WebGL, çok dilli i18n (RTL dahil), canlı Claude chatbot, SEO/sitemap, light/dark tema.
-**Dahil değil:** Backend/otomasyon ürününün kendisi (Crew OS/bunker) — o ayrı bir repo'dur (`NorthAIII/kiwi-ai-lab`, private). Forum/bülten için gerçek backend (şu an statik içerik), ödeme, kullanıcı hesapları.
+**Dahil:** Tanıtım/pazarlama sitesi — ana sayfa + alt sayfalar (Crew OS showcase [route `/bunker-os`], Alpfit spor salonu yazılımı, vaka çalışmaları, bülten makaleleri), Living Flow WebGL, çok dilli i18n (RTL dahil), canlı Claude chatbot, SEO/sitemap, light/dark tema.
+**Dahil değil:** Backend/otomasyon ürününün kendisi (Crew OS motoru — iç adıyla *Bunker OS*) — o ayrı bir repo'dur (`NorthAIII/kiwi-ai-lab`, private). Forum/bülten için gerçek backend (şu an statik içerik), ödeme, kullanıcı hesapları.
 
 ---
 
@@ -51,7 +51,7 @@ Tekrarlayan operasyonel işi otomatikleştirmek isteyen işletmeler (spor salonu
 - **Çok dilli site** — 5 dil, AR için RTL; locale-prefixli route'lar, dünya-ikonu dil değiştirici.
 - **Canlı Claude chatbot** — `/api/chat` üzerinden streaming, kullanıcı dilini algılar, key yoksa zarif "offline".
 - **Light/Dark tema** — `localStorage` + FOUC önleyici script, Living Flow temaya uyumlu.
-- **Sektör/ürün showcase sayfaları** — Bunker OS, Alpfit (spor salonu), vaka çalışmaları, bülten.
+- **Sektör/ürün showcase sayfaları** — Crew OS (route `/bunker-os`), Alpfit (spor salonu), vaka çalışmaları, bülten.
 - **Scroll-koreografisi** — GSAP + Lenis + Reveal pattern; reduced-motion tam fallback.
 
 **Detaylar:** `MODULE-MAP.md` (modül ve feature haritası), `modules/` (modül detayları)
@@ -120,4 +120,4 @@ CLAUDE.md repo kökünde olacaktır (`/CLAUDE.md`) — kickoff-verify'da oluştu
 
 ---
 
-**Son Güncelleme:** 2026-06-27 — map-codebase: mevcut kodbazdan proje özeti oluşturuldu.
+**Son Güncelleme:** 2026-06-28 — kickoff-docs: ürün taksonomisi metni hizalandı (public Crew OS / iç kod adı Bunker OS; route hâlâ `/bunker-os`).

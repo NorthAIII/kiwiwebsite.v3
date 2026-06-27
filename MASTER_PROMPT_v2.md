@@ -7,7 +7,9 @@ Awwwards "Site of the Day" seviyesinde, **activetheory.net** sofistikasyonu ama 
 **Yasaklar:** generic yeşil "● online / canlı demo" noktası; "iş doktoru / hekim / teşhis" metaforu; stok robot/AI klipart; generic SaaS özellik-kartı ızgaraları; "Listen/Dinle" gibi zayıf adım adı; lorem hissi veren dolgu metin.
 
 ## 1. Marka & teklif
-Kiwi AI Lab — bir AI otomasyon ajansı. Bir işi analiz eder, tekrarlayan işin zaman/parayı nerede sızdırdığını bulur ve otomasyona bağlarız (rutin görevler, mesajlar SMS/WhatsApp, onay zincirleri). Sektöre hazır ürünler, 7/24 asistanlar, kurucuyla birebir. Bayrak katman: **Bunker OS** (müşterinin otomasyonlarının yaşadığı/çalıştığı yer). Ton: çıktı odaklı, sade, kendinden emin, metafor yok.
+Kiwi AI Lab — bir AI otomasyon ajansı. Bir işi analiz eder, tekrarlayan işin zaman/parayı nerede sızdırdığını bulur ve otomasyona bağlarız (rutin görevler, mesajlar SMS/WhatsApp, onay zincirleri). Sektöre hazır ürünler, 7/24 asistanlar, kurucuyla birebir. Bayrak katman: **Crew OS** (müşterinin otomasyonlarının yaşadığı/çalıştığı yer) — sitede her zaman bu public ad kullanılır; iç kod adı *Bunker OS*'tur ve kullanıcıya/site'a asla görünmez (aynı katman, iki ürün değil). Ton: çıktı odaklı, sade, kendinden emin, metafor yok.
+
+> _Not: Bu brief'in eski hâli bayrak katmana "Bunker OS" diyordu; taksonomi kararıyla public ad **Crew OS** olarak hizalandı (Bunker OS = iç kod adı). Bkz. `_dev/docs/DECISIONS.md` (2026-06-27). Aşağıda §4/§5/§8'deki `/bunker-os` **route** adı bilinçle korundu — public `/crew-os` + redirect kararı sonraki (görsel/SEO) versiyona ertelendi._
 
 ## 2. Dil & i18n
 - **Ana dil: TÜRKÇE** (varsayılan locale `tr`). v1'deki "English-first" KARARI DEĞİŞTİ.

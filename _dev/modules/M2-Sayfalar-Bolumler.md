@@ -4,7 +4,7 @@
 **Bağımlılık:** M1 (tasarım token'ları, Living Flow), M3 (Reveal/Magnetic/scroll primitives), M4 (tüm metin i18n'den), M5 (chatbot ana sayfada gömülü).
 **Sınır:** Bölümlerin görünümü, içeriği ve yerleşimi. Genel etkileşim mekanikleri M3'te; WebGL imza M1'de; çeviri metinleri M4'tedir.
 
-> **Bilinen revize konuları** bu modülde yoğunlaşıyor (kopya zayıf, "Nasıl çalışır" 3→4 adım, sektörler sığ, Crew OS bölümü yanlış içerik). Detay: `docs/REVIZE-BACKLOG.md`.
+> **v0.1 revize işi bu modülde yoğunlaşıyor** — PRD/prd-refine reframe: canlı TR kopya beklenenden güçlü → **cerrahi / ana-sayfa odaklı** (baştan-sona rewrite değil). Yapısal iş: "Nasıl çalışır" 3→4 adım (R1) + Sektörler gym paneli tek-otomasyona (R2). Ses cilası: Crew OS bölümü teyidi (R3) + dürüstlük taraması & hero ikincil CTA (R4). Kaynak: `_dev/PRD/features/`; ham girdi & ertelenen kalemler: `docs/REVIZE-BACKLOG.md`. (Taksonomi: public **Crew OS** / iç ad Bunker OS — `docs/DECISIONS.md`.)
 
 ---
 
@@ -36,7 +36,8 @@
 **Bağımlılık:** M1, M3, M4
 
 **Edge Case'ler:**
-- İstatistik şeridi öğeleri **tıklanabilir olduğu yeterince belli değil** (affordance) — bkz. REVIZE-BACKLOG.
+- İstatistik şeridi öğeleri zaten `<Link>` (Alpfit/Crew OS) — sorun **görsel affordance** (tıklanabilir olduğu belli değil, A3). Kopya değil → **görsel/etkileşim versiyonuna ertelendi** (v0.1 dışı).
+- **v0.1 (R4 / PRD F6):** Hero ikincil CTA ("Canlı gör") aslında `#sectors`'a kayıyor — etiket belirsiz; net etiket istenir ("İşleyen örnekleri gör" / "Çözümleri gör"). PRD: `_dev/PRD/features/kopya-revizesi.md`.
 
 ---
 
@@ -50,7 +51,7 @@
 **Bağımlılık:** M3 (ScrollTrigger), M4
 
 **Edge Case'ler:**
-- **Revize hedefi:** Analiz/Tespit içerikçe örtüşüyor; 4 adıma çıkarılması ve açıklamaların genişletilmesi isteniyor (örn. Analiz · Çözüm · Otomasyon · Raporlama) — bkz. REVIZE-BACKLOG.
+- **v0.1 (R1 — adlar KARARLAŞTI):** 3 adım (Analiz/Tespit içerikçe örtüşür; ölçüm Otomasyon kuyruğunda gömülü) → **4 örtüşmesiz adım: Analiz · Çözüm · Otomasyon · Raporlama.** Eski 01 Analiz + 02 Tespit tek "Analiz"e erir; "Çözüm" gerçekten eklenen yeni adım; ölçüm "Raporlama" olarak ayrılır. Başlık `how.title` "Üç adım…" → "Dört adım…". 4. adım için yeni i18n anahtarı (örn. `report`). Bu ajans sürecidir; Crew OS sayfasındaki platform 4-adımıyla (Bağla/Akış kur/Çalıştır/Ölç) **çelişmez** (o sayfaya dokunulmaz). Zayıf/edilgen ad ("Dinle/Listen") yasak. PRD: `_dev/PRD/features/nasil-calisir-4-adim.md`.
 
 ---
 
@@ -65,23 +66,25 @@
 **Bağımlılık:** M3, M4
 
 **Edge Case'ler:**
-- **Revize hedefi:** İçerik sığ/tekrara düşüyor (siyah zeminde 3 madde, birbirini tekrar eden); her sektör için zenginleştirme isteniyor — bkz. REVIZE-BACKLOG.
-- Metrikler "öngörü/örnek" olarak işaretli kalmalı (gerçek veri gelene dek).
+- **v0.1 (R2 — reframe):** prd-refine bulgusu: 6 sektörden 5'i (klinik, e-ticaret, emlak, eğitim, restoran) zaten tek-otomasyon desenine (tetikleyici→eylem→sonuç) uyuyor ve özgün → **korunur** (A5 "hepsi sığ" tespiti abartılı). Asıl iş dar: **`gyms` paneli desen-DIŞI** — sol taraf tek otomasyon değil Alpfit **özellik listesi**; bölümün kendi sözünü ("her örnek tek otomasyon, özellik listesi değil" — `sectors.sub`) bozuyor. gym'i tek-otomasyona getir (`gyms.flow` zaten doğru: kaçan üye → WhatsApp teklif/PT → takip); Alpfit ürün/özellik anlatımı ayrı CTA + `/spor-salonu-yazilimi`'nde kalır. PRD: `_dev/PRD/features/sektorler-derinlestirme.md`.
+- "Canlı — Alpfit" rozeti (nabız atan) **korunur** — dürüst canlı gösterge (yasak = sahte presence; `docs/DECISIONS.md` 2026-06-28).
+- Metrikler "öngörü/örnek" olarak işaretli kalmalı (gerçek veri gelene dek — R4/F5 dürüstlük konvansiyonu).
 
 ---
 
-### F2.5: Bunker (Crew OS teaser bölümü) → Faz —
+### F2.5: Crew OS teaser bölümü → Faz —
 
-**Açıklama:** `Bunker.tsx` — başlık + gövde + Crew OS panelinde 4 otomasyon akışı (animasyonlu nabız barları), `/bunker-os`'a link.
+**Açıklama:** `Bunker.tsx` (bileşen adı iç ad kalıntısı) — başlık + gövde + Crew OS panelinde 4 otomasyon akışı (animasyonlu nabız barları), `/bunker-os`'a link. Sitede görünen ad **Crew OS**.
 
 **Kabul Kriterleri:**
 - Panel akışları "running/queued" durumlarıyla animasyonlu.
-- "Keşfet" linki Bunker OS sayfasına gider.
+- "Keşfet" linki Crew OS showcase sayfasına (`/bunker-os`) gider.
 
 **Bağımlılık:** M1, M4
 
 **Edge Case'ler:**
-- **Revize hedefi (kritik):** Siyah zemindeki 4 madde **Bunker OS ile alakasız** — Alpfit özellikleri yazılmış. Doğru Crew OS içeriğiyle değiştirilmeli — bkz. REVIZE-BACKLOG.
+- **v0.1 (R3 — büyük ölçüde çözülmüş):** prd-refine: bölümün **ana metni zaten doğru** (`bunker.title/body/points` platform kimliğini anlatıyor — gözlemlenebilir/ölçülebilir/hep-açık; Alpfit özellik listesi değil). REVIZE-BACKLOG A6 (*"4 madde Alpfit, alakasız"*) çözülmüş. **Kalan tek kalem:** sağdaki canlı panelin 4 akış adı (`bunker.flows`) sektöre-özgü; **karar: bırakıldı** — "platformda çalışan gerçek akışlar" çerçevesi (Crew OS'un *tanımı* değil; craft = gerçek akış adı soyut etiketten inandırıcı). PRD: `_dev/PRD/features/crew-os-bolumu.md`.
+- Bayrak katman her yüzeyde **"Crew OS"** anılır; "Bunker OS" görünmez. `bunker.explore` → `/bunker-os` route'u korunur (public `/crew-os` + redirect kararı görsel/SEO versiyonuna ertelendi — açık konu, M6).
 
 ---
 
@@ -100,9 +103,9 @@
 
 ---
 
-### F2.7: Bunker OS showcase sayfası → Faz —
+### F2.7: Crew OS showcase sayfası (route /bunker-os) → Faz —
 
-**Açıklama:** `bunker-os/page.tsx` + `components/bunker-os/BunkerShowcase.tsx` — hero (Living Flow), uçtan uca mimari diyagram (Kaynaklar → çekirdek → Kanallar + geri-besleme, animasyonlu nabızlar), "Nasıl çalışır" 4 adım, canlı operasyon paneli (örnek metrikler).
+**Açıklama:** `bunker-os/page.tsx` + `components/bunker-os/BunkerShowcase.tsx` (dizin/route adları iç ad kalıntısı; sitede görünen ad **Crew OS**) — hero (Living Flow), uçtan uca mimari diyagram (Kaynaklar → çekirdek → Kanallar + geri-besleme, animasyonlu nabızlar), "Nasıl çalışır" 4 adım (platform: Bağla/Akış kur/Çalıştır/Ölç), canlı operasyon paneli (örnek metrikler). **v0.1 dışı** — sayfa ana sayfa revizesi kapsamında değil.
 
 **Kabul Kriterleri:**
 - Mimari diyagram nabız animasyonlarıyla render edilir.
@@ -149,9 +152,9 @@
 
 - İçerik veri-odaklı: sabit JS dizileri (KEYS/STUDIES vb.) + i18n namespace'leri eşleştirilir; veritabanı yok.
 - Akıcı tipografi: `clamp()` ile (örn. `text-[clamp(2rem,4.5vw,3.5rem)]`).
-- Showcase sayfaları (Bunker OS, Alpfit) `PageHeader` + `LivingFlow` desenini paylaşır.
-- **Bilinen sorunlar bu modülde toplanıyor** — kopya kalitesi, "Nasıl çalışır" yapısı, sektör derinliği, Crew OS içerik hatası, CTA affordance/ölçekleme: `docs/REVIZE-BACKLOG.md`.
+- Showcase sayfaları (Crew OS [route `/bunker-os`], Alpfit) `PageHeader` + `LivingFlow` desenini paylaşır.
+- **v0.1 revize işi (R1–R4) bu modülde** (PRD reframe: cerrahi/ana-sayfa) — yapısal: Nasıl Çalışır 4 adım (R1), Sektörler gym paneli (R2); ses: Crew OS teyidi (R3), dürüstlük taraması + hero ikincil CTA (R4). Kaynak: `_dev/PRD/features/`. Ertelenenler (görsel cila A1/A3, Living Flow kapsamı, test): `docs/REVIZE-BACKLOG.md`.
 
 ---
 
-**Son Güncelleme:** 2026-06-27
+**Son Güncelleme:** 2026-06-28 — kickoff-docs: PRD v0.1 kararları aktarıldı (R1–R4); taksonomi netleştirildi (Crew OS public / route `/bunker-os`).

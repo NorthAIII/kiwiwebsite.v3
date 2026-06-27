@@ -1,6 +1,6 @@
 # DURUM — Proje Dashboard
 
-**Son Güncelleme:** 2026-06-27 — map-codebase tamamlandı: mevcut kodbaz analiz edildi, `_dev/` yapısı `revize/devflow-kurulum` branch'inde oluşturuldu.
+**Son Güncelleme:** 2026-06-28 — kickoff-docs: PRD kararları dokümanlara işlendi (taksonomi, v0.1 R1–R4, tek içerik fazı); aktif versiyon v0.1.
 
 <!-- KURAL: Bu satır her oturum sonunda ÜZERİNE YAZILIR — tek satır, tek cümle. "Önceki:" / "Eski:" prefix ile kümülatif yığma YASAK; HTML comment'e sarma da yasak (CLAUDE.md → Doküman Disiplini). Tarih + kısa özet yeterli; detay için git log + ilgili PHASE/TASK dokümanları. -->
 
@@ -8,9 +8,9 @@
 
 ## Aktif Faz
 
-**Faz:** — (henüz faz girilmedi)
+**Faz:** — (henüz faz girilmedi — tek v0.1 içerik fazı discuss-phase'de numara alacak)
 **Milestone:** —
-**Adım:** Kurulum tamamlandı → sıradaki: `/devflow:prd`
+**Adım:** Kickoff dokümanları oluşturuldu → sıradaki: `/devflow:kickoff-verify` (CLAUDE.md doğar), sonra `/devflow:discuss-phase`
 **İlerleme:** 0/0 task
 **Faz Dokümanı:** —
 
@@ -18,8 +18,8 @@
 
 ## Aktif Versiyon
 
-**Versiyon:** v3 (mevcut canlı site) — güçlü revize başlangıcı
-**Hedef:** kiwiailab.com güçlü revize (görsel/tasarım, içerik/mesaj, yapı & yeni bölümler, teknik/performans)
+**Versiyon:** v0.1 — Ana sayfa TR içerik & ses revizesi (güçlü revizenin ilk versiyonu; baz: v3 canlı)
+**Hedef:** Nasıl Çalışır 4 adım (R1) + Sektörler gym paneli tek-otomasyona (R2) + dürüstlük taraması (R4/F5) + hero ikincil CTA (R4/F6) ana sayfada tamam; marka sesi tutarlı; TR tek kaynak (çeviri versiyon-sınırına ertelendi)
 **Versiyon Sonu Durumu:** içerik_fazları
 
 <!-- Versiyon geçişlerinde güncellenir. discuss-phase versiyon sonu tespitinde bu alanı okur. -->
@@ -66,8 +66,9 @@ _(Henüz tamamlanmış task yok.)_
 **Aktif Task:** —
 **Aktif Faz:** —
 **Task Sistemi:** `tasks/TASKS-README.md`
+**PRD (karar kaynağı):** `PRD/VIZYON.md` · `PRD/VERSIONS.md` · `PRD/features/`
 **Revize Backlog (bilinen sorunlar):** `docs/REVIZE-BACKLOG.md`
 
 ---
 
-**Son Güncelleme:** 2026-06-27 — map-codebase tamamlandı: mevcut kodbaz analiz edildi, `_dev/` yapısı `revize/devflow-kurulum` branch'inde oluşturuldu.
+**Son Güncelleme:** 2026-06-28 — kickoff-docs: PRD kararları dokümanlara işlendi (taksonomi, v0.1 R1–R4, tek içerik fazı); aktif versiyon v0.1.

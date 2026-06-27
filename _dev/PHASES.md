@@ -34,12 +34,9 @@ Faz numaraları **global, sürekli ve append-only**'dir — versiyon değişse b
 
 > Yaklaşan faz konuları — **numarasız**. Faza girildiğinde (discuss-phase) buradan çıkar, numara (mevcut en büyük faz no + 1) alıp Faz Durumu tablosuna 🔄 olarak geçer. Aşağıdakiler güçlü revize için aday konulardır; kesin kapsam ve sıra PRD/discuss-phase'de netleşir.
 
-- Kopya & mesaj revizyonu (içerik) — Milestone: ana sayfa + alt sayfa kopyaları yeniden yazıldı, marka sesine oturdu, 5 dil senkron
-- "Nasıl çalışır" bölümü yeniden yapısı (3→4 adım) — Milestone: Analiz/Tespit örtüşmesi giderildi (ör. Analiz·Çözüm·Otomasyon·Raporlama), açıklamalar zenginleştirildi
-- Sektörler bölümü derinleştirme — Milestone: her sektör için özgün, tekrara düşmeyen, doyurucu içerik
-- Bunker (Crew OS) bölümü içerik düzeltmesi — Milestone: Alpfit karışıklığı giderildi, doğru Crew OS içeriği
-- Görsel cila & etkileşim düzeltmeleri — Milestone: logo hizalama + CTA kartı affordance/ölçekleme + Living Flow kapsamı kararı uygulandı
-- Test altyapısı kurulumu (teknik) — Milestone: temel test altyapısı + ilk smoke testler çalışıyor
+- **v0.1 — Ana sayfa TR içerik & ses revizesi** — Milestone: F1 (Nasıl Çalışır 4 adım: Analiz·Çözüm·Otomasyon·Raporlama, yeni `report` i18n anahtarı) + F2 (gym paneli özellik listesinden tek-otomasyon desenine) + F5 (dürüstlük taraması: sonuç-imalı her metin "öngörü/örnek" çerçevesinde tutarlı) + F6 (hero ikincil CTA net etiket) ana sayfada tamam; marka sesi tutarlı; TR tek kaynak (EN/AR/DE/ES çevirisi versiyon-sınırına ertelendi)
+
+> _Not (kickoff-docs): Buradaki tek v0.1 fazı, map-codebase'in 6 maddelik listesinin yerini aldı — o liste prd-refine reframe'inden önceydi (kopya zaten güçlü → cerrahi/ana-sayfa; görsel cila + test v0.1 dışına, sonraki versiyon adaylarına alındı — bkz. PRD/VERSIONS.md "Sıradaki Versiyonlar")._
 
 <!-- KURAL: Bu liste YAKIN ufku tutar (örn. aktif versiyonun kalan fazları), uzak gelecek değil — uzak ileriye dönük plan PRD/VERSIONS.md'dedir. Numara YAZMA (numara faza girince damgalanır). Bir konu faza girince bu listeden silinir (mezuniyet — soft delete yasak: HTML comment/üstü çizili/"Önceki:" prefix yok). -->
 <!-- NOT: VERSIONS.md feature→versiyon haritasını tekrar etme; burada faz konusu (geliştirme birimi) + milestone tutulur, feature listesi değil. -->
@@ -71,6 +68,6 @@ Faz numaraları **global, sürekli ve append-only**'dir — versiyon değişse b
 
 ---
 
-**Son Güncelleme:** 2026-06-27 — map-codebase: fazlar henüz girilmedi; güçlü revize aday konuları Sıradaki Fazlar'a yazıldı.
+**Son Güncelleme:** 2026-06-28 — kickoff-docs: Sıradaki Fazlar tek v0.1 içerik fazıyla değiştirildi (prd-refine reframe). Henüz faz girilmedi; numara discuss-phase'de damgalanacak.
 
 <!-- KURAL: Bu satır her güncellemede ÜZERİNE YAZILIR. "Önceki:" prefix ile kümülatif yığma YASAK (CLAUDE.md → Doküman Disiplini). -->
