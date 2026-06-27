@@ -9,6 +9,23 @@
 
 <!-- Her yeni karar aşağıdaki formatta en üste eklenir (en yeni en üstte) -->
 
+### 2026-06-28 — i18n anahtar-adı değişimi "stale kopya" istisnasının dışındadır (5 dil zorunlu)
+
+**Bağlam:** Faz 1 R1'de "Nasıl Çalışır" 3→4 adıma çıkarken discuss kararı **semantik rename** (anahtarlar `listen/find/automate` → `analyze/design/automate/report`). research-phase'de bileşenin anahtarı *adıyla* okuduğu doğrulandı (`HowItWorks.tsx:15` sabit dizi). Dil stratejisi (2026-06-27 kararı) "TR tek kaynak, çeviri versiyon-sınırında; stale kopya geçici kabul" diyor. Soru: rename de "stale kopya" kapsamında mı (yani non-TR ertelenebilir mi)?
+
+**Seçenekler:**
+1. Cerrahi: rename'i 5 dile uygula; eşleşen adımları mevcut çevirilerden stale-kopya taşı; yalnız sıfırdan-yeni adımı ("Çözüm") non-TR'de şimdi çevir.
+2. Tam senkron: 4 adımı 5 dilde şimdi düzgün çevir (versiyon-sınırını R1 için esnetir).
+3. Katı versiyon-sınırı: rename + yeni slota non-TR'de geçici TR metni (non-TR ana sayfada Türkçe adım görünür).
+
+**Karar:** Seçenek 1 — **Cerrahi.**
+
+**Gerekçe:** Anahtar *adı* değişimi, "aynı anahtar / eski değer = stale kopya" tanımının dışındadır: eski ad silinince o dilde **eksik anahtar = runtime boşluk/hata** doğar (pazarlık-dışı yasak). Dolayısıyla rename mekanik olarak 5 dilin de dokunmasını zorunlu kılar — versiyon-sınırı ertelemesi burada uygulanamaz. Değer tarafında erteleme korunur: eşleşen adımlar stale çeviriyle taşınır, yalnız karşılığı hiç olmayan tek yeni slot ("Çözüm") çevrilir (craft: non-TR flagship'te Türkçe-metin sızıntısı yok). **Genel ilke (çapraz-faz):** gelecekte her i18n anahtar yeniden-adlandırması/yapısal değişimi 5 dili eşzamanlı dokunmayı gerektirir; yalnız *değer* değişimi versiyon-sınırına ertelenebilir.
+
+**İlgili Task/Faz:** research-phase (Faz 1 / v0.1)
+
+---
+
 ### 2026-06-28 — "● online/canlı" yasağı niyet-bazlı yorumlanır (dürüst canlı gösterge serbest)
 
 **Bağlam:** prd-refine'da bölüm-bölüm kopya analizinde, Hero stat şeridinde (Alpfit "Şu an canlı" + nabız atan yeşil nokta) ve Sektörler gym panelinde ("Canlı — Alpfit" + animate-pulse nokta) **gerçek nabız atan canlı noktaları** bulundu. ILKELER/VIZYON ise pazarlık-dışı yasaklar arasında *"● online/canlı noktası yok"* diyor. Literal okunursa bu dürüst göstergeler de kalkmalı. Gerilim sessizce çözülmedi, kullanıcıya getirildi.

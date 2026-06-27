@@ -58,20 +58,46 @@
 
 ## Araştırma Bulguları
 
-> Bu bölüm `/devflow:research-phase` oturumunda doldurulur.
+> Bu bölüm `/devflow:research-phase` oturumunda dolduruldu (2026-06-28). Tüm bulgular kaynak koda dayandırıldı (HowItWorks/SectorSolutions/Hero/Forum/Bunker + `messages/*.json`, 5 dil paralellik kontrolü). Karar gerektiren 2 nokta kullanıcıya soruldu (R1 i18n doldurma → **Cerrahi**; F5 kapsamı → **Doğrulama checkpoint**).
+>
+> **Net sonuç:** Fazın gerçek kod/içerik iş yükü = **R1** (tek component değişikliği + i18n restructure) + **R2** (gym i18n metni) + **F6** (hero CTA metni). **R3 ve F5 = doğrulama checkpoint'leri** (kod yok). PRD'nin öngördüğünden daha dar ve net.
 
 ### Değerlendirilen Yaklaşımlar
-- [Yaklaşım 1]: [Açıklama, artılar, eksiler]
-- **Seçilen:** [Hangisi ve neden]
+
+**R1 — i18n anahtar stratejisi (3→4 adım restructure):**
+- **Yaklaşım A — Semantik rename (discuss kararı):** anahtarlar yeni semantiğe göre yeniden adlandırılır (aday: `analyze`/`design`/`automate`/`report`). **Artı:** anahtar adı ↔ içerik tutarlı, yanıltıcı `find`="Çözüm" kalıntısı yok (bakım/kalıcılık — ILKELER, QUALITY §5). **Eksi:** component anahtarı *adıyla* okuduğundan **5 dilin de dokunması zorunlu** (non-TR'de eski anahtar → eksik anahtar → runtime boşluk/hata; "stale kopya" kuralı anahtar-adı değişiminde geçmez).
+- **Yaklaşım B — Minimal (legacy ad koru, yalnız 4. anahtar ekle):** `listen`/`find`/`automate` kalır, `report` eklenir. **Artı:** en küçük 5-dil ayak izi. **Eksi:** `find` artık "Çözüm" içeriği taşıyacağından anahtar adı aktif yanıltıcı (drift, kalıcılık ihlali). **Reddedildi** (discuss).
+- **Seçilen: A.** Non-TR doldurma (kullanıcı kararı 2026-06-28): **Cerrahi** — 5 dilde anahtarları rename et; eşleşen 3 adımı (Analiz←`listen`, Otomasyon←`automate`, Raporlama←`automate`'in ölçüm kuyruğu — 5 dilde zaten çevrili) mevcut çevirilerden **stale-kopya** olarak taşı; **yalnız yeni "Çözüm" adımını** non-TR'de şimdi çevir (kaçınılmaz tek yeni çeviri). Versiyon-sınırı politikasını maksimum korur.
+
+**R2 — gym gövde değişimi yüzeyi (discuss açık sorusu çözüldü):**
+- **Bulgu: saf i18n.** [SectorSolutions.tsx](../../src/components/SectorSolutions.tsx) panel sol tarafı (`name`/`automation`/`body`, satır 85-114) tüm sektörler için tek jenerik render yolu; gym-özel dallar (`PAGES`→"Uygulamayı incele", "Canlı—Alpfit" rozeti satır 118-126, "Canlı ürünü gör" linki satır 139-148) gövde metninden bağımsız ve discuss kararınca korunuyor. **Seçilen:** component'e dokunmadan yalnız `sectors.items.gyms.automation` + `.body` TR metin değişimi.
+
+**F5 — dürüstlük kapsamı (ana sayfa):**
+- **Bulgu:** PRD'nin saydığı ihlaller (`forum.articles.one/two` — "…2 günden 10 dakikaya **indirdik**" / "no-show'u **yarıya düşürdük**") ve şemsiye `proof.note` ana sayfada **render EDİLMİYOR** (ölü anahtar — `src/`de tüketim yok). Render edilen tek sayı-imalı metin: `forum.featured.excerpt` "110.000$+" (sektör/pazar çerçevesi, "vaat ediyor" der — Kiwi müşteri sonucu değil) + "7/24" yetenek tanımı. Ana sayfa F5 riski **düşük**.
+- **Seçilen (kullanıcı 2026-06-28): doğrulama checkpoint** — kod-suz; ana sayfada uydurma müşteri-sonucu okunan metin olmadığını teyit et. Ölü anahtarlara dokunma (v0.1-dışı hijyen notu).
 
 ### Kullanılacak Araçlar/Kütüphaneler
-- [Araç 1]: [Versiyon, ne için]
+- **Yeni bağımlılık YOK.** Tüm iş mevcut stack ile: next-intl (`useTranslations`), mevcut GSAP/ScrollTrigger (HowItWorks bağlayıcı), Tailwind v4 grid utility'leri. Değişen yüzey: içerik (`messages/*.json`) + tek component düzeni (`HowItWorks.tsx`).
 
 ### Dikkat Edilecekler
-- [Tuzak/Risk 1]: [Nasıl kaçınılacak]
+
+> Precondition tanımlayıcıları + kaynak (repoda-tanımlı→site / yeni / dış). Research kaydeder, verify-plan doğrular.
+
+- **5-dil eksik-anahtar tuzağı (R1):** rename sonrası 5 dilde de yeni anahtar seti tam olmalı; biri eksikse o dilde runtime boşluk/hata. Anahtarlar `how.steps.{analyze,design,automate,report}.{n,title,body}` → **yeni adlandırma** (mevcut `listen/find/automate` repoda-tanımlı: `messages/{tr,en,ar,de,es}.json`; tüketim `src/components/HowItWorks.tsx:15`). Doğrulandı: 5 dilde `listen/find/automate` var, `report` hiçbirinde yok.
+- **HowItWorks layout/connector (R1 craft):** grid `sm:grid-cols-3` (`src/components/HowItWorks.tsx:75`) → 4-sütun responsive; dekoratif bağlayıcı SVG path (`src/components/HowItWorks.tsx:65-72`) 3 düğüm için çizili → 4 düğüme göre hizalanmalı (aria-hidden ama craft üst eksen). `n` alanına "04" eklenir; reduced-motion guard (satır 24) korunur.
+- **R2 korunan gym dalları:** `PAGES.gyms="/spor-salonu-yazilimi"` (`SectorSolutions.tsx:13`), live rozeti + seeLive linki (satır 118-148) gövde değişiminden ETKİLENMEMELİ. Yalnız `sectors.items.gyms.automation` + `.body` (repoda-tanımlı, `messages/*.json`) değişir; `gyms.flow.*` zaten doğru → dokunulmaz.
+- **F6:** `hero.ctaSecondary` (repoda-tanımlı, `messages/*.json`; tüketim `Hero.tsx:81`). Link hedefi `#sectors` zaten doğru (`Hero.tsx:77`) → yalnız TR metin değişir, non-TR stale kabul.
+- **R3 doğrulama:** `bunker.{title,body,points,flows}` (repoda-tanımlı, `messages/*.json`; tüketim `Bunker.tsx`) → değişiklik yok, F5 taramasında teyit.
+- **Ölü anahtarlar (v0.1-dışı hijyen):** `forum.articles.{one..four}`, `proof.{label,note}` (repoda-tanımlı ama render edilmiyor). Dokunulmaz; ileride `forum.articles` render edilirse başlıkları (R/sonuç iması) F5 düzeltmesi gerektirir.
+- **Versiyon-sınırı ayrımı:** R1 = anahtar *adı* değişimi → 5 dil zorunlu (eksik anahtar yasak). R2/F6 = aynı anahtar, değişen *değer* → non-TR stale-kopya kabul (yalnız TR güncellenir).
 
 ### Teknik Kararlar
-- [Karar 1]: [Gerekçe]
+- **R1: semantik rename + cerrahi non-TR doldurma.** Final anahtar adları plan/execution'da kesinleşir (aday: `analyze/design/automate/report`). İçerik haritası: Analiz←`listen`(+`find` eritilir), Çözüm=sıfırdan yeni, Otomasyon←`automate` (ölçüm kuyruğu hariç), Raporlama←`automate`'in ölçüm kuyruğu.
+- **R1 yalnız `HowItWorks.tsx` değişir** (adım dizisi satır 15 + grid satır 75 + connector satır 65-72); başka component yok.
+- **R2 = saf i18n** (`SectorSolutions.tsx` değişmez).
+- **R3 + F5 = doğrulama checkpoint** (kod yok); F5 ana sayfa riski düşük (ölü anahtar bulgusu, kullanıcı onayı).
+- **F6 = tek i18n metin değişimi** (`Hero.tsx` değişmez).
+- **Yeni bağımlılık yok.**
 
 ---
 
@@ -142,4 +168,4 @@
 ---
 
 **Oluşturulma:** 2026-06-28
-**Son Güncelleme:** 2026-06-28 — discuss-phase: kapsam tartışması tamamlandı (R1–R4 kararları, F5/F6 + i18n stratejisi).
+**Son Güncelleme:** 2026-06-28 — research-phase: araştırma bulguları yazıldı (R2 saf-i18n, R1 cerrahi rename, F5 checkpoint; kararlar koda dayandırıldı).
