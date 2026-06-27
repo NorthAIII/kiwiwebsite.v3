@@ -1,6 +1,6 @@
 # DURUM — Proje Dashboard
 
-**Son Güncelleme:** 2026-06-28 — kickoff-verify: kickoff tamamlandı (CLAUDE.md oluştu); Aktif Faz 1 set edildi (giriş bekliyor, Adım: discuss).
+**Son Güncelleme:** 2026-06-28 — discuss-phase: Faz 1 kapsamı tartışıldı, `phases/PHASE-1.md` oluştu; Adım research'e geçti.
 
 <!-- KURAL: Bu satır her oturum sonunda ÜZERİNE YAZILIR — tek satır, tek cümle. "Önceki:" / "Eski:" prefix ile kümülatif yığma YASAK; HTML comment'e sarma da yasak (CLAUDE.md → Doküman Disiplini). Tarih + kısa özet yeterli; detay için git log + ilgili PHASE/TASK dokümanları. -->
 
@@ -8,11 +8,11 @@
 
 ## Aktif Faz
 
-**Faz:** 1 — Ana sayfa TR içerik & ses revizesi (geçici ad — discuss-phase kesinleştirir; numara = Faz Durumu tablosu boş → max+1 = 1)
+**Faz:** 1 — Ana sayfa TR içerik & ses revizesi
 **Milestone:** v0.1 ana sayfa içerik & ses: R1 Nasıl Çalışır 4 adım (Analiz·Çözüm·Otomasyon·Raporlama) + R2 gym paneli tek-otomasyona + F5 dürüstlük taraması + F6 hero ikincil CTA; TR tek kaynak
-**Adım:** discuss → `/devflow:discuss-phase 1`
-**İlerleme:** 0/0 task (faz henüz girilmedi — discuss-phase faz dokümanını ve task'leri oluşturur)
-**Faz Dokümanı:** — (discuss-phase'de `phases/PHASE-1.md` oluşturulacak)
+**Adım:** research → `/devflow:research-phase 1`
+**İlerleme:** 0/0 task (kapsam tartışıldı; task'ler plan-phase'de üretilecek)
+**Faz Dokümanı:** `phases/PHASE-1.md`
 
 ---
 
@@ -39,7 +39,7 @@
 
 | # | Task | Durum |
 |---|------|-------|
-| — | Faz 1 girişi bekliyor (discuss-phase task'leri üretecek) | — |
+| — | Task'ler plan-phase'de üretilecek (Adım: research) | — |
 
 **Durum Kodları:** ⬜ Bekliyor | 🔄 Devam ediyor | ⏸️ Duraklatıldı | ✅ Tamamlandı | 🔴 Bloke | ❌ İptal
 
@@ -64,11 +64,11 @@ _(Henüz tamamlanmış task yok.)_
 ## Hızlı Erişim
 
 **Aktif Task:** —
-**Aktif Faz:** 1 (giriş bekliyor → `/devflow:discuss-phase 1`)
+**Aktif Faz:** 1 (Adım: research → `/devflow:research-phase 1`)
 **Task Sistemi:** `tasks/TASKS-README.md`
 **PRD (karar kaynağı):** `PRD/VIZYON.md` · `PRD/VERSIONS.md` · `PRD/features/`
 **Revize Backlog (bilinen sorunlar):** `docs/REVIZE-BACKLOG.md`
 
 ---
 
-**Son Güncelleme:** 2026-06-28 — kickoff-verify: kickoff tamamlandı (CLAUDE.md oluştu); Aktif Faz 1 set edildi (giriş bekliyor, Adım: discuss).
+**Son Güncelleme:** 2026-06-28 — discuss-phase: Faz 1 kapsamı tartışıldı, `phases/PHASE-1.md` oluştu; Adım research'e geçti.
