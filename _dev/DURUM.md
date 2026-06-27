@@ -1,6 +1,6 @@
 # DURUM — Proje Dashboard
 
-**Son Güncelleme:** 2026-06-28 — run-task: TASK-1.01 tamam (R1 — Nasıl Çalışır 4 adıma: 5-dil i18n restructure + HowItWorks 4-sütun/bağlayıcı; build temiz, 5 locale 4 kart render, AR RTL OK); İlerleme 1/3, sıradaki TASK-1.02.
+**Son Güncelleme:** 2026-06-28 — run-task: TASK-1.02 tamam (R2 — gym paneli tek-otomasyona: `sectors.gyms.automation/.body` TR "Kaçan üyeyi geri kazanma" anlatısı; saf i18n, component+korunan dallar dokunulmadı; build temiz, TR render + AR stale teyit); İlerleme 2/3, sıradaki TASK-1.03.
 
 <!-- KURAL: Bu satır her oturum sonunda ÜZERİNE YAZILIR — tek satır, tek cümle. "Önceki:" / "Eski:" prefix ile kümülatif yığma YASAK; HTML comment'e sarma da yasak (CLAUDE.md → Doküman Disiplini). Tarih + kısa özet yeterli; detay için git log + ilgili PHASE/TASK dokümanları. -->
 
@@ -11,7 +11,7 @@
 **Faz:** 1 — Ana sayfa TR içerik & ses revizesi
 **Milestone:** v0.1 ana sayfa içerik & ses: R1 Nasıl Çalışır 4 adım (Analiz·Çözüm·Otomasyon·Raporlama) + R2 gym paneli tek-otomasyona + F5 dürüstlük taraması + F6 hero ikincil CTA; TR tek kaynak
 **Adım:** task → `/devflow:run-task`
-**İlerleme:** 1/3 task (TASK-1.01 ✅; sıradaki TASK-1.02)
+**İlerleme:** 2/3 task (TASK-1.01 ✅, TASK-1.02 ✅; sıradaki TASK-1.03)
 **Faz Dokümanı:** `phases/PHASE-1.md`
 
 ---
@@ -29,9 +29,9 @@
 
 ## Aktif Task
 
-**Task:** TASK-1.02 — R2 Sektörler gym paneli tek-otomasyona (TR i18n) — `tasks/TASK-1.02.md`
+**Task:** TASK-1.03 — R4 Ana sayfa ses & dürüstlük (F6 hero ikincil CTA + F5 dürüstlük taraması + R3 Crew OS teyidi) — `tasks/TASK-1.03.md`
 **Durum:** ⬜ Bekliyor (run-task ile başlanır)
-**İlerleme:** TASK-1.01 tamamlandı; sıradaki adım TASK-1.02 çalıştırma
+**İlerleme:** TASK-1.01 + TASK-1.02 tamamlandı; sıradaki adım TASK-1.03 çalıştırma
 
 ---
 
@@ -40,7 +40,7 @@
 | # | Task | Durum |
 |---|------|-------|
 | 1.01 | R1 — Nasıl Çalışır 3→4 adım (component + 5-dil i18n) | ✅ Tamamlandı |
-| 1.02 | R2 — Sektörler gym paneli tek-otomasyona (TR i18n) | ⬜ Bekliyor |
+| 1.02 | R2 — Sektörler gym paneli tek-otomasyona (TR i18n) | ✅ Tamamlandı |
 | 1.03 | R4 — Ana sayfa ses & dürüstlük (F6 + F5/R3 checkpoint) | ⬜ Bekliyor |
 
 **Durum Kodları:** ⬜ Bekliyor | 🔄 Devam ediyor | ⏸️ Duraklatıldı | ✅ Tamamlandı | 🔴 Bloke | ❌ İptal
@@ -50,6 +50,11 @@
 ## Son Task Özetleri
 
 > **KURAL:** Sadece son 2 task özeti tutulur, daha eskileri **gerçekten silinir** (HTML comment'e sarma, "Önceki:" prefix, üstü çizili etiket yasak — detay için git log + arşivlenmiş task dokümanı). Her özet kısa formatlı: paragraf yasak, **bullet zorunlu**, "Özet" alanı max 3 bullet.
+
+**TASK-1.02 — R2 Sektörler gym paneli tek-otomasyona** (✅ 2026-06-28)
+- `sectors.items.gyms.automation` "Spor Salonu Yönetim Yazılımı" → "Kaçan üyeyi geri kazanma"; `.body` özellik-listesi → tek-otomasyon anlatısı (`gyms.flow` ile tutarlı, 181 char).
+- Saf i18n (yalnız TR); `SectorSolutions.tsx` + korunan dallar (live rozeti, flow, seeLive/viewApp CTA, `/spor-salonu-yazilimi`) dokunulmadı; non-TR stale-kopya (versiyon-sınırı).
+- Build temiz; TR render (curl) + Playwright snapshot/screenshot teyit, AR stale-kopya doğru çalışıyor.
 
 **TASK-1.01 — R1 Nasıl Çalışır 3→4 adım** (✅ 2026-06-28)
 - `how` namespace 5 dilde `analyze`/`design`/`automate`/`report`'a yeniden adlandırıldı (atomik, tek commit); `listen`/`find` silindi, eksik anahtar yok.
@@ -68,7 +73,7 @@
 
 ## Hızlı Erişim
 
-**Aktif Task:** TASK-1.02 (`tasks/TASK-1.02.md`)
+**Aktif Task:** TASK-1.03 (`tasks/TASK-1.03.md`)
 **Aktif Faz:** 1 (Adım: task → `/devflow:run-task`)
 **Task Sistemi:** `tasks/TASKS-README.md`
 **PRD (karar kaynağı):** `PRD/VIZYON.md` · `PRD/VERSIONS.md` · `PRD/features/`
@@ -76,4 +81,4 @@
 
 ---
 
-**Son Güncelleme:** 2026-06-28 — run-task: TASK-1.01 tamam (R1 — Nasıl Çalışır 4 adıma: 5-dil i18n restructure + HowItWorks 4-sütun/bağlayıcı; build temiz, 5 locale 4 kart render, AR RTL OK); İlerleme 1/3, sıradaki TASK-1.02.
+**Son Güncelleme:** 2026-06-28 — run-task: TASK-1.02 tamam (R2 — gym paneli tek-otomasyona: `sectors.gyms.automation/.body` TR "Kaçan üyeyi geri kazanma" anlatısı; saf i18n, component+korunan dallar dokunulmadı; build temiz, TR render + AR stale teyit); İlerleme 2/3, sıradaki TASK-1.03.

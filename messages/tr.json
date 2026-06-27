@@ -71,8 +71,8 @@
     "items": {
       "gyms": {
         "name": "Spor salonları",
-        "automation": "Spor Salonu Yönetim Yazılımı",
-        "body": "Üyelik, ödeme, yoklama, ders ve PT takvimi, otomatik hatırlatma ve kaçan üye geri kazanımı — hepsi tek panelde. Kapsamlı, sektöre özel yönetim yazılımı.",
+        "automation": "Kaçan üyeyi geri kazanma",
+        "body": "Bir üye sessizce uzaklaşmaya başladığında fark edilir; durumuna uygun kişisel bir teklif ve PT randevusu WhatsApp’tan iletilir — geri kazanım şansa bırakılmaz, tek tek takip edilir.",
         "flow": {
           "trigger": "Bir üye 30 gündür giriş yapmadı",
           "action": "Kişisel bir teklif ve PT randevusu WhatsApp’tan gider",

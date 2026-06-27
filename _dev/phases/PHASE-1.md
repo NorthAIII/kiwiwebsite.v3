@@ -110,7 +110,7 @@
 | # | Task | Durum | Açıklama |
 |---|------|-------|----------|
 | 1.01 | TASK-1.01 | ✅ Tamamlandı | R1 — Nasıl Çalışır 3→4 adım (Analiz·Çözüm·Otomasyon·Raporlama): `HowItWorks.tsx` + 5-dil i18n restructure (atomik) |
-| 1.02 | TASK-1.02 | ⬜ Bekliyor | R2 — Sektörler gym paneli tek-otomasyona (`sectors.items.gyms.automation`+`.body` TR; saf i18n, component dokunulmaz) |
+| 1.02 | TASK-1.02 | ✅ Tamamlandı | R2 — Sektörler gym paneli tek-otomasyona (`sectors.items.gyms.automation`+`.body` TR; saf i18n, component dokunulmaz) |
 | 1.03 | TASK-1.03 | ⬜ Bekliyor | R4 — Ana sayfa ses & dürüstlük: F6 hero ikincil CTA (TR) + F5 dürüstlük taraması + R3 Crew OS teyidi (doğrulama checkpoint) |
 
 **Durum simgeleri:** ⬜ Bekliyor | 🔄 Devam ediyor | ⏸️ Duraklatıldı | ✅ Tamamlandı | 🔴 Bloke | ❌ İptal
