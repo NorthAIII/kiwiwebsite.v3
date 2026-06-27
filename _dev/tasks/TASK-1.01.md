@@ -56,8 +56,9 @@ Versiyon-sınırı politikası gereği nihai çeviri ertelenmiştir; ama R1 bir 
   - Her dilde anahtar setini `{analyze, design, automate, report}` yap (her biri `{n, title, body}`).
   - **Stale-kopya** (eski metin, versiyon-sınırında çevrilecek):
     - `analyze` ← o dilin mevcut `listen` çevirisi
-    - `automate` ← o dilin mevcut `automate` çevirisi
-    - `report` ← o dilin mevcut `automate` çevirisindeki ölçüm cümlesi (zaten çevrili)
+    - `automate` ← o dilin mevcut `automate` çevirisinin **ölçüm cümlesi (em-dash sonrası) çıkarılmış hali** — yalnız otomasyon cümlesi kalır (TR ile paralel; deletion-only, yeni çeviri değil)
+    - `report` ← o dilin mevcut `automate` çevirisindeki ölçüm cümlesi (em-dash sonrası, zaten çevrili)
+  - **Tekrar önleme (kritik):** Mevcut non-TR `automate` gövdesi tek cümlede `[otomasyon] — [ölçüm]` taşır; tam çeviri `automate`+`report`'a **bölünür** (kopyalanmaz). Aksi halde non-TR'de 03 Otomasyon ve 04 Raporlama aynı ölçüm cümlesini gösterir — R1 "örtüşmesiz adım" amacına aykırı. (TR'de Alt Görev 1 zaten kuyruğu çıkarıyor; non-TR de paralel olmalı.)
   - **Şimdi çevrilecek (kaçınılmaz tek yeni):** `design` (Çözüm) — 4 dilde de gerçek çeviri (TR taslağından).
   - `how.title`: sayı sözcüğü 4'e güncellenir (four/أربع/vier/cuatro) — gövde çevirileri stale kalır (craft: 4 kart üstünde "üç adım" başlığı tutarsızlığını önle, → Karar Noktaları).
   - Eski `listen`/`find` anahtarları 4 dilde de silinir.
@@ -114,7 +115,7 @@ messages/
 - [ ] `next build` temiz geçer (TypeScript strict + i18n yükleme hatası yok).
 - [ ] 5 dilde `how.steps` anahtar seti tam: `{analyze, design, automate, report}` × `{n, title, body}`; eski `listen`/`find` hiçbir dilde kalmadı.
 - [ ] Ana sayfa (TR `/`) "Nasıl Çalışır" bölümü **4 kart** render eder: 01 Analiz · 02 Çözüm · 03 Otomasyon · 04 Raporlama; başlık "Dört adım…".
-- [ ] Diğer 4 dilde (`/en`, `/ar`, `/de`, `/es`) bölüm 4 kart render eder, boş/eksik metin yok (stale kabul, eksik yasak); `design` adımı o dilde çevrilmiş görünür.
+- [ ] Diğer 4 dilde (`/en`, `/ar`, `/de`, `/es`) bölüm 4 kart render eder, boş/eksik metin yok (stale kabul, eksik yasak); `design` adımı o dilde çevrilmiş görünür; **03 Otomasyon ve 04 Raporlama ölçüm cümlesini tekrar etmez** (automate bölündü, kopyalanmadı).
 - [ ] Grid 4 adımı bozulmadan dizer (mobil/tablet/masaüstü); bağlayıcı SVG masaüstünde 4 düğümle hizalı.
 - [ ] `prefers-reduced-motion: reduce`'da bağlayıcı animasyonu çalışmaz, içerik statik okunur kalır.
 - [ ] AR'de (`/ar`) bölüm RTL'de tutarlı (4 kart, okunabilir).
