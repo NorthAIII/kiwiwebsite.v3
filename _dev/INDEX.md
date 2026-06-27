@@ -13,6 +13,7 @@
 
 ### Temel Dokümanlar (Her Oturum Başında OKU)
 
+0. **`/CLAUDE.md`** (repo kökünde, `_dev/` dışında) — Claude Code talimatları: oturum başlangıç protokolü, doküman disiplini, projeye özgü kurallar, commit convention. Protokol her oturumun ilk kapısıdır.
 1. **OVERVIEW.md** — Proje kimliği, stack, amaç, kapsam
 2. **INDEX.md** — Bu dosya (navigasyon haritası)
 3. **DURUM.md** — Dashboard (aktif faz, aktif task, son ilerleme)
@@ -145,7 +146,7 @@
 
 ```
 kiwiwebsite.v3/
-├── CLAUDE.md ⭐ (repo kökünde — kickoff-verify'da oluşacak)
+├── CLAUDE.md ⭐ (repo kökünde — Claude Code talimatları; oturum başlangıç protokolü)
 │
 └── _dev/
     ├── OVERVIEW.md ⭐
@@ -177,7 +178,8 @@ kiwiwebsite.v3/
     │
     └── docs/
         ├── DECISIONS.md
-        └── REVIZE-BACKLOG.md
+        ├── REVIZE-BACKLOG.md
+        └── UMAMI-ANALYTICS.md
 ```
 
 ---
@@ -190,7 +192,7 @@ kiwiwebsite.v3/
 
 ---
 
-**Son Güncelleme:** 2026-06-28 — kickoff-docs: PRD/ içerik dokümanları (VIZYON, VERSIONS, 4 feature, SESSION-NOTES) INDEX'e eklendi.
+**Son Güncelleme:** 2026-06-28 — kickoff-verify: CLAUDE.md (repo kökü) Temel Dokümanlar'a + ağaca eklendi; docs/UMAMI-ANALYTICS ağaca eklendi.
 
 <!-- KURAL: Bu satır her güncellemede ÜZERİNE YAZILIR. "Önceki:" prefix ile kümülatif yığma YASAK (CLAUDE.md → Doküman Disiplini). -->
 <!-- KURAL: Tamamlanmış fazların task arşiv listesini INDEX'e ekleme — `ls _dev/tasks/archive/` zaten görür. INDEX yalnızca aktif klasör konumlarını gösterir; statik liste dokümanı değildir. -->

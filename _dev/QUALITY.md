@@ -80,7 +80,7 @@ Aşağıdaki eksenler bu proje (çok dilli, immersive tanıtım sitesi) için iz
 - **Çıkarılan/hafifletilen eksenler:** Veritabanı/N+1, çok-kullanıcılı ölçeklenebilirlik bu statik site için ilgisiz; "Güvenlik" yalnızca chat API yüzeyiyle sınırlı (hafif tutulur).
 - **Eklenen eksenler:** "Marka & Craft" ve "Yerelleştirme & RTL" bu projenin ayırt edici eksenleridir.
 
-> **Öncelik sıralaması burada değil → `ILKELER.md`:** Bu doküman eksenleri *tanımlar* (ne kontrol edilir). Hangi eksenin öne geçtiği (öncelik) `ILKELER.md` → "En Yüksek Öncelikli Eksenler"de tutulur (henüz konuşulmadı).
+> **Öncelik sıralaması burada değil → `ILKELER.md`:** Bu doküman eksenleri *tanımlar* (ne kontrol edilir). Hangi eksenin öne geçtiği (öncelik) `ILKELER.md` → "En Yüksek Öncelikli Eksenler"de tutulur (1. Marka & Craft üst eksen; perf/a11y korunan taban; yerelleştirme versiyon-sınırı).
 
 ---
 
@@ -103,4 +103,4 @@ Faz review'ı tamamlandığında, kalite kontrol sonuçları ilgili faz doküman
 
 ---
 
-**Son Güncelleme:** 2026-06-27
+**Son Güncelleme:** 2026-06-28 — kickoff-verify: öncelik sıralaması referansı güncellendi (ILKELER "En Yüksek Öncelikli Eksenler" artık dolu — "henüz konuşulmadı" notu kaldırıldı).
