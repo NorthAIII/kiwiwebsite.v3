@@ -140,7 +140,7 @@
 | 3.01 | TASK-3.01 | ✅ Tamamlandı | Kanonik ortam + build-temizliği tabanı (S8-build; prod serve + PID teyit) |
 | 3.02 | TASK-3.02 | ✅ Tamamlandı | S1 giriş/yönlendirme matrisi (curl: 5 locale 200, 308 redirect, derin-link, bilinmeyen-locale gözlem) — bulgu: çıplak `/forum`→404 (sahipli/ertelenmiş, görsel/SEO) |
 | 3.03 | TASK-3.03 | ✅ Tamamlandı | S5 taksonomi & dürüstlük (curl+grep 5 dil render görünür metin): Crew OS 5×7 var / Bunker görünür yüzeyde 0 (iç kalıntı ayrıştırıldı) / yasak metafor 0 / sahte presence 0 / uydurma sonuç 0 (dürüstlük konvansiyonu 5 dilde) — kapsam-içi bug yok |
-| 3.04 | TASK-3.04 | ⬜ Bekliyor | S6 5-dil bütünlük & non-TR tutarlılık (node key-diff + render MISSING_MESSAGE + stale gözlem + RTL) |
+| 3.04 | TASK-3.04 | ✅ Tamamlandı | S6 5-dil bütünlük & non-TR tutarlılık: parite 5 dil × 183 leaf-key 0 eksik/fazla; render MISSING_MESSAGE 0; TD1-senkron 3 kalem (report/gym/CTA) hizalı+çevrili; render TR-leak 0 (non-TR esasen tam çevrili); AR dir=rtl doğru — kapsam-içi bug yok |
 | 3.05 | TASK-3.05 | ⬜ Bekliyor | S2 tam TR yolculuğu (curl link + Playwright CTA/anchor: hero CTA, 4 adım, gym/Alpfit çıkış) |
 | 3.06 | TASK-3.06 | ⬜ Bekliyor | S3 mod kombinasyonları / Living Flow degradasyon (Playwright: tema/reduced/no-WebGL/mobil/RTL-combo/responsive) |
 | 3.07 | TASK-3.07 | ⬜ Bekliyor | S4 kontroller & kalıcılık (Playwright: tema toggle+reload, dil-switcher, klavye-only + focus-visible) |
@@ -205,4 +205,4 @@
 ---
 
 **Oluşturulma:** 2026-06-28
-**Son Güncelleme:** 2026-06-29 — run-task TASK-3.03 ✅ (S5 taksonomi & dürüstlük, 5 dil render görünür metin): Crew OS 5 dil × 7 geçiş; "Bunker" görünür metinde 0 (ham HTML'deki 7 kalıntı = section id / anchor href / `/bunker-os` route / RSC namespace anahtarı `bunker`→değer "Crew OS" — render yüzeyi değil); yasak metafor 0 (medikal + zayıf adım); sahte presence 0 (● 0, online 0); uydurma sonuç 0 (% 0, $110k sektörel kıyas, sektör akışı örnek-işaretli, dürüstlük konvansiyonu 5 dilde mevcut). Kapsam-içi gerçek bug yok; kaynak kod değişmedi. Adım: run-task (TASK-3.04).
+**Son Güncelleme:** 2026-06-29 — run-task TASK-3.04 ✅ (S6 5-dil bütünlük & non-TR tutarlılık): yapısal parite (node key-diff) 5 dil × 183 leaf-key 0 eksik / 0 fazla (183 taban re-teyit); runtime (fresh prod serve) 5 dil home render `MISSING_MESSAGE` 0 (IntlError 0); TD1-senkron 3 kalem (`how.steps.report` / `sectors.items.gyms` [6 sektör parite] / `hero.ctaSecondary`) 5 dilde anahtar-hizalı + tam çevrili; bilinçli-stale tutarlı (kaynak 18/183 birebir-TR değer tamamı meşru marka/sayı/ortak-kelime; render TR-cümle leak 5 dil × 0, pozitif kontrol 3/3 → gerçek stale-leak 0); AR `<html dir="rtl">` doğru, render bütün, physical `left-` util'leri 5 dilde ortak (yön-nötr). Kapsam-içi gerçek bug yok; kaynak kod değişmedi. S3'e gözlem: scroll-progress bar `origin-left` RTL yön-davranışı → TASK-3.06. Adım: run-task (TASK-3.05).
