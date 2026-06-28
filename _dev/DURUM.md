@@ -1,6 +1,6 @@
 # DURUM — Proje Dashboard
 
-**Son Güncelleme:** 2026-06-28 — verify-plan: Faz 2 plan review tamam (3 task doğrulandı, referans gerçeklik-kontrolü temiz; 1 mekanik düzeltme: eksik "Tamamlanma Kriterleri" bölümü 3 task'a eklendi). Adım → task. Sıradaki: `/devflow:run-task` (TASK-2.01).
+**Son Güncelleme:** 2026-06-28 — run-task TASK-2.01 ✅: TD1 non-TR çeviri senkronu (3 kalem × 4 dil = 24 değer; saf değer, 5×197 parite korundu; build temiz; /en /de /es /ar render + /ar RTL teyit). Sıradaki: `/devflow:run-task` (TASK-2.02).
 
 <!-- KURAL: Bu satır her oturum sonunda ÜZERİNE YAZILIR — tek satır, tek cümle. "Önceki:" / "Eski:" prefix ile kümülatif yığma YASAK; HTML comment'e sarma da yasak (CLAUDE.md → Doküman Disiplini). Tarih + kısa özet yeterli; detay için git log + ilgili PHASE/TASK dokümanları. -->
 
@@ -10,8 +10,8 @@
 
 **Faz:** 2 — v0.1 Versiyon-Sonu Teknik Borç Kapatma
 **Milestone:** 4 dilde (EN/AR/DE/ES) v0.1 değer senkronu (TD1: R1 step + R2 gym + F6 CTA) + ölü anahtarlar (`forum.articles.*`, `proof.*`) 5 dilden silinmiş & build temiz (TD2) + ana sayfa Lighthouse (mobil+masaüstü) brief bütçesini (≥95 perf/≥100 a11y/LCP<2.5s) karşılıyor & taban kaydedildi (TD3)
-**Adım:** task → `/devflow:run-task` (TASK-2.01)
-**İlerleme:** Kapsam + araştırma + planlama + plan review tamam; 3 task doğrulandı (referans gerçeklik-kontrolü temiz); TASK-2.01 sırada
+**Adım:** task → `/devflow:run-task` (TASK-2.02)
+**İlerleme:** TASK-2.01 ✅ (TD1 çeviri senkronu); TASK-2.02 (TD2 ölü anahtar) + TASK-2.03 (TD3 perf) sırada
 **Faz Dokümanı:** `phases/PHASE-2.md`
 
 ---
@@ -29,7 +29,7 @@
 
 ## Aktif Task
 
-**Task:** TASK-2.01 — TD1 non-TR çeviri senkronu (sıradaki; `/devflow:run-task` ile başlar)
+**Task:** TASK-2.02 — TD2 ölü anahtar hijyeni (sıradaki; `/devflow:run-task` ile başlar)
 **Durum:** ⬜ Bekliyor (plan review tamam, çalıştırılmaya hazır)
 **İlerleme:** Adım task → `/devflow:run-task`
 
@@ -41,7 +41,7 @@
 
 | # | Task | Durum |
 |---|------|-------|
-| 2.01 | TASK-2.01 — TD1 non-TR çeviri senkronu | ⬜ Bekliyor |
+| 2.01 | TASK-2.01 — TD1 non-TR çeviri senkronu | ✅ Tamamlandı |
 | 2.02 | TASK-2.02 — TD2 ölü anahtar hijyeni | ⬜ Bekliyor |
 | 2.03 | TASK-2.03 — TD3 perf/Lighthouse taban | ⬜ Bekliyor |
 
@@ -53,7 +53,10 @@
 
 > **KURAL:** Sadece son 2 task özeti tutulur, daha eskileri **gerçekten silinir** (HTML comment'e sarma, "Önceki:" prefix, üstü çizili etiket yasak — detay için git log + arşivlenmiş task dokümanı). Her özet kısa formatlı: paragraf yasak, **bullet zorunlu**, "Özet" alanı max 3 bullet.
 
-_(Yeni faza geçişte sıfırlandı — Faz 2 task'ları girildikçe doldurulacak. Faz 1 task özetleri `phases/PHASE-1.md` Task Listesi + arşivlenmiş task dokümanlarında [`tasks/archive/TASK-1.0*.md`].)_
+**TASK-2.01 — TD1 non-TR çeviri senkronu** ✅ (2026-06-28)
+- 3 stale kalem (`hero.ctaSecondary` · `how.steps.{analyze,automate,report}.body` · `sectors.items.gyms.{automation,body}`) EN/AR/DE/ES'de TR ile senkronlandı — saf değer, 24 değer.
+- 5×197 parite korundu (TR ile birebir set); `design.body`/title/`gyms.flow` dokunulmadı.
+- `next build` temiz; /en /de /es /ar render + /ar `dir="rtl"` görsel teyit; F5 dürüstlük korundu.
 
 <!-- KURAL: Sadece son 2 task özeti tutulur, daha eskileri silinir (gerçek silme — HTML comment yasak). -->
 <!-- KURAL: Sadece aktif fazın task'leri gösterilir. Geçmiş fazların bilgileri phases/ klasöründedir. -->
@@ -67,7 +70,7 @@ _(Yeni faza geçişte sıfırlandı — Faz 2 task'ları girildikçe doldurulaca
 
 ## Hızlı Erişim
 
-**Aktif Task:** TASK-2.01 — TD1 non-TR çeviri senkronu (Adım: task → `/devflow:run-task`)
+**Aktif Task:** TASK-2.02 — TD2 ölü anahtar hijyeni (Adım: task → `/devflow:run-task`)
 **Aktif Faz:** 2 — v0.1 Versiyon-Sonu Teknik Borç Kapatma (Adım: task)
 **Task Sistemi:** `tasks/TASKS-README.md`
 **PRD (karar kaynağı):** `PRD/VIZYON.md` · `PRD/VERSIONS.md` · `PRD/features/`
@@ -75,4 +78,4 @@ _(Yeni faza geçişte sıfırlandı — Faz 2 task'ları girildikçe doldurulaca
 
 ---
 
-**Son Güncelleme:** 2026-06-28 — verify-plan: Faz 2 plan review tamam (3 task doğrulandı, referans gerçeklik-kontrolü temiz; 1 mekanik düzeltme: eksik "Tamamlanma Kriterleri" bölümü 3 task'a eklendi). Adım → task. Sıradaki: `/devflow:run-task` (TASK-2.01).
+**Son Güncelleme:** 2026-06-28 — run-task TASK-2.01 ✅: TD1 non-TR çeviri senkronu (3 kalem × 4 dil = 24 değer; saf değer, 5×197 parite korundu; build temiz; /en /de /es /ar render + /ar RTL teyit). Sıradaki: `/devflow:run-task` (TASK-2.02).

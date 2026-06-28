@@ -18,7 +18,7 @@
     "lineTwo": "Luego lo automatizamos.",
     "sub": "Encontramos dónde el trabajo repetitivo agota a tu equipo —tareas recurrentes, mensajes, cadenas de aprobación— y lo conectamos a una automatización que puedes medir.",
     "ctaPrimary": "Agenda una llamada de descubrimiento gratuita",
-    "ctaSecondary": "Míralo en vivo",
+    "ctaSecondary": "Ver ejemplos que funcionan",
     "scroll": "Desplázate",
     "stats": {
       "liveLabel": "En vivo ahora",
@@ -38,7 +38,7 @@
       "analyze": {
         "n": "01",
         "title": "Analizar",
-        "body": "Mapeamos cómo funciona realmente tu operación —cada tarea recurrente, mensaje y aprobación— no como dice el organigrama."
+        "body": "Mapeamos cómo funciona realmente tu operación —no como dice el organigrama, sino como es de verdad— y encontramos dónde se escapa el trabajo: pasos repetidos a mano, seguimientos que se pierden, horas que se van en mover datos entre herramientas."
       },
       "design": {
         "n": "02",
@@ -48,12 +48,12 @@
       "automate": {
         "n": "03",
         "title": "Automatizar",
-        "body": "Conectamos esos pasos a una automatización que corre 7/24 dentro de Crew OS."
+        "body": "Conectamos el flujo que diseñamos a una automatización que corre 7/24 dentro de Crew OS."
       },
       "report": {
         "n": "04",
         "title": "Informar",
-        "body": "Te entregamos los números para que midas la ganancia."
+        "body": "Ves en números lo que aporta cada flujo —la ganancia no se supone, se mide."
       }
     }
   },
@@ -68,8 +68,8 @@
     "items": {
       "gyms": {
         "name": "Gimnasios",
-        "automation": "Software de Gestión de Gimnasios",
-        "body": "Membresías, pagos, registros de entrada, agenda de clases y entrenamiento personal, recordatorios automáticos y recuperación de socios — todo en un solo panel. Una plataforma de gestión completa y específica del sector.",
+        "automation": "Recuperar al socio que se aleja",
+        "body": "Cuando un socio empieza a alejarse en silencio, se nota; una oferta personal acorde a su situación y una cita con el entrenador salen por WhatsApp —la recuperación no se deja al azar, se hace seguimiento uno por uno.",
         "flow": {
           "trigger": "Un socio lleva 30 días sin venir",
           "action": "Una oferta personalizada y una cita con el entrenador salen por WhatsApp",

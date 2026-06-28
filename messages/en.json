@@ -18,7 +18,7 @@
     "lineTwo": "Then we automate it.",
     "sub": "We find where repetitive work drains your team — recurring tasks, messages, approval chains — and wire it to automation you can measure.",
     "ctaPrimary": "Book a free discovery call",
-    "ctaSecondary": "See it live",
+    "ctaSecondary": "See working examples",
     "scroll": "Scroll",
     "stats": {
       "liveLabel": "Live now",
@@ -38,7 +38,7 @@
       "analyze": {
         "n": "01",
         "title": "Analyze",
-        "body": "We map how your operation actually runs — every recurring task, message, and approval — not how an org chart says it does."
+        "body": "We map how your operation actually runs — not the way an org chart says, but how it really is — and we find where work leaks: steps repeated by hand, follow-ups that slip, hours spent moving data between tools."
       },
       "design": {
         "n": "02",
@@ -48,12 +48,12 @@
       "automate": {
         "n": "03",
         "title": "Automate",
-        "body": "We wire those steps to automation that runs 7/24 inside Crew OS."
+        "body": "We wire the flow we designed into automation that runs 7/24 inside Crew OS."
       },
       "report": {
         "n": "04",
         "title": "Report",
-        "body": "We hand you the numbers so you can measure the gain."
+        "body": "You see what each flow earns you, in numbers — the gain isn't assumed, it's measured."
       }
     }
   },
@@ -71,8 +71,8 @@
     "items": {
       "gyms": {
         "name": "Gyms",
-        "automation": "Gym Management Software",
-        "body": "Memberships, payments, check-ins, class & PT scheduling, automated reminders and member win-back — all in one panel. A comprehensive, sector-specific management platform.",
+        "automation": "Winning back the member who's slipping away",
+        "body": "When a member quietly begins to drift away, it gets noticed; a personal offer that fits their situation and a PT slot go out on WhatsApp — the win-back isn't left to chance, it's tracked one by one.",
         "flow": {
           "trigger": "A member hasn't checked in for 30 days",
           "action": "A tailored offer and a PT slot go out on WhatsApp",
