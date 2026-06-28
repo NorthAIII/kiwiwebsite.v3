@@ -138,7 +138,7 @@
 | # | Task | Durum | Açıklama |
 |---|------|-------|----------|
 | 3.01 | TASK-3.01 | ✅ Tamamlandı | Kanonik ortam + build-temizliği tabanı (S8-build; prod serve + PID teyit) |
-| 3.02 | TASK-3.02 | ⬜ Bekliyor | S1 giriş/yönlendirme matrisi (curl: 5 locale 200, 308 redirect, derin-link, bilinmeyen-locale gözlem) |
+| 3.02 | TASK-3.02 | ✅ Tamamlandı | S1 giriş/yönlendirme matrisi (curl: 5 locale 200, 308 redirect, derin-link, bilinmeyen-locale gözlem) — bulgu: çıplak `/forum`→404 (sahipli/ertelenmiş, görsel/SEO) |
 | 3.03 | TASK-3.03 | ⬜ Bekliyor | S5 taksonomi & dürüstlük (curl+grep 5 dil render: Crew OS var / Bunker yok / yasak metafor yok) |
 | 3.04 | TASK-3.04 | ⬜ Bekliyor | S6 5-dil bütünlük & non-TR tutarlılık (node key-diff + render MISSING_MESSAGE + stale gözlem + RTL) |
 | 3.05 | TASK-3.05 | ⬜ Bekliyor | S2 tam TR yolculuğu (curl link + Playwright CTA/anchor: hero CTA, 4 adım, gym/Alpfit çıkış) |
@@ -205,4 +205,4 @@
 ---
 
 **Oluşturulma:** 2026-06-28
-**Son Güncelleme:** 2026-06-29 — run-task TASK-3.01 ✅: kanonik ortam kuruldu — `next build` temiz (0 hata/uyarı, 37/37 SSG = S8 regresyon tabanı), fresh prod serve port 3000 + listening-PID fresh-teyitli (stale Jun28 next-server temizlendi), kanonik serve prosedürü TASK-3.01'e dokümante (3.02–3.09 referansı). Adım: run-task (TASK-3.02).
+**Son Güncelleme:** 2026-06-29 — run-task TASK-3.02 ✅ (S1 giriş/yönlendirme matrisi): 5 locale 200 + lang/dir (AR rtl), `/forum`→308→`/bulten` (slug→makale 200), `/en#sectors` SSG (5 anchor×5 locale), bilinmeyen-locale 404+TR-not-found gözlendi. Triyaj bulgusu: çıplak `/forum`→`/bulten`→404 (bülten index'siz, ana sayfadan erişilemez) → sahipli/ertelenmiş (görsel/SEO, `/bunker-os` kovası). Kapsam-içi giriş matrisinde gerçek bug yok. Adım: run-task (TASK-3.03).

@@ -1,6 +1,6 @@
 # DURUM — Proje Dashboard
 
-**Son Güncelleme:** 2026-06-29 — run-task TASK-3.01 ✅: kanonik ortam kuruldu — `next build` temiz (0 hata/uyarı, 37/37 SSG = S8 tabanı), fresh prod serve port 3000 + PID teyitli (stale Jun28 next-server temizlendi), serve prosedürü dokümante. Adım: task → run-task (TASK-3.02).
+**Son Güncelleme:** 2026-06-29 — run-task TASK-3.02 ✅ (S1 giriş/yönlendirme matrisi): 5 locale 200 + lang/dir (AR rtl), `/forum`→308→`/bulten` (slug→makale 200), `/en#sectors` SSG (5 anchor×5 locale), bilinmeyen-locale 404+TR-not-found. Bulgu: çıplak `/forum`→404 (bülten index'siz) — sahipli/ertelenmiş (görsel/SEO). Adım: task → run-task (TASK-3.03).
 
 <!-- KURAL: Bu satır her oturum sonunda ÜZERİNE YAZILIR — tek satır, tek cümle. "Önceki:" / "Eski:" prefix ile kümülatif yığma YASAK; HTML comment'e sarma da yasak (CLAUDE.md → Doküman Disiplini). Tarih + kısa özet yeterli; detay için git log + ilgili PHASE/TASK dokümanları. -->
 
@@ -10,8 +10,8 @@
 
 **Faz:** 3 — v0.1 Versiyon-Sonu Senaryo Testi
 **Milestone:** S1–S8 senaryo kataloğu otonom koşuldu + bulgular kaydedildi + triyaj edildi; TR yolculuğu bütünsel-tutarlı + non-TR yüzeyleri tutarlı (parite/render/RTL) teyit edildi ("ölç+kaydet+karar ver" — geçiş peşinen varsayılmaz)
-**Adım:** task → `/devflow:run-task` (TASK-3.02, yeni oturum)
-**İlerleme:** Kapsam tartışması ✅ + Araştırma ✅ + Plan ✅ + Plan review ✅; task çalıştırma başladı (1/9 → TASK-3.01 ✅ kanonik ortam + build-temizliği tabanı)
+**Adım:** task → `/devflow:run-task` (TASK-3.03, yeni oturum)
+**İlerleme:** Kapsam tartışması ✅ + Araştırma ✅ + Plan ✅ + Plan review ✅; task çalıştırma sürüyor (2/9 → TASK-3.01 kanonik ortam ✅, TASK-3.02 S1 giriş/yönlendirme ✅)
 **Faz Dokümanı:** `phases/PHASE-3.md`
 
 ---
@@ -29,9 +29,9 @@
 
 ## Aktif Task
 
-**Task:** TASK-3.02 — S1 giriş/yönlendirme matrisi (curl) — ⬜ Bekliyor (sıradaki çalıştırılacak)
-**Durum:** TASK-3.01 ✅ (kanonik ortam hazır) → sıradaki senaryo task'ı bekliyor
-**İlerleme:** Adım task → `/devflow:run-task` (TASK-3.02)
+**Task:** TASK-3.03 — S5 taksonomi & dürüstlük (curl+grep 5 dil) — ⬜ Bekliyor (sıradaki çalıştırılacak)
+**Durum:** TASK-3.02 ✅ (S1 giriş/yönlendirme matrisi) → sıradaki senaryo task'ı bekliyor
+**İlerleme:** Adım task → `/devflow:run-task` (TASK-3.03)
 
 ---
 
@@ -42,7 +42,7 @@
 | # | Task | Durum |
 |---|------|-------|
 | 3.01 | Kanonik ortam + build-temizliği tabanı (S8-build) | ✅ Tamamlandı |
-| 3.02 | S1 giriş/yönlendirme matrisi (curl) | ⬜ Bekliyor |
+| 3.02 | S1 giriş/yönlendirme matrisi (curl) | ✅ Tamamlandı |
 | 3.03 | S5 taksonomi & dürüstlük (curl+grep 5 dil) | ⬜ Bekliyor |
 | 3.04 | S6 5-dil bütünlük & non-TR tutarlılık (node+curl) | ⬜ Bekliyor |
 | 3.05 | S2 tam TR yolculuğu (curl+Playwright) | ⬜ Bekliyor |
@@ -58,6 +58,11 @@
 ## Son Task Özetleri
 
 > **KURAL:** Sadece son 2 task özeti tutulur, daha eskileri **gerçekten silinir** (HTML comment'e sarma, "Önceki:" prefix, üstü çizili etiket yasak — detay için git log + arşivlenmiş task dokümanı). Her özet kısa formatlı: paragraf yasak, **bullet zorunlu**, "Özet" alanı max 3 bullet.
+
+**TASK-3.02 — S1 giriş/yönlendirme matrisi** (✅ 2026-06-29)
+- 5 locale 200 + doğru `<html lang>` (AR `dir=rtl`); `/forum`→308→`/bulten` (slug→makale 200); `/en#sectors` SSG'de `id` mevcut (5 anchor × 5 locale tam); bilinmeyen-locale → 404 + TR not-found (sessiz fallback değil).
+- **Bulgu (sahipli/ertelenmiş):** çıplak `/forum`→`/bulten`→404 — `/bulten` index'i tasarımca yok (statik bülten); ana sayfadan erişilemez, redirect'in asıl işlevi (`/forum/:slug`→200) çalışıyor → görsel/SEO versiyonu kovası (`/bunker-os` ile aynı).
+- Kapsam-içi ana sayfa giriş matrisinde gerçek bug yok; kaynak kod değişmedi.
 
 **TASK-3.01 — Kanonik ortam + build-temizliği tabanı** (✅ 2026-06-29)
 - `next build` temiz: 0 hata / 0 uyarı, 37/37 SSG, three transpile sorunsuz → **S8 regresyon tabanı**.
@@ -76,12 +81,12 @@
 
 ## Hızlı Erişim
 
-**Aktif Task:** TASK-3.02 (sıradaki; Adım: task → `/devflow:run-task`)
-**Aktif Faz:** 3 — v0.1 Versiyon-Sonu Senaryo Testi (1/9 task ✅; run-task devam ediyor)
+**Aktif Task:** TASK-3.03 (sıradaki; Adım: task → `/devflow:run-task`)
+**Aktif Faz:** 3 — v0.1 Versiyon-Sonu Senaryo Testi (2/9 task ✅; run-task devam ediyor)
 **Task Sistemi:** `tasks/TASKS-README.md`
 **PRD (karar kaynağı):** `PRD/VIZYON.md` · `PRD/VERSIONS.md` · `PRD/features/`
 **Revize Backlog (bilinen sorunlar):** `docs/REVIZE-BACKLOG.md`
 
 ---
 
-**Son Güncelleme:** 2026-06-29 — run-task TASK-3.01 ✅: kanonik ortam kuruldu — `next build` temiz (0 hata/uyarı, 37/37 SSG = S8 tabanı), fresh prod serve port 3000 + PID teyitli (stale Jun28 next-server temizlendi), serve prosedürü dokümante. Adım: task → run-task (TASK-3.02).
+**Son Güncelleme:** 2026-06-29 — run-task TASK-3.02 ✅ (S1 giriş/yönlendirme matrisi): 5 locale 200 + lang/dir (AR rtl), `/forum`→308→`/bulten` (slug→makale 200), `/en#sectors` SSG (5 anchor×5 locale), bilinmeyen-locale 404+TR-not-found. Bulgu: çıplak `/forum`→404 (bülten index'siz) — sahipli/ertelenmiş (görsel/SEO). Adım: task → run-task (TASK-3.03).
