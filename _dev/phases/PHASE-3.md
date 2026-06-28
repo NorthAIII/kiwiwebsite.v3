@@ -139,7 +139,7 @@
 |---|------|-------|----------|
 | 3.01 | TASK-3.01 | ✅ Tamamlandı | Kanonik ortam + build-temizliği tabanı (S8-build; prod serve + PID teyit) |
 | 3.02 | TASK-3.02 | ✅ Tamamlandı | S1 giriş/yönlendirme matrisi (curl: 5 locale 200, 308 redirect, derin-link, bilinmeyen-locale gözlem) — bulgu: çıplak `/forum`→404 (sahipli/ertelenmiş, görsel/SEO) |
-| 3.03 | TASK-3.03 | ⬜ Bekliyor | S5 taksonomi & dürüstlük (curl+grep 5 dil render: Crew OS var / Bunker yok / yasak metafor yok) |
+| 3.03 | TASK-3.03 | ✅ Tamamlandı | S5 taksonomi & dürüstlük (curl+grep 5 dil render görünür metin): Crew OS 5×7 var / Bunker görünür yüzeyde 0 (iç kalıntı ayrıştırıldı) / yasak metafor 0 / sahte presence 0 / uydurma sonuç 0 (dürüstlük konvansiyonu 5 dilde) — kapsam-içi bug yok |
 | 3.04 | TASK-3.04 | ⬜ Bekliyor | S6 5-dil bütünlük & non-TR tutarlılık (node key-diff + render MISSING_MESSAGE + stale gözlem + RTL) |
 | 3.05 | TASK-3.05 | ⬜ Bekliyor | S2 tam TR yolculuğu (curl link + Playwright CTA/anchor: hero CTA, 4 adım, gym/Alpfit çıkış) |
 | 3.06 | TASK-3.06 | ⬜ Bekliyor | S3 mod kombinasyonları / Living Flow degradasyon (Playwright: tema/reduced/no-WebGL/mobil/RTL-combo/responsive) |
@@ -205,4 +205,4 @@
 ---
 
 **Oluşturulma:** 2026-06-28
-**Son Güncelleme:** 2026-06-29 — run-task TASK-3.02 ✅ (S1 giriş/yönlendirme matrisi): 5 locale 200 + lang/dir (AR rtl), `/forum`→308→`/bulten` (slug→makale 200), `/en#sectors` SSG (5 anchor×5 locale), bilinmeyen-locale 404+TR-not-found gözlendi. Triyaj bulgusu: çıplak `/forum`→`/bulten`→404 (bülten index'siz, ana sayfadan erişilemez) → sahipli/ertelenmiş (görsel/SEO, `/bunker-os` kovası). Kapsam-içi giriş matrisinde gerçek bug yok. Adım: run-task (TASK-3.03).
+**Son Güncelleme:** 2026-06-29 — run-task TASK-3.03 ✅ (S5 taksonomi & dürüstlük, 5 dil render görünür metin): Crew OS 5 dil × 7 geçiş; "Bunker" görünür metinde 0 (ham HTML'deki 7 kalıntı = section id / anchor href / `/bunker-os` route / RSC namespace anahtarı `bunker`→değer "Crew OS" — render yüzeyi değil); yasak metafor 0 (medikal + zayıf adım); sahte presence 0 (● 0, online 0); uydurma sonuç 0 (% 0, $110k sektörel kıyas, sektör akışı örnek-işaretli, dürüstlük konvansiyonu 5 dilde mevcut). Kapsam-içi gerçek bug yok; kaynak kod değişmedi. Adım: run-task (TASK-3.04).
