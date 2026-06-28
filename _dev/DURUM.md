@@ -1,6 +1,6 @@
 # DURUM — Proje Dashboard
 
-**Son Güncelleme:** 2026-06-28 — discuss-phase 3: Faz 3 (v0.1 Senaryo Testi) kapsam tartışması tamamlandı; `phases/PHASE-3.md` oluşturuldu (S1–S8 senaryo kataloğu, TR öncelik, otonom, keşfet+kaydet+triyaj, chatbot 0-token). Adım: research.
+**Son Güncelleme:** 2026-06-28 — research-phase 3: Faz 3 teknik araştırma tamamlandı; `phases/PHASE-3.md` → Araştırma Bulguları (hibrit araç eşlemesi, kanonik prod-build ortam, chatbot 0-token üç-katman, i18n parite 183/temiz, degradasyon Playwright emulateMedia). Adım: plan.
 
 <!-- KURAL: Bu satır her oturum sonunda ÜZERİNE YAZILIR — tek satır, tek cümle. "Önceki:" / "Eski:" prefix ile kümülatif yığma YASAK; HTML comment'e sarma da yasak (CLAUDE.md → Doküman Disiplini). Tarih + kısa özet yeterli; detay için git log + ilgili PHASE/TASK dokümanları. -->
 
@@ -10,8 +10,8 @@
 
 **Faz:** 3 — v0.1 Versiyon-Sonu Senaryo Testi
 **Milestone:** S1–S8 senaryo kataloğu otonom koşuldu + bulgular kaydedildi + triyaj edildi; TR yolculuğu bütünsel-tutarlı + non-TR yüzeyleri tutarlı (parite/render/RTL) teyit edildi ("ölç+kaydet+karar ver" — geçiş peşinen varsayılmaz)
-**Adım:** research → `/devflow:research-phase 3` (yeni oturum)
-**İlerleme:** Kapsam tartışması ✅ (ana sayfa uçtan-uca + çıkışlar, TR öncelik, otonom, keşfet+kaydet+triyaj, chatbot 0-token); senaryo kataloğu S1–S8 onaylandı; araştırma bekliyor
+**Adım:** plan → `/devflow:plan-phase 3` (yeni oturum)
+**İlerleme:** Kapsam tartışması ✅ + Araştırma ✅ (hibrit araç eşlemesi C, kanonik prod-build, chatbot 0-token üç-katman, i18n parite 183/temiz doğrulandı, degradasyon Playwright emulateMedia); task yazımı bekliyor
 **Faz Dokümanı:** `phases/PHASE-3.md`
 
 ---
@@ -29,9 +29,9 @@
 
 ## Aktif Task
 
-**Task:** — (Faz 3 kapsam tartışması tamam; task'lar plan-phase'de yazılır; aktif task yok)
-**Durum:** Faz 3 discuss ✅ → research bekliyor
-**İlerleme:** Adım research → `/devflow:research-phase 3`
+**Task:** — (Faz 3 discuss + research tamam; task'lar plan-phase'de yazılır; aktif task yok)
+**Durum:** Faz 3 discuss ✅ + research ✅ → plan bekliyor
+**İlerleme:** Adım plan → `/devflow:plan-phase 3`
 
 ---
 
@@ -65,12 +65,12 @@
 
 ## Hızlı Erişim
 
-**Aktif Task:** — (Faz 3 discuss ✅; Adım: research → `/devflow:research-phase 3`)
-**Aktif Faz:** 3 — v0.1 Versiyon-Sonu Senaryo Testi (research bekliyor)
+**Aktif Task:** — (Faz 3 discuss ✅ + research ✅; Adım: plan → `/devflow:plan-phase 3`)
+**Aktif Faz:** 3 — v0.1 Versiyon-Sonu Senaryo Testi (plan bekliyor)
 **Task Sistemi:** `tasks/TASKS-README.md`
 **PRD (karar kaynağı):** `PRD/VIZYON.md` · `PRD/VERSIONS.md` · `PRD/features/`
 **Revize Backlog (bilinen sorunlar):** `docs/REVIZE-BACKLOG.md`
 
 ---
 
-**Son Güncelleme:** 2026-06-28 — discuss-phase 3: Faz 3 (v0.1 Senaryo Testi) kapsam tartışması tamamlandı; `phases/PHASE-3.md` oluşturuldu (S1–S8 senaryo kataloğu, TR öncelik, otonom, keşfet+kaydet+triyaj, chatbot 0-token). Adım: research.
+**Son Güncelleme:** 2026-06-28 — research-phase 3: Faz 3 teknik araştırma tamamlandı; `phases/PHASE-3.md` → Araştırma Bulguları (hibrit araç eşlemesi, kanonik prod-build ortam, chatbot 0-token üç-katman, i18n parite 183/temiz, degradasyon Playwright emulateMedia). Adım: plan.
