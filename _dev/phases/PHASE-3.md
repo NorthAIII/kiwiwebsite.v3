@@ -137,7 +137,7 @@
 
 | # | Task | Durum | Açıklama |
 |---|------|-------|----------|
-| 3.01 | TASK-3.01 | ⬜ Bekliyor | Kanonik ortam + build-temizliği tabanı (S8-build; prod serve + PID teyit) |
+| 3.01 | TASK-3.01 | ✅ Tamamlandı | Kanonik ortam + build-temizliği tabanı (S8-build; prod serve + PID teyit) |
 | 3.02 | TASK-3.02 | ⬜ Bekliyor | S1 giriş/yönlendirme matrisi (curl: 5 locale 200, 308 redirect, derin-link, bilinmeyen-locale gözlem) |
 | 3.03 | TASK-3.03 | ⬜ Bekliyor | S5 taksonomi & dürüstlük (curl+grep 5 dil render: Crew OS var / Bunker yok / yasak metafor yok) |
 | 3.04 | TASK-3.04 | ⬜ Bekliyor | S6 5-dil bütünlük & non-TR tutarlılık (node key-diff + render MISSING_MESSAGE + stale gözlem + RTL) |
@@ -205,4 +205,4 @@
 ---
 
 **Oluşturulma:** 2026-06-28
-**Son Güncelleme:** 2026-06-29 — verify-plan 3: 9 task fresh-context review edildi; tüm `(repo)` referansları gerçekle birebir doğrulandı (anchor id'leri, redirect 308, chatbot 0-token akışı, i18n parite 183, taksonomi); TASK-3.06 triyaj ifadesi düzeltildi (yalnız bilinen a11y/perf açığı auto-defer; yeni ana-sayfa taşması = kapsam-içi normal triyaj). Adım: run-task (TASK-3.01).
+**Son Güncelleme:** 2026-06-29 — run-task TASK-3.01 ✅: kanonik ortam kuruldu — `next build` temiz (0 hata/uyarı, 37/37 SSG = S8 regresyon tabanı), fresh prod serve port 3000 + listening-PID fresh-teyitli (stale Jun28 next-server temizlendi), kanonik serve prosedürü TASK-3.01'e dokümante (3.02–3.09 referansı). Adım: run-task (TASK-3.02).

@@ -1,6 +1,6 @@
 # DURUM — Proje Dashboard
 
-**Son Güncelleme:** 2026-06-29 — verify-plan 3: 9 task review edildi, referans gerçeklik-kontrolü temiz; TASK-3.06 triyaj ifadesi düzeltildi (yalnız bilinen a11y/perf açığı auto-defer, yeni ana-sayfa taşması normal triyaj). Adım: task → run-task (TASK-3.01).
+**Son Güncelleme:** 2026-06-29 — run-task TASK-3.01 ✅: kanonik ortam kuruldu — `next build` temiz (0 hata/uyarı, 37/37 SSG = S8 tabanı), fresh prod serve port 3000 + PID teyitli (stale Jun28 next-server temizlendi), serve prosedürü dokümante. Adım: task → run-task (TASK-3.02).
 
 <!-- KURAL: Bu satır her oturum sonunda ÜZERİNE YAZILIR — tek satır, tek cümle. "Önceki:" / "Eski:" prefix ile kümülatif yığma YASAK; HTML comment'e sarma da yasak (CLAUDE.md → Doküman Disiplini). Tarih + kısa özet yeterli; detay için git log + ilgili PHASE/TASK dokümanları. -->
 
@@ -10,8 +10,8 @@
 
 **Faz:** 3 — v0.1 Versiyon-Sonu Senaryo Testi
 **Milestone:** S1–S8 senaryo kataloğu otonom koşuldu + bulgular kaydedildi + triyaj edildi; TR yolculuğu bütünsel-tutarlı + non-TR yüzeyleri tutarlı (parite/render/RTL) teyit edildi ("ölç+kaydet+karar ver" — geçiş peşinen varsayılmaz)
-**Adım:** task → `/devflow:run-task` (TASK-3.01, yeni oturum)
-**İlerleme:** Kapsam tartışması ✅ + Araştırma ✅ + Plan ✅ + Plan review ✅ (verify-plan: 9 task doğrulandı, referans-kontrolü temiz, 1 içerik düzeltmesi); task çalıştırma bekliyor
+**Adım:** task → `/devflow:run-task` (TASK-3.02, yeni oturum)
+**İlerleme:** Kapsam tartışması ✅ + Araştırma ✅ + Plan ✅ + Plan review ✅; task çalıştırma başladı (1/9 → TASK-3.01 ✅ kanonik ortam + build-temizliği tabanı)
 **Faz Dokümanı:** `phases/PHASE-3.md`
 
 ---
@@ -29,9 +29,9 @@
 
 ## Aktif Task
 
-**Task:** TASK-3.01 — Kanonik ortam + build-temizliği tabanı (S8-build) — ⬜ Bekliyor (sıradaki çalıştırılacak)
-**Durum:** Faz 3 discuss ✅ + research ✅ + plan ✅ + verify-plan ✅ → run-task bekliyor
-**İlerleme:** Adım task → `/devflow:run-task` (TASK-3.01)
+**Task:** TASK-3.02 — S1 giriş/yönlendirme matrisi (curl) — ⬜ Bekliyor (sıradaki çalıştırılacak)
+**Durum:** TASK-3.01 ✅ (kanonik ortam hazır) → sıradaki senaryo task'ı bekliyor
+**İlerleme:** Adım task → `/devflow:run-task` (TASK-3.02)
 
 ---
 
@@ -41,7 +41,7 @@
 
 | # | Task | Durum |
 |---|------|-------|
-| 3.01 | Kanonik ortam + build-temizliği tabanı (S8-build) | ⬜ Bekliyor |
+| 3.01 | Kanonik ortam + build-temizliği tabanı (S8-build) | ✅ Tamamlandı |
 | 3.02 | S1 giriş/yönlendirme matrisi (curl) | ⬜ Bekliyor |
 | 3.03 | S5 taksonomi & dürüstlük (curl+grep 5 dil) | ⬜ Bekliyor |
 | 3.04 | S6 5-dil bütünlük & non-TR tutarlılık (node+curl) | ⬜ Bekliyor |
@@ -59,7 +59,10 @@
 
 > **KURAL:** Sadece son 2 task özeti tutulur, daha eskileri **gerçekten silinir** (HTML comment'e sarma, "Önceki:" prefix, üstü çizili etiket yasak — detay için git log + arşivlenmiş task dokümanı). Her özet kısa formatlı: paragraf yasak, **bullet zorunlu**, "Özet" alanı max 3 bullet.
 
-> Faz 3 (Senaryo Testi) henüz task üretmedi (sıfırlandı — yeni faz). Faz 2 task özetleri için → `phases/PHASE-2.md` + git log.
+**TASK-3.01 — Kanonik ortam + build-temizliği tabanı** (✅ 2026-06-29)
+- `next build` temiz: 0 hata / 0 uyarı, 37/37 SSG, three transpile sorunsuz → **S8 regresyon tabanı**.
+- Fresh prod serve port 3000 (200, 5 locale 200); listening-PID 3125540 fresh-teyitli + ground-truth eşleşmesi; stale Jun28 next-server temizlendi (memory disiplini).
+- Kanonik "Serve Prosedürü" dokümante edildi (3.02–3.09 referansı); kaynak kod değişmedi.
 
 <!-- KURAL: Sadece son 2 task özeti tutulur, daha eskileri silinir (gerçek silme — HTML comment yasak). -->
 <!-- KURAL: Sadece aktif fazın task'leri gösterilir. Geçmiş fazların bilgileri phases/ klasöründedir. -->
@@ -73,12 +76,12 @@
 
 ## Hızlı Erişim
 
-**Aktif Task:** TASK-3.01 (sıradaki; Adım: task → `/devflow:run-task`)
-**Aktif Faz:** 3 — v0.1 Versiyon-Sonu Senaryo Testi (verify-plan ✅; run-task bekliyor)
+**Aktif Task:** TASK-3.02 (sıradaki; Adım: task → `/devflow:run-task`)
+**Aktif Faz:** 3 — v0.1 Versiyon-Sonu Senaryo Testi (1/9 task ✅; run-task devam ediyor)
 **Task Sistemi:** `tasks/TASKS-README.md`
 **PRD (karar kaynağı):** `PRD/VIZYON.md` · `PRD/VERSIONS.md` · `PRD/features/`
 **Revize Backlog (bilinen sorunlar):** `docs/REVIZE-BACKLOG.md`
 
 ---
 
-**Son Güncelleme:** 2026-06-29 — verify-plan 3: 9 task review edildi, referans gerçeklik-kontrolü temiz; TASK-3.06 triyaj ifadesi düzeltildi (yalnız bilinen a11y/perf açığı auto-defer, yeni ana-sayfa taşması normal triyaj). Adım: task → run-task (TASK-3.01).
+**Son Güncelleme:** 2026-06-29 — run-task TASK-3.01 ✅: kanonik ortam kuruldu — `next build` temiz (0 hata/uyarı, 37/37 SSG = S8 tabanı), fresh prod serve port 3000 + PID teyitli (stale Jun28 next-server temizlendi), serve prosedürü dokümante. Adım: task → run-task (TASK-3.02).
