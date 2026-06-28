@@ -115,14 +115,28 @@
 
 ## UAT Sonuçları
 
-> Bu bölüm `/devflow:verify-phase` oturumunda doldurulur.
-
-**Tarih:** [tarih]
-**Toplam Senaryo:** X | **Geçen:** Y | **Kalan:** Z
+**Tarih:** 2026-06-28
+**Toplam Senaryo:** 14 | **Geçen:** 14 | **Kalan:** 0
+**Mod:** Otonom (mekanik kontroller — parite/parse/build/grep/render — otonom çalıştırıldı; insan-gözü gerektiren bir bulgu çıkmadı).
 
 | # | Senaryo | Sonuç | Not |
 |---|---------|-------|-----|
-| 1 | [Senaryo 1] | ✅/❌ | [not] |
+| 1 | **5-dil anahtar paritesi** — flatten/diff: her dil tam **183** anahtar, TR ile birebir set (0 eksik / 0 fazla); silme+senkron sonrası parite korundu | ✅ Geçti | `json` flatten: 5 dil de 183, TR-set birebir |
+| 2 | **TD1 `hero.ctaSecondary`** — EN/AR/DE/ES'de TR "İşleyen örnekleri gör" anlamını taşıyor; eski "See it live / Live ansehen / Míralo en vivo / شاهدها مباشرةً" yok | ✅ Geçti | EN "See working examples" vb.; eski varyantlar grep'te yok |
+| 3 | **TD1 `how.steps.{analyze,automate,report}.body`** — 4 dilde güncel zenginleştirilmiş TR'yi yansıtıyor (analyze "nerede sızdığı", automate "tasarladığımız akış", report "kazanç varsayılmaz, ölçülür"); `design.body` + tüm title/n dokunulmamış | ✅ Geçti | 4 dilde "gain isn't assumed, it's measured" vb. senkron |
+| 4 | **TD1 `sectors.items.gyms.{automation,body}`** — 4 dilde R2 tek-otomasyon "kaçan üyeyi geri kazanma" deseni; eski "Gym Management Software / Memberships, payments" yok; `gyms.flow.*` dokunulmamış | ✅ Geçti | "Winning back the member…"/AR/DE/ES senkron; eski liste grep'te yok; flow değişmemiş |
+| 5 | **TD2 `proof.*` silindi** — `grep "\"proof\""` 5 dilde boş | ✅ Geçti | flatten'da `proof.*` anahtar yok (5 dil) |
+| 6 | **TD2 `forum.articles.*` silindi** — `grep "\"articles\""` 5 dilde boş; `forum` kardeş anahtarları (featured/featured2/label/title/sub/cta/note) korunmuş | ✅ Geçti | `forum.articles.*` yok; 7 kardeş anahtar 5 dilde mevcut |
+| 7 | **JSON bütünlüğü** — 5 dosya da geçerli JSON (parse temiz; virgül/parantez bozulmadı) | ✅ Geçti | `json.load` 5 dilde başarılı |
+| 8 | **`next build` temiz** — static page'ler, exit 0, MISSING_MESSAGE / eksik anahtar yok | ✅ Geçti | exit 0; tüm `[locale]` + alt sayfa SSG prerender; render'da MISSING_MESSAGE yok |
+| 9 | **Ölü anahtar tüketici-yok teyidi** — `src/`'de `proof`/`forum.articles` referansı yok; `Forum.tsx` korunan anahtarlarla etkilenmedi | ✅ Geçti | `src/` grep boş; `Forum.tsx` yalnız label/title/sub/featured*/cta/note tüketiyor |
+| 10 | **Çok dilli render + RTL** — yerel prod'da `/en /de /es /ar` ana sayfa render oluyor, TD1 yeni metni görünüyor; `/ar` `dir="rtl"` korunmuş | ✅ Geçti | 5 locale HTTP 200; `<html lang="ar" dir="rtl">`; TD1 metni EN/DE/AR'de render |
+| 11 | **TD3 artefakt varlığı** — `_dev/docs/perf/` mobil+masaüstü HTML+JSON + README mevcut; INDEX'e içerik dokümanı olarak kaydedilmiş | ✅ Geçti | 5 dosya + README; INDEX Bilgi Havuzu'nda kayıt |
+| 12 | **TD3 bütçe-açığı dürüst kaydı** — "bütçe karşılanmadı" bulgusu DECISIONS + perf/README + DURUM'da **ertelendi** olarak kayıtlı (sessizce optimize edilmemiş); özet skorlar artefaktla tutarlı (masaüstü perf 100/LCP 0.69s/CLS 0; mobil perf 87/LCP 3.1s; a11y 89) | ✅ Geçti | DECISIONS 2026-06-28 girdisi (Seçenek 1 ertele); README+DURUM özet skor tutarlı |
+| 13 | **F5 dürüstlük / marka sesi (craft)** — senkronlanan non-TR değerler uydurma sonuç/sayı eklemiyor; yasak metafor (doktor/teşhis) ve sahte "● online" yok; süreç-dürüstlüğü çerçevesi korunuyor | ✅ Geçti | 5 dil grep: yasak metafor/sahte presence/uydurma metrik yok; süreç-dürüstlüğü çerçevesi taşınmış |
+| 14 | **Adversarial: anahtar-sıra drift'i** — silme/güncelleme path-bazlı yapıldı → runtime path-lookup etkilenmedi; yeniden sıralama yapılmadı (gereksiz risk alınmadı) | ✅ Geçti | Parite + 5 locale temiz render + build → path-bazlı yaklaşım drift üretmedi |
+
+**Otomatik kontroller (Adım 1):** CI/CD **yok** (`.github/` yok) · otomatik analiz aracı (dependabot/scanner/bot) **yok** → ilgili adımlar atlandı (mevcut değil). **Security:** faz yalnız statik i18n JSON + `_dev/` doküman değiştirdi, `src/` dokunulmadı; hedefli tarama secret/URL/script-enjeksiyonu bulmadı → temiz. Bulgu yok → düzeltme task'ı yok.
 
 ---
 
@@ -167,4 +181,4 @@
 ---
 
 **Oluşturulma:** 2026-06-28
-**Son Güncelleme:** 2026-06-28 — run-task: TASK-2.03 ✅ (TD3 perf tabanı; masaüstü perf 100 ✓ / mobil perf 87 ✗, a11y 89 her iki preset ✗, mobil LCP 3.1s ✗, CLS 0 ✓ → bütçe karşılanmadı → ertelendi, DECISIONS 2026-06-28). Fazın tüm task'ları (2.01/2.02/2.03) ✅ → sıradaki: verify-phase 2.
+**Son Güncelleme:** 2026-06-28 — verify-phase: UAT **14/14 geçti** (otonom mod); otomatik kontrol (CI/araç yok, security temiz) bulgu üretmedi → düzeltme task'ı yok. Sıradaki: review-phase 2.

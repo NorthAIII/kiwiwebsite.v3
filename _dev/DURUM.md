@@ -1,6 +1,6 @@
 # DURUM — Proje Dashboard
 
-**Son Güncelleme:** 2026-06-28 — run-task TASK-2.03 ✅: TD3 perf tabanı kaydedildi (`docs/perf/`); masaüstü perf 100/LCP 0.69s/CLS 0 ✓, mobil perf 87/LCP 3.1s ✗, a11y 89 her iki preset ✗ → bütçe karşılanmadı (regresyon değil) → ertelendi (DECISIONS 2026-06-28). Fazın 3 task'ı da ✅. Sıradaki: `/devflow:verify-phase 2`.
+**Son Güncelleme:** 2026-06-28 — verify-phase 2: UAT **14/14 geçti**, 0 kaldı (otonom mod); CI/otomatik araç yok (atlandı), security temiz (faz yalnız i18n JSON + doküman) → düzeltme task'ı yok. Adım: review → `/devflow:review-phase 2`.
 
 <!-- KURAL: Bu satır her oturum sonunda ÜZERİNE YAZILIR — tek satır, tek cümle. "Önceki:" / "Eski:" prefix ile kümülatif yığma YASAK; HTML comment'e sarma da yasak (CLAUDE.md → Doküman Disiplini). Tarih + kısa özet yeterli; detay için git log + ilgili PHASE/TASK dokümanları. -->
 
@@ -10,8 +10,8 @@
 
 **Faz:** 2 — v0.1 Versiyon-Sonu Teknik Borç Kapatma
 **Milestone:** 4 dilde (EN/AR/DE/ES) v0.1 değer senkronu (TD1: R1 step + R2 gym + F6 CTA) + ölü anahtarlar (`forum.articles.*`, `proof.*`) 5 dilden silinmiş & build temiz (TD2) + ana sayfa Lighthouse (mobil+masaüstü) tabanı kaydedildi (TD3 — masaüstü bütçeyi geçer; mobil perf/LCP + a11y açığı bulundu, regresyon değil, ertelendi)
-**Adım:** verify → `/devflow:verify-phase 2` (fazın 3 task'ı da ✅)
-**İlerleme:** TASK-2.01 ✅ (TD1 çeviri senkronu) · TASK-2.02 ✅ (TD2 ölü anahtar hijyeni) · TASK-2.03 ✅ (TD3 perf tabanı + bütçe açığı ertelendi) — tüm task'lar tamam
+**Adım:** review → `/devflow:review-phase 2` (UAT 14/14 ✅; otomatik kontrol bulgusu yok)
+**İlerleme:** TASK-2.01 ✅ (TD1 çeviri senkronu) · TASK-2.02 ✅ (TD2 ölü anahtar hijyeni) · TASK-2.03 ✅ (TD3 perf tabanı + bütçe açığı ertelendi) — tüm task'lar tamam; **UAT 14/14 geçti**
 **Faz Dokümanı:** `phases/PHASE-2.md`
 
 ---
@@ -29,9 +29,9 @@
 
 ## Aktif Task
 
-**Task:** — (fazın tüm task'ları tamamlandı; aktif task yok)
-**Durum:** ✅ Faz task'ları bitti → UAT bekliyor
-**İlerleme:** Adım verify → `/devflow:verify-phase 2`
+**Task:** — (fazın tüm task'ları tamamlandı; UAT geçti; aktif task yok)
+**Durum:** ✅ UAT 14/14 geçti → faz review bekliyor
+**İlerleme:** Adım review → `/devflow:review-phase 2`
 
 ---
 
@@ -75,12 +75,12 @@
 
 ## Hızlı Erişim
 
-**Aktif Task:** — (fazın tüm task'ları ✅; Adım: verify → `/devflow:verify-phase 2`)
-**Aktif Faz:** 2 — v0.1 Versiyon-Sonu Teknik Borç Kapatma (Adım: verify)
+**Aktif Task:** — (fazın tüm task'ları ✅ + UAT 14/14 geçti; Adım: review → `/devflow:review-phase 2`)
+**Aktif Faz:** 2 — v0.1 Versiyon-Sonu Teknik Borç Kapatma (Adım: review)
 **Task Sistemi:** `tasks/TASKS-README.md`
 **PRD (karar kaynağı):** `PRD/VIZYON.md` · `PRD/VERSIONS.md` · `PRD/features/`
 **Revize Backlog (bilinen sorunlar):** `docs/REVIZE-BACKLOG.md`
 
 ---
 
-**Son Güncelleme:** 2026-06-28 — run-task TASK-2.03 ✅: TD3 perf tabanı kaydedildi (`docs/perf/`); masaüstü perf 100/LCP 0.69s/CLS 0 ✓, mobil perf 87/LCP 3.1s ✗, a11y 89 her iki preset ✗ → bütçe karşılanmadı (regresyon değil) → ertelendi (DECISIONS 2026-06-28). Fazın 3 task'ı da ✅. Sıradaki: `/devflow:verify-phase 2`.
+**Son Güncelleme:** 2026-06-28 — verify-phase 2: UAT **14/14 geçti**, 0 kaldı (otonom mod); CI/otomatik araç yok (atlandı), security temiz (faz yalnız i18n JSON + doküman) → düzeltme task'ı yok. Adım: review → `/devflow:review-phase 2`.
