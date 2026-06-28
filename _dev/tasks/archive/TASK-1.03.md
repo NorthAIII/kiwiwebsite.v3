@@ -1,6 +1,6 @@
 # TASK-1.03: Ana Sayfa Ses & Dürüstlük — F6 Hero CTA + F5/R3 Doğrulama Checkpoint
 
-**Durum:** ⬜ Bekliyor
+**Durum:** ✅ Tamamlandı
 **Modül:** M2 (Hero/Bunker/Forum/SectorSolutions) + M4 (i18n) — `modules/M2-Sayfalar-Bolumler.md` (F2.2, F2.5), `modules/M4-i18n.md`
 **Feature:** R4 — Ana sayfa ses & dürüstlük (F6 hero ikincil CTA + F5 dürüstlük taraması) + R3 Crew OS içerik teyidi
 **Faz:** Phase 1 (`phases/PHASE-1.md`)
@@ -43,22 +43,24 @@ Research net sonucu: **F5 ve R3 = doğrulama checkpoint'leri (kod yok)**; F6 = t
 
 ## Alt Görevler
 
-- [ ] **1. F6 — Hero ikincil CTA etiketini güncelle**
+- [x] **1. F6 — Hero ikincil CTA etiketini güncelle**
   - Dosya: `messages/tr.json` → `hero.ctaSecondary` (satır 21)
   - Mevcut: "Canlı gör" (belirsiz — aslında `#sectors`'a kaydırıyor).
   - Yeni: "İşleyen örnekleri gör" (çıktı-odaklı, marka sesine yakın). Sabit çapalar korunur: hero başlığı ("İşinizi analiz ederiz. Sonra otomatikleştiririz."), birincil CTA ("Ücretsiz keşif görüşmesi al").
-  - Link hedefi `#sectors` (`Hero.tsx:77`) zaten doğru → **component dokunulmaz**; non-TR stale kabul (aynı anahtar, değişen değer).
+  - Link hedefi `#sectors` (`Hero.tsx:77`) zaten doğru → **component dokunulmaz**; non-TR stale kabul (aynı anahtar, değişen değer). ✅ Uygulandı.
 
-- [ ] **2. F5 — Ana sayfa dürüstlük taraması (kodsuz teyit)**
+- [x] **2. F5 — Ana sayfa dürüstlük taraması (kodsuz teyit)** → **SONUÇ: TEMİZ (kod değişimi yok).**
   - Ana sayfada **render edilen** sonuç/sayı-imalı metni tara: `Hero` (stats şeridi), `SectorSolutions` (her panel `automation`/`body`/`flow` + `note`), `Bunker` (panel metrikleri yoksa `points`), `Forum` (`featured.excerpt`, `featured2.excerpt`).
   - Her birinin ya **gerçek-veriye dayandığını** ya **öngörü/örnek** çerçevesinde okunduğunu teyit et. Uydurma müşteri-sonucu (örn. "no-show'u yarıya düşürdük" tarzı) ana sayfada render EDİLMEMELİ.
   - Cümle-içi çerçeveleme yöntemi (ayrı rozet/etiket EKLENMEZ — clutter yok, craft). Bir ihlal bulunursa cümle içinde öngörü/örneğe çevir (yalnız TR).
   - **Ölü anahtarlara dokunma** (`forum.articles.*`, `proof.*` render edilmiyor) — v0.1-dışı hijyen; bulgu DECISIONS'a not edilebilir.
+  - **Bulgu:** Render edilen hiçbir metin uydurma müşteri-sonucu okutmuyor (detay → Oturum Kaydı tablosu). İhlal yok → TR değer değişimi gerekmedi; ölü anahtarlara dokunulmadı.
 
-- [ ] **3. R3 — Crew OS bölümü içerik & taksonomi teyidi (kodsuz)**
+- [x] **3. R3 — Crew OS bölümü içerik & taksonomi teyidi (kodsuz)** → **SONUÇ: TEYİT GEÇTİ (değişiklik yok).**
   - `Bunker.tsx` render'ında bayrak katman adının her yerde **"Crew OS"** göründüğünü teyit et (iç ad "Bunker OS" hiçbir yüzeyde yok). `bunker.label/title/body/points` platform kimliğini doğru anlatıyor mu?
   - `bunker.flows` (4 akış adı) "platformda çalışan gerçek akışlar" çerçevesinde tutarlı mı (Crew OS *tanımı* gibi okunmuyor)? → karar: bırakıldı, teyit yeterli.
   - "Keşfet" linki `/bunker-os`'a gidiyor (route iç ad sızıntısı — public `/crew-os` kararı M6'ya ertelendi, bu fazda dokunulmaz).
+  - **Bulgu:** `grep "Bunker OS" messages/ src/` → eşleşme yok; tüm "bunker" kalıntıları namespace/component/route/anchor identifier'ı (kullanıcıya görünmez). Render değerleri "Crew OS"; `bunker.*` içerik tutarlı; flows çerçevesi doğru.
 
 ---
 
@@ -87,12 +89,12 @@ messages/
 
 ## Test Kriterleri
 
-- [ ] `next build` temiz geçer.
-- [ ] Ana sayfa (TR `/`) hero ikincil CTA "İşleyen örnekleri gör" (veya teyit edilen final etiket) gösterir ve tıklayınca `#sectors`'a kaydırır.
-- [ ] F5 taraması kayıtlı: ana sayfada render edilen sonuç/sayı-imalı her metin gerçek-veri ya öngörü/örnek çerçevesinde — uydurma müşteri-sonucu render edilmiyor (bulgu listesi + "temiz/düzeltildi" sonucu oturum kaydında).
-- [ ] R3 teyidi kayıtlı: bayrak katman her render yüzeyinde "Crew OS"; iç ad "Bunker OS" görünmüyor; `bunker.*` içerik tutarlı.
-- [ ] Yeni rozet/etiket eklenmedi (cümle-içi çerçeveleme korundu); ölü anahtarlara (`forum.articles.*`, `proof.*`) dokunulmadı.
-- [ ] Bir düzeltme yapıldıysa yalnız TR değeri değişti (non-TR stale korundu); değişiklik yoksa F6 dışında diff yok.
+- [x] `next build` temiz geçer.
+- [x] Ana sayfa (TR `/`) hero ikincil CTA "İşleyen örnekleri gör" (veya teyit edilen final etiket) gösterir ve tıklayınca `#sectors`'a kaydırır. (Prerender `tr.html`'de yeni etiket var; eski "Canlı gör" hiç yok; link hedefi `Hero.tsx:77` `#sectors` dokunulmadı.)
+- [x] F5 taraması kayıtlı: ana sayfada render edilen sonuç/sayı-imalı her metin gerçek-veri ya öngörü/örnek çerçevesinde — uydurma müşteri-sonucu render edilmiyor (bulgu listesi + "temiz" sonucu oturum kaydında).
+- [x] R3 teyidi kayıtlı: bayrak katman her render yüzeyinde "Crew OS"; iç ad "Bunker OS" görünmüyor; `bunker.*` içerik tutarlı.
+- [x] Yeni rozet/etiket eklenmedi (cümle-içi çerçeveleme korundu); ölü anahtarlara (`forum.articles.*`, `proof.*`) dokunulmadı.
+- [x] Bir düzeltme yapıldıysa yalnız TR değeri değişti (non-TR stale korundu); F6 dışında diff yok.
 
 ---
 
@@ -105,31 +107,62 @@ messages/
 
 ## Tamamlanma Kriterleri
 
-- [ ] Tüm alt görevler tamamlandı
-- [ ] Tüm test kriterleri karşılandı
-- [ ] Git commit & push yapıldı (`feat(TASK-1.03): ...` — F6 metin değişimi baskın; salt teyitse `docs(TASK-1.03): ...`)
-- [ ] Bu doküman güncellendi (oturum kaydı + F5/R3 tarama sonuçları)
-- [ ] DURUM.md + PHASE-1.md güncellendi
+- [x] Tüm alt görevler tamamlandı
+- [x] Tüm test kriterleri karşılandı
+- [x] Git commit & push yapıldı (`feat(TASK-1.03): ...` — F6 metin değişimi baskın)
+- [x] Bu doküman güncellendi (oturum kaydı + F5/R3 tarama sonuçları)
+- [x] DURUM.md + PHASE-1.md güncellendi
 
 ---
 
 ## Oturum Kayıtları
 
-### Oturum — [TARİH]
+### Oturum — 2026-06-28
 
-**Durum:** 🔄 Devam edecek
+**Durum:** ✅ Tamamlandı
 
 **Yapılanlar:**
-- [doldurulacak — F5 tarama bulguları + R3 teyit sonucu buraya]
+- **F6:** `messages/tr.json` → `hero.ctaSecondary` "Canlı gör" → "İşleyen örnekleri gör" (tek TR değer değişimi). `Hero.tsx` dokunulmadı; link hedefi `#sectors` (satır 77) zaten doğru. 5 dilde anahtar mevcut (eksik anahtar yok); en/ar/de/es stale değer korundu (versiyon-sınırı).
+- **F5:** Ana sayfada render edilen tüm sonuç/sayı-imalı metin tarandı → uydurma müşteri-sonucu YOK (tablo aşağıda). İhlal bulunmadı → kod değişimi yok. Ölü anahtarlar (`forum.articles.*`, `proof.*`) render edilmiyor, dokunulmadı.
+- **R3:** Crew OS bölümü + taksonomi teyidi geçti. `grep "Bunker OS" messages/ src/` → eşleşme yok; render değerleri her yerde "Crew OS"; `bunker.*` içerik + `flows` çerçevesi tutarlı.
+
+**F5 dürüstlük tarama sonucu (render edilen ana sayfa metinleri):**
+
+| Bölüm | Render metin | Değerlendirme |
+|-------|--------------|---------------|
+| Hero stats | "Şu an canlı / Alpfit", "Crew OS / İşletim katmanı" | Gerçek canlı ürün göstergesi (DECISIONS niyet-bazlı) + kimlik etiketi — temiz |
+| Sektörler (6 panel) | `automation`/`body`/`flow` + `note` | Hepsi otomasyonun *nasıl çalıştığını* anlatan yetenek/öngörü dili; uydurma sonuç-metriği yok. `sectors.note` Alpfit'i canlı, diğerlerini "işletmenize göre kuruyoruz" diye dürüst çerçeveliyor — temiz |
+| Crew OS panel | `title/body/points`, `flows` (canlı/aktif/sırada) | "Sonuçlar varsayılmaz, ölçülür" = süreç ifadesi; flows "platformda çalışan akışlar" (PRD kararı) — temiz |
+| Forum | `featured.excerpt` "110.000$+", `featured2.excerpt` | "110.000$+" = insan SDR'ın yıllık sektör maliyeti ("vaat ediyor"/"derledik" — Kiwi sonucu DEĞİL); ikincisi bilgilendirici — temiz |
+| Credibility | "Vaat değil, ölçüm" / "sayılarıyla teslim" | Süreç vaadi (spesifik uydurma metrik değil) — temiz |
+| HowItWorks (R1) | `report.body` "sayılarla görürsünüz — kazanç varsayılmaz, ölçülür" | Süreç/ölçüm felsefesi — temiz |
+
+**Sorunlar:**
+- Yok.
+
+**Kararlar:**
+- F5 = TEMİZ, R3 = TEYİT GEÇTİ: Yeni karar/erteleme üretmedi (ölü anahtar hijyeni zaten research-phase'de v0.1-dışı not edilmiş). → docs/DECISIONS.md'ye eklendi: Hayır (yeni karar yok).
+- F6 final etiketi "İşleyen örnekleri gör" (PRD/discuss kararı) doğrudan uygulandı; kullanıcı teyidine gerek olmadı (etiket faz dokümanında kararlı).
+
+**Dosya Değişiklikleri:**
+- `messages/tr.json` → `hero.ctaSecondary` değeri güncellendi (F6). Başka kod/içerik diff'i yok.
+
+**Test Sonuçları:**
+- `next build` temiz (5 locale prerender, hata/uyarı yok).
+- Prerender doğrulaması: `tr.html` "İşleyen örnekleri gör" içeriyor; "Canlı gör" hiçbir prerender çıktısında yok.
+- `messages/tr.json` JSON geçerliliği doğrulandı (node JSON.parse).
 
 ---
 
 ## Sonuç Özeti
 
-**Tamamlanma Tarihi:** [Tarih]
+**Tamamlanma Tarihi:** 2026-06-28
 
 **Ne Yapıldı:**
-- [doldurulacak]
+- **F6 (tek somut değişiklik):** Hero ikincil CTA TR etiketi "Canlı gör" → "İşleyen örnekleri gör" (çıktı-odaklı, `#sectors` hedefini doğru imler). Component + non-TR değerler dokunulmadı.
+- **F5 doğrulama checkpoint:** Ana sayfada render edilen sonuç/sayı-imalı metnin tamamı gerçek-veri ya öngörü/örnek çerçevesinde — uydurma müşteri-sonucu render edilmiyor. İhlal yok → kod değişimi yok.
+- **R3 doğrulama checkpoint:** Bayrak katman her render yüzeyinde "Crew OS"; iç ad "Bunker OS" görünmüyor (yalnız namespace/component/route identifier'ı). `bunker.*` içerik tutarlı, flows çerçevesi doğru → değişiklik yok.
+- Faz 1'in tüm task'ları (1.01 R1, 1.02 R2, 1.03 R4/F5/R3) tamamlandı → sıradaki adım `/devflow:verify-phase 1`.
 
 ---
 

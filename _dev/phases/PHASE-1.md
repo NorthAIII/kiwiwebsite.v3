@@ -111,7 +111,7 @@
 |---|------|-------|----------|
 | 1.01 | TASK-1.01 | ✅ Tamamlandı | R1 — Nasıl Çalışır 3→4 adım (Analiz·Çözüm·Otomasyon·Raporlama): `HowItWorks.tsx` + 5-dil i18n restructure (atomik) |
 | 1.02 | TASK-1.02 | ✅ Tamamlandı | R2 — Sektörler gym paneli tek-otomasyona (`sectors.items.gyms.automation`+`.body` TR; saf i18n, component dokunulmaz) |
-| 1.03 | TASK-1.03 | ⬜ Bekliyor | R4 — Ana sayfa ses & dürüstlük: F6 hero ikincil CTA (TR) + F5 dürüstlük taraması + R3 Crew OS teyidi (doğrulama checkpoint) |
+| 1.03 | TASK-1.03 | ✅ Tamamlandı | R4 — Ana sayfa ses & dürüstlük: F6 hero ikincil CTA (TR "İşleyen örnekleri gör") + F5 taraması TEMİZ + R3 Crew OS teyidi GEÇTİ (kodsuz) |
 
 **Durum simgeleri:** ⬜ Bekliyor | 🔄 Devam ediyor | ⏸️ Duraklatıldı | ✅ Tamamlandı | 🔴 Bloke | ❌ İptal
 
@@ -170,4 +170,4 @@
 ---
 
 **Oluşturulma:** 2026-06-28
-**Son Güncelleme:** 2026-06-28 — plan-phase: 3 task dokümanı oluşturuldu (1.01 R1 atomik / 1.02 R2 saf-i18n / 1.03 R4 F6+F5/R3 checkpoint); Task Listesi dolduruldu.
+**Son Güncelleme:** 2026-06-28 — run-task: TASK-1.03 (R4) tamam → Faz 1'in 3 task'ı da ✅ (F6 hero CTA + F5 taraması TEMİZ + R3 teyidi GEÇTİ). Sıradaki adım verify-phase.
