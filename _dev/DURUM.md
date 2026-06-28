@@ -1,6 +1,6 @@
 # DURUM — Proje Dashboard
 
-**Son Güncelleme:** 2026-06-29 — run-task TASK-3.05 ✅ (S2 tam TR yolculuğu): bölüm sırası top→how→sectors→bunker→forum→chat→contact (8 bölüm bütün, boş yok); 4-adım render; hero ikincil CTA "İşleyen örnekleri gör"→#sectors; 8/8 anchor/CTA doğru bölüme scroll (Playwright, Lenis); gym tek-otomasyon + "Canlı—Alpfit" + Alpfit CTA client-nav→/spor-salonu-yazilimi; 6/6 iç link 200, kopuk yok, konsol 0-error. Kapsam-içi bug yok. Adım: task → run-task (TASK-3.06).
+**Son Güncelleme:** 2026-06-29 — run-task TASK-3.06 ✅ (S3 Living Flow degradasyon, Playwright MCP fresh-prod-serve): light/dark + FOUC yok (inline tema script head'de body'den önce); reduced-motion & no-WebGL → StaticFlow (canvas=0, içerik görünür); mobil→low (gating-değişmezi); AR-RTL×dark×reduced birlikte sağlam (rtl+dark token+static, StaticFlow LIGHT_INK); 320/768/1440 yatay taşma yok + CLS=0; tüm modlar konsol 0-error. Kapsam-içi bug yok; kaynak değişmedi. Adım: task → run-task (TASK-3.07).
 
 <!-- KURAL: Bu satır her oturum sonunda ÜZERİNE YAZILIR — tek satır, tek cümle. "Önceki:" / "Eski:" prefix ile kümülatif yığma YASAK; HTML comment'e sarma da yasak (CLAUDE.md → Doküman Disiplini). Tarih + kısa özet yeterli; detay için git log + ilgili PHASE/TASK dokümanları. -->
 
@@ -10,8 +10,8 @@
 
 **Faz:** 3 — v0.1 Versiyon-Sonu Senaryo Testi
 **Milestone:** S1–S8 senaryo kataloğu otonom koşuldu + bulgular kaydedildi + triyaj edildi; TR yolculuğu bütünsel-tutarlı + non-TR yüzeyleri tutarlı (parite/render/RTL) teyit edildi ("ölç+kaydet+karar ver" — geçiş peşinen varsayılmaz)
-**Adım:** task → `/devflow:run-task` (TASK-3.06, yeni oturum)
-**İlerleme:** Kapsam tartışması ✅ + Araştırma ✅ + Plan ✅ + Plan review ✅; task çalıştırma sürüyor (5/9 → 3.01 kanonik ortam ✅, 3.02 S1 giriş/yönlendirme ✅, 3.03 S5 taksonomi & dürüstlük ✅, 3.04 S6 5-dil bütünlük ✅, 3.05 S2 tam TR yolculuğu ✅)
+**Adım:** task → `/devflow:run-task` (TASK-3.07, yeni oturum)
+**İlerleme:** Kapsam tartışması ✅ + Araştırma ✅ + Plan ✅ + Plan review ✅; task çalıştırma sürüyor (6/9 → 3.01 kanonik ortam ✅, 3.02 S1 giriş/yönlendirme ✅, 3.03 S5 taksonomi & dürüstlük ✅, 3.04 S6 5-dil bütünlük ✅, 3.05 S2 tam TR yolculuğu ✅, 3.06 S3 degradasyon ✅)
 **Faz Dokümanı:** `phases/PHASE-3.md`
 
 ---
@@ -29,9 +29,9 @@
 
 ## Aktif Task
 
-**Task:** TASK-3.06 — S3 mod kombinasyonları / Living Flow degradasyon (Playwright) — ⬜ Bekliyor (sıradaki çalıştırılacak)
-**Durum:** TASK-3.05 ✅ (S2 tam TR yolculuğu) → sıradaki senaryo task'ı bekliyor
-**İlerleme:** Adım task → `/devflow:run-task` (TASK-3.06)
+**Task:** TASK-3.07 — S4 kontroller & kalıcılık (tema toggle, dil-switcher, klavye-only + focus-visible) (Playwright) — ⬜ Bekliyor (sıradaki çalıştırılacak)
+**Durum:** TASK-3.06 ✅ (S3 Living Flow degradasyon) → sıradaki senaryo task'ı bekliyor
+**İlerleme:** Adım task → `/devflow:run-task` (TASK-3.07)
 
 ---
 
@@ -46,7 +46,7 @@
 | 3.03 | S5 taksonomi & dürüstlük (curl+grep 5 dil) | ✅ Tamamlandı |
 | 3.04 | S6 5-dil bütünlük & non-TR tutarlılık (node+curl) | ✅ Tamamlandı |
 | 3.05 | S2 tam TR yolculuğu (curl+Playwright) | ✅ Tamamlandı |
-| 3.06 | S3 mod kombinasyonları / degradasyon (Playwright) | ⬜ Bekliyor |
+| 3.06 | S3 mod kombinasyonları / degradasyon (Playwright) | ✅ Tamamlandı |
 | 3.07 | S4 kontroller & kalıcılık (Playwright) | ⬜ Bekliyor |
 | 3.08 | S7 chatbot 0-token (kod+curl+Playwright) | ⬜ Bekliyor |
 | 3.09 | S8 adversarial/holistik: JS-off SSG + race | ⬜ Bekliyor |
@@ -59,15 +59,15 @@
 
 > **KURAL:** Sadece son 2 task özeti tutulur, daha eskileri **gerçekten silinir** (HTML comment'e sarma, "Önceki:" prefix, üstü çizili etiket yasak — detay için git log + arşivlenmiş task dokümanı). Her özet kısa formatlı: paragraf yasak, **bullet zorunlu**, "Özet" alanı max 3 bullet.
 
+**TASK-3.06 — S3 mod kombinasyonları / Living Flow degradasyon** (✅ 2026-06-29)
+- Playwright MCP `browser_run_code_unsafe` (raw page: emulateMedia + addInitScript + izole newContext), fresh-prod-serve (build temiz/0-uyarı, PID 3303870 fresh teyit, iş sonu kill). Headless'ta WebGL gerçek çalışıyor → high/low yolu gerçekten koşuldu.
+- light/dark + **FOUC yok** (inline tema script head'de body'den önce, dark localStorage domcontentloaded'da uygulanmış); reduced-motion & no-WebGL → StaticFlow (canvas=0, Reveal 12/12 görünür — M3 F3.1); mobil(390)→**low** (gating-değişmezi ≤768px); AR-RTL×dark×reduced birlikte (rtl+dark token+static, StaticFlow color=LIGHT_INK); 320/768/1440 **yatay taşma yok + CLS=0**; tüm modlar konsol 0-error.
+- Kapsam-içi bug yok; kaynak değişmedi. Gözlem: `/`→`/en` locale-detection (Accept-Language en-US) = next-intl beklenen, S1 kapsamı (TASK-3.02), S3 bulgusu değil.
+
 **TASK-3.05 — S2 tam TR yolculuğu (top→bottom)** (✅ 2026-06-29)
 - Statik (curl+grep+node): TR home `/` 200 (`/tr`→`/` 307); bölüm sırası `top→how→sectors→bunker→forum→chat→contact` (8 bölüm bütün/boş yok, Credibility id'siz); 4-adım render (Dört adım + Analiz/Çözüm/Otomasyon/Raporlama); hero ikincil CTA "İşleyen örnekleri gör"→#sectors; gym tek-otomasyon flow + "Canlı—Alpfit"; 6/6 iç link 200, dead-`#` render dışı.
 - Runtime (Playwright, Lenis `anchors:true`): 8/8 anchor/CTA doğru bölüme scroll (iç-anchor top≈0; #contact=Footer sayfa-dibi atBottom=true doğal limit); "Uygulamayı incele" client-nav→/spor-salonu-yazilimi (Alpfit yüklendi); konsol 0-error/0-warning.
 - Kapsam-içi bug yok; kaynak kod değişmedi. Gözlem: browser `/`→`/ar` = önceki oturum `NEXT_LOCALE` cookie kalıntısı (routing/S1, TASK-3.02), S2 bulgusu değil.
-
-**TASK-3.04 — S6 5-dil bütünlük & non-TR tutarlılık** (✅ 2026-06-29)
-- Yapısal parite (node key-diff): 5 dil × 183 leaf-key, 0 eksik / 0 fazla (183 taban re-teyit). Runtime: fresh prod serve, 5 dil home render `MISSING_MESSAGE` = 0 (IntlError 0). TD1-senkron 3 kalem (`how.steps.report` / `sectors.items.gyms` [6 sektör parite] / `hero.ctaSecondary`) 5 dilde anahtar-hizalı + tam çevrili.
-- Bilinçli-stale: kaynak 18/183 birebir-TR değer tamamı meşru (marka/sayı + "Form"/"WhatsApp", home-dışı); render TR-cümle leak 5 dil × 0, pozitif kontrol 3/3 her dilde → gerçek stale-leak 0. AR `<html dir="rtl">` doğru, render bütün, physical `left-` util'leri 5 dilde ortak (yön-nötr scroll-bar+cursor).
-- Kapsam-içi bug yok; kaynak kod değişmedi. S3'e gözlem: scroll-progress bar `origin-left` RTL yön-davranışı → TASK-3.06.
 
 <!-- KURAL: Sadece son 2 task özeti tutulur, daha eskileri silinir (gerçek silme — HTML comment yasak). -->
 <!-- KURAL: Sadece aktif fazın task'leri gösterilir. Geçmiş fazların bilgileri phases/ klasöründedir. -->
@@ -81,12 +81,12 @@
 
 ## Hızlı Erişim
 
-**Aktif Task:** TASK-3.06 (sıradaki; Adım: task → `/devflow:run-task`)
-**Aktif Faz:** 3 — v0.1 Versiyon-Sonu Senaryo Testi (5/9 task ✅; run-task devam ediyor)
+**Aktif Task:** TASK-3.07 (sıradaki; Adım: task → `/devflow:run-task`)
+**Aktif Faz:** 3 — v0.1 Versiyon-Sonu Senaryo Testi (6/9 task ✅; run-task devam ediyor)
 **Task Sistemi:** `tasks/TASKS-README.md`
 **PRD (karar kaynağı):** `PRD/VIZYON.md` · `PRD/VERSIONS.md` · `PRD/features/`
 **Revize Backlog (bilinen sorunlar):** `docs/REVIZE-BACKLOG.md`
 
 ---
 
-**Son Güncelleme:** 2026-06-29 — run-task TASK-3.05 ✅ (S2 tam TR yolculuğu): bölüm sırası top→how→sectors→bunker→forum→chat→contact (8 bölüm bütün, boş yok); 4-adım render; hero ikincil CTA "İşleyen örnekleri gör"→#sectors; 8/8 anchor/CTA doğru bölüme scroll (Playwright, Lenis); gym tek-otomasyon + "Canlı—Alpfit" + Alpfit CTA client-nav→/spor-salonu-yazilimi; 6/6 iç link 200, kopuk yok, konsol 0-error. Kapsam-içi bug yok. Adım: task → run-task (TASK-3.06).
+**Son Güncelleme:** 2026-06-29 — run-task TASK-3.06 ✅ (S3 Living Flow degradasyon, Playwright MCP fresh-prod-serve): light/dark + FOUC yok; reduced-motion & no-WebGL → StaticFlow (canvas=0, içerik görünür); mobil→low (gating-değişmezi); AR-RTL×dark×reduced birlikte sağlam; 320/768/1440 yatay taşma yok + CLS=0; tüm modlar konsol 0-error. Kapsam-içi bug yok; kaynak değişmedi. Adım: task → run-task (TASK-3.07).
