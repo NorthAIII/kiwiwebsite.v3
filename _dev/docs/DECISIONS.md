@@ -9,6 +9,23 @@
 
 <!-- Her yeni karar aşağıdaki formatta en üste eklenir (en yeni en üstte) -->
 
+### 2026-06-28 — Ana sayfa perf tabanı: bütçe açığı (a11y 89 + mobil perf/LCP) bulundu → ertelendi
+
+**Bağlam:** Faz 2 TD3, ana sayfa Lighthouse tabanı ölçüldü (yerel prod build, npx lighthouse@13.3.0, Chrome 149, mobil+masaüstü, çoklu koşu). Sonuç: **masaüstü** perf 100 / LCP 0.69s / CLS 0 (bütçeyi geçer); **mobil** perf 87 / LCP 3.1s / CLS 0; **accessibility her iki preset'te 89** (ortamdan bağımsız → en güvenilir sinyal). Brief bütçesi (≥95 perf / ≥100 a11y / LCP<2.5s / near-zero CLS) **karşılanmadı** (mobil perf −8, a11y −11, mobil LCP +0.6s; CLS geçti). a11y açığı 4 denetim: color-contrast (8 öğe; marka yeşili `#8af28a` krem üzerinde 1.22 + dark-mode soluk metin), definition-list+dlitem (hero `<dl>` geçersiz markup), label-content-name-mismatch (dil-değiştirici aria). Önemli: bunlar **regresyon değil** — kayıtlı önceki ölçüm yoktu, sayfanın keşfedilen mevcut durumu. (Metodoloji + ham koşu tablosu: `docs/perf/README.md`.)
+
+**Seçenekler:**
+1. Hepsini ertele — bulgu kayıtlı, a11y+perf düzeltmesi ayrı adanmış faza/versiyona; Faz 2 dar kapsamlı kalır.
+2. Sadece a11y'yi şimdi düzelt (ucuz/net), perf/LCP ertele.
+3. Hepsini şimdi düzelt (a11y + Living Flow WebGL perf optimizasyonu) — faz kapsamını belirgin genişletir.
+
+**Karar:** Seçenek 1 — **hepsini ertele** (kullanıcı onayı, 2026-06-28).
+
+**Gerekçe:** Optimizasyon discuss-phase'de bu fazın (teknik borç, dar kapsam) **dışı** bırakılmıştı; TD3 bir *doğrulama* task'ıdır, düzeltme değil. Açık bir regresyon değil (mevcut durum) → "korunan tabanı bozma" ihlali yok, bütçe-hedefi açığı var. "Az context = yüksek kalite" felsefesi gereği a11y+perf ayrı adanmış işe bırakıldı; bulgu `docs/perf/README.md` + faz/DURUM'da kayıtlı, kaybolmuyor. mobil perf/LCP'nin ana kaynağı Living Flow WebGL (craft-duyarlı, üst eksen) → aceleyle dokunulmaz. **Not (metodoloji tuzağı):** ilk mobil koşular host load avg 88 (20 çekirdek) nedeniyle gürültülüydü (TBT 206↔5065ms); taban düşük-yük (load ~5) koşularından alındı, yüksek-yük koşuları elendi. Perf ölçümünde `cat /proc/loadavg` ile host yükü gözlemi şart.
+
+**İlgili Task/Faz:** run-task TASK-2.03 (Faz 2 / v0.1 teknik borç)
+
+---
+
 ### 2026-06-28 — Performans tabanı `npx lighthouse` ile yerel production build üzerinde ölçülür
 
 **Bağlam:** Faz 2 TD3, ana sayfa Lighthouse bütçesini (≥95 perf / ≥100 a11y / LCP < 2.5s / near-zero CLS) doğrulayıp taban kaydedecek. `package.json` dokunulmaz → ölçüm aracı **bağımlılık eklemeden** seçilmeli. discuss "yerel build'de ölç" demişti; research-phase ortam yoklamasında lighthouse@13.3.0'ın npx cache'te ve `/usr/bin/google-chrome` (149) hazır olduğu, ayrıca Vercel **preview** deploy'ının (main'e dokunmadan) da bir seçenek olduğu görüldü.

@@ -75,6 +75,7 @@
 | `docs/DECISIONS.md` | Önemli mimari ve tasarım kararları |
 | `docs/REVIZE-BACKLOG.md` | Güçlü revize ham girdisi: kullanıcı tespitleri + bekleyen işler (PRD tohumu) |
 | `docs/UMAMI-ANALYTICS.md` | Umami analytics entegrasyon spec'i (bekliyor — kod, değerler, uyarılar) |
+| `docs/perf/` | Ana sayfa Lighthouse perf/a11y tabanları (`README.md` = metodoloji+koşu tablosu+a11y kırılımı; `home-{mobile,desktop}-<tarih>.{html,json}` kanonik artefaktlar). İlk taban: v0.1 2026-06-28 (TD3). |
 
 ---
 
@@ -179,7 +180,8 @@ kiwiwebsite.v3/
     └── docs/
         ├── DECISIONS.md
         ├── REVIZE-BACKLOG.md
-        └── UMAMI-ANALYTICS.md
+        ├── UMAMI-ANALYTICS.md
+        └── perf/              # Lighthouse perf/a11y tabanları (README + html/json artefaktlar)
 ```
 
 ---
@@ -192,7 +194,7 @@ kiwiwebsite.v3/
 
 ---
 
-**Son Güncelleme:** 2026-06-28 — kickoff-verify: CLAUDE.md (repo kökü) Temel Dokümanlar'a + ağaca eklendi; docs/UMAMI-ANALYTICS ağaca eklendi.
+**Son Güncelleme:** 2026-06-28 — run-task TASK-2.03: `docs/perf/` perf taban dokümanı Bilgi Havuzu'na eklendi (ilk Lighthouse tabanı).
 
 <!-- KURAL: Bu satır her güncellemede ÜZERİNE YAZILIR. "Önceki:" prefix ile kümülatif yığma YASAK (CLAUDE.md → Doküman Disiplini). -->
 <!-- KURAL: Tamamlanmış fazların task arşiv listesini INDEX'e ekleme — `ls _dev/tasks/archive/` zaten görür. INDEX yalnızca aktif klasör konumlarını gösterir; statik liste dokümanı değildir. -->

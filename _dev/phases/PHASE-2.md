@@ -107,7 +107,7 @@
 |---|------|-------|----------|
 | 2.01 | TASK-2.01 | ✅ Tamamlandı | TD1 — Non-TR çeviri senkronu: `hero.ctaSecondary` + `how.steps.{analyze,automate,report}.body` + `sectors.items.gyms.{automation,body}` → EN/AR/DE/ES (saf değer, anahtar sabit) |
 | 2.02 | TASK-2.02 | ✅ Tamamlandı | TD2 — Ölü anahtar hijyeni: `proof.*` + `forum.articles.*` → 5 dilden sil (197→183, build temiz) |
-| 2.03 | TASK-2.03 | ⬜ Bekliyor | TD3 — Ana sayfa perf/Lighthouse doğrulama (mobil+masaüstü) + taban kaydı (`_dev/docs/perf/`) |
+| 2.03 | TASK-2.03 | ✅ Tamamlandı | TD3 — Perf tabanı kaydedildi (`docs/perf/`): masaüstü perf 100/LCP 0.69s/CLS 0 ✓; mobil perf 87/LCP 3.1s ✗, a11y 89 her iki preset ✗ → **bütçe karşılanmadı → ertelendi** (regresyon değil; DECISIONS 2026-06-28) |
 
 **Durum simgeleri:** ⬜ Bekliyor | 🔄 Devam ediyor | ⏸️ Duraklatıldı | ✅ Tamamlandı | 🔴 Bloke | ❌ İptal
 
@@ -167,4 +167,4 @@
 ---
 
 **Oluşturulma:** 2026-06-28
-**Son Güncelleme:** 2026-06-28 — run-task: TASK-2.02 ✅ (TD2 ölü anahtar hijyeni; `proof.*`+`forum.articles.*` 14 yaprak × 5 dil silindi, 197→183 parite, build temiz 37/37). Sıradaki: TASK-2.03 (fazın son task'ı).
+**Son Güncelleme:** 2026-06-28 — run-task: TASK-2.03 ✅ (TD3 perf tabanı; masaüstü perf 100 ✓ / mobil perf 87 ✗, a11y 89 her iki preset ✗, mobil LCP 3.1s ✗, CLS 0 ✓ → bütçe karşılanmadı → ertelendi, DECISIONS 2026-06-28). Fazın tüm task'ları (2.01/2.02/2.03) ✅ → sıradaki: verify-phase 2.
