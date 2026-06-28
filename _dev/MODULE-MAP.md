@@ -114,10 +114,10 @@ M6 (SEO/Deploy) ─────────────────────>
 | F6.3: Next config & build | M6 | v3 (mevcut) | — | ✅ |
 | F6.4: Vercel deploy & env | M6 | v3 (mevcut) | — | ✅ |
 | **— v0.1 revize iş birimleri (ana sayfa içerik & ses) —** | | | | |
-| R1: "Nasıl çalışır" 3→4 adım (Analiz·Çözüm·Otomasyon·Raporlama) | M2 (+M4) | v0.1 | 1 | 🔄 |
-| R2: Sektörler gym paneli tek-otomasyon desenine | M2 (+M4) | v0.1 | 1 | 🔄 |
-| R3: Crew OS bölümü içerik teyidi (panel akışları bırakıldı) | M2 (+M4) | v0.1 | 1 | 🔄 |
-| R4: Ana sayfa TR kopya/ses revizesi (F5 dürüstlük + F6 hero ikincil CTA) | M2 + M4 | v0.1 | 1 | 🔄 |
+| R1: "Nasıl çalışır" 3→4 adım (Analiz·Çözüm·Otomasyon·Raporlama) | M2 (+M4) | v0.1 | 1 | ✅ |
+| R2: Sektörler gym paneli tek-otomasyon desenine | M2 (+M4) | v0.1 | 1 | ✅ |
+| R3: Crew OS bölümü içerik teyidi (panel akışları bırakıldı) | M2 (+M4) | v0.1 | 1 | ✅ |
+| R4: Ana sayfa TR kopya/ses revizesi (F5 dürüstlük + F6 hero ikincil CTA) | M2 + M4 | v0.1 | 1 | ✅ |
 
 **Durum simgeleri:**
 - ⬜ **Bekliyor** — Fazı henüz başlamadı
@@ -131,4 +131,4 @@ M6 (SEO/Deploy) ─────────────────────>
 
 ---
 
-**Son Güncelleme:** 2026-06-28 — discuss-phase: R1–R4 Faz 1'e atandı, durum 🔄 (v0.1 içerik fazı girildi).
+**Son Güncelleme:** 2026-06-28 — review-phase: R1–R4 ✅ (Faz 1 tamamlandı, UAT 15/15 + kalite 8 eksen geçti; non-TR çeviri senkronu versiyon-sonu fazına ertelendi — feature kabulü TR ana sayfa kapsamında).

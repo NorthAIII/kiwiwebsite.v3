@@ -19,7 +19,7 @@ Faz numaraları **global, sürekli ve append-only**'dir — versiyon değişse b
 
 | Faz | Konu | Milestone | Durum |
 |-----|------|-----------|-------|
-| 1 | Ana sayfa TR içerik & ses revizesi | v0.1: Nasıl Çalışır 4 adım + gym tek-otomasyon + F5 dürüstlük + F6 hero CTA | 🔄 |
+| 1 | Ana sayfa TR içerik & ses revizesi | v0.1: Nasıl Çalışır 4 adım + gym tek-otomasyon + F5 dürüstlük + F6 hero CTA | ✅ |
 
 **Durum simgeleri:**
 - 🔄 **Devam ediyor** — discuss-phase başladı (aktif faz)
@@ -60,12 +60,12 @@ _(Şu an numarasız sıradaki içerik fazı yok — v0.1'in tek içerik fazı Fa
 
 | Geçiş | Tarih | Not |
 |--------|-------|-----|
-| _(henüz faz geçişi yok)_ | | |
+| Faz 1 ✅ → versiyon-sonu | 2026-06-28 | v0.1 tek içerik fazı tamam (UAT 15/15, kalite 8 eksen); sıradaki = Teknik Borç fazı (discuss-phase 2 promosyonu yapar) |
 
 <!-- KURAL: Her geçiş için TEK satır + kısa not. Geçiş gerekçesi/detayı PHASE-N.md retrospektifindedir, burada tekrar edilmez. "Önceki:" prefix veya HTML comment ile detay yığma YASAK (CLAUDE.md → Doküman Disiplini). -->
 
 ---
 
-**Son Güncelleme:** 2026-06-28 — discuss-phase: Faz 1 (v0.1 içerik) tabloya 🔄 olarak eklendi; konu Sıradaki Fazlar'dan mezun edildi.
+**Son Güncelleme:** 2026-06-28 — review-phase: Faz 1 ✅ tamamlandı (tarihsel/dondu); geçiş notu eklendi. Sıradaki = versiyon-sonu Teknik Borç fazı.
 
 <!-- KURAL: Bu satır her güncellemede ÜZERİNE YAZILIR. "Önceki:" prefix ile kümülatif yığma YASAK (CLAUDE.md → Doküman Disiplini). -->

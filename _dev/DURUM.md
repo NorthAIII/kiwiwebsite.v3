@@ -1,6 +1,6 @@
 # DURUM — Proje Dashboard
 
-**Son Güncelleme:** 2026-06-28 — verify-phase: Faz 1 UAT 15/15 senaryo GEÇTİ (otonom; curl+Playwright+grep); otomatik kontrol bulgusu yok (build temiz, security-review temiz, CI yapılandırılmamış). Düzeltme task'ı yok → sıradaki adım review-phase.
+**Son Güncelleme:** 2026-06-28 — review-phase: Faz 1 ✅ tamamlandı (retrospektif + 8 kalite ekseni; düzeltme task'ı yok). v0.1 son içerik fazı bitti → sıradaki versiyon-sonu Teknik Borç fazı; `/devflow:discuss-phase 2` promosyonu yapar.
 
 <!-- KURAL: Bu satır her oturum sonunda ÜZERİNE YAZILIR — tek satır, tek cümle. "Önceki:" / "Eski:" prefix ile kümülatif yığma YASAK; HTML comment'e sarma da yasak (CLAUDE.md → Doküman Disiplini). Tarih + kısa özet yeterli; detay için git log + ilgili PHASE/TASK dokümanları. -->
 
@@ -8,11 +8,11 @@
 
 ## Aktif Faz
 
-**Faz:** 1 — Ana sayfa TR içerik & ses revizesi
-**Milestone:** v0.1 ana sayfa içerik & ses: R1 Nasıl Çalışır 4 adım (Analiz·Çözüm·Otomasyon·Raporlama) + R2 gym paneli tek-otomasyona + F5 dürüstlük taraması + F6 hero ikincil CTA; TR tek kaynak
-**Adım:** review → `/devflow:review-phase 1`
-**İlerleme:** 3/3 task (TASK-1.01 ✅, TASK-1.02 ✅, TASK-1.03 ✅) — UAT 15/15 GEÇTİ, otomatik kontrol bulgusu yok
-**Faz Dokümanı:** `phases/PHASE-1.md`
+**Faz:** 2 — Teknik Borç Kapatma (v0.1 versiyon-sonu) — _geçici ad; discuss-phase 2 damgalar_
+**Milestone:** _discuss-phase 2'de belirlenecek_ (aday kapsam: non-TR çeviri senkronu + ölü anahtar hijyeni [`forum.articles.*`, `proof.*`] + `/bunker-os` public route [M6] + test altyapısı [D1])
+**Adım:** discuss → `/devflow:discuss-phase 2`
+**İlerleme:** Faz henüz girilmedi (0 task) — discuss-phase kapsamı, plan-phase task'ları oluşturacak
+**Faz Dokümanı:** discuss-phase'de oluşacak (`phases/PHASE-2.md`)
 
 ---
 
@@ -29,19 +29,19 @@
 
 ## Aktif Task
 
-**Task:** — (fazdaki tüm tasklar tamamlandı + UAT geçti; aktif task yok)
-**Durum:** ✅ Faz 1 task'ları bitti, UAT 15/15 geçti
-**İlerleme:** TASK-1.01 + TASK-1.02 + TASK-1.03 tamamlandı (arşivlendi); UAT + otomatik kontroller geçti, düzeltme task'ı yok; sıradaki adım `/devflow:review-phase 1`
+**Task:** — (yok; Faz 1 review tamamlandı, Faz 2 henüz girilmedi)
+**Durum:** Faz 1 ✅ tamamlandı (review + retrospektif yazıldı); Faz 2 `/devflow:discuss-phase 2` bekliyor
+**İlerleme:** Yeni faza geçiliyor — task'lar discuss-phase 2 + plan-phase'de oluşacak
 
 ---
 
 ## Task Durumu (Aktif Faz)
 
+> Faz 2 henüz girilmedi (discuss-phase + plan-phase task'ları oluşturacak). Faz 1 task'ları arşivde (`tasks/archive/`), detay `phases/PHASE-1.md`.
+
 | # | Task | Durum |
 |---|------|-------|
-| 1.01 | R1 — Nasıl Çalışır 3→4 adım (component + 5-dil i18n) | ✅ Tamamlandı |
-| 1.02 | R2 — Sektörler gym paneli tek-otomasyona (TR i18n) | ✅ Tamamlandı |
-| 1.03 | R4 — Ana sayfa ses & dürüstlük (F6 + F5/R3 checkpoint) | ✅ Tamamlandı |
+| _(faz girilmedi)_ | | |
 
 **Durum Kodları:** ⬜ Bekliyor | 🔄 Devam ediyor | ⏸️ Duraklatıldı | ✅ Tamamlandı | 🔴 Bloke | ❌ İptal
 
@@ -51,15 +51,7 @@
 
 > **KURAL:** Sadece son 2 task özeti tutulur, daha eskileri **gerçekten silinir** (HTML comment'e sarma, "Önceki:" prefix, üstü çizili etiket yasak — detay için git log + arşivlenmiş task dokümanı). Her özet kısa formatlı: paragraf yasak, **bullet zorunlu**, "Özet" alanı max 3 bullet.
 
-**TASK-1.03 — R4 Ana sayfa ses & dürüstlük (F6 + F5/R3 checkpoint)** (✅ 2026-06-28)
-- F6: `hero.ctaSecondary` "Canlı gör" → "İşleyen örnekleri gör" (tek TR değer; `Hero.tsx` + non-TR stale dokunulmadı, link `#sectors` doğru).
-- F5 dürüstlük taraması TEMİZ: render edilen sonuç/sayı-imalı metnin tamamı gerçek-veri ya öngörü/örnek çerçevesinde; uydurma müşteri-sonucu yok → kod değişimi yok.
-- R3 teyidi GEÇTİ: bayrak katman her yüzeyde "Crew OS", "Bunker OS" render edilmiyor (`grep` doğrulandı); `bunker.*` tutarlı. Build temiz, prerender doğrulandı.
-
-**TASK-1.02 — R2 Sektörler gym paneli tek-otomasyona** (✅ 2026-06-28)
-- `sectors.items.gyms.automation` "Spor Salonu Yönetim Yazılımı" → "Kaçan üyeyi geri kazanma"; `.body` özellik-listesi → tek-otomasyon anlatısı (`gyms.flow` ile tutarlı, 181 char).
-- Saf i18n (yalnız TR); `SectorSolutions.tsx` + korunan dallar (live rozeti, flow, seeLive/viewApp CTA, `/spor-salonu-yazilimi`) dokunulmadı; non-TR stale-kopya (versiyon-sınırı).
-- Build temiz; TR render (curl) + Playwright snapshot/screenshot teyit, AR stale-kopya doğru çalışıyor.
+_(Yeni faza geçişte sıfırlandı — Faz 2 task'ları girildikçe doldurulacak. Faz 1 task özetleri `phases/PHASE-1.md` Task Listesi + arşivlenmiş task dokümanlarında [`tasks/archive/TASK-1.0*.md`].)_
 
 <!-- KURAL: Sadece son 2 task özeti tutulur, daha eskileri silinir (gerçek silme — HTML comment yasak). -->
 <!-- KURAL: Sadece aktif fazın task'leri gösterilir. Geçmiş fazların bilgileri phases/ klasöründedir. -->
@@ -73,12 +65,12 @@
 
 ## Hızlı Erişim
 
-**Aktif Task:** — (yok; Faz 1 task'ları + UAT bitti → `/devflow:review-phase 1`)
-**Aktif Faz:** 1 (Adım: review → `/devflow:review-phase 1`)
+**Aktif Task:** — (yok; Faz 2 `/devflow:discuss-phase 2` bekliyor)
+**Aktif Faz:** 2 — Teknik Borç Kapatma (geçici; Adım: discuss → `/devflow:discuss-phase 2`)
 **Task Sistemi:** `tasks/TASKS-README.md`
 **PRD (karar kaynağı):** `PRD/VIZYON.md` · `PRD/VERSIONS.md` · `PRD/features/`
 **Revize Backlog (bilinen sorunlar):** `docs/REVIZE-BACKLOG.md`
 
 ---
 
-**Son Güncelleme:** 2026-06-28 — verify-phase: Faz 1 UAT 15/15 senaryo GEÇTİ (otonom; curl+Playwright+grep); otomatik kontrol bulgusu yok (build temiz, security-review temiz, CI yapılandırılmamış). Düzeltme task'ı yok → sıradaki adım review-phase.
+**Son Güncelleme:** 2026-06-28 — review-phase: Faz 1 ✅ tamamlandı (retrospektif + 8 kalite ekseni; düzeltme task'ı yok). v0.1 son içerik fazı bitti → sıradaki versiyon-sonu Teknik Borç fazı; `/devflow:discuss-phase 2` promosyonu yapar.

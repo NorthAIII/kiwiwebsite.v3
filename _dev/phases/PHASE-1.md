@@ -1,6 +1,6 @@
 # Phase 1: Ana Sayfa TR İçerik & Ses Revizesi (v0.1)
 
-**Durum:** 🔄 Devam ediyor
+**Durum:** ✅ Tamamlandı
 
 <!-- Bu doküman faza girince (discuss-phase) oluşur; durum 🔄 ile başlar. Henüz girilmemiş fazların dokümanı/numarası olmaz — PHASES.md → Sıradaki Fazlar'da numarasız konu olarak durur. -->
 <!-- KURAL: Bu doküman tek-okunabilir kalmalı (CLAUDE.md → Boyut ve Bölünme). Bir bölüm büyüyüp kırmızı çizgiye (~20k token) yaklaşırsa faz HÂLÂ AKTİFKEN `PHASE-N-<slug>.md`'ye bölünür — parent'ta self-yeten özet + pointer kalır, içerik taşınıp silinir, parent o fazın mini-index'i olur. Tamamlandıktan (✅) sonra bölme yasaktır; verify-phase ve review-phase fazı dondurmadan önce boyutu kontrol eder. -->
@@ -153,42 +153,58 @@
 
 ## Retrospektif
 
-> Bu bölüm `/devflow:review-phase` oturumunda doldurulur.
+> Bu bölüm `/devflow:review-phase` oturumunda dolduruldu (2026-06-28).
 
 ### Ne İyi Gitti?
-- [Tekrarlanması gereken pratikler]
+- **Cerrahi kapsama disiplini.** research-phase, PRD'nin geniş F5/R3 kapsamını "doğrulama checkpoint'i (kod yok)"a daralttı; faz gerçek iş yükü R1 + R2 + F6'ya indi. Sonuç: 3 küçük task, her biri tek oturumda bitti, şişme yok.
+- **Atomik task tasarımı işe yaradı.** R1'de 5-dil i18n + 1 component tek task/tek commit indirildi; component anahtarı *adıyla* okuduğu için (`HowItWorks.tsx:15`) ayrı commit'lere bölünseydi ara durum kesin kırılırdı (eksik anahtar → runtime boşluk). Bağımlı değişikliği bir arada tutma kararı kırığı önledi.
+- **Checkpoint ≠ task ayrımı.** R3 ve F5 ayrı task'e bölünmeyip TASK-1.03'te doğrulama adımı olarak ele alındı; tek-satırlık standalone task şişmesi önlendi, yine de bulgular kayda bağlandı (F5 tarama tablosu).
+- **Kararlar sessizce çözülmedi, kullanıcıya getirildi.** "● online" yasağının niyet-bazlı yorumu ve i18n rename'in "stale kopya" istisnası dışında olması — ikisi de DECISIONS'a kararla bağlandı, varsayımla geçilmedi.
+- **Otonom UAT derinliği.** Test altyapısı yokken curl render + Playwright snapshot/screenshot/etkileşim + grep ile 15 senaryo gözle değil mekanik doğrulandı (5-dil parite, RTL aynalama, reduced-motion, scroll davranışı dahil).
 
 ### Ne Kötü Gitti?
-- [Sorunlar ve darboğazlar]
+- **Büyük bir aksaklık olmadı.** Küçük bir an: TASK-1.01'de `BunkerShowcase.tsx`'in de `how.steps.${k}` okuduğu izlenimi düz grep'ten doğdu; namespace kontrolüyle (`bunkerOs.how` ayrı namespace) çözüldü. Yanlış geniş bir değişimden namespace doğrulaması kurtardı — ders aşağıda (Task-Spesifik).
+- **Versiyon-sınırı stale birikimi (kontrollü ama biriken borç).** R1/R2/F6 sonrası non-TR flagship sayfaları artık *yeni yapı + eski içerik* karışımı gösteriyor (örn. AR/EN/DE/ES gym paneli hâlâ eski özellik-listesi, hero CTA hâlâ eski etiket). Bilinçli ve doğru (DECISIONS 2026-06-27) ama en görünür stale yüzey; versiyon-sonu çeviri taraması bunu **bütüncül** kapatmalı.
 
 ### Sonraki Faz İçin Öneriler
-- [Alınan dersler, tavsiyeler]
+- **Bu, v0.1'in son içerik fazıydı** → sıradaki versiyon-sonu sabit fazı **Teknik Borç Kapatma**. Bu fazda toplanması gereken biriken kalemler:
+  - **Non-TR çeviri senkronu** (R1 değer tarafı + R2 gym + F6 hero CTA stale değerleri) — versiyon-sınırı politikasının teslim noktası.
+  - **Ölü anahtar hijyeni:** `forum.articles.{one..four}`, `proof.{label,note}` render edilmiyor; `forum.articles` ileride render edilirse başlıkları F5 düzeltmesi gerektirir (sonuç-iması). Backlog'a alınmalı.
+  - **`/bunker-os` → public `/crew-os` + redirect:** iç ad URL'de sızıyor; görsel/SEO versiyonuna ertelendi (M6 açık konu) — teknik borç fazında değerlendir.
+  - **Test altyapısı (D1):** "test = build + gözle UAT" geçici; altyapı kurulumu ayrı teknik faz adayı.
+- **i18n değişiminde anahtar-adı/yapısal değişim 5 dili eşzamanlı dokunmayı zorunlu kılar** (yalnız değer değişimi ertelenebilir) — memory Süreç Disiplinleri'nde keskinleştirildi; sonraki fazda plan/icra aşamasında uygula.
 
----
+### Task-Spesifik Teknik Öğrenimler
+<!-- Bu fazdaki task'larda öğrenilen ama proje genelinde geçerli olmayan teknik nüanslar (araç davranışı, framework bug'ı, vb.). MEMORY.md'nin değil, faz retrosunun evidir. -->
+- **next-intl aynı token şekli farklı namespace'lerde yaşar.** `how.steps.*` hem `how` (HowItWorks) hem `bunkerOs.how` (BunkerShowcase, platform 4-adımı) altında var. Anahtar değiştirirken tüketiciyi `useTranslations(...)` namespace bağlamıyla doğrula — düz grep yanıltır (iki ayrı 4-adım birbirine karışabilir).
+- **Stale-kopya çeviriyi em-dash'ten bölmek içerik tekrarı üretebilir.** non-TR `automate` gövdesi tek cümlede `[otomasyon] — [ölçüm]` taşıyordu; `automate`/`report`'a *bölünürken* (kopyalanmadan) her parça standalone yapıldı, minimal gramer (özne ekleme) gerekti — bu yeni çeviri değil, mevcut çeviriyi bölme.
 
 ## Kalite Kontrol Sonuçları
 
-> Bu bölüm `/devflow:review-phase` oturumunda doldurulur.
+> QUALITY.md'nin 8 ekseni sistematik kontrol edildi. Faz yüzeyi: i18n metin + tek presentational component (grid/SVG/className) — kullanıcı girdisi/auth/secret/yeni bağımlılık yok.
 
 | Eksen | Durum | Not |
 |-------|-------|-----|
-| Modülerlik | ✅ / ⚠️ / ❌ | ... |
-| Güvenlik | ✅ / ⚠️ / ❌ | ... |
-| Bakım Maliyeti | ✅ / ⚠️ / ❌ | ... |
-| Performans | ✅ / ⚠️ / ❌ | ... |
-| Hata Yönetimi | ✅ / ⚠️ / ❌ | ... |
-| Test Kapsamı | ✅ / ⚠️ / ❌ | ... |
-| Erişilebilirlik | ✅ / N/A | ... |
+| Marka & Craft (imza) | ✅ | 4-adım responsive grid (1/2/4) + bağlayıcı SVG 4 düğüme yeniden hizalandı; Fraunces/restraint korundu; yasak metafor/zayıf adım adı/sahte presence yok (UAT #4, #14). Cümle-içi dürüstlük çerçevesi — ekstra rozet/clutter eklenmedi. |
+| Erişilebilirlik | ✅ | Semantik h2/adım h3 hiyerarşisi; bağlayıcı SVG `aria-hidden`; reduced-motion early-return guard korundu (statik 4 adım okunur); AR RTL doğru aynalanmış (UAT #5, #13). |
+| Performans | ✅ | Yeni bağımlılık yok; değişim saf i18n + presentational. Ekstra rAF/re-render yok (GSAP tek ticker dokunulmadı); Living Flow/lazy WebGL etkilenmedi. LCP/CLS tabanı regresyonsuz (UAT #15). Not: Lighthouse ayrıca ölçülmedi — yüzey metin/sunum olduğundan regresyon riski ~sıfır. |
+| Yerelleştirme & RTL | ✅ | 5-dil `how.steps` paritesi tam (review'da bağımsız doğrulandı); başlık sayı-sözcüğü 5 dilde güncel; AR RTL logical `start` ile doğru; R2/F6 = değer değişimi → non-TR stale-kopya politikası doğru çalışıyor (eksik anahtar yok) (UAT #3, #13). |
+| Modülerlik & Bakım Maliyeti | ✅ | Semantik rename (`analyze/design/automate/report`) anahtar-adı↔içerik tutarlılığını artırdı (yanıltıcı `find`="Çözüm" kalıntısı yok). R2/F6 component'in jenerik render yolunu yeniden kullandı, dallanma/kopya kod eklenmedi. |
+| Hata Yönetimi & Degradasyon | ✅ | 5 dilde eksik anahtar yok → runtime boşluk/hata yok (build prerender 5 locale geçti); reduced-motion fallback; bilinmeyen locale (`/zz`) 404, runtime patlamadı (UAT #12). Chatbot/WebGL degradasyon yolları bu fazda dokunulmadı. |
+| Güvenlik | ✅ | Kullanıcı girdisi/auth/secret/injection/`dangerouslySetInnerHTML` yüzeyi yok; yeni bağımlılık yok. security-review temiz (UAT Otomatik Kontrol). |
+| Test Kapsamı | ⚠️ N/A | Test altyapısı yok (proje geneli, aspirasyonel eksen). Doğrulama: `next build` temiz + otonom UAT (curl/Playwright/grep). Altyapı kurulumu ayrı teknik faz adayı (D1) — bu fazın eksikliği değil, proje-geneli durum. |
+
+**Kullanıcı yolculuğu & boşluk:** Hero → "İşleyen örnekleri gör" (artık dürüstçe `#sectors`'a, işleyen örneklere) → gym tek-otomasyon → 4-adım süreç → Crew OS → Forum akışı tutarlı. TR yolculuğunda kopukluk yok. Tek bilinçli boşluk: non-TR ziyaretçi yeni yapı + eski içerik karışımı görür (versiyon-sınırı borcu — sahipli: versiyon-sonu çeviri fazı). Sahipsiz/sürpriz boşluk tespit edilmedi.
 
 ---
 
 ## Sonuç
 
-- **Tamamlanma Tarihi:** [Tarih]
-- **Toplam Task:** [Sayı]
-- **Notlar:** [Önemli kararlar, sonraki faza aktarılanlar]
+- **Tamamlanma Tarihi:** 2026-06-28
+- **Toplam Task:** 3 (TASK-1.01 R1 · TASK-1.02 R2 · TASK-1.03 R4/F5/R3) — tümü ✅, arşivlendi
+- **Notlar:** v0.1'in tek içerik fazı; milestone 15/15 UAT + 8/8 kalite ekseni karşılandı (Test Kapsamı N/A — altyapı yok). Düzeltme task'ı yok. Sonraki faza aktarılan biriken borç: non-TR çeviri senkronu, ölü anahtar hijyeni, `/bunker-os` public route (M6), test altyapısı (D1) → versiyon-sonu Teknik Borç fazında ele alınacak.
 
 ---
 
 **Oluşturulma:** 2026-06-28
-**Son Güncelleme:** 2026-06-28 — verify-phase: UAT 15/15 senaryo GEÇTİ (otonom; curl+Playwright+grep); otomatik kontrol bulgusu yok (build temiz, security-review temiz, CI yok). Düzeltme task'ı yok → sıradaki adım review-phase.
+**Son Güncelleme:** 2026-06-28 — review-phase: retrospektif + 8 kalite ekseni yazıldı (Test Kapsamı N/A); faz ✅ tamamlandı, düzeltme task'ı yok. Biriken borç versiyon-sonu Teknik Borç fazına aktarıldı (non-TR çeviri, ölü anahtar, /bunker-os route, test altyapısı).

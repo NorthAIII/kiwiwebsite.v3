@@ -7,7 +7,7 @@
 >
 > Bu yapı şişmeyi önler: index ince kalır (hep yüklü), detay yalnızca gerekince okunur.
 
-**Son Güncelleme:** 2026-06-28 — kickoff-verify: native memory'den taşınan 2 öğrenim eklendi (repo-haritasi, devflow-sistemi) + native MEMORY yönlendirmeye çevrildi.
+**Son Güncelleme:** 2026-06-28 — review-phase (Faz 1): i18n 5-dil disiplini keskinleştirildi (anahtar varlığı zorunlu ≠ değer tazeliği ertelenebilir).
 
 <!-- KURAL: Bu satır her güncellemede ÜZERİNE YAZILIR. "Önceki:" prefix ile kümülatif yığma YASAK (CLAUDE.md → Doküman Disiplini). -->
 
@@ -46,7 +46,7 @@
 
 <!-- Retrospektiften çıkan, proje genelinde geçerli "şunu yaparken şu kontrolü her zaman yap" tipi iş-akışı kuralları. -->
 
-- Görünür metin değişiminde 5 dilin (tr/en/ar/de/es) hepsi senkron güncellenmeli (eksik anahtar = boşluk/hata).
+- **i18n değişiminde anahtar varlığı ≠ değer tazeliği — ayrımı koru.** Anahtar EKLEME / yeniden-adlandırma / yapısal değişim → 5 dilde (tr/en/ar/de/es) anahtar **eşzamanlı** var olmalı (eksik anahtar = runtime boşluk/hata, pazarlık-dışı). Yalnız **değer** değişimi → non-TR stale-kopya kabul, çeviri versiyon-sınırına ertelenir (TR tek kaynak). Plan/icrada önce değişimin tipini (anahtar mı değer mi) belirle. (Detay: `docs/DECISIONS.md` 2026-06-28 i18n rename + 2026-06-27 dil senkronu.)
 - Entegrasyon/analytics/3rd-party script eklerken **canlıda (production) gerçekten çalıştığını gözle doğrula** — "kod ekledim, tamamdır" deme; etkiyi panelde/ağ sekmesinde gör. (Bu projede daha önce tam bu atlanmıştı; örn. Umami → `docs/UMAMI-ANALYTICS.md`.)
 
 ---
