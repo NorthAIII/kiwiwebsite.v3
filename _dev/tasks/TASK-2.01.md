@@ -103,6 +103,16 @@ messages/
 
 ---
 
+## Tamamlanma Kriterleri
+
+- [ ] Tüm alt görevler tamamlandı
+- [ ] Tüm test kriterleri karşılandı
+- [ ] Git commit & push yapıldı (conventional commits formatı)
+- [ ] Bu doküman güncellendi (oturum kaydı)
+- [ ] DURUM.md güncellendi
+
+---
+
 ## Oturum Kayıtları
 
 ### Oturum — [TARİH]

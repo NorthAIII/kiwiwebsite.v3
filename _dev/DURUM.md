@@ -1,6 +1,6 @@
 # DURUM — Proje Dashboard
 
-**Son Güncelleme:** 2026-06-28 — plan-phase: Faz 2 için 3 task dokümanı oluşturuldu (TASK-2.01/2.02/2.03). Adım → verify-plan. Sıradaki: `/devflow:verify-plan 2`.
+**Son Güncelleme:** 2026-06-28 — verify-plan: Faz 2 plan review tamam (3 task doğrulandı, referans gerçeklik-kontrolü temiz; 1 mekanik düzeltme: eksik "Tamamlanma Kriterleri" bölümü 3 task'a eklendi). Adım → task. Sıradaki: `/devflow:run-task` (TASK-2.01).
 
 <!-- KURAL: Bu satır her oturum sonunda ÜZERİNE YAZILIR — tek satır, tek cümle. "Önceki:" / "Eski:" prefix ile kümülatif yığma YASAK; HTML comment'e sarma da yasak (CLAUDE.md → Doküman Disiplini). Tarih + kısa özet yeterli; detay için git log + ilgili PHASE/TASK dokümanları. -->
 
@@ -10,8 +10,8 @@
 
 **Faz:** 2 — v0.1 Versiyon-Sonu Teknik Borç Kapatma
 **Milestone:** 4 dilde (EN/AR/DE/ES) v0.1 değer senkronu (TD1: R1 step + R2 gym + F6 CTA) + ölü anahtarlar (`forum.articles.*`, `proof.*`) 5 dilden silinmiş & build temiz (TD2) + ana sayfa Lighthouse (mobil+masaüstü) brief bütçesini (≥95 perf/≥100 a11y/LCP<2.5s) karşılıyor & taban kaydedildi (TD3)
-**Adım:** verify-plan → `/devflow:verify-plan 2`
-**İlerleme:** Kapsam + araştırma + planlama tamam; 3 task dokümanı oluştu (TASK-2.01/2.02/2.03, hepsi ⬜); plan review bekliyor
+**Adım:** task → `/devflow:run-task` (TASK-2.01)
+**İlerleme:** Kapsam + araştırma + planlama + plan review tamam; 3 task doğrulandı (referans gerçeklik-kontrolü temiz); TASK-2.01 sırada
 **Faz Dokümanı:** `phases/PHASE-2.md`
 
 ---
@@ -29,9 +29,9 @@
 
 ## Aktif Task
 
-**Task:** — (yok; planlama oturumu — task çalıştırılmaz. İlk task TASK-2.01, verify-plan sonrası `run-task` ile başlar)
-**Durum:** Faz 2 planlandı (3 task ⬜); plan review bekliyor
-**İlerleme:** Adım verify-plan → `/devflow:verify-plan 2`
+**Task:** TASK-2.01 — TD1 non-TR çeviri senkronu (sıradaki; `/devflow:run-task` ile başlar)
+**Durum:** ⬜ Bekliyor (plan review tamam, çalıştırılmaya hazır)
+**İlerleme:** Adım task → `/devflow:run-task`
 
 ---
 
@@ -67,12 +67,12 @@ _(Yeni faza geçişte sıfırlandı — Faz 2 task'ları girildikçe doldurulaca
 
 ## Hızlı Erişim
 
-**Aktif Task:** — (yok; Adım: verify-plan → `/devflow:verify-plan 2`)
-**Aktif Faz:** 2 — v0.1 Versiyon-Sonu Teknik Borç Kapatma (Adım: verify-plan)
+**Aktif Task:** TASK-2.01 — TD1 non-TR çeviri senkronu (Adım: task → `/devflow:run-task`)
+**Aktif Faz:** 2 — v0.1 Versiyon-Sonu Teknik Borç Kapatma (Adım: task)
 **Task Sistemi:** `tasks/TASKS-README.md`
 **PRD (karar kaynağı):** `PRD/VIZYON.md` · `PRD/VERSIONS.md` · `PRD/features/`
 **Revize Backlog (bilinen sorunlar):** `docs/REVIZE-BACKLOG.md`
 
 ---
 
-**Son Güncelleme:** 2026-06-28 — plan-phase: Faz 2 için 3 task dokümanı oluşturuldu (TASK-2.01/2.02/2.03). Adım → verify-plan. Sıradaki: `/devflow:verify-plan 2`.
+**Son Güncelleme:** 2026-06-28 — verify-plan: Faz 2 plan review tamam (3 task doğrulandı, referans gerçeklik-kontrolü temiz; 1 mekanik düzeltme: eksik "Tamamlanma Kriterleri" bölümü 3 task'a eklendi). Adım → task. Sıradaki: `/devflow:run-task` (TASK-2.01).
