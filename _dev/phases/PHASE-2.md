@@ -105,7 +105,9 @@
 
 | # | Task | Durum | Açıklama |
 |---|------|-------|----------|
-| _(plan-phase'de doldurulacak)_ | | | |
+| 2.01 | TASK-2.01 | ⬜ Bekliyor | TD1 — Non-TR çeviri senkronu: `hero.ctaSecondary` + `how.steps.{analyze,automate,report}.body` + `sectors.items.gyms.{automation,body}` → EN/AR/DE/ES (saf değer, anahtar sabit) |
+| 2.02 | TASK-2.02 | ⬜ Bekliyor | TD2 — Ölü anahtar hijyeni: `proof.*` + `forum.articles.*` → 5 dilden sil (197→183, build temiz) |
+| 2.03 | TASK-2.03 | ⬜ Bekliyor | TD3 — Ana sayfa perf/Lighthouse doğrulama (mobil+masaüstü) + taban kaydı (`_dev/docs/perf/`) |
 
 **Durum simgeleri:** ⬜ Bekliyor | 🔄 Devam ediyor | ⏸️ Duraklatıldı | ✅ Tamamlandı | 🔴 Bloke | ❌ İptal
 
@@ -165,4 +167,4 @@
 ---
 
 **Oluşturulma:** 2026-06-28
-**Son Güncelleme:** 2026-06-28 — research-phase: i18n yüzeyi kodla doğrulandı (5×197 anahtar, sıfır eksik; TD1 = 3 stale kalem render-teyitli; TD2 ölü anahtar render-yok); perf aracı = npx lighthouse@13 (yerel prod build, kullanıcı onayı); sıralama-drift tuzağı not edildi.
+**Son Güncelleme:** 2026-06-28 — plan-phase: 3 task dokümanı oluşturuldu (TASK-2.01 TD1 çeviri senkronu · TASK-2.02 TD2 ölü anahtar hijyeni · TASK-2.03 TD3 perf/Lighthouse taban). Adım → verify-plan.

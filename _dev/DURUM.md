@@ -1,6 +1,6 @@
 # DURUM — Proje Dashboard
 
-**Son Güncelleme:** 2026-06-28 — research-phase: Faz 2 teknik araştırma tamamlandı (i18n yüzeyi kodla doğrulandı: 5×197 anahtar sıfır eksik; perf aracı = npx lighthouse@13 yerel prod build). Adım → plan. Sıradaki: `/devflow:plan-phase 2`.
+**Son Güncelleme:** 2026-06-28 — plan-phase: Faz 2 için 3 task dokümanı oluşturuldu (TASK-2.01/2.02/2.03). Adım → verify-plan. Sıradaki: `/devflow:verify-plan 2`.
 
 <!-- KURAL: Bu satır her oturum sonunda ÜZERİNE YAZILIR — tek satır, tek cümle. "Önceki:" / "Eski:" prefix ile kümülatif yığma YASAK; HTML comment'e sarma da yasak (CLAUDE.md → Doküman Disiplini). Tarih + kısa özet yeterli; detay için git log + ilgili PHASE/TASK dokümanları. -->
 
@@ -10,8 +10,8 @@
 
 **Faz:** 2 — v0.1 Versiyon-Sonu Teknik Borç Kapatma
 **Milestone:** 4 dilde (EN/AR/DE/ES) v0.1 değer senkronu (TD1: R1 step + R2 gym + F6 CTA) + ölü anahtarlar (`forum.articles.*`, `proof.*`) 5 dilden silinmiş & build temiz (TD2) + ana sayfa Lighthouse (mobil+masaüstü) brief bütçesini (≥95 perf/≥100 a11y/LCP<2.5s) karşılıyor & taban kaydedildi (TD3)
-**Adım:** plan → `/devflow:plan-phase 2`
-**İlerleme:** Kapsam + araştırma tamam (i18n yüzeyi kodla doğrulandı; perf aracı netleşti); task'lar plan-phase'de oluşacak (0 task)
+**Adım:** verify-plan → `/devflow:verify-plan 2`
+**İlerleme:** Kapsam + araştırma + planlama tamam; 3 task dokümanı oluştu (TASK-2.01/2.02/2.03, hepsi ⬜); plan review bekliyor
 **Faz Dokümanı:** `phases/PHASE-2.md`
 
 ---
@@ -29,19 +29,21 @@
 
 ## Aktif Task
 
-**Task:** — (yok; Faz 2 kapsamı tartışıldı, task'lar plan-phase'de oluşacak)
-**Durum:** Faz 2 girildi (discuss + research tamam); plan-phase bekliyor
-**İlerleme:** Adım plan → `/devflow:plan-phase 2`
+**Task:** — (yok; planlama oturumu — task çalıştırılmaz. İlk task TASK-2.01, verify-plan sonrası `run-task` ile başlar)
+**Durum:** Faz 2 planlandı (3 task ⬜); plan review bekliyor
+**İlerleme:** Adım verify-plan → `/devflow:verify-plan 2`
 
 ---
 
 ## Task Durumu (Aktif Faz)
 
-> Faz 2 girildi; task'lar plan-phase'de oluşacak. Faz 1 task'ları arşivde (`tasks/archive/`), detay `phases/PHASE-1.md`.
+> Faz 2 planlandı (3 task). Faz 1 task'ları arşivde (`tasks/archive/`), detay `phases/PHASE-1.md`.
 
 | # | Task | Durum |
 |---|------|-------|
-| _(faz girilmedi)_ | | |
+| 2.01 | TASK-2.01 — TD1 non-TR çeviri senkronu | ⬜ Bekliyor |
+| 2.02 | TASK-2.02 — TD2 ölü anahtar hijyeni | ⬜ Bekliyor |
+| 2.03 | TASK-2.03 — TD3 perf/Lighthouse taban | ⬜ Bekliyor |
 
 **Durum Kodları:** ⬜ Bekliyor | 🔄 Devam ediyor | ⏸️ Duraklatıldı | ✅ Tamamlandı | 🔴 Bloke | ❌ İptal
 
@@ -65,12 +67,12 @@ _(Yeni faza geçişte sıfırlandı — Faz 2 task'ları girildikçe doldurulaca
 
 ## Hızlı Erişim
 
-**Aktif Task:** — (yok; Adım: plan → `/devflow:plan-phase 2`)
-**Aktif Faz:** 2 — v0.1 Versiyon-Sonu Teknik Borç Kapatma (Adım: plan)
+**Aktif Task:** — (yok; Adım: verify-plan → `/devflow:verify-plan 2`)
+**Aktif Faz:** 2 — v0.1 Versiyon-Sonu Teknik Borç Kapatma (Adım: verify-plan)
 **Task Sistemi:** `tasks/TASKS-README.md`
 **PRD (karar kaynağı):** `PRD/VIZYON.md` · `PRD/VERSIONS.md` · `PRD/features/`
 **Revize Backlog (bilinen sorunlar):** `docs/REVIZE-BACKLOG.md`
 
 ---
 
-**Son Güncelleme:** 2026-06-28 — research-phase: Faz 2 teknik araştırma tamamlandı (i18n yüzeyi kodla doğrulandı: 5×197 anahtar sıfır eksik; perf aracı = npx lighthouse@13 yerel prod build). Adım → plan. Sıradaki: `/devflow:plan-phase 2`.
+**Son Güncelleme:** 2026-06-28 — plan-phase: Faz 2 için 3 task dokümanı oluşturuldu (TASK-2.01/2.02/2.03). Adım → verify-plan. Sıradaki: `/devflow:verify-plan 2`.
