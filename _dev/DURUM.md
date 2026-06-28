@@ -1,6 +1,6 @@
 # DURUM — Proje Dashboard
 
-**Son Güncelleme:** 2026-06-29 — plan-phase 3: 9 task dokümanı oluşturuldu (TASK-3.01 kanonik ortam+build-tabanı + S1–S8 senaryo task'ları 3.02–3.09); PHASE-3 Task Listesi dolduruldu. Adım: verify-plan.
+**Son Güncelleme:** 2026-06-29 — verify-plan 3: 9 task review edildi, referans gerçeklik-kontrolü temiz; TASK-3.06 triyaj ifadesi düzeltildi (yalnız bilinen a11y/perf açığı auto-defer, yeni ana-sayfa taşması normal triyaj). Adım: task → run-task (TASK-3.01).
 
 <!-- KURAL: Bu satır her oturum sonunda ÜZERİNE YAZILIR — tek satır, tek cümle. "Önceki:" / "Eski:" prefix ile kümülatif yığma YASAK; HTML comment'e sarma da yasak (CLAUDE.md → Doküman Disiplini). Tarih + kısa özet yeterli; detay için git log + ilgili PHASE/TASK dokümanları. -->
 
@@ -10,8 +10,8 @@
 
 **Faz:** 3 — v0.1 Versiyon-Sonu Senaryo Testi
 **Milestone:** S1–S8 senaryo kataloğu otonom koşuldu + bulgular kaydedildi + triyaj edildi; TR yolculuğu bütünsel-tutarlı + non-TR yüzeyleri tutarlı (parite/render/RTL) teyit edildi ("ölç+kaydet+karar ver" — geçiş peşinen varsayılmaz)
-**Adım:** verify-plan → `/devflow:verify-plan 3` (yeni oturum)
-**İlerleme:** Kapsam tartışması ✅ + Araştırma ✅ + Plan ✅ (9 task: 3.01 ortam+build-tabanı + S1–S8 → 3.02–3.09); plan review (verify-plan) bekliyor
+**Adım:** task → `/devflow:run-task` (TASK-3.01, yeni oturum)
+**İlerleme:** Kapsam tartışması ✅ + Araştırma ✅ + Plan ✅ + Plan review ✅ (verify-plan: 9 task doğrulandı, referans-kontrolü temiz, 1 içerik düzeltmesi); task çalıştırma bekliyor
 **Faz Dokümanı:** `phases/PHASE-3.md`
 
 ---
@@ -29,9 +29,9 @@
 
 ## Aktif Task
 
-**Task:** — (Faz 3 plan tamam; 9 task yazıldı ama henüz çalıştırılmadı; run-task verify-plan'dan sonra başlar — aktif task yok)
-**Durum:** Faz 3 discuss ✅ + research ✅ + plan ✅ → verify-plan bekliyor
-**İlerleme:** Adım verify-plan → `/devflow:verify-plan 3`
+**Task:** TASK-3.01 — Kanonik ortam + build-temizliği tabanı (S8-build) — ⬜ Bekliyor (sıradaki çalıştırılacak)
+**Durum:** Faz 3 discuss ✅ + research ✅ + plan ✅ + verify-plan ✅ → run-task bekliyor
+**İlerleme:** Adım task → `/devflow:run-task` (TASK-3.01)
 
 ---
 
@@ -73,12 +73,12 @@
 
 ## Hızlı Erişim
 
-**Aktif Task:** — (Faz 3 plan ✅; Adım: verify-plan → `/devflow:verify-plan 3`)
-**Aktif Faz:** 3 — v0.1 Versiyon-Sonu Senaryo Testi (verify-plan bekliyor)
+**Aktif Task:** TASK-3.01 (sıradaki; Adım: task → `/devflow:run-task`)
+**Aktif Faz:** 3 — v0.1 Versiyon-Sonu Senaryo Testi (verify-plan ✅; run-task bekliyor)
 **Task Sistemi:** `tasks/TASKS-README.md`
 **PRD (karar kaynağı):** `PRD/VIZYON.md` · `PRD/VERSIONS.md` · `PRD/features/`
 **Revize Backlog (bilinen sorunlar):** `docs/REVIZE-BACKLOG.md`
 
 ---
 
-**Son Güncelleme:** 2026-06-29 — plan-phase 3: 9 task dokümanı oluşturuldu (TASK-3.01 kanonik ortam+build-tabanı + S1–S8 senaryo task'ları 3.02–3.09); PHASE-3 Task Listesi dolduruldu. Adım: verify-plan.
+**Son Güncelleme:** 2026-06-29 — verify-plan 3: 9 task review edildi, referans gerçeklik-kontrolü temiz; TASK-3.06 triyaj ifadesi düzeltildi (yalnız bilinen a11y/perf açığı auto-defer, yeni ana-sayfa taşması normal triyaj). Adım: task → run-task (TASK-3.01).

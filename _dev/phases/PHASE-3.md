@@ -205,4 +205,4 @@
 ---
 
 **Oluşturulma:** 2026-06-28
-**Son Güncelleme:** 2026-06-29 — plan-phase 3: 9 task yazıldı (TASK-3.01 kanonik ortam+build-tabanı + S1–S8 senaryo task'ları 3.02–3.09); Task Listesi tablosu dolduruldu. Adım: verify-plan.
+**Son Güncelleme:** 2026-06-29 — verify-plan 3: 9 task fresh-context review edildi; tüm `(repo)` referansları gerçekle birebir doğrulandı (anchor id'leri, redirect 308, chatbot 0-token akışı, i18n parite 183, taksonomi); TASK-3.06 triyaj ifadesi düzeltildi (yalnız bilinen a11y/perf açığı auto-defer; yeni ana-sayfa taşması = kapsam-içi normal triyaj). Adım: run-task (TASK-3.01).

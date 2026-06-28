@@ -48,7 +48,7 @@ Living Flow degradasyonunu ve layout bütünlüğünü tarayıcıda doğrula: li
 - [ ] **6. Responsive bütünlük**
   - 320 / 768 / 1440 viewport → yatay taşma yok, near-zero CLS gözlemle.
 
-- [ ] **7. Triyaj (TK6)** — CLS/taşma/a11y açığı record-not-fix; perf-bitişik ölçümden önce `cat /proc/loadavg` (memory).
+- [ ] **7. Triyaj (TK6)** — **bilinen** a11y/perf açığı (a11y 89: marka-yeşili kontrast + `<dl>` + dil-switcher aria; mobil perf 87 / LCP 3.1s — DECISIONS 2026-06-28) record-not-fix; CLS bilinen-green (0, bütçe geçti). **Yeni** layout/yatay-taşma bug'ı ana sayfada = kapsam-içi (craft, §1) → normal triyaj, fix-task adayı (auto-defer değil). Perf-bitişik ölçümden önce `cat /proc/loadavg` (memory).
 
 ---
 
@@ -72,7 +72,7 @@ Bulgular bu task dokümanına. İstisna: kapsam-içi degradasyon bug'ı (ör. re
 
 - **Living Flow client-only** (`dynamic ssr:false` **(repo:** LivingFlow.tsx:6,29-42**)**) → curl markup'ta canvas/StaticFlow YOK (yalnız `mode:"idle"` base-wash SSR'da). S3 zorunlu tarayıcı (research).
 - **Tema = localStorage + `html.dark`, prefers-color-scheme DEĞİL** **(repo:** [locale]/layout.tsx:73-78 FOUC + ThemeToggle**).** `colorScheme` emülasyonu temayı çevirmez — dark = localStorage set + reload veya toggle.
-- **Perf/a11y bulguları record-not-fix** (CLS/taşma sahipli/ertelenmiş — DECISIONS 2026-06-28); loadavg önce (memory).
+- **Bilinen a11y/perf açıkları record-not-fix** (a11y 89: marka-yeşili kontrast + `<dl>` + dil-switcher aria; mobil perf 87 / LCP 3.1s — DECISIONS 2026-06-28; CLS bilinen-green 0). **Yeni** layout/yatay-taşma bug'ı ana sayfada = kapsam-içi → normal triyaj (TK6, fix-task adayı), auto-defer DEĞİL — yalnız *bilinen* açıklar ertelenir (discuss-phase bulgu politikası). Perf ölçümünden önce loadavg (memory).
 - **Ortam:** TASK-3.01 prod serve; PID fresh teyit. `package.json`'a dokunma (Playwright MCP kurulmaz).
 
 ---
