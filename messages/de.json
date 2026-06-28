@@ -27,10 +27,6 @@
       "crewOsLabel": "Betriebsebene"
     }
   },
-  "proof": {
-    "label": "Ergebnisse, die wir aufbauen",
-    "note": "Ehrliche Platzhalter, bis echte Kundendaten vorliegen."
-  },
   "how": {
     "label": "So funktioniert's",
     "title": "Vier Schritte, ein laufendes System.",
@@ -242,28 +238,6 @@
       "excerpt": "Ein menschlicher SDR kostet $110,000+/Jahr; AI-SDR-Tools versprechen ähnliche Arbeit 7/24 zu einem Bruchteil der Kosten. Wir haben die führenden Plattformen, ihre Preismodelle und realistische Ergebnisse zusammengetragen.",
       "cta": "Artikel lesen",
       "readingTime": "8 Min. Lesezeit"
-    },
-    "articles": {
-      "one": {
-        "title": "Unsere WhatsApp-Freigabekette von 2 Tagen auf 10 Minuten verkürzt",
-        "tag": "E-Commerce",
-        "readingTime": "5 Min. Lesezeit"
-      },
-      "two": {
-        "title": "Wie wir die No-Shows in der Klinik halbiert haben",
-        "tag": "Klinik",
-        "readingTime": "4 Min. Lesezeit"
-      },
-      "three": {
-        "title": "Ihren ersten Flow in Crew OS bauen",
-        "tag": "Erste Schritte",
-        "readingTime": "6 Min. Lesezeit"
-      },
-      "four": {
-        "title": "Welche Arbeit sich zu automatisieren lohnt — und welche nicht?",
-        "tag": "Strategie",
-        "readingTime": "7 Min. Lesezeit"
-      }
     },
     "featured2": {
       "kicker": "Neu · News",

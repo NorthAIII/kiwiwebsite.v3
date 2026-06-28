@@ -1,6 +1,6 @@
 # DURUM — Proje Dashboard
 
-**Son Güncelleme:** 2026-06-28 — run-task TASK-2.01 ✅: TD1 non-TR çeviri senkronu (3 kalem × 4 dil = 24 değer; saf değer, 5×197 parite korundu; build temiz; /en /de /es /ar render + /ar RTL teyit). Sıradaki: `/devflow:run-task` (TASK-2.02).
+**Son Güncelleme:** 2026-06-28 — run-task TASK-2.02 ✅: TD2 ölü anahtar hijyeni (`proof.*` + `forum.articles.*` 14 yaprak × 5 dil silindi; her dil 197→183 parite; cerrahi diff 5×`0/26`; build temiz 37/37; Forum.tsx etkilenmedi). Sıradaki: `/devflow:run-task` (TASK-2.03, fazın son task'ı).
 
 <!-- KURAL: Bu satır her oturum sonunda ÜZERİNE YAZILIR — tek satır, tek cümle. "Önceki:" / "Eski:" prefix ile kümülatif yığma YASAK; HTML comment'e sarma da yasak (CLAUDE.md → Doküman Disiplini). Tarih + kısa özet yeterli; detay için git log + ilgili PHASE/TASK dokümanları. -->
 
@@ -10,8 +10,8 @@
 
 **Faz:** 2 — v0.1 Versiyon-Sonu Teknik Borç Kapatma
 **Milestone:** 4 dilde (EN/AR/DE/ES) v0.1 değer senkronu (TD1: R1 step + R2 gym + F6 CTA) + ölü anahtarlar (`forum.articles.*`, `proof.*`) 5 dilden silinmiş & build temiz (TD2) + ana sayfa Lighthouse (mobil+masaüstü) brief bütçesini (≥95 perf/≥100 a11y/LCP<2.5s) karşılıyor & taban kaydedildi (TD3)
-**Adım:** task → `/devflow:run-task` (TASK-2.02)
-**İlerleme:** TASK-2.01 ✅ (TD1 çeviri senkronu); TASK-2.02 (TD2 ölü anahtar) + TASK-2.03 (TD3 perf) sırada
+**Adım:** task → `/devflow:run-task` (TASK-2.03)
+**İlerleme:** TASK-2.01 ✅ (TD1 çeviri senkronu) · TASK-2.02 ✅ (TD2 ölü anahtar hijyeni); TASK-2.03 (TD3 perf) sırada — fazın son task'ı
 **Faz Dokümanı:** `phases/PHASE-2.md`
 
 ---
@@ -29,7 +29,7 @@
 
 ## Aktif Task
 
-**Task:** TASK-2.02 — TD2 ölü anahtar hijyeni (sıradaki; `/devflow:run-task` ile başlar)
+**Task:** TASK-2.03 — TD3 perf/Lighthouse doğrulama (sıradaki; `/devflow:run-task` ile başlar)
 **Durum:** ⬜ Bekliyor (plan review tamam, çalıştırılmaya hazır)
 **İlerleme:** Adım task → `/devflow:run-task`
 
@@ -42,7 +42,7 @@
 | # | Task | Durum |
 |---|------|-------|
 | 2.01 | TASK-2.01 — TD1 non-TR çeviri senkronu | ✅ Tamamlandı |
-| 2.02 | TASK-2.02 — TD2 ölü anahtar hijyeni | ⬜ Bekliyor |
+| 2.02 | TASK-2.02 — TD2 ölü anahtar hijyeni | ✅ Tamamlandı |
 | 2.03 | TASK-2.03 — TD3 perf/Lighthouse taban | ⬜ Bekliyor |
 
 **Durum Kodları:** ⬜ Bekliyor | 🔄 Devam ediyor | ⏸️ Duraklatıldı | ✅ Tamamlandı | 🔴 Bloke | ❌ İptal
@@ -52,6 +52,11 @@
 ## Son Task Özetleri
 
 > **KURAL:** Sadece son 2 task özeti tutulur, daha eskileri **gerçekten silinir** (HTML comment'e sarma, "Önceki:" prefix, üstü çizili etiket yasak — detay için git log + arşivlenmiş task dokümanı). Her özet kısa formatlı: paragraf yasak, **bullet zorunlu**, "Özet" alanı max 3 bullet.
+
+**TASK-2.02 — TD2 ölü anahtar hijyeni** ✅ (2026-06-28)
+- `proof.*` + `forum.articles.*` (14 yaprak) 5 dilden silindi; her dil 197→**183** parite; path+brace-sayımı (satır no'ya güvenmedi), cerrahi diff 5×`0/26` (saf silme).
+- 5-dil parse temiz (`json.loads`); `next build` ✓ 37/37 static, exit 0 — MISSING_MESSAGE yok.
+- `Forum.tsx` yalnız `label/title/sub/featured.*/featured2.*/cta/note` tüketiyor → etkilenmedi.
 
 **TASK-2.01 — TD1 non-TR çeviri senkronu** ✅ (2026-06-28)
 - 3 stale kalem (`hero.ctaSecondary` · `how.steps.{analyze,automate,report}.body` · `sectors.items.gyms.{automation,body}`) EN/AR/DE/ES'de TR ile senkronlandı — saf değer, 24 değer.
@@ -70,7 +75,7 @@
 
 ## Hızlı Erişim
 
-**Aktif Task:** TASK-2.02 — TD2 ölü anahtar hijyeni (Adım: task → `/devflow:run-task`)
+**Aktif Task:** TASK-2.03 — TD3 perf/Lighthouse doğrulama (Adım: task → `/devflow:run-task`)
 **Aktif Faz:** 2 — v0.1 Versiyon-Sonu Teknik Borç Kapatma (Adım: task)
 **Task Sistemi:** `tasks/TASKS-README.md`
 **PRD (karar kaynağı):** `PRD/VIZYON.md` · `PRD/VERSIONS.md` · `PRD/features/`
@@ -78,4 +83,4 @@
 
 ---
 
-**Son Güncelleme:** 2026-06-28 — run-task TASK-2.01 ✅: TD1 non-TR çeviri senkronu (3 kalem × 4 dil = 24 değer; saf değer, 5×197 parite korundu; build temiz; /en /de /es /ar render + /ar RTL teyit). Sıradaki: `/devflow:run-task` (TASK-2.02).
+**Son Güncelleme:** 2026-06-28 — run-task TASK-2.02 ✅: TD2 ölü anahtar hijyeni (`proof.*` + `forum.articles.*` 14 yaprak × 5 dil silindi; her dil 197→183 parite; cerrahi diff 5×`0/26`; build temiz 37/37; Forum.tsx etkilenmedi). Sıradaki: `/devflow:run-task` (TASK-2.03, fazın son task'ı).

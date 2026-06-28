@@ -27,10 +27,6 @@
       "crewOsLabel": "Operating layer"
     }
   },
-  "proof": {
-    "label": "Outcomes we're wiring up",
-    "note": "Honest placeholders until client data lands."
-  },
   "how": {
     "label": "How it works",
     "title": "Four moves, one running system.",
@@ -242,28 +238,6 @@
       "excerpt": "A human SDR runs $110,000+/year; AI SDR tools promise similar work 7/24 at a fraction of the cost. We rounded up the leading platforms, their pricing models, and realistic results.",
       "cta": "Read the article",
       "readingTime": "8 min read"
-    },
-    "articles": {
-      "one": {
-        "title": "Cut our WhatsApp approval chain from 2 days to 10 minutes",
-        "tag": "E-commerce",
-        "readingTime": "5 min read"
-      },
-      "two": {
-        "title": "How we halved no-shows at the clinic",
-        "tag": "Clinic",
-        "readingTime": "4 min read"
-      },
-      "three": {
-        "title": "Building your first flow in Crew OS",
-        "tag": "Getting started",
-        "readingTime": "6 min read"
-      },
-      "four": {
-        "title": "Which work is worth automating — and which isn’t?",
-        "tag": "Strategy",
-        "readingTime": "7 min read"
-      }
     },
     "featured2": {
       "kicker": "New · News",

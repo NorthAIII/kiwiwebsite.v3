@@ -27,10 +27,6 @@
       "crewOsLabel": "Capa operativa"
     }
   },
-  "proof": {
-    "label": "Resultados que estamos conectando",
-    "note": "Estimaciones honestas hasta que lleguen los datos de clientes."
-  },
   "how": {
     "label": "Cómo funciona",
     "title": "Cuatro pasos, un solo sistema en marcha.",
@@ -242,28 +238,6 @@
       "excerpt": "Un SDR humano cuesta $110,000+/año; las herramientas AI SDR prometen un trabajo similar 7/24 a una fracción del costo. Reunimos las plataformas líderes, sus modelos de precios y resultados realistas.",
       "cta": "Lee el artículo",
       "readingTime": "8 min de lectura"
-    },
-    "articles": {
-      "one": {
-        "title": "Redujimos nuestra cadena de aprobación de WhatsApp de 2 días a 10 minutos",
-        "tag": "E-commerce",
-        "readingTime": "5 min de lectura"
-      },
-      "two": {
-        "title": "Cómo redujimos a la mitad las inasistencias en la clínica",
-        "tag": "Clínica",
-        "readingTime": "4 min de lectura"
-      },
-      "three": {
-        "title": "Cómo construir tu primer flujo en Crew OS",
-        "tag": "Primeros pasos",
-        "readingTime": "6 min de lectura"
-      },
-      "four": {
-        "title": "¿Qué trabajo vale la pena automatizar — y cuál no?",
-        "tag": "Estrategia",
-        "readingTime": "7 min de lectura"
-      }
     },
     "featured2": {
       "kicker": "Nuevo · Noticia",
