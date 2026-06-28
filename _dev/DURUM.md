@@ -1,6 +1,6 @@
 # DURUM — Proje Dashboard
 
-**Son Güncelleme:** 2026-06-28 — review-phase: Faz 1 ✅ tamamlandı (retrospektif + 8 kalite ekseni; düzeltme task'ı yok). v0.1 son içerik fazı bitti → sıradaki versiyon-sonu Teknik Borç fazı; `/devflow:discuss-phase 2` promosyonu yapar.
+**Son Güncelleme:** 2026-06-28 — discuss-phase: Faz 2 (v0.1 versiyon-sonu Teknik Borç) kapsamı tartışıldı + girildi; Versiyon Sonu Durumu → `teknik_borç`, Adım → research. Sıradaki: `/devflow:research-phase 2`.
 
 <!-- KURAL: Bu satır her oturum sonunda ÜZERİNE YAZILIR — tek satır, tek cümle. "Önceki:" / "Eski:" prefix ile kümülatif yığma YASAK; HTML comment'e sarma da yasak (CLAUDE.md → Doküman Disiplini). Tarih + kısa özet yeterli; detay için git log + ilgili PHASE/TASK dokümanları. -->
 
@@ -8,11 +8,11 @@
 
 ## Aktif Faz
 
-**Faz:** 2 — Teknik Borç Kapatma (v0.1 versiyon-sonu) — _geçici ad; discuss-phase 2 damgalar_
-**Milestone:** _discuss-phase 2'de belirlenecek_ (aday kapsam: non-TR çeviri senkronu + ölü anahtar hijyeni [`forum.articles.*`, `proof.*`] + `/bunker-os` public route [M6] + test altyapısı [D1])
-**Adım:** discuss → `/devflow:discuss-phase 2`
-**İlerleme:** Faz henüz girilmedi (0 task) — discuss-phase kapsamı, plan-phase task'ları oluşturacak
-**Faz Dokümanı:** discuss-phase'de oluşacak (`phases/PHASE-2.md`)
+**Faz:** 2 — v0.1 Versiyon-Sonu Teknik Borç Kapatma
+**Milestone:** 4 dilde (EN/AR/DE/ES) v0.1 değer senkronu (TD1: R1 step + R2 gym + F6 CTA) + ölü anahtarlar (`forum.articles.*`, `proof.*`) 5 dilden silinmiş & build temiz (TD2) + ana sayfa Lighthouse (mobil+masaüstü) brief bütçesini (≥95 perf/≥100 a11y/LCP<2.5s) karşılıyor & taban kaydedildi (TD3)
+**Adım:** research → `/devflow:research-phase 2`
+**İlerleme:** Kapsam tartışıldı (TD1 çeviri + TD2 ölü anahtar + TD3 perf); task'lar plan-phase'de oluşacak (0 task)
+**Faz Dokümanı:** `phases/PHASE-2.md`
 
 ---
 
@@ -20,7 +20,7 @@
 
 **Versiyon:** v0.1 — Ana sayfa TR içerik & ses revizesi (güçlü revizenin ilk versiyonu; baz: v3 canlı)
 **Hedef:** Nasıl Çalışır 4 adım (R1) + Sektörler gym paneli tek-otomasyona (R2) + dürüstlük taraması (R4/F5) + hero ikincil CTA (R4/F6) ana sayfada tamam; marka sesi tutarlı; TR tek kaynak (çeviri versiyon-sınırına ertelendi)
-**Versiyon Sonu Durumu:** içerik_fazları
+**Versiyon Sonu Durumu:** teknik_borç
 
 <!-- Versiyon geçişlerinde güncellenir. discuss-phase versiyon sonu tespitinde bu alanı okur. -->
 <!-- Değerler: içerik_fazları | teknik_borç | senaryo_testi | prd_review_bekliyor -->
@@ -29,15 +29,15 @@
 
 ## Aktif Task
 
-**Task:** — (yok; Faz 1 review tamamlandı, Faz 2 henüz girilmedi)
-**Durum:** Faz 1 ✅ tamamlandı (review + retrospektif yazıldı); Faz 2 `/devflow:discuss-phase 2` bekliyor
-**İlerleme:** Yeni faza geçiliyor — task'lar discuss-phase 2 + plan-phase'de oluşacak
+**Task:** — (yok; Faz 2 kapsamı tartışıldı, task'lar plan-phase'de oluşacak)
+**Durum:** Faz 2 girildi (discuss tamam); research-phase bekliyor
+**İlerleme:** Adım research → `/devflow:research-phase 2`
 
 ---
 
 ## Task Durumu (Aktif Faz)
 
-> Faz 2 henüz girilmedi (discuss-phase + plan-phase task'ları oluşturacak). Faz 1 task'ları arşivde (`tasks/archive/`), detay `phases/PHASE-1.md`.
+> Faz 2 girildi; task'lar plan-phase'de oluşacak. Faz 1 task'ları arşivde (`tasks/archive/`), detay `phases/PHASE-1.md`.
 
 | # | Task | Durum |
 |---|------|-------|
@@ -65,12 +65,12 @@ _(Yeni faza geçişte sıfırlandı — Faz 2 task'ları girildikçe doldurulaca
 
 ## Hızlı Erişim
 
-**Aktif Task:** — (yok; Faz 2 `/devflow:discuss-phase 2` bekliyor)
-**Aktif Faz:** 2 — Teknik Borç Kapatma (geçici; Adım: discuss → `/devflow:discuss-phase 2`)
+**Aktif Task:** — (yok; Adım: research → `/devflow:research-phase 2`)
+**Aktif Faz:** 2 — v0.1 Versiyon-Sonu Teknik Borç Kapatma (Adım: research)
 **Task Sistemi:** `tasks/TASKS-README.md`
 **PRD (karar kaynağı):** `PRD/VIZYON.md` · `PRD/VERSIONS.md` · `PRD/features/`
 **Revize Backlog (bilinen sorunlar):** `docs/REVIZE-BACKLOG.md`
 
 ---
 
-**Son Güncelleme:** 2026-06-28 — review-phase: Faz 1 ✅ tamamlandı (retrospektif + 8 kalite ekseni; düzeltme task'ı yok). v0.1 son içerik fazı bitti → sıradaki versiyon-sonu Teknik Borç fazı; `/devflow:discuss-phase 2` promosyonu yapar.
+**Son Güncelleme:** 2026-06-28 — discuss-phase: Faz 2 (v0.1 versiyon-sonu Teknik Borç) kapsamı tartışıldı + girildi; Versiyon Sonu Durumu → `teknik_borç`, Adım → research. Sıradaki: `/devflow:research-phase 2`.
