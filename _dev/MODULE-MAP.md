@@ -119,9 +119,9 @@ M6 (SEO/Deploy) ─────────────────────>
 | R3: Crew OS bölümü içerik teyidi (panel akışları bırakıldı) | M2 (+M4) | v0.1 | 1 | ✅ |
 | R4: Ana sayfa TR kopya/ses revizesi (F5 dürüstlük + F6 hero ikincil CTA) | M2 + M4 | v0.1 | 1 | ✅ |
 | **— v0.1 versiyon-sonu teknik borç iş birimleri —** | | | | |
-| TD1: Non-TR çeviri senkronu (R1 step + R2 gym + F6 CTA değerleri → EN/AR/DE/ES) | M4 (+M2) | v0.1 | 2 | 🔄 |
-| TD2: Ölü anahtar hijyeni (`forum.articles.{one..four}` + `proof.{label,note}` → 5 dilden sil) | M4 (+M2) | v0.1 | 2 | 🔄 |
-| TD3: Ana sayfa perf/Lighthouse doğrulama (mobil+masaüstü, brief bütçesi + taban) | M6 | v0.1 | 2 | 🔄 |
+| TD1: Non-TR çeviri senkronu (R1 step + R2 gym + F6 CTA değerleri → EN/AR/DE/ES) | M4 (+M2) | v0.1 | 2 | ✅ |
+| TD2: Ölü anahtar hijyeni (`forum.articles.{one..four}` + `proof.{label,note}` → 5 dilden sil) | M4 (+M2) | v0.1 | 2 | ✅ |
+| TD3: Ana sayfa perf/Lighthouse doğrulama (mobil+masaüstü, brief bütçesi + taban) | M6 | v0.1 | 2 | ✅ |
 
 **Durum simgeleri:**
 - ⬜ **Bekliyor** — Fazı henüz başlamadı
@@ -135,4 +135,4 @@ M6 (SEO/Deploy) ─────────────────────>
 
 ---
 
-**Son Güncelleme:** 2026-06-28 — discuss-phase: Faz 2 (v0.1 versiyon-sonu teknik borç) iş birimleri eklendi — TD1 non-TR çeviri senkronu + TD2 ölü anahtar hijyeni + TD3 ana sayfa perf doğrulama (🔄, Faz 2).
+**Son Güncelleme:** 2026-06-28 — review-phase: Faz 2 iş birimleri (TD1/TD2/TD3) ✅ tamamlandı (UAT 14/14; TD3 taban kaydedildi, bütçe açığı ertelendi — regresyon değil).

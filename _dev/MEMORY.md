@@ -7,7 +7,7 @@
 >
 > Bu yapı şişmeyi önler: index ince kalır (hep yüklü), detay yalnızca gerekince okunur.
 
-**Son Güncelleme:** 2026-06-28 — run-task TASK-2.03: Süreç Disiplinleri'ne "Lighthouse/perf ölçerken host yükünü gözlemle" eklendi.
+**Son Güncelleme:** 2026-06-28 — review-phase 2: Süreç Disiplinleri'ne "yerel prod doğrulamada serve eden process'i listening-PID ile teyit et" eklendi (stray next-server yanlış-negatifi).
 
 <!-- KURAL: Bu satır her güncellemede ÜZERİNE YAZILIR. "Önceki:" prefix ile kümülatif yığma YASAK (CLAUDE.md → Doküman Disiplini). -->
 
@@ -49,6 +49,7 @@
 - **i18n değişiminde anahtar varlığı ≠ değer tazeliği — ayrımı koru.** Anahtar EKLEME / yeniden-adlandırma / yapısal değişim → 5 dilde (tr/en/ar/de/es) anahtar **eşzamanlı** var olmalı (eksik anahtar = runtime boşluk/hata, pazarlık-dışı). Yalnız **değer** değişimi → non-TR stale-kopya kabul, çeviri versiyon-sınırına ertelenir (TR tek kaynak). Plan/icrada önce değişimin tipini (anahtar mı değer mi) belirle. (Detay: `docs/DECISIONS.md` 2026-06-28 i18n rename + 2026-06-27 dil senkronu.)
 - Entegrasyon/analytics/3rd-party script eklerken **canlıda (production) gerçekten çalıştığını gözle doğrula** — "kod ekledim, tamamdır" deme; etkiyi panelde/ağ sekmesinde gör. (Bu projede daha önce tam bu atlanmıştı; örn. Umami → `docs/UMAMI-ANALYTICS.md`.)
 - **Lighthouse/perf ölçerken host yükünü gözlemle** — her koşudan önce `cat /proc/loadavg`. Yüksek yük (bu makine 20 çekirdek; load avg ≫ çekirdek sayısı = aşırı yük) TBT/LCP/perf skorunu bozar (a11y/CLS'yi **değil** — onlar ortamdan bağımsız), tek atışta perf 49↔90 savrulur. Düşük yükte (≤ ~6) çok-koşu al, median kaydet; yüksek-yük koşularını ele. Bu host gürültüsü orphan chrome process'ten farklıdır (onu da `ps` ile kontrol et). (Detay/metodoloji: `docs/perf/README.md`; ilk taban TASK-2.03.)
+- **Yerel prod doğrulamada serve eden process'in senin fresh process'in olduğunu listening-PID ile teyit et.** Önceki oturumdan kalan stray/stale `next-server` portu tutup eski (edit-öncesi) build'i sunabilir → tüm yeni metinler "bulunamadı" görünür (**yanlış negatif**, gerçekte build doğru). Görsel/curl doğrulamadan önce: portu dinleyen PID az önce başlattığın process mi (`ss -ltnp` / `lsof -i`), yoksa stray mı? Şüphede diskteki prerender (`.next/server/app/*.html`) build'in ground-truth'udur. Net portta yeniden başlat, sahiplenen PID'yi teyit et. (TASK-2.01'de tam bu yaşandı.)
 
 ---
 

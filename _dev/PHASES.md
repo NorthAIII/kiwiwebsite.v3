@@ -20,7 +20,7 @@ Faz numaraları **global, sürekli ve append-only**'dir — versiyon değişse b
 | Faz | Konu | Milestone | Durum |
 |-----|------|-----------|-------|
 | 1 | Ana sayfa TR içerik & ses revizesi | v0.1: Nasıl Çalışır 4 adım + gym tek-otomasyon + F5 dürüstlük + F6 hero CTA | ✅ |
-| 2 | v0.1 versiyon-sonu teknik borç kapatma | TD1 non-TR çeviri senkronu + TD2 ölü anahtar hijyeni + TD3 ana sayfa perf/Lighthouse doğrulama | 🔄 |
+| 2 | v0.1 versiyon-sonu teknik borç kapatma | TD1 non-TR çeviri senkronu + TD2 ölü anahtar hijyeni + TD3 ana sayfa perf/Lighthouse doğrulama | ✅ |
 
 **Durum simgeleri:**
 - 🔄 **Devam ediyor** — discuss-phase başladı (aktif faz)
@@ -62,11 +62,12 @@ _(Şu an numarasız sıradaki içerik fazı yok — v0.1'in tek içerik fazı Fa
 | Geçiş | Tarih | Not |
 |--------|-------|-----|
 | Faz 1 ✅ → versiyon-sonu | 2026-06-28 | v0.1 tek içerik fazı tamam (UAT 15/15, kalite 8 eksen); sıradaki = Teknik Borç fazı (discuss-phase 2 promosyonu yapar) |
+| Faz 2 ✅ (Teknik Borç) → senaryo testi | 2026-06-28 | TD1/TD2 tam; TD3 taban kaydedildi, bütçe açığı (a11y/mobil-perf) ertelendi (regresyon değil); Versiyon Sonu Durumu → senaryo_testi (discuss-phase 3 promosyonu yapar) |
 
 <!-- KURAL: Her geçiş için TEK satır + kısa not. Geçiş gerekçesi/detayı PHASE-N.md retrospektifindedir, burada tekrar edilmez. "Önceki:" prefix veya HTML comment ile detay yığma YASAK (CLAUDE.md → Doküman Disiplini). -->
 
 ---
 
-**Son Güncelleme:** 2026-06-28 — discuss-phase: Faz 2 (v0.1 versiyon-sonu Teknik Borç) Faz Durumu tablosuna 🔄 olarak eklendi (faz promosyonu).
+**Son Güncelleme:** 2026-06-28 — review-phase: Faz 2 (Teknik Borç) ✅ tamamlandı; geçiş notu eklendi (→ senaryo testi). Versiyon Sonu Durumu teknik_borç → senaryo_testi.
 
 <!-- KURAL: Bu satır her güncellemede ÜZERİNE YAZILIR. "Önceki:" prefix ile kümülatif yığma YASAK (CLAUDE.md → Doküman Disiplini). -->
