@@ -21,6 +21,7 @@ Faz numaraları **global, sürekli ve append-only**'dir — versiyon değişse b
 |-----|------|-----------|-------|
 | 1 | Ana sayfa TR içerik & ses revizesi | v0.1: Nasıl Çalışır 4 adım + gym tek-otomasyon + F5 dürüstlük + F6 hero CTA | ✅ |
 | 2 | v0.1 versiyon-sonu teknik borç kapatma | TD1 non-TR çeviri senkronu + TD2 ölü anahtar hijyeni + TD3 ana sayfa perf/Lighthouse doğrulama | ✅ |
+| 3 | v0.1 versiyon-sonu senaryo testi | v0.1 ana sayfa uçtan-uca doğrulama (S1–S8: giriş/yolculuk/mod/kontrol/taksonomi/5-dil/chatbot/adversarial); TR öncelik, otonom, keşfet+kaydet+triyaj | 🔄 |
 
 **Durum simgeleri:**
 - 🔄 **Devam ediyor** — discuss-phase başladı (aktif faz)
@@ -68,6 +69,6 @@ _(Şu an numarasız sıradaki içerik fazı yok — v0.1'in tek içerik fazı Fa
 
 ---
 
-**Son Güncelleme:** 2026-06-28 — review-phase: Faz 2 (Teknik Borç) ✅ tamamlandı; geçiş notu eklendi (→ senaryo testi). Versiyon Sonu Durumu teknik_borç → senaryo_testi.
+**Son Güncelleme:** 2026-06-28 — discuss-phase 3: Faz 3 (v0.1 Senaryo Testi) Faz Durumu tablosuna 🔄 olarak eklendi (faz promosyonu).
 
 <!-- KURAL: Bu satır her güncellemede ÜZERİNE YAZILIR. "Önceki:" prefix ile kümülatif yığma YASAK (CLAUDE.md → Doküman Disiplini). -->

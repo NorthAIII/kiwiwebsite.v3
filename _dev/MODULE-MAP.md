@@ -122,6 +122,8 @@ M6 (SEO/Deploy) ─────────────────────>
 | TD1: Non-TR çeviri senkronu (R1 step + R2 gym + F6 CTA değerleri → EN/AR/DE/ES) | M4 (+M2) | v0.1 | 2 | ✅ |
 | TD2: Ölü anahtar hijyeni (`forum.articles.{one..four}` + `proof.{label,note}` → 5 dilden sil) | M4 (+M2) | v0.1 | 2 | ✅ |
 | TD3: Ana sayfa perf/Lighthouse doğrulama (mobil+masaüstü, brief bütçesi + taban) | M6 | v0.1 | 2 | ✅ |
+| **— v0.1 versiyon-sonu senaryo testi (Faz 3 — çapraz doğrulama, yeni feature üretmez) —** | | | | |
+| S1–S8: v0.1 ana sayfa uçtan-uca senaryo doğrulaması (giriş/yolculuk/mod/kontrol/taksonomi/5-dil/chatbot/adversarial) | tümü | v0.1 | 3 | 🔄 |
 
 **Durum simgeleri:**
 - ⬜ **Bekliyor** — Fazı henüz başlamadı
@@ -135,4 +137,4 @@ M6 (SEO/Deploy) ─────────────────────>
 
 ---
 
-**Son Güncelleme:** 2026-06-28 — review-phase: Faz 2 iş birimleri (TD1/TD2/TD3) ✅ tamamlandı (UAT 14/14; TD3 taban kaydedildi, bütçe açığı ertelendi — regresyon değil).
+**Son Güncelleme:** 2026-06-28 — discuss-phase 3: Faz 3 (v0.1 senaryo testi) çapraz-doğrulama marker satırı eklendi (S1–S8, 🔄; yeni feature yok).
