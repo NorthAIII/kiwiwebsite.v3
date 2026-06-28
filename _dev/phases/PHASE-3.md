@@ -131,13 +131,21 @@
 
 ## Task Listesi
 
-> Bu bölüm `/devflow:plan-phase` oturumunda doldurulur.
+> Bu bölüm `/devflow:plan-phase 3` oturumunda dolduruldu (2026-06-29). 9 task: 1 kanonik-ortam tabanı + S1–S8 senaryo grupları (her grup tek odaklı task). Sıra: önce HTTP/SSG (curl/node, ucuz/deterministik), sonra tarayıcı-runtime (Playwright). Hepsi TASK-3.01'e bağlı. Triyajda kapsam-içi gerçek bug çıkarsa emergent fix-task (3.10+) açılır (TK6).
 
 <!-- KURAL: Task Listesi yalnızca özet tablodur (#, Task, Durum, kısa açıklama). Task'ın icra detayı / oturum kaydı / çalışma notu buraya değil `tasks/TASK-N.md`'ye yazılır — bu bölüme sızan detay şişmedir, temizlenir (bölme değil). -->
 
 | # | Task | Durum | Açıklama |
 |---|------|-------|----------|
-| 3.01 | TASK-3.01 | ⬜ Bekliyor | (plan-phase'de yazılır) |
+| 3.01 | TASK-3.01 | ⬜ Bekliyor | Kanonik ortam + build-temizliği tabanı (S8-build; prod serve + PID teyit) |
+| 3.02 | TASK-3.02 | ⬜ Bekliyor | S1 giriş/yönlendirme matrisi (curl: 5 locale 200, 308 redirect, derin-link, bilinmeyen-locale gözlem) |
+| 3.03 | TASK-3.03 | ⬜ Bekliyor | S5 taksonomi & dürüstlük (curl+grep 5 dil render: Crew OS var / Bunker yok / yasak metafor yok) |
+| 3.04 | TASK-3.04 | ⬜ Bekliyor | S6 5-dil bütünlük & non-TR tutarlılık (node key-diff + render MISSING_MESSAGE + stale gözlem + RTL) |
+| 3.05 | TASK-3.05 | ⬜ Bekliyor | S2 tam TR yolculuğu (curl link + Playwright CTA/anchor: hero CTA, 4 adım, gym/Alpfit çıkış) |
+| 3.06 | TASK-3.06 | ⬜ Bekliyor | S3 mod kombinasyonları / Living Flow degradasyon (Playwright: tema/reduced/no-WebGL/mobil/RTL-combo/responsive) |
+| 3.07 | TASK-3.07 | ⬜ Bekliyor | S4 kontroller & kalıcılık (Playwright: tema toggle+reload, dil-switcher, klavye-only + focus-visible) |
+| 3.08 | TASK-3.08 | ⬜ Bekliyor | S7 chatbot 0-token (kod-inceleme + dummy-key 400 + key-yok 503 offline; sıfır API çağrısı) |
+| 3.09 | TASK-3.09 | ⬜ Bekliyor | S8 adversarial/holistik (JS-off SSG okunabilirlik + toggle/scroll race; build-clean 3.01'de) |
 
 **Durum simgeleri:** ⬜ Bekliyor | 🔄 Devam ediyor | ⏸️ Duraklatıldı | ✅ Tamamlandı | 🔴 Bloke | ❌ İptal
 
@@ -197,4 +205,4 @@
 ---
 
 **Oluşturulma:** 2026-06-28
-**Son Güncelleme:** 2026-06-28 — research-phase 3: Araştırma Bulguları yazıldı (hibrit araç eşlemesi C, kanonik prod-build ortam, chatbot 0-token üç-katman, i18n parite 183/temiz doğrulandı, degradasyon Playwright emulateMedia, precondition kaynakları işaretli). Adım: plan.
+**Son Güncelleme:** 2026-06-29 — plan-phase 3: 9 task yazıldı (TASK-3.01 kanonik ortam+build-tabanı + S1–S8 senaryo task'ları 3.02–3.09); Task Listesi tablosu dolduruldu. Adım: verify-plan.
