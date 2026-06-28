@@ -56,22 +56,44 @@
 
 ## Araştırma Bulguları
 
-> Bu bölüm `/devflow:research-phase` oturumunda doldurulur.
+> `/devflow:research-phase 2` oturumunda dolduruldu (2026-06-28). Kaynak: `messages/{tr,en,ar,de,es}.json` (5-dil flatten/diff) + `src/` tüketim grep'i + ortam yoklaması.
 
-**Araştırmaya taşınan açık nokta:** Perf ölçüm aracı seçimi (npx ile bağımlılık eklemeden Lighthouse vs Playwright tabanlı vs Chrome DevTools) — `package.json` dokunulmaz olduğundan bağımlılık eklemeden yöntem netleştirilecek. TD1/TD2 i18n yüzeyi research-phase'de 5-dil paralellik + `src/` tüketim teyidiyle son kez doğrulanacak (ölü anahtar render-yok teyidi).
+### TD1/TD2 — i18n Yüzeyi Doğrulaması (kodla teyit)
 
-### Değerlendirilen Yaklaşımlar
-- [Yaklaşım 1]: [Açıklama, artılar, eksiler]
-- **Seçilen:** [Hangisi ve neden]
+**Anahtar paritesi (flatten + diff, 5 dil):** Her dil **tam 197 anahtar**, sıfır eksik / sıfır fazla. → TD1 saf **değer** güncellemesidir (anahtar eklenmez/silinmez); pazarlık-dışı "eksik anahtar/MISSING_MESSAGE" riski **yok**. (Dil stratejisi: değer-ertelemesi versiyon-sınırında kapatılır — Memory "i18n anahtar varlığı ≠ değer tazeliği".)
+
+**TD1 stale yüzeyi = tam 3 kalem, hepsi render ediliyor:**
+- `hero.ctaSecondary` — non-TR'de "See it live / Live ansehen / Míralo en vivo / شاهدها مباشرةً"; TR "İşleyen örnekleri gör"e güncellenmemiş. Tüketici: `src/components/Hero.tsx:81`. (4 dil × 1 değer)
+- `how.steps.{analyze,automate,report}.body` — non-TR'de düzgün 4-adım çevirisi **mevcut** ama TR'nin **son zenginleştirilmiş** metninden değil, erken taslaktan (örn. EN `analyze.body` TR'deki "işin nerede sızdığını buluruz: elle tekrarlanan adımlar…" zenginleştirmesini, `report.body` "kazanç varsayılmaz, ölçülür" vurgusunu taşımıyor). `design` zaten senkron; `title`'lar (tek sözcük) doğru → iş yalnız **3 body**. Tüketici: `src/components/HowItWorks.tsx:15-18` (sabit dizi `["analyze","design","automate","report"]`). (4 dil × 3 body)
+- `sectors.items.gyms.{automation,body}` — non-TR'de hâlâ **eski özellik-listesi** içeriği ("Gym Management Software" / "Memberships, payments, check-ins…"); TR'deki R2 tek-otomasyon dönüşümü (TASK-1.02 "Kaçan üyeyi geri kazanma") gelmemiş. `gyms.flow.{trigger,action,result}` **zaten senkron** → dokunulmaz. Tüketici: `src/components/SectorSolutions.tsx:90,93` (flow `:133`). (4 dil × 2 değer)
+
+**TD2 ölü anahtar = render-yok teyidi:**
+- `proof.{label,note}` (tüm `proof` namespace) → `src/`'de **hiç tüketilmiyor** (grep boş). Güvenle tüm `proof` objesi silinir.
+- `forum.articles.{one,two,three,four}.{title,tag,readingTime}` (12 yaprak) → render edilmiyor; `Forum.tsx` yalnız `featured`/`featured2`/`label`/`title`/`sub`/`cta`/`note` kullanır. ("articles" grep eşleşmeleri "p**articles**" yan-eşleşmesi — gerçek tüketim yok.) Güvenle tüm `articles` objesi silinir.
+- Silme sonrası beklenen: her dil 197 → **183** anahtar (14 yaprak × 5 dil). Referans olmadığından SSG render'da MISSING_MESSAGE doğmaz → `next build` temiz kalır.
+
+### Değerlendirilen Yaklaşımlar (TD3 perf ölçüm ortamı)
+- **Yerel prod build + `npx lighthouse`** *(SEÇİLEN)*: `next build && next start` → npx cache'teki lighthouse@13.3.0 + sistem `google-chrome` ile mobil+masaüstü ölçüm, JSON/HTML rapor repo'ya kaydedilir. **Artı:** `package.json`'a dokunmaz (npx cache, dep değil — dokunulmaz kuralına uyar), indirme yok (zaten cache'te), anında, tekrarlanabilir, artefakt arşivlenir (kalıcılık ilkesi). **Eksi:** localhost ağ-iyimser (CDN/latency yok) → perf skoru "yerel taban" olarak okunur; a11y skoru ortamdan bağımsız (en güvenilir), perf mobil preset 4× CPU-throttle uyguladığı için yine anlamlı.
+- Vercel preview deploy + PageSpeed/Lighthouse: revize branch push'u → preview URL (main'e değil, canlı güvende), production'a yakın ağ. **Eksi:** deploy bekleme + Vercel branch-bağlantısına bağımlı + URL bulma adımı. (Not: discuss'taki "revize branch deploy olmuyor" önermesi eksikti — preview deploy mümkün; gelecekte merge sonrası production teyidi için saklanabilir.)
+- Chrome DevTools Lighthouse paneli (manuel): sıfır kurulum ama kaydedilen artefakt yok, scriptlenebilir/tekrarlanabilir değil → regresyon tabanı için zayıf. (Acil fallback olarak durur.)
+- **Seçilen:** Yerel prod build + `npx lighthouse` — kullanıcı onayı (2026-06-28). Ortam hazır: lighthouse@13.3.0 npx cache'te, `/usr/bin/google-chrome` (149) mevcut.
 
 ### Kullanılacak Araçlar/Kütüphaneler
-- [Araç 1]: [Versiyon, ne için]
+- **lighthouse@13.3.0** — npx cache'te (`~/.npm/_npx/.../lighthouse`), `npx lighthouse` ile çağrılır; **`package.json`'a EKLENMEZ** (dep değil). Mobil (varsayılan preset) + masaüstü (`--preset=desktop`).
+- **google-chrome 149** — `/usr/bin/google-chrome` (kanonik Chrome, Lighthouse driver'ı). Snap chromium + Playwright chromium de mevcut ama gerekmez.
+- **node 24 / npm 11 / next 15** — `next build && next start` (port 3000) ile yerel production sunum. **dev build ile ölçülmez** (HMR/minify-yok perf'i bozar).
 
 ### Dikkat Edilecekler
-- [Tuzak/Risk 1]: [Nasıl kaçınılacak]
+- **Anahtar sıralaması drift'i (TD1 + TD2 tuzağı):** Dosya içi anahtar **sırası** TR/EN ile DE/ES/AR arasında farklı (`sectors.live/flowLabel/seeLive` TR/EN'de satır 67-69, DE/ES/AR'de 131-133). Satır-aralığı hizası diller arası **güvenilmez** — her düzenleme/silme **anahtar path'iyle** (grep) konumlandırılır, satır numarasıyla değil. Sıralama runtime'ı etkilemez (next-intl path-lookup) → **yeniden sıralama YAPILMAZ** (kapsam dışı, gereksiz risk).
+- **5-dil tutarlılığı (TD2):** Ölü anahtar 5 dilde **birlikte** silinir (tek dilde kalan = drift). Silme sonrası flatten/diff ile 183-paritesi + `next build` temizliği doğrulanır. JSON virgül-bütünlüğüne dikkat (objenin son/orta eleman oluşu).
+- **TD1 inceliği:** non-TR `how.steps` "yapılmış gibi" görünür (4 adım tam çeviri) — staleness **semantik drift** (eski taslak), eksik/bozuk değil. "Çeviri var → senkron" yanılgısına düşme; **güncel TR body** ile karşılaştır. `design` + `title`'lara dokunma; `gyms.flow`'a dokunma.
+- **Perf — Living Flow WebGL ana risk:** ağır canvas/partikül; Lighthouse mobil 4× CPU-throttle TBT/LCP'yi zorlar. Bileşen lazy+degradable ama Lighthouse `prefers-reduced-motion` set etmez → tam WebGL gerçekçi en-kötü durum ölçülür. CLS riskleri: canvas + webfont (Fraunces/Geist) swap → near-zero CLS teyidi gerek. Stabilite için ölçüm 2-3× alınıp temsilî/median kaydedilir; port 3000 doluysa açık port verilir.
+- **Bütçe karşılanmazsa (contingency):** TD3 **doğrulama** task'ıdır, optimizasyon bu fazın kapsamı **dışı** (discuss). Bir metrik bütçeyi (≥95 perf/≥100 a11y/LCP<2.5s/near-zero CLS) tutturmazsa → bulgu kaydedilir + kullanıcıya getirilir (şimdi düzelt vs ayrı faza ertele kararı); sessizce kapsam genişletilmez.
 
 ### Teknik Kararlar
-- [Karar 1]: [Gerekçe]
+- **Perf ölçüm aracı = `npx lighthouse` (yerel prod build, mobil+masaüstü), artefakt repo'ya kaydedilir.** Gerekçe: bağımlılık eklemeden (dokunulmaz `package.json`), tekrarlanabilir + arşivlenebilir taban (kalıcılık ilkesi), kanonik Chrome ile kanonik skor. (DECISIONS 2026-06-28.)
+- **Taban artefakt evi = yeni `_dev/docs/perf/`** (HTML+JSON raporlar) + `phases/PHASE-2.md` / DURUM özet skorları. TD3'te oluşur, INDEX'e içerik dokümanı olarak eklenir. (Plan-phase'de task detayına bağlanır.)
+- **TD1 = path-bazlı değer güncellemesi, anahtar/sıra değişmez; TD2 = path-bazlı obje silme, 5-dil eşzamanlı.** Her ikisi de satır numarasına değil anahtar path'ine dayanır (sıralama drift'i nedeniyle).
 
 ---
 
@@ -143,4 +165,4 @@
 ---
 
 **Oluşturulma:** 2026-06-28
-**Son Güncelleme:** 2026-06-28 — discuss-phase: kapsam tartışması tamamlandı (çekirdek TD1 çeviri senkronu + TD2 ölü anahtar; eklenen TD3 perf doğrulama; route/test/Umami ertelendi).
+**Son Güncelleme:** 2026-06-28 — research-phase: i18n yüzeyi kodla doğrulandı (5×197 anahtar, sıfır eksik; TD1 = 3 stale kalem render-teyitli; TD2 ölü anahtar render-yok); perf aracı = npx lighthouse@13 (yerel prod build, kullanıcı onayı); sıralama-drift tuzağı not edildi.

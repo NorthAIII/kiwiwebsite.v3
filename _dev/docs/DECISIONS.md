@@ -9,6 +9,23 @@
 
 <!-- Her yeni karar aşağıdaki formatta en üste eklenir (en yeni en üstte) -->
 
+### 2026-06-28 — Performans tabanı `npx lighthouse` ile yerel production build üzerinde ölçülür
+
+**Bağlam:** Faz 2 TD3, ana sayfa Lighthouse bütçesini (≥95 perf / ≥100 a11y / LCP < 2.5s / near-zero CLS) doğrulayıp taban kaydedecek. `package.json` dokunulmaz → ölçüm aracı **bağımlılık eklemeden** seçilmeli. discuss "yerel build'de ölç" demişti; research-phase ortam yoklamasında lighthouse@13.3.0'ın npx cache'te ve `/usr/bin/google-chrome` (149) hazır olduğu, ayrıca Vercel **preview** deploy'ının (main'e dokunmadan) da bir seçenek olduğu görüldü.
+
+**Seçenekler:**
+1. Yerel prod build (`next build && next start`) + `npx lighthouse` (npx cache, dep değil) + sistem Chrome; mobil+masaüstü; JSON/HTML artefakt repo'ya.
+2. Vercel preview deploy (revize branch push → preview URL, canlı güvende) + PageSpeed/Lighthouse — production'a yakın ağ ama deploy-bağımlı.
+3. Chrome DevTools Lighthouse paneli (manuel) — sıfır kurulum ama artefakt yok, tekrarlanamaz.
+
+**Karar:** Seçenek 1 (kullanıcı onayı, 2026-06-28).
+
+**Gerekçe:** `package.json`'a dokunmaz (npx cache → dokunulmaz kuralı korunur), indirme yok (zaten cache'te), kanonik Chrome ile kanonik skor, ve **artefakt arşivlenir** → tekrarlanabilir regresyon tabanı (kalıcılık ilkesi). Localhost ağ-iyimserdir (CDN/latency yok) ama a11y skoru ortamdan bağımsız ve perf mobil preset 4× CPU-throttle uygular → anlamlı "yerel taban". Preview deploy (Seçenek 2) network metrikleri için daha gerçekçi; merge sonrası production teyidi için ileride saklanır, bu fazın self-yeten tabanı için gerekmedi. **Taban evi:** yeni `_dev/docs/perf/` (raporlar) + faz/DURUM özet skorları.
+
+**İlgili Task/Faz:** research-phase (Faz 2 / v0.1 teknik borç)
+
+---
+
 ### 2026-06-28 — i18n anahtar-adı değişimi "stale kopya" istisnasının dışındadır (5 dil zorunlu)
 
 **Bağlam:** Faz 1 R1'de "Nasıl Çalışır" 3→4 adıma çıkarken discuss kararı **semantik rename** (anahtarlar `listen/find/automate` → `analyze/design/automate/report`). research-phase'de bileşenin anahtarı *adıyla* okuduğu doğrulandı (`HowItWorks.tsx:15` sabit dizi). Dil stratejisi (2026-06-27 kararı) "TR tek kaynak, çeviri versiyon-sınırında; stale kopya geçici kabul" diyor. Soru: rename de "stale kopya" kapsamında mı (yani non-TR ertelenebilir mi)?

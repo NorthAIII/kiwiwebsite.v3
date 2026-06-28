@@ -1,6 +1,6 @@
 # DURUM — Proje Dashboard
 
-**Son Güncelleme:** 2026-06-28 — discuss-phase: Faz 2 (v0.1 versiyon-sonu Teknik Borç) kapsamı tartışıldı + girildi; Versiyon Sonu Durumu → `teknik_borç`, Adım → research. Sıradaki: `/devflow:research-phase 2`.
+**Son Güncelleme:** 2026-06-28 — research-phase: Faz 2 teknik araştırma tamamlandı (i18n yüzeyi kodla doğrulandı: 5×197 anahtar sıfır eksik; perf aracı = npx lighthouse@13 yerel prod build). Adım → plan. Sıradaki: `/devflow:plan-phase 2`.
 
 <!-- KURAL: Bu satır her oturum sonunda ÜZERİNE YAZILIR — tek satır, tek cümle. "Önceki:" / "Eski:" prefix ile kümülatif yığma YASAK; HTML comment'e sarma da yasak (CLAUDE.md → Doküman Disiplini). Tarih + kısa özet yeterli; detay için git log + ilgili PHASE/TASK dokümanları. -->
 
@@ -10,8 +10,8 @@
 
 **Faz:** 2 — v0.1 Versiyon-Sonu Teknik Borç Kapatma
 **Milestone:** 4 dilde (EN/AR/DE/ES) v0.1 değer senkronu (TD1: R1 step + R2 gym + F6 CTA) + ölü anahtarlar (`forum.articles.*`, `proof.*`) 5 dilden silinmiş & build temiz (TD2) + ana sayfa Lighthouse (mobil+masaüstü) brief bütçesini (≥95 perf/≥100 a11y/LCP<2.5s) karşılıyor & taban kaydedildi (TD3)
-**Adım:** research → `/devflow:research-phase 2`
-**İlerleme:** Kapsam tartışıldı (TD1 çeviri + TD2 ölü anahtar + TD3 perf); task'lar plan-phase'de oluşacak (0 task)
+**Adım:** plan → `/devflow:plan-phase 2`
+**İlerleme:** Kapsam + araştırma tamam (i18n yüzeyi kodla doğrulandı; perf aracı netleşti); task'lar plan-phase'de oluşacak (0 task)
 **Faz Dokümanı:** `phases/PHASE-2.md`
 
 ---
@@ -30,8 +30,8 @@
 ## Aktif Task
 
 **Task:** — (yok; Faz 2 kapsamı tartışıldı, task'lar plan-phase'de oluşacak)
-**Durum:** Faz 2 girildi (discuss tamam); research-phase bekliyor
-**İlerleme:** Adım research → `/devflow:research-phase 2`
+**Durum:** Faz 2 girildi (discuss + research tamam); plan-phase bekliyor
+**İlerleme:** Adım plan → `/devflow:plan-phase 2`
 
 ---
 
@@ -65,12 +65,12 @@ _(Yeni faza geçişte sıfırlandı — Faz 2 task'ları girildikçe doldurulaca
 
 ## Hızlı Erişim
 
-**Aktif Task:** — (yok; Adım: research → `/devflow:research-phase 2`)
-**Aktif Faz:** 2 — v0.1 Versiyon-Sonu Teknik Borç Kapatma (Adım: research)
+**Aktif Task:** — (yok; Adım: plan → `/devflow:plan-phase 2`)
+**Aktif Faz:** 2 — v0.1 Versiyon-Sonu Teknik Borç Kapatma (Adım: plan)
 **Task Sistemi:** `tasks/TASKS-README.md`
 **PRD (karar kaynağı):** `PRD/VIZYON.md` · `PRD/VERSIONS.md` · `PRD/features/`
 **Revize Backlog (bilinen sorunlar):** `docs/REVIZE-BACKLOG.md`
 
 ---
 
-**Son Güncelleme:** 2026-06-28 — discuss-phase: Faz 2 (v0.1 versiyon-sonu Teknik Borç) kapsamı tartışıldı + girildi; Versiyon Sonu Durumu → `teknik_borç`, Adım → research. Sıradaki: `/devflow:research-phase 2`.
+**Son Güncelleme:** 2026-06-28 — research-phase: Faz 2 teknik araştırma tamamlandı (i18n yüzeyi kodla doğrulandı: 5×197 anahtar sıfır eksik; perf aracı = npx lighthouse@13 yerel prod build). Adım → plan. Sıradaki: `/devflow:plan-phase 2`.
