@@ -119,14 +119,35 @@
 
 ## UAT Sonuçları
 
-> Bu bölüm `/devflow:verify-phase` oturumunda doldurulur.
-
-**Tarih:** [tarih]
-**Toplam Senaryo:** X | **Geçen:** Y | **Kalan:** Z
+**Tarih:** 2026-06-28
+**Toplam Senaryo:** 15 | **Geçen:** 15 | **Kalan:** 0
+**Test modu:** Otonom (curl render doğrulama + Playwright snapshot/screenshot/etkileşim + grep). Production build (port 3137, SSG prerender) üzerinde.
 
 | # | Senaryo | Sonuç | Not |
 |---|---------|-------|-----|
-| 1 | [Senaryo 1] | ✅/❌ | [not] |
+| 1 | **R1 TR 4 adım render:** TR `/` "Nasıl Çalışır" 4 kart gösterir — 01 Analiz · 02 Çözüm · 03 Otomasyon · 04 Raporlama; başlık "Dört adım, çalışan tek bir sistem." | ✅ Geçti | curl+Playwright: başlık + 4 kart + 01-04 doğrulandı; eski "Üç adım"/"Tespit" yok |
+| 2 | **R1 örtüşmesizlik:** Otomasyon adımı yalnız otomasyonu anlatır, ölçüm "Raporlama"ya ayrıldı; Analiz eski listen+find eritilmiş; 4 adım içerikçe örtüşmüyor (R1 amacı) | ✅ Geçti | Otomasyon gövdesi ölçüm cümlesi taşımıyor; Raporlama "kazanç varsayılmaz, ölçülür"; Analiz "sızma tespiti" eritmesi içeriyor |
+| 3 | **R1 5-dil anahtar paritesi:** `/en` `/ar` `/de` `/es` 4 kart render eder, boş/eksik metin yok (eksik anahtar yasak); `design`(Çözüm) her dilde çevrili; non-TR 03 Otomasyon ≠ 04 Raporlama (ölçüm cümlesi tekrar etmiyor) | ✅ Geçti | 5 dilde `how.steps`=[analyze,automate,design,report] birebir; design 4 dilde çevrili (Design/التصميم/Entwerfen/Diseñar); automate≠report (tekrar yok, 5 dil teyidi) |
+| 4 | **R1 craft — responsive grid + connector:** Desktop'ta 4 eşit sütun + bağlayıcı SVG 4 düğüme hizalı; tablet/mobilde kademeli (sm:2 / 1 sütun) taşmasız; "04" numarası görünür | ✅ Geçti | grid: 1440→4 sütun (connector görünür) · 768→2 · 375→1; hiçbir kırılımda yatay taşma yok; ekran görüntüsü craft kalitesinde (Fraunces, restraint) |
+| 5 | **R1 reduced-motion + a11y:** `prefers-reduced-motion: reduce`'da connector animasyonu çalışmaz, 4 adım statik okunur; başlık h2/adım h3 semantik hiyerarşi, connector SVG `aria-hidden` | ✅ Geçti | SSG HTML'de 4 kart JS/motion olmadan render; kaynakta reduced-motion early-return guard; `<section id="how">`+h2+4×h3+aria-hidden SVG teyidi |
+| 6 | **R2 gym tek-otomasyon:** Sektörler `gyms` panelinde sol taraf "Kaçan üyeyi geri kazanma" + tek-otomasyon anlatısı (özellik-listesi DEĞİL); bölümün `sub` sözüyle ("özellik listesi değil") tutarlı | ✅ Geçti | yeni başlık+gövde render; eski "Spor Salonu Yönetim Yazılımı"/"hepsi tek panelde" yok; 6 sektörün tamamı tek-otomasyon başlığı taşıyor |
+| 7 | **R2 korunan gym dalları:** "Canlı — Alpfit" rozeti + "Canlı ürünü gör" + "Uygulamayı incele" (→ `/spor-salonu-yazilimi`) + sağ akış (trigger/action/result) gövde değişiminden etkilenmeden duruyor | ✅ Geçti | Alpfit rozeti + flow trigger "Bir üye 30 gündür giriş yapmadı" + `/spor-salonu-yazilimi` linki korundu |
+| 8 | **R2 diğer 5 sektör korunur:** klinik · e-ticaret · emlak · eğitim · restoran panelleri değişmeden render eder (yalnız gym TR metni değişti) | ✅ Geçti | 6 sektör adı + automation başlığı render (education/restaurants `&amp;` HTML-escape'li, doğru); klinik "Gelmeyen randevuyu kurtarma" sağlam |
+| 9 | **R3 taksonomi:** Crew OS bölümünde bayrak adı her yüzeyde "Crew OS"; "Bunker OS" hiçbir render yüzeyinde görünmüyor; "Keşfet" linki `/bunker-os`'a gidiyor (route iç ad — bilinçli, M6 ertelendi) | ✅ Geçti | TR+AR render'da "Crew OS" görünür; "Bunker OS" literal'i messages/+src/'de yok; `/bunker-os` route linki mevcut |
+| 10 | **R4/F6 hero ikincil CTA:** Hero'da "İşleyen örnekleri gör" etiketi; tıklayınca `#sectors`'a kayar; eski "Canlı gör" hiçbir yerde yok; sabit çapalar (başlık + birincil CTA "Ücretsiz keşif görüşmesi al") korundu | ✅ Geçti | Playwright tıklama: scroll 0→1785px, #sectors viewport tepesinde; href="#sectors"; çapalar korundu; "Canlı gör" yok |
+| 11 | **R4/F5 dürüstlük konvansiyonu:** Ana sayfada render edilen sonuç/sayı-imalı metin (Hero stats, 6 sektör, Crew OS panel, Forum "110.000$+") gerçek-veri ya öngörü/örnek çerçevesinde — uydurma müşteri-sonucu yok; ekstra rozet/etiket eklenmemiş (cümle-içi çerçeveleme) | ✅ Geçti | Görünür DOM'da uydurma müşteri-sonucu yok; "110.000" pazar-maliyeti çerçevesi; `%X arttı`/sahte "● online" yok. **Not:** ölü anahtarlar (`forum.articles` "…indirdik/düşürdük") yalnız hydration JSON payload'ında, görünür DOM=0 — research'te v0.1-dışı hijyen olarak not edilmiş, render edilmiyor |
+| 12 | **i18n routing + fallback:** TR `/` prefixsiz çalışır, diğer diller `/en` `/ar` `/de` `/es`; bilinmeyen locale segmenti (örn. `/zz`) güvenli davranır (404/fallback, runtime patlamaz) | ✅ Geçti | 5 locale 200; bilinmeyen `/zz`→404 (runtime patlamadı) |
+| 13 | **AR RTL bütünlük:** `/ar` `<html dir="rtl">`; "Nasıl Çalışır" 4 adım + sektör panelleri RTL'de okunabilir ve doğru aynalanır | ✅ Geçti | `dir="rtl"`+`lang="ar"`+body direction rtl; 4 adım Arapça çevrili; ekran görüntüsü: layout doğru aynalanmış (01 sağ→04 sol), logical `start` ile sağ-hiza, Crew OS adı korunmuş |
+| 14 | **Marka sesi & yasaklar:** Yeni/değişen TR metinde yasak metafor yok (doktor/teşhis/reçete), zayıf/edilgen adım adı yok ("Dinle/Listen"), lorem/dolgu yok, sahte "● online" presence yok; ses çıktı-odaklı/sade | ✅ Geçti | teşhis/reçete/hekim/doktor/Dinle/lorem render'da yok; `placeholder=` yalnız form input attribute'u (görünür dolgu değil); ses çıktı-odaklı |
+| 15 | **Regresyon tabanı:** `next build` temiz; ana sayfanın diğer bölümleri (Hero/Forum/Credibility/Footer/Chatbot) + alt sayfalar kırılmadı; CLS/layout shift gözle regresyonsuz | ✅ Geçti | build exit 0 "Compiled successfully"; alt sayfalar (spor-salonu/bunker-os/vaka/bülten) 200; Forum+Credibility+Footer render; gözle regresyon yok |
+
+### Otomatik Kontrol Bulguları (Adım 1)
+
+- **CI/CD:** Yapılandırılmamış (`.github/` yok). Vercel yalnız `main` push'ta deploy eder; bu faz `revize/devflow-kurulum` branch'inde → CI çalışmadı (beklenen).
+- **Otomatik analiz araçları:** dependabot/renovate/scanner yapılandırılmamış (yok).
+- **`next build`:** ✅ Temiz (exit 0, "Compiled successfully in 932ms"; `MISSING_MESSAGE`/`IntlError` yok; 5 locale prerender geçti).
+- **Security-review:** ✅ Bulgu yok. Faz yüzeyi yalnız i18n metin + presentational component (`HowItWorks.tsx` grid/SVG/className); kullanıcı girdisi/auth/secret/injection/`dangerouslySetInnerHTML` yüzeyi yok, yeni bağımlılık yok.
+- **Sonuç:** Otomatik kontrollerden **bulgu çıkmadı** → düzeltme task'ı yok.
 
 ---
 
@@ -170,4 +191,4 @@
 ---
 
 **Oluşturulma:** 2026-06-28
-**Son Güncelleme:** 2026-06-28 — run-task: TASK-1.03 (R4) tamam → Faz 1'in 3 task'ı da ✅ (F6 hero CTA + F5 taraması TEMİZ + R3 teyidi GEÇTİ). Sıradaki adım verify-phase.
+**Son Güncelleme:** 2026-06-28 — verify-phase: UAT 15/15 senaryo GEÇTİ (otonom; curl+Playwright+grep); otomatik kontrol bulgusu yok (build temiz, security-review temiz, CI yok). Düzeltme task'ı yok → sıradaki adım review-phase.

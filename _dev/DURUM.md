@@ -1,6 +1,6 @@
 # DURUM — Proje Dashboard
 
-**Son Güncelleme:** 2026-06-28 — run-task: TASK-1.03 tamam (R4 — F6 hero ikincil CTA TR "İşleyen örnekleri gör"; F5 dürüstlük taraması TEMİZ + R3 Crew OS teyidi GEÇTİ, ikisi kodsuz; build temiz). Faz 1 tüm tasklar bitti (3/3), sıradaki adım verify-phase.
+**Son Güncelleme:** 2026-06-28 — verify-phase: Faz 1 UAT 15/15 senaryo GEÇTİ (otonom; curl+Playwright+grep); otomatik kontrol bulgusu yok (build temiz, security-review temiz, CI yapılandırılmamış). Düzeltme task'ı yok → sıradaki adım review-phase.
 
 <!-- KURAL: Bu satır her oturum sonunda ÜZERİNE YAZILIR — tek satır, tek cümle. "Önceki:" / "Eski:" prefix ile kümülatif yığma YASAK; HTML comment'e sarma da yasak (CLAUDE.md → Doküman Disiplini). Tarih + kısa özet yeterli; detay için git log + ilgili PHASE/TASK dokümanları. -->
 
@@ -10,8 +10,8 @@
 
 **Faz:** 1 — Ana sayfa TR içerik & ses revizesi
 **Milestone:** v0.1 ana sayfa içerik & ses: R1 Nasıl Çalışır 4 adım (Analiz·Çözüm·Otomasyon·Raporlama) + R2 gym paneli tek-otomasyona + F5 dürüstlük taraması + F6 hero ikincil CTA; TR tek kaynak
-**Adım:** verify → `/devflow:verify-phase 1`
-**İlerleme:** 3/3 task (TASK-1.01 ✅, TASK-1.02 ✅, TASK-1.03 ✅) — tüm tasklar tamam
+**Adım:** review → `/devflow:review-phase 1`
+**İlerleme:** 3/3 task (TASK-1.01 ✅, TASK-1.02 ✅, TASK-1.03 ✅) — UAT 15/15 GEÇTİ, otomatik kontrol bulgusu yok
 **Faz Dokümanı:** `phases/PHASE-1.md`
 
 ---
@@ -29,9 +29,9 @@
 
 ## Aktif Task
 
-**Task:** — (fazdaki tüm tasklar tamamlandı; aktif task yok)
-**Durum:** ✅ Faz 1 task'ları bitti
-**İlerleme:** TASK-1.01 + TASK-1.02 + TASK-1.03 tamamlandı (arşivlendi); sıradaki adım `/devflow:verify-phase 1` (UAT)
+**Task:** — (fazdaki tüm tasklar tamamlandı + UAT geçti; aktif task yok)
+**Durum:** ✅ Faz 1 task'ları bitti, UAT 15/15 geçti
+**İlerleme:** TASK-1.01 + TASK-1.02 + TASK-1.03 tamamlandı (arşivlendi); UAT + otomatik kontroller geçti, düzeltme task'ı yok; sıradaki adım `/devflow:review-phase 1`
 
 ---
 
@@ -73,12 +73,12 @@
 
 ## Hızlı Erişim
 
-**Aktif Task:** — (yok; Faz 1 task'ları bitti → `/devflow:verify-phase 1`)
-**Aktif Faz:** 1 (Adım: verify → `/devflow:verify-phase 1`)
+**Aktif Task:** — (yok; Faz 1 task'ları + UAT bitti → `/devflow:review-phase 1`)
+**Aktif Faz:** 1 (Adım: review → `/devflow:review-phase 1`)
 **Task Sistemi:** `tasks/TASKS-README.md`
 **PRD (karar kaynağı):** `PRD/VIZYON.md` · `PRD/VERSIONS.md` · `PRD/features/`
 **Revize Backlog (bilinen sorunlar):** `docs/REVIZE-BACKLOG.md`
 
 ---
 
-**Son Güncelleme:** 2026-06-28 — run-task: TASK-1.03 tamam (R4 — F6 hero ikincil CTA TR "İşleyen örnekleri gör"; F5 dürüstlük taraması TEMİZ + R3 Crew OS teyidi GEÇTİ, ikisi kodsuz; build temiz). Faz 1 tüm tasklar bitti (3/3), sıradaki adım verify-phase.
+**Son Güncelleme:** 2026-06-28 — verify-phase: Faz 1 UAT 15/15 senaryo GEÇTİ (otonom; curl+Playwright+grep); otomatik kontrol bulgusu yok (build temiz, security-review temiz, CI yapılandırılmamış). Düzeltme task'ı yok → sıradaki adım review-phase.
