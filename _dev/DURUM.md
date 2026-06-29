@@ -1,6 +1,6 @@
 # DURUM — Proje Dashboard
 
-**Son Güncelleme:** 2026-06-29 — research-phase 4: a11y araştırma bulguları yazıldı. Kontrast sorunu hue değil opaklık/soluk-token (baseline stale); kararlar K1-K6 (adım no aria-hidden, ink-faint token koyulaştır, hero dl kaldır, dil-switcher aria locale-kod, cream-on-ink opaklık, Task 1=re-ölçüm). Aktif Faz 4, Adım plan.
+**Son Güncelleme:** 2026-06-29 — plan-phase 4: 7 task dokümanı yazıldı (4.01 re-ölçüm → 4.02-4.06 fix'ler → 4.07 final doğrulama; K1-K6 task'lara bölündü). Aktif Faz 4, Adım verify-plan.
 
 <!-- KURAL: Bu satır her oturum sonunda ÜZERİNE YAZILIR — tek satır, tek cümle. "Önceki:" / "Eski:" prefix ile kümülatif yığma YASAK; HTML comment'e sarma da yasak (CLAUDE.md → Doküman Disiplini). Tarih + kısa özet yeterli; detay için git log + ilgili PHASE/TASK dokümanları. -->
 
@@ -8,9 +8,9 @@
 
 ## Aktif Faz
 
-**Faz:** 4 — v0.2 erişilebilirlik (a11y 89→100), ana sayfa. 🔄 Devam ediyor (araştırma tamam).
-**Adım:** plan — araştırma ✅ → sıradaki: `/devflow:plan-phase 4` (yeni oturum)
-**İlerleme:** Araştırma bulguları yazıldı (research-phase 4). Kontrast = opaklık/soluk-token (hue değil; baseline stale → Task 1 re-ölçüm). Kararlar K1-K6 + tam kontrast envanteri PHASE-4'te. Henüz task yok (plan-phase'de).
+**Faz:** 4 — v0.2 erişilebilirlik (a11y 89→100), ana sayfa. 🔄 Devam ediyor (plan tamam).
+**Adım:** verify-plan — plan ✅ → sıradaki: `/devflow:verify-plan 4` (yeni oturum)
+**İlerleme:** 7 task dokümanı yazıldı (plan-phase 4): 4.01 re-ölçüm (K6) → 4.02 adım-no aria-hidden (K1) → 4.03 ink-faint token (K2) → 4.04 cream-on-ink (K5) → 4.05 hero dl (K3) → 4.06 dil-switcher aria (K4) → 4.07 final doğrulama. Detaylı doğrulama verify-plan'da.
 **Son Faz Dokümanı:** `phases/PHASE-4.md` (🔄 aktif)
 
 ---
@@ -28,17 +28,25 @@
 
 ## Aktif Task
 
-**Task:** Yok — Faz 4 araştırması bitti ama task'lar henüz yazılmadı (plan-phase'de).
-**Durum:** Aktif task yok; sıradaki adım Faz 4 plan
-**İlerleme:** Adım plan → `/devflow:plan-phase 4` (yeni oturum)
+**Task:** Yok — Faz 4 planı yazıldı (7 task); henüz çalıştırılmadı. Sıradaki: verify-plan, sonra run-task.
+**Durum:** Aktif task yok; plan verify-plan'da doğrulanacak, sonra TASK-4.01'den başlanır
+**İlerleme:** Adım verify-plan → `/devflow:verify-plan 4` (yeni oturum)
 
 ---
 
 ## Task Durumu (Aktif Faz)
 
-> Faz 4 (v0.2 a11y) girildi ama task'lar henüz yazılmadı — kapsam tartışması bitti, research → plan-phase task'ları üretecek. Tablo plan-phase 4'te doldurulur.
+> Faz 4 (v0.2 a11y) — 7 task plan-phase'de yazıldı. Detaylı plan doğrulaması verify-plan'da; sonra TASK-4.01'den sıralı çalıştırılır (lineer).
 
-_(Faz 4 task'ı henüz yok — plan-phase'de oluşturulacak.)_
+| # | Task | Durum | Açıklama |
+|---|------|-------|----------|
+| 4.01 | TASK-4.01 | ⬜ Bekliyor | Otoriter re-ölçüm: başarısız-denetim envanteri (K6) |
+| 4.02 | TASK-4.02 | ⬜ Bekliyor | Adım numaraları `aria-hidden` (K1, color-contrast) |
+| 4.03 | TASK-4.03 | ⬜ Bekliyor | `--color-ink-faint` token koyulaştırma (K2, color-contrast) |
+| 4.04 | TASK-4.04 | ⬜ Bekliyor | Cream-on-ink opaklık Footer+Bunker (K5, color-contrast) |
+| 4.05 | TASK-4.05 | ⬜ Bekliyor | Hero `<dl>` → semantik markup (K3, definition-list + dlitem) |
+| 4.06 | TASK-4.06 | ⬜ Bekliyor | Dil-switcher `aria-label` locale kodu (K4, label-content-name) |
+| 4.07 | TASK-4.07 | ⬜ Bekliyor | Final doğrulama: a11y=100 + perf/CLS regresyonsuz + perf taban |
 
 ---
 
@@ -68,7 +76,7 @@ _(Faz 4 task'ı henüz yok — plan-phase'de oluşturulacak.)_
 
 ## Hızlı Erişim
 
-**Aktif Task:** Yok — Faz 4 araştırması bitti; sıradaki: `/devflow:plan-phase 4`
+**Aktif Task:** Yok — Faz 4 planı yazıldı (7 task); sıradaki: `/devflow:verify-plan 4`
 **Aktif Faz:** 4 — v0.2 erişilebilirlik (a11y 89→100) 🔄; Aktif Versiyon v0.2, Versiyon Sonu Durumu: içerik_fazları
 **Task Sistemi:** `tasks/TASKS-README.md`
 **PRD (karar kaynağı):** `PRD/VIZYON.md` · `PRD/VERSIONS.md` · `PRD/features/`
@@ -76,4 +84,4 @@ _(Faz 4 task'ı henüz yok — plan-phase'de oluşturulacak.)_
 
 ---
 
-**Son Güncelleme:** 2026-06-29 — research-phase 4: a11y araştırma bulguları yazıldı. Kontrast sorunu hue değil opaklık/soluk-token (baseline stale); kararlar K1-K6 (adım no aria-hidden, ink-faint token koyulaştır, hero dl kaldır, dil-switcher aria locale-kod, cream-on-ink opaklık, Task 1=re-ölçüm). Aktif Faz 4, Adım plan.
+**Son Güncelleme:** 2026-06-29 — plan-phase 4: 7 task dokümanı yazıldı (4.01 re-ölçüm → 4.02-4.06 fix'ler → 4.07 final doğrulama; K1-K6 task'lara bölündü). Aktif Faz 4, Adım verify-plan.

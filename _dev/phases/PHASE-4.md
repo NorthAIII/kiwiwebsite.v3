@@ -158,7 +158,13 @@ A11Y1 acceptance = `color-contrast` denetimi **0 başarısız**; bu, faz tablosu
 
 | # | Task | Durum | Açıklama |
 |---|------|-------|----------|
-| 4.01 | TASK-4.01 | ⬜ Bekliyor | [plan-phase'de doldurulacak] |
+| 4.01 | TASK-4.01 | ⬜ Bekliyor | Otoriter re-ölçüm: kesin başarısız-denetim envanterini sabitle (K6, stale baseline) |
+| 4.02 | TASK-4.02 | ⬜ Bekliyor | Adım numaraları `aria-hidden` (K1, color-contrast — HowItWorks) |
+| 4.03 | TASK-4.03 | ⬜ Bekliyor | `--color-ink-faint` token koyulaştırma (K2, color-contrast — globals.css) |
+| 4.04 | TASK-4.04 | ⬜ Bekliyor | Cream-on-ink opaklık (K5, color-contrast — Footer + Bunker) |
+| 4.05 | TASK-4.05 | ⬜ Bekliyor | Hero `<dl>` → semantik link markup (K3, definition-list + dlitem) |
+| 4.06 | TASK-4.06 | ⬜ Bekliyor | Dil-switcher `aria-label`'a locale kodu (K4, label-content-name-mismatch) |
+| 4.07 | TASK-4.07 | ⬜ Bekliyor | Final doğrulama: a11y=100 + perf/CLS regresyonsuz + `docs/perf/` taban |
 
 **Durum simgeleri:** ⬜ Bekliyor | 🔄 Devam ediyor | ⏸️ Duraklatıldı | ✅ Tamamlandı | 🔴 Bloke | ❌ İptal
 
@@ -217,4 +223,4 @@ A11Y1 acceptance = `color-contrast` denetimi **0 başarısız**; bu, faz tablosu
 ---
 
 **Oluşturulma:** 2026-06-29
-**Son Güncelleme:** 2026-06-29 — research-phase 4: araştırma bulguları yazıldı. Kontrast sorunu hue değil opaklık/soluk-token çıktı (baseline stale); kararlar: adım no aria-hidden (K1), ink-faint token koyulaştırma (K2), hero dl kaldır (K3), dil-switcher aria locale-kod (K4), Task 1 = re-ölçüm (K6).
+**Son Güncelleme:** 2026-06-29 — plan-phase 4: 7 task dokümanı oluşturuldu (4.01 re-ölçüm/K6 → 4.02 adım-no aria-hidden/K1 → 4.03 ink-faint token/K2 → 4.04 cream-on-ink/K5 → 4.05 hero dl/K3 → 4.06 dil-switcher aria/K4 → 4.07 final doğrulama). Task Listesi tablosu dolduruldu; sıradaki adım verify-plan.
