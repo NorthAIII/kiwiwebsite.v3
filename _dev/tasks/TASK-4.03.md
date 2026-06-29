@@ -42,7 +42,7 @@ Araştırma kararı **K2**. Kritik düzeltme: `text-green` (solid) zaten geçer 
   - `src/app/globals.css:11` — `--color-ink-faint: #8b8d83;` → `#67695f`
 
 - [ ] **2. Dark token koyulaştır**
-  - `src/app/globals.css:36` (html.dark) — `--color-ink-faint: #7d8073;` → `#8a8c80`
+  - `src/app/globals.css:35` (html.dark) — `--color-ink-faint: #7d8073;` → `#8a8c80`
 
 - [ ] **3. Craft taraması — tüketen yüzeyler (her iki tema)**
   - Yukarıdaki "Tüketen yüzeyler" listesini gözle gez: muted/ikincil hiyerarşi korunuyor mu, prominent'e dönmedi mi?
@@ -58,7 +58,7 @@ Araştırma kararı **K2**. Kritik düzeltme: `text-green` (solid) zaten geçer 
 
 ```
 src/app/
-└── globals.css   # --color-ink-faint: light #8b8d83→#67695f (L11), dark #7d8073→#8a8c80 (L36)
+└── globals.css   # --color-ink-faint: light #8b8d83→#67695f (L11), dark #7d8073→#8a8c80 (L35)
 ```
 
 > Tek dosya değişir; etki çok yüzeylidir (token yayılımı). Tüketen bileşenler **değişmez** — yalnız token koyulaşır.

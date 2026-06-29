@@ -143,7 +143,7 @@ A11Y1 acceptance = `color-contrast` denetimi **0 başarısız**; bu, faz tablosu
 
 ### Precondition Kaynak İşaretleri (research kaydeder, verify-plan doğrular)
 
-- `--color-ink-faint` (light L11 / dark L36), `--color-green` (L12) → **repoda-tanımlı**, site: `src/app/globals.css`
+- `--color-ink-faint` (light L11 / dark L35), `--color-green` (L12) → **repoda-tanımlı**, site: `src/app/globals.css`
 - Step span → `src/components/HowItWorks.tsx:84` · Hero `<dl>` → `Hero.tsx:86-136` · aria → `LanguageSwitcher.tsx:63` · Footer opaklıklar → `Footer.tsx:75,79,97,99` · Bunker metrik → `Bunker.tsx:85` → tümü **repoda-tanımlı**
 - Kanonik ölçüm yöntemi + a11y kırılımı → `docs/perf/README.md` (**repoda-tanımlı**)
 - **Yeni tanımlayıcı yok, dış sistem yok, secret yok.**

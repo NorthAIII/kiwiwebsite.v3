@@ -1,6 +1,6 @@
 # DURUM — Proje Dashboard
 
-**Son Güncelleme:** 2026-06-29 — plan-phase 4: 7 task dokümanı yazıldı (4.01 re-ölçüm → 4.02-4.06 fix'ler → 4.07 final doğrulama; K1-K6 task'lara bölündü). Aktif Faz 4, Adım verify-plan.
+**Son Güncelleme:** 2026-06-29 — verify-plan 4: 7 task dokümanı fresh-context doğrulandı (referans gerçeklik-kontrolü kod'a karşı geçti); 1 mekanik düzeltme (dark `--color-ink-faint` satır refi L36→L35, TASK-4.03 + PHASE-4 marker); yapısal değişiklik yok. Adım → run-task, sıradaki TASK-4.01.
 
 <!-- KURAL: Bu satır her oturum sonunda ÜZERİNE YAZILIR — tek satır, tek cümle. "Önceki:" / "Eski:" prefix ile kümülatif yığma YASAK; HTML comment'e sarma da yasak (CLAUDE.md → Doküman Disiplini). Tarih + kısa özet yeterli; detay için git log + ilgili PHASE/TASK dokümanları. -->
 
@@ -8,9 +8,9 @@
 
 ## Aktif Faz
 
-**Faz:** 4 — v0.2 erişilebilirlik (a11y 89→100), ana sayfa. 🔄 Devam ediyor (plan tamam).
-**Adım:** verify-plan — plan ✅ → sıradaki: `/devflow:verify-plan 4` (yeni oturum)
-**İlerleme:** 7 task dokümanı yazıldı (plan-phase 4): 4.01 re-ölçüm (K6) → 4.02 adım-no aria-hidden (K1) → 4.03 ink-faint token (K2) → 4.04 cream-on-ink (K5) → 4.05 hero dl (K3) → 4.06 dil-switcher aria (K4) → 4.07 final doğrulama. Detaylı doğrulama verify-plan'da.
+**Faz:** 4 — v0.2 erişilebilirlik (a11y 89→100), ana sayfa. 🔄 Devam ediyor (plan ✅ doğrulandı).
+**Adım:** run-task — plan ✅ + verify-plan ✅ → sıradaki: `/devflow:run-task` ile TASK-4.01 (yeni oturum)
+**İlerleme:** 7 task dokümanı yazıldı + verify-plan'da fresh-context doğrulandı (referanslar koda karşı geçti; 1 mekanik satır-refi düzeltmesi). Sıra: 4.01 re-ölçüm (K6) → 4.02 adım-no aria-hidden (K1) → 4.03 ink-faint token (K2) → 4.04 cream-on-ink (K5) → 4.05 hero dl (K3) → 4.06 dil-switcher aria (K4) → 4.07 final doğrulama.
 **Son Faz Dokümanı:** `phases/PHASE-4.md` (🔄 aktif)
 
 ---
@@ -28,15 +28,15 @@
 
 ## Aktif Task
 
-**Task:** Yok — Faz 4 planı yazıldı (7 task); henüz çalıştırılmadı. Sıradaki: verify-plan, sonra run-task.
-**Durum:** Aktif task yok; plan verify-plan'da doğrulanacak, sonra TASK-4.01'den başlanır
-**İlerleme:** Adım verify-plan → `/devflow:verify-plan 4` (yeni oturum)
+**Task:** TASK-4.01 (sıradaki) — Faz 4 planı doğrulandı (7 task); henüz çalıştırılmadı.
+**Durum:** Aktif task yok; plan verify-plan'da doğrulandı, TASK-4.01'den başlanır
+**İlerleme:** Adım run-task → `/devflow:run-task` ile TASK-4.01 (yeni oturum)
 
 ---
 
 ## Task Durumu (Aktif Faz)
 
-> Faz 4 (v0.2 a11y) — 7 task plan-phase'de yazıldı. Detaylı plan doğrulaması verify-plan'da; sonra TASK-4.01'den sıralı çalıştırılır (lineer).
+> Faz 4 (v0.2 a11y) — 7 task plan-phase'de yazıldı, verify-plan'da doğrulandı (sorun yok, 1 mekanik düzeltme). TASK-4.01'den sıralı çalıştırılır (lineer).
 
 | # | Task | Durum | Açıklama |
 |---|------|-------|----------|
@@ -76,7 +76,7 @@
 
 ## Hızlı Erişim
 
-**Aktif Task:** Yok — Faz 4 planı yazıldı (7 task); sıradaki: `/devflow:verify-plan 4`
+**Aktif Task:** TASK-4.01 (sıradaki) — Faz 4 planı doğrulandı (7 task); sıradaki: `/devflow:run-task`
 **Aktif Faz:** 4 — v0.2 erişilebilirlik (a11y 89→100) 🔄; Aktif Versiyon v0.2, Versiyon Sonu Durumu: içerik_fazları
 **Task Sistemi:** `tasks/TASKS-README.md`
 **PRD (karar kaynağı):** `PRD/VIZYON.md` · `PRD/VERSIONS.md` · `PRD/features/`
@@ -84,4 +84,4 @@
 
 ---
 
-**Son Güncelleme:** 2026-06-29 — plan-phase 4: 7 task dokümanı yazıldı (4.01 re-ölçüm → 4.02-4.06 fix'ler → 4.07 final doğrulama; K1-K6 task'lara bölündü). Aktif Faz 4, Adım verify-plan.
+**Son Güncelleme:** 2026-06-29 — verify-plan 4: 7 task fresh-context doğrulandı (referanslar koda karşı geçti); 1 mekanik düzeltme (dark `--color-ink-faint` satır refi L36→L35); yapısal değişiklik yok. Adım → run-task, sıradaki TASK-4.01.
