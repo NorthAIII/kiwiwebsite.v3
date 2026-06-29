@@ -7,7 +7,7 @@
 >
 > Bu yapı şişmeyi önler: index ince kalır (hep yüklü), detay yalnızca gerekince okunur.
 
-**Son Güncelleme:** 2026-06-28 — review-phase 2: Süreç Disiplinleri'ne "yerel prod doğrulamada serve eden process'i listening-PID ile teyit et" eklendi (stray next-server yanlış-negatifi).
+**Son Güncelleme:** 2026-06-29 — review-phase 3: Teknik Tuzaklar'a "tarayıcı `/` Accept-Language ile locale'e yönlenir (curl tetiklemez); TR test için NEXT_LOCALE=tr cookie" eklendi.
 
 <!-- KURAL: Bu satır her güncellemede ÜZERİNE YAZILIR. "Önceki:" prefix ile kümülatif yığma YASAK (CLAUDE.md → Doküman Disiplini). -->
 
@@ -17,7 +17,7 @@
 
 <!-- Proje genelinde geçerli beklenmedik davranışlar/bug'lar ve çözümleri (pasif gözlem: "şu böyle davranır, dikkat"). Tekrar eden, eyleme/kontrole bağlı bir "şu adımda şu kontrolü yap" kuralıysa → Süreç Disiplinleri. -->
 
-- [Henüz yok]
+- **Tarayıcı-tabanlı doğrulamada `/` (prefixsiz TR) Accept-Language ile otomatik locale'e yönlenir** (next-intl `localeDetection`; örn. `Accept-Language: en-US` → `/en`). curl bunu **tetiklemez** (header göndermez) → aynı sayfa curl'de TR-200 ama Playwright/tarayıcıda `/en` görünebilir; bu tutarsızlık **bug değil**, beklenen davranış. TR-birincil testlerde `NEXT_LOCALE=tr` cookie kullan (cookie precedence > Accept-Language). (Faz 3 S5/S6/S8'de 3× karşılaşıldı; detay → `phases/PHASE-3.md` Task-Spesifik Öğrenimler.)
 
 ## Kullanıcı Tercihleri
 

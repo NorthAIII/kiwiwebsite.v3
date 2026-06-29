@@ -1,6 +1,6 @@
 # Phase 3: v0.1 Versiyon-Sonu Senaryo Testi
 
-**Durum:** 🔄 Devam ediyor
+**Durum:** ✅ Tamamlandı
 
 <!-- Bu doküman faza girince (discuss-phase) oluşur; durum 🔄 ile başlar. Henüz girilmemiş fazların dokümanı/numarası olmaz — PHASES.md → Sıradaki Fazlar'da numarasız konu olarak durur. -->
 <!-- KURAL: Bu doküman tek-okunabilir kalmalı (CLAUDE.md → Boyut ve Bölünme). Bir bölüm büyüyüp kırmızı çizgiye (~20k token) yaklaşırsa faz HÂLÂ AKTİFKEN `PHASE-N-<slug>.md`'ye bölünür — parent'ta self-yeten özet + pointer kalır, içerik taşınıp silinir, parent o fazın mini-index'i olur. Tamamlandıktan (✅) sonra bölme yasaktır; verify-phase ve review-phase fazı dondurmadan önce boyutu kontrol eder. -->
@@ -183,43 +183,68 @@
 
 ## Retrospektif
 
-> Bu bölüm `/devflow:review-phase` oturumunda doldurulur.
+> Bu bölüm `/devflow:review-phase 3` oturumunda dolduruldu (2026-06-29).
 
 ### Ne İyi Gitti?
-- [Tekrarlanması gereken pratikler]
+- **Önceki faz dersi doğrudan aktı.** PHASE-2 retrosunun "versiyon-sonu *doğrulama* milestone'u 'ölç + kaydet + karar ver' olarak yazılmalı, geçiş peşinen varsayılmadan" dersi PHASE-3 milestone'una birebir uygulandı; UAT geçişi peşinen varsaymadan ölçtü, triyaj kapısını ayrı bir milestone maddesi (#3) yaptı. Retro→sonraki-faz pipeline'ı amaçlandığı gibi işledi.
+- **Hibrit araç eşlemesi (TK1) deterministik çalıştı.** Her senaryo en ucuz yeterli araca eşlendi: HTTP/SSG-seviyesi (S1/S5/S6, S2/S8'in statik tarafı) → curl/grep/node; client-runtime (S3/S4, S2/S7/S8'in runtime tarafı) → Playwright MCP `browser_run_code_unsafe`. Minimum araç yükü + tekrarlanabilir koşu; Playwright happy-path'ten kaçınıldığı yerde curl yeterli oldu.
+- **Kanonik fresh-prod-serve + PID teyit disiplini her task'ta tuttu.** Memory'nin uyardığı stray/stale `next-server` landmine'ları (kendi Jun28 stale'i 2880857, yabancı 12708, orphan 12267) her oturumda listening-PID + ground-truth (served `<title>` == disk prerender) ile doğru ayrıştırıldı; kimisi öldürüldü, başkasına ait olanlara dokunulmadı. Yanlış-negatif üretilmedi.
+- **Chatbot 0-token tasarımı titizdi.** apiKey-gate-sanitizasyondan-önce değişmezi *çalıştırılarak* kanıtlandı (dummy-key→6×400 vs key-yok→503 kontrastı); naif "key-yok+malformed→400" yanlış-negatifi gösterildi; tüm 400'ler `new Anthropic()`'ten önce döndü → **toplam API çağrısı = 0** korundu (kapsam + lisans gerçeğiyle uyumlu).
+- **"Anahtar ≠ render yüzeyi" ayrımı mekanik izole edildi (S5).** RSC flight payload (`self.__next_f`) ham HTML'de script-tag'de göründüğünden, görünür metin ayıklamada script blokları çıkarılarak `bunker` namespace kalıntısı (değer "Crew OS") render yüzeyinden ayrıldı — taksonomi denetimi gözle değil mekanik güvenceyle yapıldı.
+- **Bulgu triyajı dürüst + sahipliydi.** Her bulgu (çıplak `/forum`→`/bulten`→404; dil değişiminde anchor-drop; aynı-JS-tick anchor burst) kapsam-içi gerçek bug ile kapsam-dışı/ertelenmiş net ayrıldı, sahipli kaydedildi; kullanıcı onayıyla record-not-fix seçildi (diğer ertelenen UX kalemleriyle tutarlı). Bilinen a11y89/mobil-perf açığı yeniden litige edilmedi.
 
 ### Ne Kötü Gitti?
-- [Sorunlar ve darboğazlar]
+- **Büyük aksaklık yok** — doğrulama fazı, kaynak kod hiç değişmedi. Sürtünmeler küçük ve hepsi çözüldü:
+  - Playwright MCP'de ayrı `emulateMedia` tool'u yok → degradasyon emülasyonu (S3) için `browser_run_code_unsafe` raw `page` escape-hatch + `newContext({reducedMotion,colorScheme})` gerekti (TK5 kod-inceleme fallback'ine düşmeden çözüldü).
+  - Lenis smooth-scroll mid-animation click'i düşürdü (S4/S8) → settle (1.8s) + retry ile aşıldı; sentetik `WheelEvent` burst tab'ı düşürdü ("Target closed") → wheel çıkarılıp test küçük parçalara bölündü.
+  - **Tekrar eden nüans:** tarayıcı locale-detection (`/` → Accept-Language `en-US` → `/en`) TR-birincil testleri 3 task'ta (S5/S6/S8) karıştırdı → `NEXT_LOCALE=tr` cookie precedence ile çözüldü. curl bunu tetiklemez (header göndermez) → curl-yeşil ile tarayıcı-kırmızı arası tutarsızlık ilk bakışta yanıltıcıydı. (Çapraz-faz tuzak → memory'ye alındı.)
+- **Senaryo beklentisi resmi kabul kriterinin üstündeydi (anchor-drop).** S4 task/senaryo dokümanı dil-switcher için "anchor koru" beklentisi taşıyordu; M3 F3.4 resmi kabul kriteri yalnız **path** korumasını ister (✓ geçiyor) — anchor next-intl `pathname`'in hash içermemesinden (kütüphane-varsayılanı) düşüyor. Beklenti resmi kriterden fazla olunca "bulgu" gibi göründü, oysa düşük-şiddet kriter-üstü beklentiydi. **Ders:** senaryo beklentilerini ilgili modülün resmi kabul kriterine demirle (verify-plan'ın referans-gerçeklik kontrolü zaten bu yönde — uygulandı, record-not-fix doğru sonuç verdi).
 
 ### Sonraki Faz İçin Öneriler
-- [Alınan dersler, tavsiyeler]
+- **Bu faz v0.1 versiyon-sonu Senaryo Testi'ydi** → versiyon-sonu sabit fazları (1 içerik + 2 teknik borç + 3 senaryo testi) tamamlandı. Sıradaki **zorunlu** adım `/devflow:prd-review` (Versiyon Sonu Durumu: senaryo_testi → prd_review_bekliyor). v0.1 kapanış değerlendirmesi.
+- **İleri taşınan sahipli/ertelenmiş kalemler — prd-review girdisi, kaybolmamalı:**
+  - **a11y 89** (marka-yeşili `#8af28a` kontrastı + geçersiz hero `<dl>`/`dlitem` + dil-switcher aria-mismatch) **+ mobil perf 87 / LCP 3.1s** (← Living Flow WebGL) — DECISIONS 2026-06-28 + `docs/perf/README.md`. **En yüksek sinyal:** a11y ortam-bağımsız + brief hedefi ≥100 → adanmış a11y/perf fazı/versiyonu, sonraki versiyon öncelik adayı (PHASE-2'den taşındı, hâlâ açık). S4 keyboard-only yolculuk + focus-visible ✓ doğruladı, ama aria-pattern eksiği duruyor.
+  - **`/bunker-os` → public `/crew-os` + redirect** (M6 açık konu) — görsel/SEO versiyonu. Faz 3'te S1'de çıplak `/forum`→`/bulten`→404 de aynı SEO-bitişik kovaya girdi (index'siz statik bülten; kullanıcı yolculuğundan erişilemez ama eski inbound link için ölü redirect).
+  - **Test altyapısı (D1)** — adanmış teknik faz adayı; "test = build + otonom UAT" hâlâ geçici.
+  - **Alt sayfa derin denetimi** (Alpfit, Crew OS showcase `/bunker-os`, vaka, bülten çeviri/perf/içerik) — bu faz bilinçle yalnız ana sayfa + çıkış-linkleri; alt sayfalar sonraki versiyon.
+  - **Anchor-drop** (dil değişiminde hash düşer) — record-not-fix, düşük şiddet; istenirse a11y/UX fazında ele alınır.
+
+### Task-Spesifik Teknik Öğrenimler
+<!-- Bu fazdaki task'larda öğrenilen ama proje genelinde geçerli olmayan teknik nüanslar (araç davranışı, framework bug'ı, vb.). MEMORY.md'nin değil, faz retrosunun evidir. -->
+- **Playwright MCP'de ayrı `emulateMedia` tool'u yok.** Degradasyon emülasyonu için `browser_run_code_unsafe` ile raw `page.emulateMedia({reducedMotion,colorScheme})` + `browser.newContext(...)` (her test izole context) + `addInitScript` kurmak gerekir. Headless'ta WebGL gerçekten çalışıyor (baseline canvas=1) → high/low degradasyon yolu gerçekten koşuldu, fallback simülasyon değil.
+- **next-intl tema = localStorage + `html.dark`, `prefers-color-scheme` DEĞİL.** Playwright `emulateMedia({colorScheme})` temayı çevirmez → dark testi = `addInitScript(localStorage.theme='dark')` + reload veya toggle'a tıkla.
+- **"low" degradasyon modu DOM'da attribute olarak açık değil** → gating-değişmezi ile doğrulanır: ≤768px'te `lowPower=true` zorunlu + canvas var + StaticFlow yok ⟹ tek olası mod "low" (kaynak-mantığı airtight; emülasyona değil değişmeze dayan).
+- **Lenis `anchors:true` aynı-JS-tick çoklu scrollTo'yu ara konuma çözer**; ≥1 frame (≥16ms) arayla son hedef temiz kazanır. Sentetik-only (insan 4 linki 16ms'de tıklayamaz), kullanıcı etkisi yok — app/ScrollTrigger bug'ı değil, Lenis iç davranışı. Sentetik `WheelEvent` burst'ü Lenis anlamlı işlemez (gerçek değer anchor + adımlı `scrollTo`'da).
+- **"Birebir-TR değer" sayısı stale değil, leak metriğidir.** Kaynak-seviyesi 18/183 birebir-aynı değerin tamamı marka/sayı/ortak-kelime çıktı; gerçek stale-leak ayırmak için marka-filtreli sayım + render-seviyesi distinkt-cümle leak kontrolü birlikte gerekir (tek başına "identical count" yanıltır).
 
 ---
 
 ## Kalite Kontrol Sonuçları
 
-> Bu bölüm `/devflow:review-phase` oturumunda doldurulur.
+> QUALITY.md'nin 8 ekseni sistematik kontrol edildi. **Faz yüzeyi: kaynak kod hiç değişmedi** (yalnız `_dev/` doküman) — bu bir doğrulama fazı. Eksen durumları "fazın doğruladığı mevcut durum"u + sahipli/ertelenmiş kalemleri yansıtır, faz değişiminin etkisini değil (değişim yok → regresyon yok).
 
 | Eksen | Durum | Not |
 |-------|-------|-----|
-| Marka & Craft (imza) | ✅ / ⚠️ / ❌ | ... |
-| Erişilebilirlik | ✅ / ⚠️ / ❌ | ... |
-| Performans | ✅ / ⚠️ / ❌ | ... |
-| Yerelleştirme & RTL | ✅ / ⚠️ / ❌ | ... |
-| Modülerlik & Bakım Maliyeti | ✅ / ⚠️ / ❌ | ... |
-| Hata Yönetimi & Degradasyon | ✅ / ⚠️ / ❌ | ... |
-| Güvenlik | ✅ / ⚠️ / ❌ | ... |
-| Test Kapsamı | ✅ / ⚠️ / ❌ | ... |
+| Marka & Craft (imza) | ✅ | S5: Crew OS her yüzeyde (5 dil × 7×) / "Bunker" görünür metinde 0 (iç kalıntı ayrıştırıldı); yasak metafor / sahte "● online" / uydurma müşteri-sonucu 0; dürüstlük konvansiyonu 5 dilde. S2/S3: TR yolculuğu bütün + craft/layout görsel teyit (şablon kokusu yok). S8: JS-off SSG'de içerik okunur. Kaynak değişmedi → craft regresyonu yok. |
+| Erişilebilirlik | ⚠️ | S4: klavye-only yolculuk 16/16 distinct durak (focus-trap yok) + focus-visible 2px yeşil outline (`rgb(31,122,61)`) ✓; S3: reduced-motion içerik gizlemez (Reveal 12/12). **Ancak bilinen a11y 89 açığı** (marka-yeşili kontrast + geçersiz `<dl>` + dil-switcher aria-mismatch) duruyor — DECISIONS 2026-06-28, adanmış faza ertelenmiş, record-not-fix. Faz açığı *kötüleştirmedi* (kaynak değişmedi). |
+| Performans | ⚠️ | S3: **CLS=0** (320/768/1440, near-zero teyidi) + yatay taşma 0 + build temiz (37/37, exit 0). **Bilinen mobil perf 87 / LCP 3.1s** (← Living Flow WebGL) ertelenmiş (DECISIONS 2026-06-28). Faz perf-nötr (kaynak değişmedi). Race testleri öncesi loadavg gözlendi (memory disiplini). |
+| Yerelleştirme & RTL | ✅ | **Fazın çekirdek ekseni (S6).** Parite 5 dil × 183 leaf-key, 0 eksik/0 fazla (review'da node ile re-teyit); runtime `MISSING_MESSAGE` 5 dil × 0; non-TR esasen tam çevrili (gerçek TR-leak 0); TD1-senkron 3 kalem (report/gym/CTA) 5 dilde hizalı+çevrili; AR `dir=rtl` aynalama bütün (S3'te dark×reduced ile birlikte de). v0.1 çeviri borcu kapalı. |
+| Modülerlik & Bakım Maliyeti | ✅ | Doğrulama fazı — kaynak dokunulmadı. Yapı doğrulandı: `route.ts` sanitizasyonu modüler (rol whitelist + boş-filtre + son-12 + sonda-user, apiKey-gate-önce); "low" mod gating-değişmezi airtight; i18n generic render yolu parite-temiz. Drift yüzeyi büyümedi. |
+| Hata Yönetimi & Degradasyon | ✅ | S3: reduced-motion / no-WebGL → StaticFlow (canvas=0, içerik gizlenmez, Reveal 12/12); S7: chatbot key-yok → 503 zarif offline UI (sahte-online yok), stream-kopması try/catch fallback enqueue + finally close → UI takılmaz; S8: JS-off SSG kritik içerik gömülü değil. Degradasyon yolları sağlam. |
+| Güvenlik | ✅ | S7: sanitizasyon *çalıştırılarak* doğrulandı (6 malformed → 400, Anthropic'e ulaşmadan; rol-enjeksiyon/boş/sonda-user-yok kısa-devre); apiKey-gate-önce → key-yok her istek 503. security-review (UAT Adım 1c): **bulgu yok** (kaynak değişmedi, `route.ts` main ile byte-identik). Secret env'de, koda gömülü değil. Toplam API çağrısı = 0. |
+| Test Kapsamı | ⚠️ N/A | Test altyapısı yok (proje-geneli, aspirasyonel eksen — QUALITY §8). Bu fazın kendisi kapsamlı bir **otonom cross-validation** (S1–S8 + UAT 10/10) ama otomatik test suite eklemedi. Altyapı kurulumu ayrı teknik faz adayı (D1) — fazın eksikliği değil, proje-geneli durum. |
+
+**Kullanıcı yolculuğu & boşluk:** TR ziyaretçi için ana sayfa uçtan-uca tutarlı (S2 + S8: 8 bölüm bütün/sıralı, hero ikincil CTA→#sectors, gym tek-otomasyon + Alpfit çıkışı, anchor/nav scroll, JS-off okunur). non-TR (EN/AR/DE/ES) yüzeyleri tutarlı (S6: parite + render bütün + AR-RTL). **Boşluk:** Sahipsiz/sürpriz boşluk tespit edilmedi. Bilinen, **sahipli** boşluklar: (a) çıplak `/forum`→`/bulten`→404 (index'siz statik bülten; yolculuktan erişilemez, SEO-bitişik) → görsel/SEO versiyonu; (b) `/bunker-os` route iç-ad sızıntısı → M6; (c) anchor-drop → record-not-fix; (d) a11y89/mobil-perf → adanmış faz. Hepsi kayıtlı ve yönlendirilmiş, orphan değil.
 
 ---
 
 ## Sonuç
 
-- **Tamamlanma Tarihi:** [Tarih]
-- **Toplam Task:** [Sayı]
-- **Notlar:** [Önemli kararlar, sonraki faza aktarılanlar]
+- **Tamamlanma Tarihi:** 2026-06-29
+- **Toplam Task:** 9 (TASK-3.01 kanonik ortam/build-tabanı · 3.02 S1 giriş/yönlendirme · 3.03 S5 taksonomi/dürüstlük · 3.04 S6 5-dil bütünlük · 3.05 S2 TR yolculuğu · 3.06 S3 degradasyon · 3.07 S4 kontroller/kalıcılık · 3.08 S7 chatbot 0-token · 3.09 S8 adversarial/holistik) — tümü ✅, arşivlendi.
+- **Notlar:** Milestone 4 parçası da karşılandı (S1–S8 otonom koşuldu + kaydedildi + triyaj + TR bütünsel/non-TR tutarlı). UAT 10/10 + kalite 8 eksen (L10n/RTL çekirdek + Marka&Craft + Degradasyon + Güvenlik + Modülerlik ✅; a11y/Performans ⚠️ ertelenmiş-taban; Test Kapsamı N/A). **Kapsam-içi gerçek bug yok → düzeltme task'ı yok; kaynak kod faz boyunca hiç değişmedi** (yalnız `_dev/` docs; `route.ts` main ile byte-identik; security-review temiz). Sonraki faza/versiyona aktarılan sahipli borç: a11y89/mobil-perf açığı, `/bunker-os`+çıplak`/forum` SEO redirect (M6), test altyapısı (D1), alt sayfa derin denetimi, anchor-drop. Versiyon Sonu Durumu: senaryo_testi → prd_review_bekliyor. v0.1 versiyon-sonu fazları (1,2,3) tamamlandı → zorunlu prd-review.
 
 ---
 
 **Oluşturulma:** 2026-06-28
-**Son Güncelleme:** 2026-06-29 — verify-phase 3 (UAT) tamamlandı: **10/10 senaryo ✅**, kapsam-içi yeni bug yok, düzeltme task'ı gerekmez. Kanonik fresh-prod (`rm -rf .next && build` exit 0 / 0-uyarı / 37 sayfa; fresh PID 83186 teyit, iş sonu kill; stray 12267 dokunulmadı). Otomatik kontroller: CI/CD yok (atlandı); **security-review bulgu yok** (faz 3 kaynak değiştirmedi, `route.ts` main ile byte-identik). Toplam Anthropic API çağrısı = 0. Record-not-fix/ertelenmiş kalemler değişmedi (çıplak `/forum`→404, aynı-tick anchor burst, a11y89/mobil-perf87/LCP3.1s). Sıradaki adım: review-phase 3. Detay: UAT Sonuçları tablosu + git log.
+**Son Güncelleme:** 2026-06-29 — review-phase 3 tamamlandı: retrospektif + 8 kalite ekseni yazıldı (L10n/RTL çekirdek + Marka&Craft/Degradasyon/Güvenlik/Modülerlik ✅; a11y/Performans ⚠️ ertelenmiş-taban; Test Kapsamı N/A). Kapsam-içi bug yok, düzeltme task'ı yok, kaynak kod hiç değişmedi. Faz ✅ tamamlandı. Versiyon Sonu Durumu senaryo_testi → prd_review_bekliyor; v0.1 versiyon-sonu fazları tamam → sıradaki: zorunlu prd-review.

@@ -123,7 +123,7 @@ M6 (SEO/Deploy) ─────────────────────>
 | TD2: Ölü anahtar hijyeni (`forum.articles.{one..four}` + `proof.{label,note}` → 5 dilden sil) | M4 (+M2) | v0.1 | 2 | ✅ |
 | TD3: Ana sayfa perf/Lighthouse doğrulama (mobil+masaüstü, brief bütçesi + taban) | M6 | v0.1 | 2 | ✅ |
 | **— v0.1 versiyon-sonu senaryo testi (Faz 3 — çapraz doğrulama, yeni feature üretmez) —** | | | | |
-| S1–S8: v0.1 ana sayfa uçtan-uca senaryo doğrulaması (giriş/yolculuk/mod/kontrol/taksonomi/5-dil/chatbot/adversarial) | tümü | v0.1 | 3 | 🔄 |
+| S1–S8: v0.1 ana sayfa uçtan-uca senaryo doğrulaması (giriş/yolculuk/mod/kontrol/taksonomi/5-dil/chatbot/adversarial) | tümü | v0.1 | 3 | ✅ |
 
 **Durum simgeleri:**
 - ⬜ **Bekliyor** — Fazı henüz başlamadı
@@ -137,4 +137,4 @@ M6 (SEO/Deploy) ─────────────────────>
 
 ---
 
-**Son Güncelleme:** 2026-06-28 — discuss-phase 3: Faz 3 (v0.1 senaryo testi) çapraz-doğrulama marker satırı eklendi (S1–S8, 🔄; yeni feature yok).
+**Son Güncelleme:** 2026-06-29 — review-phase 3: S1–S8 senaryo doğrulaması ✅ (UAT 10/10, kapsam-içi bug yok, kaynak değişmedi). v0.1 versiyon-sonu fazları tamam.

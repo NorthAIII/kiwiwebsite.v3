@@ -1,6 +1,6 @@
 # DURUM — Proje Dashboard
 
-**Son Güncelleme:** 2026-06-29 — verify-phase 3 (UAT) ✅ tamamlandı: **10/10 senaryo geçti**, kapsam-içi yeni bug yok → düzeltme task'ı gerekmez. Otomatik kontroller: CI/CD yok; security-review bulgu yok (faz 3 kaynak değiştirmedi). Toplam Anthropic API çağrısı = 0. Faz 3 Adım: review → `/devflow:review-phase 3`.
+**Son Güncelleme:** 2026-06-29 — review-phase 3 ✅: retrospektif + 8 kalite ekseni (L10n/RTL çekirdek ✅; a11y/perf ⚠️ ertelenmiş); kapsam-içi bug yok, kaynak değişmedi. v0.1 versiyon-sonu fazları (1,2,3) tamam → Versiyon Sonu Durumu prd_review_bekliyor. Sıradaki: zorunlu `/devflow:prd-review`.
 
 <!-- KURAL: Bu satır her oturum sonunda ÜZERİNE YAZILIR — tek satır, tek cümle. "Önceki:" / "Eski:" prefix ile kümülatif yığma YASAK; HTML comment'e sarma da yasak (CLAUDE.md → Doküman Disiplini). Tarih + kısa özet yeterli; detay için git log + ilgili PHASE/TASK dokümanları. -->
 
@@ -8,11 +8,10 @@
 
 ## Aktif Faz
 
-**Faz:** 3 — v0.1 Versiyon-Sonu Senaryo Testi
-**Milestone:** S1–S8 senaryo kataloğu otonom koşuldu + bulgular kaydedildi + triyaj edildi; TR yolculuğu bütünsel-tutarlı + non-TR yüzeyleri tutarlı (parite/render/RTL) teyit edildi ("ölç+kaydet+karar ver" — geçiş peşinen varsayılmaz) → **milestone karşılandı (UAT 10/10 ✅)**
-**Adım:** review → `/devflow:review-phase 3` (yeni oturum)
-**İlerleme:** Kapsam tartışması ✅ + Araştırma ✅ + Plan ✅ + Plan review ✅ + task çalıştırma 9/9 ✅ + **UAT (verify-phase) ✅ — 10/10 senaryo geçti, kapsam-içi bug yok, düzeltme task'ı yok, security-review temiz** → sıradaki: faz review (review-phase)
-**Faz Dokümanı:** `phases/PHASE-3.md`
+**Faz:** Yok — v0.1 versiyon-sonu fazları (1 içerik · 2 teknik borç · 3 senaryo testi) tamamlandı; faz döngüsü dışına çıkıldı.
+**Adım:** prd-review (versiyon-sonu zorunlu) → `/devflow:prd-review` (yeni oturum)
+**İlerleme:** Faz 3 ✅ (S1–S8 + UAT 10/10 + review tamam; kapsam-içi bug yok, kaynak değişmedi) → sıradaki: v0.1 prd-review değerlendirmesi
+**Son Faz Dokümanı:** `phases/PHASE-3.md` (✅ tamamlandı)
 
 ---
 
@@ -20,7 +19,7 @@
 
 **Versiyon:** v0.1 — Ana sayfa TR içerik & ses revizesi (güçlü revizenin ilk versiyonu; baz: v3 canlı)
 **Hedef:** Nasıl Çalışır 4 adım (R1) + Sektörler gym paneli tek-otomasyona (R2) + dürüstlük taraması (R4/F5) + hero ikincil CTA (R4/F6) ana sayfada tamam; marka sesi tutarlı; TR tek kaynak (çeviri versiyon-sınırına ertelendi)
-**Versiyon Sonu Durumu:** senaryo_testi
+**Versiyon Sonu Durumu:** prd_review_bekliyor
 
 <!-- Versiyon geçişlerinde güncellenir. discuss-phase versiyon sonu tespitinde bu alanı okur. -->
 <!-- Değerler: içerik_fazları | teknik_borç | senaryo_testi | prd_review_bekliyor -->
@@ -29,29 +28,17 @@
 
 ## Aktif Task
 
-**Task:** Yok — Faz 3 senaryo task'ları 9/9 ✅ + UAT (verify-phase) 10/10 ✅ tamamlandı. Düzeltme task'ı oluşmadı (kapsam-içi bug yok).
-**Durum:** Aktif task yok; sıradaki adım faz review
-**İlerleme:** Adım review → `/devflow:review-phase 3` (yeni oturum)
+**Task:** Yok — Faz 3 tamamlandı (9/9 task ✅ + UAT 10/10 ✅ + review ✅). Faz döngüsü dışında.
+**Durum:** Aktif task yok; sıradaki adım versiyon-sonu zorunlu prd-review
+**İlerleme:** Adım prd-review → `/devflow:prd-review` (yeni oturum)
 
 ---
 
 ## Task Durumu (Aktif Faz)
 
-> Faz 3 (Senaryo Testi) plan tamam; 9 task yazıldı (henüz çalıştırılmadı — run-task verify-plan'dan sonra). Açıklamalar `phases/PHASE-3.md` Task Listesi'nde. Faz 2 task'ları (2.01/2.02/2.03 ✅) arşivde (`tasks/archive/`), detay `phases/PHASE-2.md`.
+> Aktif faz yok — v0.1 versiyon-sonu fazları (1,2,3) tamamlandı, faz döngüsü dışına çıkıldı (sıradaki: prd-review). Tamamlanan tüm task'lar arşivde (`tasks/archive/`); faz detayları `phases/PHASE-N.md`'de. Yeni faz açılınca (v0.2 discuss-phase) bu tablo yeniden doldurulur.
 
-| # | Task | Durum |
-|---|------|-------|
-| 3.01 | Kanonik ortam + build-temizliği tabanı (S8-build) | ✅ Tamamlandı |
-| 3.02 | S1 giriş/yönlendirme matrisi (curl) | ✅ Tamamlandı |
-| 3.03 | S5 taksonomi & dürüstlük (curl+grep 5 dil) | ✅ Tamamlandı |
-| 3.04 | S6 5-dil bütünlük & non-TR tutarlılık (node+curl) | ✅ Tamamlandı |
-| 3.05 | S2 tam TR yolculuğu (curl+Playwright) | ✅ Tamamlandı |
-| 3.06 | S3 mod kombinasyonları / degradasyon (Playwright) | ✅ Tamamlandı |
-| 3.07 | S4 kontroller & kalıcılık (Playwright) | ✅ Tamamlandı |
-| 3.08 | S7 chatbot 0-token (kod+curl+Playwright) | ✅ Tamamlandı |
-| 3.09 | S8 adversarial/holistik: JS-off SSG + race | ✅ Tamamlandı |
-
-**Durum Kodları:** ⬜ Bekliyor | 🔄 Devam ediyor | ⏸️ Duraklatıldı | ✅ Tamamlandı | 🔴 Bloke | ❌ İptal
+_(Aktif faz task'ı yok.)_
 
 ---
 
@@ -81,12 +68,12 @@
 
 ## Hızlı Erişim
 
-**Aktif Task:** Yok — Faz 3: 9/9 task ✅ + UAT 10/10 ✅ (Adım: review → `/devflow:review-phase 3`)
-**Aktif Faz:** 3 — v0.1 Versiyon-Sonu Senaryo Testi (9/9 task ✅ + UAT ✅; sıradaki adım faz review)
+**Aktif Task:** Yok — Faz 3 tamam (9/9 ✅ + UAT 10/10 ✅ + review ✅); sıradaki: zorunlu `/devflow:prd-review`
+**Aktif Faz:** Yok — faz döngüsü dışında; v0.1 versiyon-sonu fazları (1,2,3) tamam, Versiyon Sonu Durumu: prd_review_bekliyor
 **Task Sistemi:** `tasks/TASKS-README.md`
 **PRD (karar kaynağı):** `PRD/VIZYON.md` · `PRD/VERSIONS.md` · `PRD/features/`
 **Revize Backlog (bilinen sorunlar):** `docs/REVIZE-BACKLOG.md`
 
 ---
 
-**Son Güncelleme:** 2026-06-29 — verify-phase 3 (UAT) ✅ tamamlandı: **10/10 senaryo geçti**, kapsam-içi yeni bug yok → düzeltme task'ı gerekmez. Otomatik kontroller: CI/CD yok; security-review bulgu yok (faz 3 kaynak değiştirmedi). Toplam Anthropic API çağrısı = 0. Faz 3 Adım: review → `/devflow:review-phase 3`.
+**Son Güncelleme:** 2026-06-29 — review-phase 3 ✅: retrospektif + 8 kalite ekseni (L10n/RTL çekirdek ✅; a11y/perf ⚠️ ertelenmiş); kapsam-içi bug yok, kaynak değişmedi. v0.1 versiyon-sonu fazları (1,2,3) tamam → Versiyon Sonu Durumu prd_review_bekliyor. Sıradaki: zorunlu `/devflow:prd-review`.
