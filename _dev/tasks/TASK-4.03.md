@@ -71,7 +71,7 @@ src/app/
 - **Light + dark birlikte** (F1.4 edge case: yeni/değişen renk hem light hem dark tanımlanmalı). Dark değer ayrı hesaplandı (`#8a8c80`).
 - **Craft taraması zorunlu:** token tüm sayfalara yayılır → "faint" muted kalmalı, prominent olmamalı (ILKELER §1). Liste yukarıda.
 - **Perf/CLS regresyon yok:** yalnız renk değeri; layout/asset/JS dokunulmaz → CLS=0.
-- **Dark Lighthouse-dışı:** Lighthouse light ölçer; dark kontrastı axe ile teyit (her iki değer de 4.5'i geçiyor).
+- **Çift-tema:** Kanonik Lighthouse koşusu **dark** render eder (TASK-4.01 DEV-1); ink-faint dark değeri (`#8a8c80`) de hesaplandı. Her iki tema axe ile teyit (her iki değer 4.5'i geçiyor: light `#67695f` 5.16/4.76, dark `#8a8c80` 5.38/4.92).
 - i18n etkisi yok.
 
 ---

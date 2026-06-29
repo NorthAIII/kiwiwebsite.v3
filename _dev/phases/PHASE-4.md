@@ -158,7 +158,13 @@ A11Y1 acceptance = `color-contrast` denetimi **0 başarısız**; bu, faz tablosu
 - **DEV-3:** Baseline'ın "ol.space-y-5 #8af28a/1.22" kalemi = SectorSolutions text-pulse (C2/C3), HowItWorks değil; K1 yine geçerli (HowItWorks `text-green/30` her iki temada da fail: light 1.51 / dark 1.67).
 - **DEV-4:** ink-faint fail'leri research'ten geniş (sektör etiketi + forum kartları) — hepsi K2 token tek-kaynağıyla kapanır (teyit).
 
-**Kullanıcı kararı (2026-06-29):** **a11y=100 gate = Light + Dark** (kapsam genişletme). ILKELER "light & dark" + kanonik dark zaten zorluyor. Plan revizyonu (sıradaki adım, plan-phase/verify-plan): C9 → TASK-4.04'e; **C2/C3 (panel pulse-yeşili) → yeni fix task** (craft-hassas; aria-hidden/renk/treatment mekanizması research'te netleşir); TASK-4.07 → **çift-tema** doğrulama. Etkilenmeyen: K1/4.02, K2/4.03, K3/4.05, K4/4.06.
+**Kullanıcı kararı (2026-06-29):** **a11y=100 gate = Light + Dark** (kapsam genişletme). ILKELER "light & dark" + kanonik dark zaten zorluyor.
+
+**Plan revizyonu (uygulandı — plan-phase 2026-06-29):**
+- **C9** (Bunker durum `text-canvas/50`, dark 3.36 ❌) → **TASK-4.04**'e teyitli fix olarak eklendi (≥%60).
+- **C2/C3** (gym-panel pulse-yeşili adım no + seeLive CTA) → **yeni TASK-4.07**. Craft mekanizması netleşti (kullanıcı kararı, 3 seçenek sunuldu): **adaptif `--color-pulse-ink` token** — light `#6fe36f` (= mevcut pulse, görünüm değişmez), dark `#1f7a3d` (krem panelde 4.74 ✅). Hem adım no hem CTA bu token'a geçer; aria-hidden değil çünkü kullanıcı dürüst/okunur fix istedi + CTA interaktif (gizlenemez).
+- **Final doğrulama** → **TASK-4.08** (eski 4.07'den), **çift-tema** (light+dark) a11y=100.
+- Etkilenmeyen: K1/4.02, K2/4.03, K3/4.05, K4/4.06.
 
 ---
 
@@ -173,10 +179,11 @@ A11Y1 acceptance = `color-contrast` denetimi **0 başarısız**; bu, faz tablosu
 | 4.01 | TASK-4.01 | ✅ Tamamlandı | Otoriter re-ölçüm: envanter sabitlendi; materyal sapma → light+dark kapsam genişletme (bkz. Re-ölçüm Teyidi) |
 | 4.02 | TASK-4.02 | ⬜ Bekliyor | Adım numaraları `aria-hidden` (K1, color-contrast — HowItWorks) |
 | 4.03 | TASK-4.03 | ⬜ Bekliyor | `--color-ink-faint` token koyulaştırma (K2, color-contrast — globals.css) |
-| 4.04 | TASK-4.04 | ⬜ Bekliyor | Cream-on-ink opaklık (K5, color-contrast — Footer + Bunker) |
+| 4.04 | TASK-4.04 | ⬜ Bekliyor | Cream-on-ink opaklık ≥%60 (K5+C9, color-contrast — Footer + Bunker; Bunker durum dark fail eklendi) |
 | 4.05 | TASK-4.05 | ⬜ Bekliyor | Hero `<dl>` → semantik link markup (K3, definition-list + dlitem) |
 | 4.06 | TASK-4.06 | ⬜ Bekliyor | Dil-switcher `aria-label`'a locale kodu (K4, label-content-name-mismatch) |
-| 4.07 | TASK-4.07 | ⬜ Bekliyor | Final doğrulama: a11y=100 + perf/CLS regresyonsuz + `docs/perf/` taban |
+| 4.07 | TASK-4.07 | ⬜ Bekliyor | Gym-panel pulse-yeşili dark-inversion fix (C2/C3, adaptif `--color-pulse-ink` token) |
+| 4.08 | TASK-4.08 | ⬜ Bekliyor | Final doğrulama: a11y=100 **çift-tema** (light+dark) + perf/CLS regresyonsuz + `docs/perf/` taban |
 
 **Durum simgeleri:** ⬜ Bekliyor | 🔄 Devam ediyor | ⏸️ Duraklatıldı | ✅ Tamamlandı | 🔴 Bloke | ❌ İptal
 
@@ -235,4 +242,4 @@ A11Y1 acceptance = `color-contrast` denetimi **0 başarısız**; bu, faz tablosu
 ---
 
 **Oluşturulma:** 2026-06-29
-**Son Güncelleme:** 2026-06-29 — run-task 4.01: otoriter re-ölçüm tamam (a11y 89 teyit); materyal sapma bulundu (Lighthouse default DARK; bg-ink panel inversion → C2/C3/C9 dark fail, K1-K5 kapsam dışı); kullanıcı kararı light+dark kapsam genişletme → plan revizyonu gerekli (Re-ölçüm Teyidi). 4.01 ✅.
+**Son Güncelleme:** 2026-06-29 — plan-phase (revizyon): light+dark kapsam genişlemesi task'lara dağıtıldı — C9→TASK-4.04, yeni TASK-4.07 (C2/C3 adaptif `--color-pulse-ink` token, kullanıcı kararı), final doğrulama TASK-4.08'e çift-tema. 8 task (4.01 ✅ + 7 bekliyor). Sıradaki: verify-plan 4.
