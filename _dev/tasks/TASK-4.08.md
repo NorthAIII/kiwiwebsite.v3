@@ -84,7 +84,7 @@ _dev/docs/perf/
 
 ## Dikkat Noktaları
 
-- **a11y=100 çift-tema gate (DEV-1):** Lighthouse kanonik koşu = dark (gate'in zor temas.); light `emulateMedia` ile ayrı zorlanır. İkisi de 100/temiz raporlanır.
+- **a11y=100 çift-tema gate (DEV-1):** Lighthouse kanonik koşu = dark (gate'in zor teması); light `emulateMedia` ile ayrı zorlanır. İkisi de 100/temiz raporlanır.
 - **Perf/CLS regresyon yasağı (korunan taban, ILKELER §2):** fix'ler renk/token/markup/aria → CLS=0, masaüstü perf 100/LCP 0.69s, mobil ~87 **düşmemeli**. Düştüyse kök-neden araştır + kullanıcıya bildir.
 - **Host yükü + fresh-prod-serve** disiplini zorunlu (MEMORY Süreç Disiplinleri) — yanlış perf okuması/yanlış-negatif önlenir. `emulateMedia` + reduced-motion + scroll ile tam envanter (Lighthouse full-motion reveal `opacity:0` atlar — DEV-5).
 - **a11y < 100 (herhangi tema) veya denetim hâlâ başarısız → dur, kullanıcıya bildir** (eksik fix / plansız öğe); faz review'a geçmeden kapatma.

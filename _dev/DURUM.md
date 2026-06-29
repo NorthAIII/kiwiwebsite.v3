@@ -1,6 +1,6 @@
 # DURUM — Proje Dashboard
 
-**Son Güncelleme:** 2026-06-29 — plan-phase (revizyon): light+dark kapsam genişlemesi task'lara dağıtıldı. C9→TASK-4.04; yeni TASK-4.07 (C2/C3 gym-panel pulse-yeşili, adaptif `--color-pulse-ink` token — kullanıcı kararı); final doğrulama TASK-4.08'e çift-tema. Faz 4 = 8 task (4.01 ✅ + 7 bekliyor). Sıradaki: verify-plan 4.
+**Son Güncelleme:** 2026-06-29 — verify-plan 4: 8-task plan fresh-context'te doğrulandı (referans gerçeklik-kontrolü tüm dosya/satır/token reflerinde geçti; envanter C1–C12 + 3 denetim eksiksiz eşlendi; çakışma yok). Yapısal değişiklik yok, 2 mekanik typo düzeltildi. Adım=task; sıradaki TASK-4.02 (`run-task`).
 
 <!-- KURAL: Bu satır her oturum sonunda ÜZERİNE YAZILIR — tek satır, tek cümle. "Önceki:" / "Eski:" prefix ile kümülatif yığma YASAK; HTML comment'e sarma da yasak (CLAUDE.md → Doküman Disiplini). Tarih + kısa özet yeterli; detay için git log + ilgili PHASE/TASK dokümanları. -->
 
@@ -8,9 +8,9 @@
 
 ## Aktif Faz
 
-**Faz:** 4 — v0.2 erişilebilirlik (a11y 89→100, light+dark), ana sayfa. 🔄 Devam ediyor (plan light+dark'a revize edildi).
-**Adım:** verify-plan → `/devflow:verify-plan 4`: revize 8-task planı (4.01 ✅ + fixler 4.02–4.07 + doğrulama 4.08) doğrula. Sonra `run-task` ile fix sırası.
-**İlerleme:** Plan revizyonu tamam (plan-phase 2026-06-29): C9→TASK-4.04 (teyitli ≥%60); yeni TASK-4.07 (C2/C3 gym-panel pulse-yeşili → adaptif `--color-pulse-ink` token, kullanıcı kararı); final doğrulama TASK-4.08'e çift-tema. Etkilenmeyen: 4.02/K1, 4.03/K2, 4.05/K3, 4.06/K4. Tam envanter: arşiv `tasks/archive/TASK-4.01.md` + PHASE-4 "Re-ölçüm Teyidi".
+**Faz:** 4 — v0.2 erişilebilirlik (a11y 89→100, light+dark), ana sayfa. 🔄 Devam ediyor (plan doğrulandı).
+**Adım:** task → `/devflow:run-task`: TASK-4.02'den başla (fix sırası 4.02→4.07, sonra doğrulama 4.08). verify-plan ✅ (8-task plan doğrulandı, 2 mekanik typo düzeltildi, yapısal değişiklik yok).
+**İlerleme:** Plan verify-plan 4'te (2026-06-29) fresh-context doğrulandı: tüm referanslar gerçekle tutarlı (globals.css token'ları, HowItWorks/Hero/LanguageSwitcher/Footer/Bunker/SectorSolutions satırları teyitli); envanter C1–C12 eksiksiz; cream-on-ink + text-pulse kaçağı yok. Etkilenmeyen: 4.02/K1, 4.03/K2, 4.05/K3, 4.06/K4. Tam envanter: arşiv `tasks/archive/TASK-4.01.md` + PHASE-4 "Re-ölçüm Teyidi".
 **Son Faz Dokümanı:** `phases/PHASE-4.md` (🔄 aktif)
 
 ---
@@ -28,9 +28,9 @@
 
 ## Aktif Task
 
-**Task:** Aktif task yok — TASK-4.01 ✅ tamamlandı (ölçüm); plan revizyonu tamam. Sıradaki: `verify-plan 4`, sonra fix sırası.
-**Durum:** Revize plan = 8 task (4.01 ✅; fixler 4.02–4.07; doğrulama 4.08). C2/C3/C9 dağıtıldı.
-**İlerleme:** Adım = verify-plan (yukarı bkz.); doğrulama sonrası `run-task` ile 4.02'den başla.
+**Task:** TASK-4.02 — Adım numaraları `aria-hidden` (K1, color-contrast — HowItWorks). ⬜ Sıradaki (ilk fix). `run-task` ile başla.
+**Durum:** Plan doğrulandı (verify-plan 4 ✅). 8 task: 4.01 ✅; fixler 4.02–4.07 ⬜; doğrulama 4.08 ⬜.
+**İlerleme:** Adım = task; `/devflow:run-task` ile TASK-4.02'yi çalıştır (tek task, oturum sonunda kapat).
 
 ---
 
@@ -77,7 +77,7 @@
 
 ## Hızlı Erişim
 
-**Aktif Task:** Yok — TASK-4.01 ✅ (re-ölçüm); plan revize edildi; sıradaki: `/devflow:verify-plan 4`, sonra fix sırası
+**Aktif Task:** TASK-4.02 (sıradaki fix; `/devflow:run-task` ile başla) — plan doğrulandı (verify-plan 4 ✅)
 **Aktif Faz:** 4 — v0.2 erişilebilirlik (a11y 89→100, light+dark) 🔄; Aktif Versiyon v0.2, Versiyon Sonu Durumu: içerik_fazları
 **Task Sistemi:** `tasks/TASKS-README.md`
 **PRD (karar kaynağı):** `PRD/VIZYON.md` · `PRD/VERSIONS.md` · `PRD/features/`
@@ -85,4 +85,4 @@
 
 ---
 
-**Son Güncelleme:** 2026-06-29 — plan-phase (revizyon): light+dark kapsam genişlemesi 8-task plana dağıtıldı (C9→4.04; yeni 4.07 C2/C3 adaptif `--color-pulse-ink` token; doğrulama 4.08 çift-tema). Sıradaki: verify-plan 4.
+**Son Güncelleme:** 2026-06-29 — verify-plan 4: 8-task plan fresh-context'te doğrulandı (referanslar gerçekle tutarlı, envanter eksiksiz, çakışma yok); 2 mekanik typo düzeltildi, yapısal değişiklik yok. Sıradaki: run-task (TASK-4.02).

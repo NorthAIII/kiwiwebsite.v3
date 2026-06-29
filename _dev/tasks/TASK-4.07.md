@@ -83,7 +83,7 @@ src/components/
 - **Perf/CLS regresyon yok:** yalnız renk token'ı + class swap; layout/asset/JS dokunulmaz → CLS=0.
 - **RTL (AR):** panel layout aynalanır; renk/token değişimi RTL'i etkilemez.
 - **Her iki tema axe ile:** Lighthouse kanonik koşusu dark render eder (DEV-1) → dark zaten gate'te; light'ı axe `emulateMedia({colorScheme:'light'})` ile ayrı teyit (regresyon yok).
-- **Kapsam = ana sayfa panel.** `text-pulse` başka yüzeylerde varsa (alt sayfa showcase) bu task **ana sayfa** kapsamlı; token global tanımlı ama swap yalnız SectorSolutins'ta. Alt-sayfa derin a11y kapsam dışı (PHASE-4 Kapsam Dışı).
+- **Kapsam = ana sayfa panel.** `text-pulse` başka yüzeylerde varsa (alt sayfa showcase) bu task **ana sayfa** kapsamlı; token global tanımlı ama swap yalnız SectorSolutions'ta. Alt-sayfa derin a11y kapsam dışı (PHASE-4 Kapsam Dışı).
 
 ---
 
