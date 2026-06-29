@@ -1,6 +1,6 @@
 # TASK-4.03: `--color-ink-faint` token koyulaştırma (color-contrast — A11Y1-b)
 
-**Durum:** ⬜ Bekliyor
+**Durum:** ✅ Tamamlandı
 **Modül:** M1 (Tasarım Sistemi) — F1.4 token & dark mode
 **Feature:** A11Y1 (renk kontrastı WCAG AA) — soluk gri etiketler
 **Faz:** Phase 4 (phases/PHASE-4.md)
@@ -38,17 +38,17 @@ Araştırma kararı **K2**. Kritik düzeltme: `text-green` (solid) zaten geçer 
 
 ## Alt Görevler
 
-- [ ] **1. Light token koyulaştır**
+- [x] **1. Light token koyulaştır**
   - `src/app/globals.css:11` — `--color-ink-faint: #8b8d83;` → `#67695f`
 
-- [ ] **2. Dark token koyulaştır**
+- [x] **2. Dark token koyulaştır**
   - `src/app/globals.css:35` (html.dark) — `--color-ink-faint: #7d8073;` → `#8a8c80`
 
-- [ ] **3. Craft taraması — tüketen yüzeyler (her iki tema)**
+- [x] **3. Craft taraması — tüketen yüzeyler (her iki tema)**
   - Yukarıdaki "Tüketen yüzeyler" listesini gözle gez: muted/ikincil hiyerarşi korunuyor mu, prominent'e dönmedi mi?
   - Hero scroll-cue (`Hero.tsx:140-142` `text-ink-faint` + `bg-ink-faint/40`) ve placeholder'lar (BulletinSubscribe/Chatbot) makul görünüyor mu?
 
-- [ ] **4. Doğrula (build + axe)**
+- [x] **4. Doğrula (build + axe)**
   - `next build` temiz
   - axe ana sayfa (light + dark): `text-ink-faint` öğeleri `color-contrast` flag'lemiyor
 
@@ -78,29 +78,62 @@ src/app/
 
 ## Test Kriterleri
 
-- [ ] `next build` temiz geçer
-- [ ] axe ana sayfa **light**: `text-ink-faint` öğeleri `color-contrast` flag'lemiyor
-- [ ] axe ana sayfa **dark**: `text-ink-faint` öğeleri `color-contrast` flag'lemiyor
-- [ ] Craft: tüketen yüzeylerde (Hero/SectorSolutions/Forum/Chatbot/CaseStudies/makaleler/GymShowcase/BunkerShowcase) faint hiyerarşi muted korundu (gözle, her iki tema)
-- [ ] Yeşil imza renk değişmedi (token'a dokunulmadı)
+- [x] `next build` temiz geçer
+- [x] axe ana sayfa **light**: `text-ink-faint` öğeleri `color-contrast` flag'lemiyor
+- [x] axe ana sayfa **dark**: `text-ink-faint` öğeleri `color-contrast` flag'lemiyor
+- [x] Craft: tüketen yüzeylerde (Hero/SectorSolutions/Forum/Chatbot/CaseStudies/makaleler/GymShowcase/BunkerShowcase) faint hiyerarşi muted korundu (gözle, her iki tema)
+- [x] Yeşil imza renk değişmedi (token'a dokunulmadı)
 
 ---
 
 ## Tamamlanma Kriterleri
 
-- [ ] Tüm alt görevler tamamlandı
-- [ ] Tüm test kriterleri karşılandı
-- [ ] Git commit & push yapıldı
-- [ ] Bu doküman güncellendi (oturum kaydı)
-- [ ] DURUM.md güncellendi
+- [x] Tüm alt görevler tamamlandı
+- [x] Tüm test kriterleri karşılandı
+- [x] Git commit & push yapıldı
+- [x] Bu doküman güncellendi (oturum kaydı)
+- [x] DURUM.md güncellendi
 
 ---
 
 ## Oturum Kayıtları
 
-### Oturum — [TARİH]
+### Oturum — 2026-06-29
 
-**Durum:** [doldurulacak]
+**Durum:** ✅ Tamamlandı
+
+**Yapılanlar:**
+- `src/app/globals.css` tek dosyada iki token değeri koyulaştırıldı: light L11 `--color-ink-faint: #8b8d83 → #67695f`, dark L35 (html.dark) `#7d8073 → #8a8c80`. Tüketen bileşenler değişmedi (token yayılımı).
+- Craft taraması (light+dark, gözle + hesaplanan değer): faint hiyerarşisi her iki temada korundu — ink (`#12140f`/`#f2f1e8`) > ink-soft (`#4a4d44`/`#b7b9ac`) > ink-faint, faint hâlâ üçünün en muted'ı. Hero etiketleri ("Şu an canlı"/"İşletim katmanı"), scroll-cue ("Kaydır"), SectorSolutions eyebrow ("SPOR SALONLARI · TEK OTOMASYON") muted/ikincil kaldı, prominent'e dönmedi (ekran görüntüsü teyidi).
+
+**Sorunlar:**
+- Playwright modülü (npx cache) CJS export + chromium revizyon uyumsuzluğu (1226 bekliyor, cache'te 1228): `import pkg` default + `executablePath`'i `chromium_headless_shell-1228` binary'sine pinleyerek çözüldü. axe-core 4.11.4 (kanonik) cache'ten enjekte edildi.
+
+**Kararlar:**
+- DECISIONS'a yeni giriş eklenmedi: Gerekçe — K2 token koyulaştırma kararı (tam hex değerleriyle) zaten DECISIONS 2026-06-29 girişinde kayıtlı; tekrar = drift (Doküman Disiplini).
+- docs/DECISIONS.md'ye eklendi: Hayır
+
+**Dosya Değişiklikleri:**
+- `src/app/globals.css` → `--color-ink-faint` light `#8b8d83→#67695f` (L11), dark `#7d8073→#8a8c80` (L35)
+
+**Test Sonuçları:**
+- `next build`: temiz (exit 0, 37 sayfa).
+- Fresh-prod-serve `:4173` (listening-PID 122997 teyit = fresh process; stray 9077 dokunulmadı). axe-core 4.11.4 + Playwright (reducedMotion + full-page scroll), `NEXT_LOCALE=tr` cookie:
+  - **Light:** 6 color-contrast ihlal node'u, **`text-ink-faint` içeren = 0**. Kalan: `text-canvas/40,45` (footer "Dil/©", Bunker panel "aktif/sırada") → TASK-4.04 kapsamı.
+  - **Dark:** 11 ihlal node'u, **`text-ink-faint` içeren = 0**. Kalan: `text-pulse` 01/02/03 + "Canlı ürünü gör" → TASK-4.07; `text-canvas/40,45,50` → TASK-4.04.
+  - Teyit: 8 `.text-ink-faint` öğesi DOM'da mevcut, hesaplanan renk light `rgb(103,105,95)`=#67695f / dark `rgb(138,140,128)`=#8a8c80 → gizlenmedi, geçiyor. Yeşil token dokunulmadı (dark `text-pulse` hâlâ `#8af28a`).
+
+---
+
+## Sonuç Özeti
+
+**Tamamlanma Tarihi:** 2026-06-29
+
+**Ne Yapıldı:**
+- `--color-ink-faint` tasarım token'ı light+dark koyulaştırıldı (K2); WCAG AA'yı geçecek tek-kaynak değişim, tüm tüketen yüzeylere tutarlı yayıldı. Ana sayfada `text-ink-faint` öğeleri artık color-contrast denetiminden çıktı (her iki tema), faint craft hiyerarşisi ve yeşil imza korundu.
+
+**Öğrenilenler:**
+- Token tek-kaynak değişimi öğe-bazlı swap'a göre hem cerrahi hem bakım-dostu çıktı (QUALITY §5 teyit); craft riski "koyulaşınca prominent olur mu" sorusuydu, hiyerarşi (ink>ink-soft>ink-faint) matematiksel olarak korunduğu için risk gerçekleşmedi.
 
 ---
 
