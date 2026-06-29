@@ -9,6 +9,25 @@
 
 <!-- Her yeni karar aşağıdaki formatta en üste eklenir (en yeni en üstte) -->
 
+### 2026-06-29 — Faz 4 a11y kontrast düzeltme mekanizması (opaklık-değil-hue + token koyulaştırma)
+
+**Bağlam:** research-phase 4, ana sayfa a11y=100 hedefi. Kod gerçek-okuması + WCAG hesabı, 2026-06-28 baseline'ın (a11y 89) başarısız öğelerini **stale** gösterdi: baseline başarısız renkleri kaba/harmanlanmış hex (`#8af28a`, `#999992`) olarak kaydetmiş; `globals.css` token'ları o ölçümden beri değişmemiş (commit `8d0c49a`). Kritik düzeltme: **kontrast sorunu hue değil opaklık** — adım numaraları (`HowItWorks.tsx:84`) zaten koyu marka yeşili `#1f7a3d` kullanıyor, sorun `/30` opaklığı (solid green cream'de 4.96 geçer; %30 = 1.51). discuss-phase'in "bright #8af28a → koyu yeşil varyant" varsayımı yanlış çıktı. color-contrast başarısızları faz tablosundaki 2 örnekten geniş ama tamamı ana sayfa (Hero `<dt>`, sektör notu, Footer `canvas/40`+ayraç, Crew OS panel `canvas/45`, dark `ink-faint`).
+
+**Seçenekler (kullanıcıya sunuldu):** (1) Adım no: opaklık-bump [reddedildi — faint korunarak 3:1'e çıkamaz] / solid yeşil [craft regresyonu] / **aria-hidden**. (2) Soluk gri: öğe-bazlı swap / **token koyulaştırma**. (3) Hero `<dl>`: geçerli dl / **dl kaldır**.
+
+**Karar (kullanıcı onayı 2026-06-29):**
+- **K1** adım numaraları `aria-hidden` (renk değişmez, faint imza korunur; sıra `<h3>`+DOM'dan).
+- **K2** `--color-ink-faint` token koyulaştır: light `#8b8d83`→`#67695f`, dark `#7d8073`→`#8a8c80` (canvas-deep dahil ≥4.5).
+- **K3** Hero stats `<dl>/<dt>/<dd>` → semantik link markup (etiketli link, tanım değil; 2 denetim kapanır, görünüm birebir).
+- **K4** dil-switcher `aria-label`'a locale kodu (`LABELS[locale] (CODE)`, kod-only, yeni i18n anahtarı yok).
+- **K5** cream-on-ink: gerçek metin ≥%60, dekoratif ayraç aria-hidden.
+
+**Gerekçe:** Marka & Craft üst eksen (ILKELER) → aria-hidden + birebir markup sıfır görsel değişimle a11y. Token koyulaştırma tek-kaynak tutarlılık (QUALITY §5) + kalıcılık. Kod-only aria → 5-dil parite yüzeyi açılmaz. Lighthouse light-mode ölçer (gate light); token her iki temayı kapsar, dark axe ile teyit. Perf/CLS korunan taban: fixler renk+markup, layout değil → regresyonsuz (re-ölçümde doğrulanır).
+
+**İlgili Task/Faz:** research-phase 4 (v0.2 / Faz 4 a11y); detay `_dev/phases/PHASE-4.md` Araştırma Bulguları.
+
+---
+
 ### 2026-06-28 — Ana sayfa perf tabanı: bütçe açığı (a11y 89 + mobil perf/LCP) bulundu → ertelendi
 
 **Bağlam:** Faz 2 TD3, ana sayfa Lighthouse tabanı ölçüldü (yerel prod build, npx lighthouse@13.3.0, Chrome 149, mobil+masaüstü, çoklu koşu). Sonuç: **masaüstü** perf 100 / LCP 0.69s / CLS 0 (bütçeyi geçer); **mobil** perf 87 / LCP 3.1s / CLS 0; **accessibility her iki preset'te 89** (ortamdan bağımsız → en güvenilir sinyal). Brief bütçesi (≥95 perf / ≥100 a11y / LCP<2.5s / near-zero CLS) **karşılanmadı** (mobil perf −8, a11y −11, mobil LCP +0.6s; CLS geçti). a11y açığı 4 denetim: color-contrast (8 öğe; marka yeşili `#8af28a` krem üzerinde 1.22 + dark-mode soluk metin), definition-list+dlitem (hero `<dl>` geçersiz markup), label-content-name-mismatch (dil-değiştirici aria). Önemli: bunlar **regresyon değil** — kayıtlı önceki ölçüm yoktu, sayfanın keşfedilen mevcut durumu. (Metodoloji + ham koşu tablosu: `docs/perf/README.md`.)

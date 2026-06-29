@@ -62,20 +62,91 @@
 
 ## Araştırma Bulguları
 
-> Bu bölüm `/devflow:research-phase 4` oturumunda doldurulur.
+> Bu bölüm `/devflow:research-phase 4` oturumunda dolduruldu (2026-06-29). Kaynak kod gerçek-okumasına + WCAG kontrast hesabına (current token'lar) dayanır; baseline `docs/perf/README.md` "Accessibility 89" ile çapraz okundu.
+
+### Baseline ile Kod Arasındaki Drift (önemli — Task 1'i tetikler)
+
+`docs/perf/README.md` a11y tabanı (2026-06-28, 89) başarısız öğeleri **kaba/hesaplanmış renk** olarak kaydetmiş (örn. `text-canvas/40` → `#999992`, light+dark öğeler karışık). Kod gerçek-okumasında:
+- `globals.css` token'ları taban ölçümünden beri **değişmedi** (son commit `8d0c49a`); yani current token'lar = ölçülen token'lar. Baseline'daki `#8af28a`/`#f2f1e8` gibi hex'ler ham token değil, **opaklık-harmanlanmış/dark-mode hesap** değerleridir.
+- Bazı baseline kalemleri **artık çözülmüş olabilir**: baseline "CTA `a.group` `#8af28a`" diyordu; current `Hero.tsx` ikincil CTA `text-ink` (tam kontrast, geçer). Re-ölçüm netleştirecek.
+- **Lighthouse light-mode ölçer.** Tema init script (`[locale]/layout.tsx:76`) localStorage yoksa `prefers-color-scheme`'e düşer; Lighthouse varsayılanı light → a11y=100 **kapısı LIGHT mode**. Dark mode kontrastı da düzeltilir (ILKELER/QUALITY "light & dark") ama Lighthouse gate'i light; dark için axe ile elle teyit.
+
+→ **Sonuç:** Task 1 = current build'de **otoriter re-ölçüm** (Lighthouse light + axe her iki tema, mobil+masaüstü) ile kesin başarısız-denetim listesini sabitle. Milestone #1 (ölç+doğrula) zaten bunu istiyor. Fix task'ları teyitli envanteri hedefler.
+
+### Kontrast Envanteri (current token'lardan hesaplanan WCAG oranları)
+
+A11Y1 acceptance = `color-contrast` denetimi **0 başarısız**; bu, faz tablosundaki 2 örnekten (adım no, CTA) **daha geniş** ama tamamı **ana sayfa** (kapsam-içi). Tam liste:
+
+| Öğe | Dosya | fg/bg (current) | Oran | Eşik | Durum |
+|-----|-------|-----------------|------|------|-------|
+| Adım no `text-green/30` (text-5xl) | `HowItWorks.tsx:84` | green#1f7a3d@30% / canvas | 1.51 | 3.0 (large) | ❌ |
+| Hero istatistik etiketi `<dt> text-ink-faint` | `Hero.tsx:103,131` | ink-faint#8b8d83 / canvas | 3.11 | 4.5 | ❌ |
+| Sektör notu `p.text-xs text-ink-faint` | `SectorSolutions.tsx:153` | ink-faint / canvas-deep | 2.87 | 4.5 | ❌ |
+| Footer dil etiketi/değeri `text-canvas/40` | `Footer.tsx:97,99` | canvas@40% / ink | 3.62 | 4.5 | ❌ |
+| Footer ayraç "·" `text-canvas/30` | `Footer.tsx:75,79` | canvas@30% / ink | 2.58 | 4.5 | ❌ (dekoratif) |
+| Crew OS panel metrik `text-canvas/45` | `Bunker.tsx:85` | canvas@45% / ink | 4.29 | 4.5 | ❌ |
+| `text-canvas/50` (Bunker durum) | `Bunker.tsx:58` | canvas@50% / ink | 4.99 | 4.5 | ✅ sınırda |
+| `text-canvas/60`, `/85` (footer/panel gövde) | çeşitli | — | 6.7–12.5 | 4.5 | ✅ |
+| `text-green` (eyebrow/label, solid) | çeşitli | green / canvas | 4.96 | 4.5 | ✅ |
+| Dark `text-ink-faint` #7d8073 | dark tema | / dark canvas-deep | 4.17 | 4.5 | ❌ (dark) |
+
+> `text-green` (solid) zaten geçer (4.96) — **hue sorun değil, opaklık/soluk-token sorunudur.** discuss-phase "bright #8af28a → koyu yeşil varyant" varsayımı stale baseline'a dayanıyordu; kod zaten `#1f7a3d` kullanıyor. (Kullanıcıya getirildi, mekanizma revize edildi → aşağıdaki kararlar.)
 
 ### Değerlendirilen Yaklaşımlar
-- [Yaklaşım 1]: [Açıklama, artılar, eksiler]
-- **Seçilen:** [Hangisi ve neden]
+
+**A11Y1-a · Adım numaraları (`text-green/30`)**
+- Opaklık artırma: faint "hayalet" görünüm korunarak 3:1'e **çıkamaz** (matematik: %70'te bile 2.24–2.89; çünkü solid green cream'de 4.96 ve eğri %100'e yakında dik). Reddedildi.
+- Solid/koyu yeşil: geçer (4.96) ama faint estetiği prominent'e çevirir (craft regresyonu).
+- **Seçilen → aria-hidden (dekoratif işaretle):** numaralara `aria-hidden="true"` (+ `<h3>` başlıkları zaten adımı taşır, DOM sırası korunur). Faint görünüm **birebir** korunur, hem light hem dark'ta kontrast denetiminden çıkar (renk değişmez). Craft üst eksen (ILKELER) → sıfır görsel değişim ile a11y. *(Kullanıcı kararı 2026-06-29.)*
+
+**A11Y1-b · Soluk gri etiketler (`text-ink-faint`)**
+- Öğe-bazlı swap (`text-ink-soft`): cerrahi ama iki muted gri → tutarsızlık + bakım maliyeti (QUALITY §5). Reddedildi.
+- **Seçilen → token koyulaştırma:** `--color-ink-faint`'i light `#8b8d83`→**`#67695f`** (canvas 5.16 / canvas-deep 4.76 — daha zor olan canvas-deep'i de geçer), dark `#7d8073`→**`#8a8c80`** (canvas 5.38 / canvas-deep 4.92). Tek kaynak, tüm sayfalara tutarlı yayılır, token-sistemiyle uyumlu (QUALITY §5, ILKELER kalıcılık). *(Kullanıcı kararı 2026-06-29.)*
+
+**A11Y1-c · Cream-on-ink opaklıklar (Footer/Crew OS panel)**
+- Gerçek metin (`canvas/40` dil etiketi, `canvas/45` metrik): opaklığı **≥%60'a** çıkar (canvas/60 = 6.71 ✅; küçük metin güvenli eşik). Görünür ama hafifçe daha okunur.
+- Dekoratif ayraç "·" (`canvas/30`): saf görsel ayraç → `aria-hidden="true"` (denetimden çıkar, görünüm korunur) **veya** opaklık bump. aria-hidden tercih (anlam taşımıyor).
+
+**A11Y2 · Hero `<dl>` markup**
+- Geçerli `<dl>`: `<div>` grupla + dt-sonra-dd + link içeride → karmaşık, "istatistik=tanım" niyeti tartışmalı.
+- **Seçilen → dl/dt/dd kaldır:** öğeler etiketli **linkler** (Alpfit/Canlı ürün, Crew OS/Platform), tanım listesi değil. `<dl>`→`<div>`(veya `<ul>` link listesi), `<dt>/<dd>`→`<span>`. `definition-list` + `dlitem` denetimleri **tamamen** kapanır, görünüm birebir (aynı flex/spacing class'ları). *(Kullanıcı kararı 2026-06-29.)*
+
+**A11Y3 · Dil-switcher `label-content-name-mismatch`**
+- Sorun: trigger button görünür metni = locale kodu (`{locale}` → "TR"), `aria-label="Language / Dil"` (hardcoded, i18n değil). WCAG 2.5.3 (Label in Name): erişilebilir ad görünür metni **içermeli**; "Language / Dil" "TR" içermiyor → 2 öğe (Nav + Footer; ana sayfada 2 mount; PageHeader 3.).
+- **Seçilen → kod-only, locale kodunu ada kat:** `aria-label={`${LABELS[locale]} (${locale.toUpperCase()})`}` → örn. "Türkçe (TR)" görünür "TR"yi içerir ✅, anlamlı kalır. `LABELS` zaten component-içi sabit (i18n messages değil) → **yeni i18n anahtarı YOK → 5-dil parite kuralı tetiklenmez.** Paylaşılan component → Nav+Footer+PageHeader (alt sayfalar dahil) tek seferde düzelir (kapsam-içi bonus). Alternatif (label'ı i18n'leştir) anahtar×5 getirir, parite yüzeyi açar — gereksiz; reddedildi.
 
 ### Kullanılacak Araçlar/Kütüphaneler
-- [Araç 1]: [Versiyon, ne için]
+
+- **Yeni runtime bağımlılığı YOK** — tüm fixler CSS renk/token + markup/aria; `package.json` değişmez (Dokunulmazlar).
+- **Lighthouse** (npx cache 13.3.0, `docs/perf/README.md` kanonik yöntem) — perf/a11y skoru, yerel prod build (`next build && next start`), light mode gate.
+- **axe** — denetim detayı için, her iki tema. Playwright MCP `browser_evaluate` ile axe-core (CDN) enjekte **veya** `npx @axe-core/cli` (npx, package.json'a eklenmez — lighthouse precedent'i). Kesin araç plan-phase'de seçilir.
+- Tailwind v4 `sr-only` / `aria-hidden` (yerleşik) — dekoratif işaretleme için.
 
 ### Dikkat Edilecekler
-- [Tuzak/Risk 1]: [Nasıl kaçınılacak]
+
+- **Perf/CLS regresyon yasağı (korunan taban):** Fixler renk + markup-swap, layout/asset/JS değil → CLS=0, masaüstü perf 100/LCP 0.69s, mobil ~87 **düşmemeli**. dl→div swap birebir aynı kutu (class/spacing korunur). Re-ölçümde teyit (TD3 yöntemi).
+- **i18n parite:** Seçilen A11Y3 fix kod-only (LABELS) → yeni anahtar yok, parite tetiklenmez. Plan i18n'leştirmeye kayarsa: anahtar EKLEME = 5 dil (tr/en/ar/de/es) eşzamanlı (eksik anahtar = runtime; MEMORY Süreç Disiplinleri). Bu fazda **kaçınılır**.
+- **RTL (AR):** dl→markup ve aria değişimi RTL'i bozmamalı; Hero stats flex+logical gap korunur, `aria-label` AR'de de locale-özel (`LABELS["ar"]` + "(AR)"). AR `dir=rtl` + 0 MISSING_MESSAGE teyit (Faz 3 deseni).
+- **Token koyulaştırma craft taraması:** `--color-ink-faint` daha koyu → "faint" hiyerarşisi tüm sayfalarda (BulletinSubscribe/CaseStudies/Forum/Chatbot da kullanıyor) gözle kontrol; muted kalmalı, prominent olmamalı.
+- **Lighthouse light vs gerçek a11y:** Gate light; token koyulaştırma her iki temayı da kapsar; dark axe ile elle teyit.
+- **Ölçüm host-yükü + fresh-prod-serve:** `/proc/loadavg` düşük (≤~6), çoklu koşu median; listening-PID = fresh process (stray `next-server` yanlış-negatifine dikkat) — Faz 3 kanonik fresh-prod-serve disiplini (MEMORY Süreç Disiplinleri).
+- **aria-hidden kapsamı:** Adım no aria-hidden → adım sırası `<h3>` başlık + DOM sırasıyla SR'a iletiliyor (numara salt görsel pekiştirme); tek a11y göstergesi değil.
 
 ### Teknik Kararlar
-- [Karar 1]: [Gerekçe]
+
+- **K1 — Adım numaraları `aria-hidden`** (renk/opaklık değişmez, faint imza korunur). Gerekçe: opaklık 3:1'e çıkamaz; solid craft'ı bozar; numara dekoratif-pekiştirme.
+- **K2 — `--color-ink-faint` token koyulaştırma** (light `#67695f`, dark `#8a8c80`). Gerekçe: tek-kaynak tutarlılık (QUALITY §5), canvas-deep dahil 4.5'i geçer; ILKELER kalıcılık.
+- **K3 — Hero stats `<dl>` → semantik link markup** (dt/dd kaldır). Gerekçe: doğru semantik (link, tanım değil); iki denetim birden kapanır; görünüm birebir.
+- **K4 — Dil-switcher `aria-label`'a locale kodu** (kod-only, LABELS). Gerekçe: WCAG 2.5.3 uyumu, yeni i18n anahtarı yok (parite yüzeyi açılmaz), paylaşılan component tüm yüzeyleri düzeltir.
+- **K5 — Cream-on-ink opaklık:** gerçek metin → ≥%60; dekoratif ayraç → `aria-hidden`.
+- **K6 — Task 1 = otoriter re-ölçüm:** stale baseline → current build'de Lighthouse(light)+axe(her iki tema) ile kesin başarısız-denetim listesi sabitlenir; sonra fixler; sonra a11y=100 doğrulanır (`docs/perf/` tabanına yeni koşu).
+
+### Precondition Kaynak İşaretleri (research kaydeder, verify-plan doğrular)
+
+- `--color-ink-faint` (light L11 / dark L36), `--color-green` (L12) → **repoda-tanımlı**, site: `src/app/globals.css`
+- Step span → `src/components/HowItWorks.tsx:84` · Hero `<dl>` → `Hero.tsx:86-136` · aria → `LanguageSwitcher.tsx:63` · Footer opaklıklar → `Footer.tsx:75,79,97,99` · Bunker metrik → `Bunker.tsx:85` → tümü **repoda-tanımlı**
+- Kanonik ölçüm yöntemi + a11y kırılımı → `docs/perf/README.md` (**repoda-tanımlı**)
+- **Yeni tanımlayıcı yok, dış sistem yok, secret yok.**
 
 ---
 
@@ -146,4 +217,4 @@
 ---
 
 **Oluşturulma:** 2026-06-29
-**Son Güncelleme:** 2026-06-29 — discuss-phase 4: kapsam tartışması tamamlandı (Faz 4 = a11y; marka yeşili imza korunur, bağlam-özel düzeltme; v0.2 sırası a11y→test→perf→Umami).
+**Son Güncelleme:** 2026-06-29 — research-phase 4: araştırma bulguları yazıldı. Kontrast sorunu hue değil opaklık/soluk-token çıktı (baseline stale); kararlar: adım no aria-hidden (K1), ink-faint token koyulaştırma (K2), hero dl kaldır (K3), dil-switcher aria locale-kod (K4), Task 1 = re-ölçüm (K6).

@@ -1,6 +1,6 @@
 # DURUM — Proje Dashboard
 
-**Son Güncelleme:** 2026-06-29 — discuss-phase 4: v0.2 ilk içerik fazı = Faz 4 (a11y 89→100) girildi. Kapsam: A11Y1 renk kontrastı (marka yeşili imza korunur, bağlam-özel) + A11Y2 hero `<dl>` markup + A11Y3 dil-switcher aria; ana sayfa-birincil, perf/CLS regresyonsuz. v0.2 sırası a11y→test→perf→Umami. Aktif Faz 4, Adım research.
+**Son Güncelleme:** 2026-06-29 — research-phase 4: a11y araştırma bulguları yazıldı. Kontrast sorunu hue değil opaklık/soluk-token (baseline stale); kararlar K1-K6 (adım no aria-hidden, ink-faint token koyulaştır, hero dl kaldır, dil-switcher aria locale-kod, cream-on-ink opaklık, Task 1=re-ölçüm). Aktif Faz 4, Adım plan.
 
 <!-- KURAL: Bu satır her oturum sonunda ÜZERİNE YAZILIR — tek satır, tek cümle. "Önceki:" / "Eski:" prefix ile kümülatif yığma YASAK; HTML comment'e sarma da yasak (CLAUDE.md → Doküman Disiplini). Tarih + kısa özet yeterli; detay için git log + ilgili PHASE/TASK dokümanları. -->
 
@@ -8,9 +8,9 @@
 
 ## Aktif Faz
 
-**Faz:** 4 — v0.2 erişilebilirlik (a11y 89→100), ana sayfa. 🔄 Devam ediyor (kapsam tartışması tamam).
-**Adım:** research — kapsam tartışması ✅ → sıradaki: `/devflow:research-phase 4` (yeni oturum)
-**İlerleme:** Faz 4 girildi (discuss-phase 4); 3 a11y iş birimi (A11Y1 kontrast / A11Y2 hero `<dl>` / A11Y3 dil-switcher aria) MODULE-MAP'e atandı. Henüz task yok (plan-phase'de).
+**Faz:** 4 — v0.2 erişilebilirlik (a11y 89→100), ana sayfa. 🔄 Devam ediyor (araştırma tamam).
+**Adım:** plan — araştırma ✅ → sıradaki: `/devflow:plan-phase 4` (yeni oturum)
+**İlerleme:** Araştırma bulguları yazıldı (research-phase 4). Kontrast = opaklık/soluk-token (hue değil; baseline stale → Task 1 re-ölçüm). Kararlar K1-K6 + tam kontrast envanteri PHASE-4'te. Henüz task yok (plan-phase'de).
 **Son Faz Dokümanı:** `phases/PHASE-4.md` (🔄 aktif)
 
 ---
@@ -28,9 +28,9 @@
 
 ## Aktif Task
 
-**Task:** Yok — Faz 4 girildi ama task'lar henüz yazılmadı (research → plan-phase'de).
-**Durum:** Aktif task yok; sıradaki adım Faz 4 research
-**İlerleme:** Adım research → `/devflow:research-phase 4` (yeni oturum)
+**Task:** Yok — Faz 4 araştırması bitti ama task'lar henüz yazılmadı (plan-phase'de).
+**Durum:** Aktif task yok; sıradaki adım Faz 4 plan
+**İlerleme:** Adım plan → `/devflow:plan-phase 4` (yeni oturum)
 
 ---
 
@@ -68,7 +68,7 @@ _(Faz 4 task'ı henüz yok — plan-phase'de oluşturulacak.)_
 
 ## Hızlı Erişim
 
-**Aktif Task:** Yok — Faz 4 girildi; sıradaki: `/devflow:research-phase 4`
+**Aktif Task:** Yok — Faz 4 araştırması bitti; sıradaki: `/devflow:plan-phase 4`
 **Aktif Faz:** 4 — v0.2 erişilebilirlik (a11y 89→100) 🔄; Aktif Versiyon v0.2, Versiyon Sonu Durumu: içerik_fazları
 **Task Sistemi:** `tasks/TASKS-README.md`
 **PRD (karar kaynağı):** `PRD/VIZYON.md` · `PRD/VERSIONS.md` · `PRD/features/`
@@ -76,4 +76,4 @@ _(Faz 4 task'ı henüz yok — plan-phase'de oluşturulacak.)_
 
 ---
 
-**Son Güncelleme:** 2026-06-29 — discuss-phase 4: v0.2 ilk içerik fazı = Faz 4 (a11y 89→100) girildi. Kapsam: A11Y1 renk kontrastı (marka yeşili imza korunur, bağlam-özel) + A11Y2 hero `<dl>` markup + A11Y3 dil-switcher aria; ana sayfa-birincil, perf/CLS regresyonsuz. v0.2 sırası a11y→test→perf→Umami. Aktif Faz 4, Adım research.
+**Son Güncelleme:** 2026-06-29 — research-phase 4: a11y araştırma bulguları yazıldı. Kontrast sorunu hue değil opaklık/soluk-token (baseline stale); kararlar K1-K6 (adım no aria-hidden, ink-faint token koyulaştır, hero dl kaldır, dil-switcher aria locale-kod, cream-on-ink opaklık, Task 1=re-ölçüm). Aktif Faz 4, Adım plan.
