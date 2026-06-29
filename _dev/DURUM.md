@@ -1,6 +1,6 @@
 # DURUM — Proje Dashboard
 
-**Son Güncelleme:** 2026-06-29 — run-task TASK-3.09 ✅ (S8 adversarial/holistik, fresh-prod PID 30537): JS-off SSG TR+AR tüm içerik/link okunur (canvas=0); tema/dil toggle race tutarlı (son-kazanır); scroll/anchor son hedef tam iner + 30/30 reveal 0-takılı + 0 konsol hatası; kapsam-içi bug yok (aynı-tick anchor burst=record-not-fix). Faz 3: 9/9 ✅ → Adım: verify (verify-phase 3).
+**Son Güncelleme:** 2026-06-29 — verify-phase 3 (UAT) ✅ tamamlandı: **10/10 senaryo geçti**, kapsam-içi yeni bug yok → düzeltme task'ı gerekmez. Otomatik kontroller: CI/CD yok; security-review bulgu yok (faz 3 kaynak değiştirmedi). Toplam Anthropic API çağrısı = 0. Faz 3 Adım: review → `/devflow:review-phase 3`.
 
 <!-- KURAL: Bu satır her oturum sonunda ÜZERİNE YAZILIR — tek satır, tek cümle. "Önceki:" / "Eski:" prefix ile kümülatif yığma YASAK; HTML comment'e sarma da yasak (CLAUDE.md → Doküman Disiplini). Tarih + kısa özet yeterli; detay için git log + ilgili PHASE/TASK dokümanları. -->
 
@@ -9,9 +9,9 @@
 ## Aktif Faz
 
 **Faz:** 3 — v0.1 Versiyon-Sonu Senaryo Testi
-**Milestone:** S1–S8 senaryo kataloğu otonom koşuldu + bulgular kaydedildi + triyaj edildi; TR yolculuğu bütünsel-tutarlı + non-TR yüzeyleri tutarlı (parite/render/RTL) teyit edildi ("ölç+kaydet+karar ver" — geçiş peşinen varsayılmaz)
-**Adım:** verify → `/devflow:verify-phase 3` (yeni oturum)
-**İlerleme:** Kapsam tartışması ✅ + Araştırma ✅ + Plan ✅ + Plan review ✅; **task çalıştırma TAMAM (9/9 ✅** → 3.01 kanonik ortam, 3.02 S1 giriş/yönlendirme, 3.03 S5 taksonomi & dürüstlük, 3.04 S6 5-dil bütünlük, 3.05 S2 tam TR yolculuğu, 3.06 S3 degradasyon, 3.07 S4 kontroller & kalıcılık, 3.08 S7 chatbot 0-token, 3.09 S8 adversarial/holistik) → sıradaki: UAT (verify-phase)
+**Milestone:** S1–S8 senaryo kataloğu otonom koşuldu + bulgular kaydedildi + triyaj edildi; TR yolculuğu bütünsel-tutarlı + non-TR yüzeyleri tutarlı (parite/render/RTL) teyit edildi ("ölç+kaydet+karar ver" — geçiş peşinen varsayılmaz) → **milestone karşılandı (UAT 10/10 ✅)**
+**Adım:** review → `/devflow:review-phase 3` (yeni oturum)
+**İlerleme:** Kapsam tartışması ✅ + Araştırma ✅ + Plan ✅ + Plan review ✅ + task çalıştırma 9/9 ✅ + **UAT (verify-phase) ✅ — 10/10 senaryo geçti, kapsam-içi bug yok, düzeltme task'ı yok, security-review temiz** → sıradaki: faz review (review-phase)
 **Faz Dokümanı:** `phases/PHASE-3.md`
 
 ---
@@ -29,9 +29,9 @@
 
 ## Aktif Task
 
-**Task:** TASK-3.09 — S8 adversarial/holistik: JS-off SSG okunabilirlik + hızlı toggle/scroll race — ✅ Tamamlandı (fazın son senaryo task'ı)
-**Durum:** Faz 3'ün **9/9 senaryo task'ı tamam** → aktif task yok; sıradaki adım UAT
-**İlerleme:** Adım verify → `/devflow:verify-phase 3` (yeni oturum)
+**Task:** Yok — Faz 3 senaryo task'ları 9/9 ✅ + UAT (verify-phase) 10/10 ✅ tamamlandı. Düzeltme task'ı oluşmadı (kapsam-içi bug yok).
+**Durum:** Aktif task yok; sıradaki adım faz review
+**İlerleme:** Adım review → `/devflow:review-phase 3` (yeni oturum)
 
 ---
 
@@ -81,12 +81,12 @@
 
 ## Hızlı Erişim
 
-**Aktif Task:** Yok — Faz 3 senaryo task'ları 9/9 ✅ (Adım: verify → `/devflow:verify-phase 3`)
-**Aktif Faz:** 3 — v0.1 Versiyon-Sonu Senaryo Testi (9/9 task ✅; sıradaki adım UAT)
+**Aktif Task:** Yok — Faz 3: 9/9 task ✅ + UAT 10/10 ✅ (Adım: review → `/devflow:review-phase 3`)
+**Aktif Faz:** 3 — v0.1 Versiyon-Sonu Senaryo Testi (9/9 task ✅ + UAT ✅; sıradaki adım faz review)
 **Task Sistemi:** `tasks/TASKS-README.md`
 **PRD (karar kaynağı):** `PRD/VIZYON.md` · `PRD/VERSIONS.md` · `PRD/features/`
 **Revize Backlog (bilinen sorunlar):** `docs/REVIZE-BACKLOG.md`
 
 ---
 
-**Son Güncelleme:** 2026-06-29 — run-task TASK-3.09 ✅ (S8 adversarial/holistik, fresh-prod PID 30537): JS-off SSG TR+AR tüm içerik/link okunur (canvas=0); tema/dil toggle race tutarlı (son-kazanır); scroll/anchor son hedef tam iner + 30/30 reveal 0-takılı + 0 konsol hatası; kapsam-içi bug yok (aynı-tick anchor burst=record-not-fix). Faz 3: 9/9 ✅ → Adım: verify (verify-phase 3).
+**Son Güncelleme:** 2026-06-29 — verify-phase 3 (UAT) ✅ tamamlandı: **10/10 senaryo geçti**, kapsam-içi yeni bug yok → düzeltme task'ı gerekmez. Otomatik kontroller: CI/CD yok; security-review bulgu yok (faz 3 kaynak değiştirmedi). Toplam Anthropic API çağrısı = 0. Faz 3 Adım: review → `/devflow:review-phase 3`.
