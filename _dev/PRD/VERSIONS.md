@@ -2,7 +2,7 @@
 
 **Amaç:** Hangi feature'ın hangi versiyona dahil olduğunu tutan tek kaynak. (MODULE-MAP'in Versiyon sütunu buradan beslenir.)
 
-> **Bağlam:** Mevcut site = "v3 (mevcut canlı)". Güçlü revize, **v0.1**'den başlayan kümülatif versiyonlarla yürür. Aşağıdaki feature'lar revizenin *yeni* iş birimleridir; mevcut çalışan feature'lar `_dev/MODULE-MAP.md`'de listelenir.
+> **Bağlam:** Mevcut site = "v3 (mevcut canlı)". Güçlü revize, **v0.1**'den başlayan kümülatif versiyonlarla yürür. **v0.1 tamamlandı** (3 faz: içerik + teknik borç + senaryo testi; prd-review 2026-06-29 — değişiklik yok). Sıradaki aktif versiyon **v0.2** (aşağıda). Aşağıdaki feature'lar revizenin *yeni* iş birimleridir; mevcut çalışan feature'lar `_dev/MODULE-MAP.md`'de listelenir.
 
 ---
 
@@ -21,15 +21,24 @@
 
 ---
 
-## Sıradaki Versiyonlar (aday — henüz planlanmadı)
+## Sıradaki Versiyon: v0.2 — a11y & Performans + teknik temel
 
-> Kesin kapsam ve sıra prd-refine / discuss-phase'de netleşir. Numara/kesin versiyon atanmaz.
+> Öncelik prd-review (2026-06-29) ile sabitlendi. Gerekçe: v0.1 versiyon-sonu ölçümü (Faz 2 / TD3) brief-bütçe açığını keşfetti — bu en güçlü, ortam-bağımsız açık kalem. Kesin faz kapsamı/sırası discuss-phase'de netleşir.
 
-- **Görsel & etkileşim cilası:** logo hizalama, CTA kartı affordance + scroll göstergesi ölçeklemesi, Living Flow yeşil nabız kapsamı kararı (REVIZE-BACKLOG A1, A3, B1). *(A3 doğrulandı: hero stat kartları zaten `<Link>` — sorun görsel affordance, kopya değil. Crew OS `/crew-os` URL kararı da bu/SEO versiyonunda.)*
-- **Teknik & performans:** test altyapısı kurulumu, perf bütçesi doğrulaması, Umami analytics entegrasyonu (REVIZE-BACKLOG D1, D2, E1).
-- **Çeviri senkronu:** v0.1 TR içeriği durulunca EN/AR/DE/ES güncellemesi (dil stratejisi gereği versiyon-sınırı işi).
-- **Bekleyen veri/entegrasyon:** sosyal medya gerçek linkleri, Weekend demo ("no 36"), gerçek metrikler/vaka verileri, chatbot → "book a call" akışı (REVIZE-BACKLOG C1–C7).
+**v0.2 çekirdeği:**
+- **a11y 89 → ≥100** — *ortam-bağımsız, en net sinyal* (brief hedefi ≥100). 3 denetim: marka-yeşili `#8af28a` kontrastı + geçersiz hero `<dl>`/`dlitem` markup + dil-switcher aria-mismatch (DECISIONS 2026-06-28, `docs/perf/README.md`).
+- **mobil perf 87 / LCP 3.1s → brief bütçesi** (≥95 / <2.5s) — ana kaynak Living Flow WebGL (craft-duyarlı, üst eksen → aceleyle dokunulmaz) (REVIZE-BACKLOG D2).
+- **Test altyapısı (D1)** — kümülatif test ilkesi (ILKELER); "test = build + otonom UAT" geçici durumunu kapatan teknik temel.
+- **Umami analytics (E1)** — `docs/UMAMI-ANALYTICS.md` spec'i; **canlıda gerçekten saydığı gözle doğrulanır** (memory Süreç Disiplinleri).
+
+## Sonraki Aday Versiyonlar (henüz planlanmadı)
+
+> Numara/kesin versiyon atanmaz; sıra prd-refine / discuss-phase'de netleşir.
+
+- **Görsel & etkileşim cilası:** logo hizalama (A1), CTA kartı affordance + scroll göstergesi ölçeklemesi (A3 — kartlar zaten `<Link>`, sorun görsel), Living Flow yeşil nabız kapsamı (B1); **SEO-bitişik:** `/bunker-os`→public `/crew-os` + redirect (M6) ve çıplak `/forum`→`/bulten`→404 (index'siz statik bülten).
+- **Çeviri senkronu:** alt sayfa EN/AR/DE/ES güncellemesi (v0.1 ana sayfa değişen kalemleri zaten senkron; versiyon-sınırı işi).
+- **Bekleyen veri/entegrasyon:** sosyal medya gerçek linkleri (C1), Weekend demo ("no 36" / C2), gerçek metrikler/vaka verileri (C4), chatbot → "book a call" akışı (C7), alt sayfa derin denetimi.
 
 ---
 
-**Son Güncelleme:** 2026-06-28 — prd-refine: v0.1 cerrahi/ana-sayfa odaklı reframe; bulgu önceliği eklendi; A3 görsel olarak doğrulandı.
+**Son Güncelleme:** 2026-06-29 — prd-review: v0.1 tamamlandı (değişiklik yok); sıradaki versiyon v0.2 = a11y & Performans + teknik temel olarak sabitlendi (brief-bütçe açığı en güçlü açık kalem); kalan adaylar (görsel cila, çeviri, bekleyen veri) sonraki aday olarak yeniden sıralandı.

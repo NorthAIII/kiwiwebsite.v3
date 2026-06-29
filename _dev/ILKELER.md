@@ -52,7 +52,7 @@ Kickoff/PRD sırasında doldurulur. Boş bir alan "henüz konuşulmadı" demekti
 Çatışmada öne geçen sıralama (eksen tanımları → QUALITY.md):
 
 1. **Marka & Craft (imza)** — *tek ve net üst eksen.* Craft başka herhangi bir eksenle çatışınca craft kazanır. (QUALITY §1)
-2. **Performans & Erişilebilirlik** — üst eksen değil ama **korunması gereken taban**: brief hedefleri (Lighthouse ≥95 perf / ≥100 a11y / LCP < 2.5s) her revize sonrası korunur — regresyona izin yok. (QUALITY §2, §3)
+2. **Performans & Erişilebilirlik** — üst eksen değil; iki katmanlı tutulur. **(a) Korunan taban** = v0.1'de ölçülen mevcut değerler (`docs/perf/`, DECISIONS 2026-06-28: masaüstü perf 100 / LCP 0.69s / CLS 0; mobil perf 87 / LCP 3.1s; a11y 89) — her revize sonrası bu değerlerin **altına düşülmez** (regresyon yasağı). **(b) Brief hedefi** = ≥95 perf / ≥100 a11y / LCP < 2.5s / near-zero CLS — henüz **ulaşılmadı** (mevcut taban altında); bilinçli kabul, adanmış a11y/perf işiyle kapatılacak (v0.2 önceliği). Hedef düşmez; ama "korunan taban = brief hedefi" örtük varsayımı v0.1 ölçümüyle yanlış çıktı — ikisi ayrı tutulur. (QUALITY §2, §3)
 3. **Yerelleştirme & RTL** — kalite ekseni geçerli ama **sürekli senkron değil**: TR tek kaynak, çeviri versiyon-sınırında yapılır (bkz. `docs/DECISIONS.md` — dil stratejisi). (QUALITY §4)
 
 ### Pazarlık Konusu Olmayanlar
@@ -66,4 +66,4 @@ Kickoff/PRD sırasında doldurulur. Boş bir alan "henüz konuşulmadı" demekti
 
 ---
 
-**Son Güncelleme:** 2026-06-28 — prd-refine: "● online/canlı" yasağına niyet-bazlı kapsam notu eklendi (sahte presence yasak; dürüst canlı ürün göstergesi serbest).
+**Son Güncelleme:** 2026-06-29 — prd-review (v0.1): Öncelikli Eksenler #2'ye perf/a11y "korunan taban (mevcut ölçülen) ≠ brief hedefi (henüz ulaşılmadı)" nüansı eklendi; hedef düşmedi, mevcut durumun altında olduğu bilinçli kaydedildi (v0.2 adanmış işi).

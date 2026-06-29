@@ -6,37 +6,23 @@
 
 ## Mevcut Durum Analizi (sonraki oturum için bağlam)
 
-- Site **canlı ve mimari olarak sağlam**; tespit edilen sorunlar mimari değil **içerik + cila** kalemi. Revize v3'te yerinde + `revize/...` branch'le yürür (`main` canlı kalır).
-- **prd-refine reframe (2026-06-28):** Canlı TR kopya baştan okundu (kodla doğrulandı). REVIZE-BACKLOG A2 *"genel kopya jenerik/zayıf"* varsayımı **tutmadı** — kopya büyük ölçüde güçlü. v0.1 kopya işi **cerrahi/nokta-atışı + ana sayfa ses taraması** (baştan-sona rewrite değil). Bölüm-bölüm bulgular F1–F6 → `features/kopya-revizesi.md`.
-- Revizenin ağırlık merkezi M2 (Sayfalar & İçerik). Görsel cila + teknik ikincil, sonraki versiyonlara aday.
+- **v0.1 tamamlandı** (3 faz: içerik + teknik borç + senaryo testi). prd-review (2026-06-29) yapıldı: **PRD'de değişiklik yok** — bilinçli karar. Premise zaten v0.1 başında (prd-refine 2026-06-28) deneyimle düzeltilmişti (kopya zayıf değil → cerrahi); üç faz bu reframe'i doğruladı, bozmadı → PRD sağlam.
+- **prd-review çıktıları (PRD değil ama yön/öncelik):** (1) ILKELER #2'ye perf/a11y "korunan taban ≠ brief hedefi" nüansı eklendi; (2) sıradaki versiyon **v0.2 = a11y & Performans + teknik temel** olarak sabitlendi (VERSIONS.md).
+- Site **canlı ve mimari olarak sağlam**; revize v3'te yerinde + `revize/...` branch'le yürür (`main` canlı kalır).
+- **v0.1'in en önemli keşfi:** brief perf/a11y hedefleri mevcut sitede *zaten* karşılanmıyor (mobil perf 87 / LCP 3.1s; a11y 89 — regresyon değil, keşfedilen mevcut durum). → v0.2'nin gerekçesi.
 
 ---
 
-## Açık Sorular
+## Açık Sorular (görsel/SEO versiyonu — v0.2 değil)
 
-- **Crew OS URL'i:** Sayfa `/bunker-os` (i18n namespace `bunker`) iç adı URL'de sızdırıyor. Public URL `/crew-os` olmalı mı? SEO + kalıcı redirect maliyeti var (M6). → **v0.1 dışı; görsel/SEO versiyonunda karara bağlanır.**
-- **Living Flow yeşil nabız kapsamı (REVIZE-BACKLOG B1):** Nabızlar sayfanın daha aşağısına taşınsın mı? Göz yorgunluğu/okunabilirlik riski (yoğunluk/opaklık, scrim, reduced-motion). → **Görsel versiyon konusu.**
+- **Crew OS URL'i:** Sayfa `/bunker-os` (i18n namespace `bunker`) iç adı URL'de sızdırıyor. Public URL `/crew-os` olmalı mı? SEO + kalıcı redirect maliyeti var (M6). → **görsel/SEO versiyonunda karara bağlanır.** (Çıplak `/forum`→`/bulten`→404 de aynı SEO-bitişik kova.)
+- **Living Flow yeşil nabız kapsamı (REVIZE-BACKLOG B1):** Nabızlar sayfanın daha aşağısına taşınsın mı? Göz yorgunluğu/okunabilirlik riski (yoğunluk/opaklık, scrim, reduced-motion). → **görsel versiyon konusu.**
 
 ## Keşfedilmemiş Alanlar
 
-- **Sektörlerin gerçek otomasyon içerikleri:** 5 sektör mevcut kopyada makul/özgün; ama her sektörün **gerçek müşteri otomasyon örneği** kullanıcıdan alınmalı (içerik girdisi — execution-zamanı, F5 dürüstlük konvansiyonuna tabi).
-- **Chatbot'un rolü revizede:** Mesaj/CTA stratejisinde chatbot nereye oturuyor? "Book a call" akışına bağlama (C7). → **v0.1 dışı** (chat kopyası zaten güçlü); sonraki versiyon adayı.
-
-## Çözülenler (bu oturum — referans, sonraki oturumda silinebilir)
-
-- ✅ "Nasıl çalışır" 4 adım adları → **Analiz · Çözüm · Otomasyon · Raporlama** (`features/nasil-calisir-4-adim.md`).
-- ✅ Bölüm-bölüm "kopya neden zayıf" → F1–F6 tablosu, premise reframe (`features/kopya-revizesi.md`).
-- ✅ Sektörler "sığ" reframe → asıl sorun gym paneli desen-dışı; 5 sektör güçlü (`features/sektorler-derinlestirme.md`).
-- ✅ Crew OS bölümü → ana metin doğru (A6 çözülmüş); panel akışları bırakıldı (`features/crew-os-bolumu.md`).
-- ✅ "● canlı" nokta yasağı gerilimi → niyet-bazlı çözüldü (ILKELER + VIZYON §4 + DECISIONS 2026-06-28).
-- ✅ Credibility & Forum kapsamı → güçlü; v0.1'de derin rewrite yok, sadece F5 taraması.
-
-## Doküman Uyumsuzlukları (kickoff'ta hizalanacak)
-
-> Taksonomi netleştikten sonra eskiyen ifadeler — kickoff-docs/verify'da düzeltilecek (PRD tespit eder, kickoff hizalar):
-- `MASTER_PROMPT_v2.md` §1: "Bunker OS" → public ad Crew OS olmalı (iç adı Bunker OS).
-- `_dev/OVERVIEW.md` & `_dev/MODULE-MAP.md`: "Bunker OS / Crew OS" karışık ifadeler ve `bunker-os` adlandırması taksonomiye göre güncellenmeli.
+- **Sektörlerin gerçek otomasyon içerikleri:** 5 sektör mevcut kopyada makul/özgün; ama her sektörün **gerçek müşteri otomasyon örneği** kullanıcıdan alınmalı (içerik girdisi — execution-zamanı, F5 dürüstlük konvansiyonuna tabi; REVIZE-BACKLOG C4).
+- **Chatbot'un rolü revizede:** Mesaj/CTA stratejisinde chatbot nereye oturuyor? "Book a call" akışına bağlama (C7). → **sonraki versiyon adayı** (chat kopyası zaten güçlü).
 
 ---
 
-**Son Güncelleme:** 2026-06-28 — prd-refine: bölüm-bölüm kopya analizi; premise reframe (kopya güçlü → cerrahi); F1–F6 + 4 feature güncellendi.
+**Son Güncelleme:** 2026-06-29 — prd-review (v0.1): PRD değişiklik yok kararı kaydedildi; ILKELER perf/a11y nüansı + v0.2 önceliği (a11y/perf+teknik) sabitlendi; mezun olan bölümler (v0.1 prd-refine "Çözülenler" + hizalanmış "Doküman Uyumsuzlukları") silindi.

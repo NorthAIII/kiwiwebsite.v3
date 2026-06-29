@@ -1,6 +1,6 @@
 # DURUM — Proje Dashboard
 
-**Son Güncelleme:** 2026-06-29 — review-phase 3 ✅: retrospektif + 8 kalite ekseni (L10n/RTL çekirdek ✅; a11y/perf ⚠️ ertelenmiş); kapsam-içi bug yok, kaynak değişmedi. v0.1 versiyon-sonu fazları (1,2,3) tamam → Versiyon Sonu Durumu prd_review_bekliyor. Sıradaki: zorunlu `/devflow:prd-review`.
+**Son Güncelleme:** 2026-06-29 — prd-review (v0.1): PRD değişiklik yok (bilinçli karar); ILKELER perf/a11y "korunan taban ≠ brief hedefi" nüansı + sıradaki versiyon v0.2 = a11y/perf+teknik temel sabitlendi. Aktif Versiyon v0.2, Versiyon Sonu Durumu içerik_fazları. Sıradaki: v0.2 `/devflow:discuss-phase`.
 
 <!-- KURAL: Bu satır her oturum sonunda ÜZERİNE YAZILIR — tek satır, tek cümle. "Önceki:" / "Eski:" prefix ile kümülatif yığma YASAK; HTML comment'e sarma da yasak (CLAUDE.md → Doküman Disiplini). Tarih + kısa özet yeterli; detay için git log + ilgili PHASE/TASK dokümanları. -->
 
@@ -8,18 +8,18 @@
 
 ## Aktif Faz
 
-**Faz:** Yok — v0.1 versiyon-sonu fazları (1 içerik · 2 teknik borç · 3 senaryo testi) tamamlandı; faz döngüsü dışına çıkıldı.
-**Adım:** prd-review (versiyon-sonu zorunlu) → `/devflow:prd-review` (yeni oturum)
-**İlerleme:** Faz 3 ✅ (S1–S8 + UAT 10/10 + review tamam; kapsam-içi bug yok, kaynak değişmedi) → sıradaki: v0.1 prd-review değerlendirmesi
-**Son Faz Dokümanı:** `phases/PHASE-3.md` (✅ tamamlandı)
+**Faz:** Yok — v0.1 tamamlandı (prd-review dahil). v0.2 ilk fazı henüz girilmedi (discuss-phase'de damgalanır).
+**Adım:** v0.1 prd-review ✅ → sıradaki: v0.2 discuss-phase (yeni oturum)
+**İlerleme:** v0.1 kapandı (3 faz + prd-review: PRD değişiklik yok); Aktif Versiyon v0.2'ye geçti → sıradaki ilk faz kapsam tartışması
+**Son Faz Dokümanı:** `phases/PHASE-3.md` (✅ v0.1 son fazı)
 
 ---
 
 ## Aktif Versiyon
 
-**Versiyon:** v0.1 — Ana sayfa TR içerik & ses revizesi (güçlü revizenin ilk versiyonu; baz: v3 canlı)
-**Hedef:** Nasıl Çalışır 4 adım (R1) + Sektörler gym paneli tek-otomasyona (R2) + dürüstlük taraması (R4/F5) + hero ikincil CTA (R4/F6) ana sayfada tamam; marka sesi tutarlı; TR tek kaynak (çeviri versiyon-sınırına ertelendi)
-**Versiyon Sonu Durumu:** prd_review_bekliyor
+**Versiyon:** v0.2 — a11y & Performans + teknik temel (v0.1 versiyon-sonu ölçümünün keşfettiği brief-bütçe açığını kapatma + teknik temel; prd-review 2026-06-29'da önceliklendirildi)
+**Hedef:** a11y 89→≥100 (marka-yeşili kontrast + hero `<dl>` + dil-switcher aria) + mobil perf 87/LCP 3.1s → brief bütçesi + test altyapısı (D1) + Umami (E1); kesin faz kapsamı discuss-phase'de
+**Versiyon Sonu Durumu:** içerik_fazları
 
 <!-- Versiyon geçişlerinde güncellenir. discuss-phase versiyon sonu tespitinde bu alanı okur. -->
 <!-- Değerler: içerik_fazları | teknik_borç | senaryo_testi | prd_review_bekliyor -->
@@ -28,9 +28,9 @@
 
 ## Aktif Task
 
-**Task:** Yok — Faz 3 tamamlandı (9/9 task ✅ + UAT 10/10 ✅ + review ✅). Faz döngüsü dışında.
-**Durum:** Aktif task yok; sıradaki adım versiyon-sonu zorunlu prd-review
-**İlerleme:** Adım prd-review → `/devflow:prd-review` (yeni oturum)
+**Task:** Yok — v0.1 tamam; v0.2 henüz planlanmadı (faz döngüsü dışında).
+**Durum:** Aktif task yok; sıradaki adım v0.2 discuss-phase
+**İlerleme:** Adım v0.2 discuss-phase → `/devflow:discuss-phase` (yeni oturum)
 
 ---
 
@@ -68,12 +68,12 @@ _(Aktif faz task'ı yok.)_
 
 ## Hızlı Erişim
 
-**Aktif Task:** Yok — Faz 3 tamam (9/9 ✅ + UAT 10/10 ✅ + review ✅); sıradaki: zorunlu `/devflow:prd-review`
-**Aktif Faz:** Yok — faz döngüsü dışında; v0.1 versiyon-sonu fazları (1,2,3) tamam, Versiyon Sonu Durumu: prd_review_bekliyor
+**Aktif Task:** Yok — v0.1 tamam (prd-review dahil); sıradaki: v0.2 `/devflow:discuss-phase`
+**Aktif Faz:** Yok — v0.2 ilk fazı henüz girilmedi; Aktif Versiyon v0.2, Versiyon Sonu Durumu: içerik_fazları
 **Task Sistemi:** `tasks/TASKS-README.md`
 **PRD (karar kaynağı):** `PRD/VIZYON.md` · `PRD/VERSIONS.md` · `PRD/features/`
 **Revize Backlog (bilinen sorunlar):** `docs/REVIZE-BACKLOG.md`
 
 ---
 
-**Son Güncelleme:** 2026-06-29 — review-phase 3 ✅: retrospektif + 8 kalite ekseni (L10n/RTL çekirdek ✅; a11y/perf ⚠️ ertelenmiş); kapsam-içi bug yok, kaynak değişmedi. v0.1 versiyon-sonu fazları (1,2,3) tamam → Versiyon Sonu Durumu prd_review_bekliyor. Sıradaki: zorunlu `/devflow:prd-review`.
+**Son Güncelleme:** 2026-06-29 — prd-review (v0.1): PRD değişiklik yok (bilinçli karar); ILKELER perf/a11y "korunan taban ≠ brief hedefi" nüansı + sıradaki versiyon v0.2 = a11y/perf+teknik temel sabitlendi. Aktif Versiyon v0.2, Versiyon Sonu Durumu içerik_fazları. Sıradaki: v0.2 `/devflow:discuss-phase`.
