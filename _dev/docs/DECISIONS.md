@@ -9,6 +9,20 @@
 
 <!-- Her yeni karar aşağıdaki formatta en üste eklenir (en yeni en üstte) -->
 
+### 2026-06-29 — Faz 4 a11y gate LIGHT değil **LIGHT + DARK** (re-ölçüm düzeltmesi)
+
+**Bağlam:** run-task TASK-4.01 otoriter re-ölçümü (Lighthouse 13.3.0 + axe-core 4.11.4, her iki tema, mobil+masaüstü), bir önceki kararın (aşağıdaki "kontrast düzeltme mekanizması") **"Lighthouse light-mode ölçer → gate LIGHT"** önkabulünü **yanlışladı**: kanonik `npx lighthouse --headless=new` koşusu siteyi **DARK** render ediyor (tema init `prefers-color-scheme: dark`'a düşüyor; v0.1 baseline'ı da dark'tı). a11y=89 her iki temada aynı (aynı 4 denetim) ama color-contrast'ta **başarısız öğeler temaya göre değişir**. Kritik: `bg-ink`/`text-canvas` panelleri (SectorSolutions, Bunker, Footer) dark'ta krem'e döndüğü için yeni dark-only fail'ler çıktı — **C2** gym-panel adım no `text-pulse` ×3 (`SectorSolutions.tsx:131`, 1.22), **C3** "Canlı ürünü gör" `text-pulse` (`:143`, 1.22), **C9** Bunker durum `text-canvas/50` (`Bunker.tsx:58`, 3.36) — hiçbiri eski K1-K5 kapsamında değildi. Sonuç: K1-K5 tek başına a11y=100'e ulaşamaz (kanonik dark koşuda text-pulse fail kalır).
+
+**Seçenekler (kullanıcıya sunuldu):** (1) **Light + Dark** (kapsamı genişlet). (2) Sadece light gate (ölçümü light'a zorla, dark fail'leri ertele — ILKELER light&dark'a aykırı). (3) Sadece kanonik dark gate (pratikte (1) ile aynı fix kümesi).
+
+**Karar (kullanıcı onayı 2026-06-29):** Seçenek 1 — **a11y=100 gate = Light + Dark.** Plan revizyonu: **C9 → TASK-4.04** (cream-on-ink ≥%60 kapsamına); **C2/C3 (panel pulse-yeşili) → yeni fix task**, mekanizma (aria-hidden / bağlam-özel renk / treatment) fix-task research'ünde netleşir (craft-hassas, imza nabız yeşili); **TASK-4.07 → çift-tema (light+dark)** doğrulama. K1/K2/K3/K4 (4.02/4.03/4.05/4.06) değişmeden geçerli; K2 token koyulaştırma research'ten daha çok ink-faint öğeyi kapsar (teyit).
+
+**Gerekçe:** ILKELER "renk kontrastı yeterli mi (light & dark)" + kanonik Lighthouse zaten dark → light-only gate hem ilkeye aykırı hem kanonik araçla <100 bırakır. Marka & Craft üst eksen: pulse-yeşili düzeltmesi imzayı koruyacak şekilde fix-task'ta tasarlanır. Ölçüm metodolojisi tuzağı kalıcılaştırıldı → `_dev/memory/a11y-olcum-tema-tuzagi.md`.
+
+**İlgili Task/Faz:** run-task TASK-4.01 (Faz 4 / v0.2 a11y); tam envanter `tasks/archive/TASK-4.01.md` + `phases/PHASE-4.md` "Re-ölçüm Teyidi".
+
+---
+
 ### 2026-06-29 — Faz 4 a11y kontrast düzeltme mekanizması (opaklık-değil-hue + token koyulaştırma)
 
 **Bağlam:** research-phase 4, ana sayfa a11y=100 hedefi. Kod gerçek-okuması + WCAG hesabı, 2026-06-28 baseline'ın (a11y 89) başarısız öğelerini **stale** gösterdi: baseline başarısız renkleri kaba/harmanlanmış hex (`#8af28a`, `#999992`) olarak kaydetmiş; `globals.css` token'ları o ölçümden beri değişmemiş (commit `8d0c49a`). Kritik düzeltme: **kontrast sorunu hue değil opaklık** — adım numaraları (`HowItWorks.tsx:84`) zaten koyu marka yeşili `#1f7a3d` kullanıyor, sorun `/30` opaklığı (solid green cream'de 4.96 geçer; %30 = 1.51). discuss-phase'in "bright #8af28a → koyu yeşil varyant" varsayımı yanlış çıktı. color-contrast başarısızları faz tablosundaki 2 örnekten geniş ama tamamı ana sayfa (Hero `<dt>`, sektör notu, Footer `canvas/40`+ayraç, Crew OS panel `canvas/45`, dark `ink-faint`).

@@ -148,6 +148,18 @@ A11Y1 acceptance = `color-contrast` denetimi **0 başarısız**; bu, faz tablosu
 - Kanonik ölçüm yöntemi + a11y kırılımı → `docs/perf/README.md` (**repoda-tanımlı**)
 - **Yeni tanımlayıcı yok, dış sistem yok, secret yok.**
 
+### Task 4.01 Re-ölçüm Teyidi (2026-06-29) — materyal sapma + kapsam kararı
+
+> Otoriter re-ölçüm (Lighthouse 13.3.0 + axe-core 4.11.4, light+dark, mobil+masaüstü) yukarıdaki araştırma envanterinden **materyal sapma** buldu. Tam envanter + skor tabloları: arşivlenmiş `tasks/archive/TASK-4.01.md` oturum kaydı. Özet:
+
+- **a11y = 89** her preset/tema (baseline teyit). dl / dlitem / label denetimleri research K3/K4 ile **birebir** (sapma yok). Perf referansı (pre-fix): masaüstü ~100/CLS 0, mobil ~85-86/CLS 0.
+- **DEV-1 (kritik):** Kanonik Lighthouse koşusu **DARK** render ediyor (tema init `prefers-color-scheme: dark`'a düşer + `--headless=new` dark raporlar; baseline de dark'tı). → "Lighthouse light ölçer → gate LIGHT" varsayımı **ters**. Sonuç: K1-K5 tek başına a11y=100'e ulaşamaz.
+- **DEV-2 (kritik):** `bg-ink` panelleri dark'ta krem'e dönünce yeni fail'ler, eski kapsamda yoktu: **C2** gym-panel adım no `text-pulse` ×3 (`SectorSolutions.tsx:131`, 1.22), **C3** "Canlı ürünü gör" `text-pulse` (`:143`, 1.22), **C9** Bunker durum `text-canvas/50` (`Bunker.tsx:58`, 3.36 — research ✅ demişti). Light'ta geçer, dark'ta fail.
+- **DEV-3:** Baseline'ın "ol.space-y-5 #8af28a/1.22" kalemi = SectorSolutions text-pulse (C2/C3), HowItWorks değil; K1 yine geçerli (HowItWorks `text-green/30` her iki temada da fail: light 1.51 / dark 1.67).
+- **DEV-4:** ink-faint fail'leri research'ten geniş (sektör etiketi + forum kartları) — hepsi K2 token tek-kaynağıyla kapanır (teyit).
+
+**Kullanıcı kararı (2026-06-29):** **a11y=100 gate = Light + Dark** (kapsam genişletme). ILKELER "light & dark" + kanonik dark zaten zorluyor. Plan revizyonu (sıradaki adım, plan-phase/verify-plan): C9 → TASK-4.04'e; **C2/C3 (panel pulse-yeşili) → yeni fix task** (craft-hassas; aria-hidden/renk/treatment mekanizması research'te netleşir); TASK-4.07 → **çift-tema** doğrulama. Etkilenmeyen: K1/4.02, K2/4.03, K3/4.05, K4/4.06.
+
 ---
 
 ## Task Listesi
@@ -158,7 +170,7 @@ A11Y1 acceptance = `color-contrast` denetimi **0 başarısız**; bu, faz tablosu
 
 | # | Task | Durum | Açıklama |
 |---|------|-------|----------|
-| 4.01 | TASK-4.01 | ⬜ Bekliyor | Otoriter re-ölçüm: kesin başarısız-denetim envanterini sabitle (K6, stale baseline) |
+| 4.01 | TASK-4.01 | ✅ Tamamlandı | Otoriter re-ölçüm: envanter sabitlendi; materyal sapma → light+dark kapsam genişletme (bkz. Re-ölçüm Teyidi) |
 | 4.02 | TASK-4.02 | ⬜ Bekliyor | Adım numaraları `aria-hidden` (K1, color-contrast — HowItWorks) |
 | 4.03 | TASK-4.03 | ⬜ Bekliyor | `--color-ink-faint` token koyulaştırma (K2, color-contrast — globals.css) |
 | 4.04 | TASK-4.04 | ⬜ Bekliyor | Cream-on-ink opaklık (K5, color-contrast — Footer + Bunker) |
@@ -223,4 +235,4 @@ A11Y1 acceptance = `color-contrast` denetimi **0 başarısız**; bu, faz tablosu
 ---
 
 **Oluşturulma:** 2026-06-29
-**Son Güncelleme:** 2026-06-29 — plan-phase 4: 7 task dokümanı oluşturuldu (4.01 re-ölçüm/K6 → 4.02 adım-no aria-hidden/K1 → 4.03 ink-faint token/K2 → 4.04 cream-on-ink/K5 → 4.05 hero dl/K3 → 4.06 dil-switcher aria/K4 → 4.07 final doğrulama). Task Listesi tablosu dolduruldu; sıradaki adım verify-plan.
+**Son Güncelleme:** 2026-06-29 — run-task 4.01: otoriter re-ölçüm tamam (a11y 89 teyit); materyal sapma bulundu (Lighthouse default DARK; bg-ink panel inversion → C2/C3/C9 dark fail, K1-K5 kapsam dışı); kullanıcı kararı light+dark kapsam genişletme → plan revizyonu gerekli (Re-ölçüm Teyidi). 4.01 ✅.
