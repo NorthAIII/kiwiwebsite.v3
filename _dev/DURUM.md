@@ -1,6 +1,6 @@
 # DURUM — Proje Dashboard
 
-**Son Güncelleme:** 2026-06-29 — prd-review (v0.1): PRD değişiklik yok (bilinçli karar); ILKELER perf/a11y "korunan taban ≠ brief hedefi" nüansı + sıradaki versiyon v0.2 = a11y/perf+teknik temel sabitlendi. Aktif Versiyon v0.2, Versiyon Sonu Durumu içerik_fazları. Sıradaki: v0.2 `/devflow:discuss-phase`.
+**Son Güncelleme:** 2026-06-29 — discuss-phase 4: v0.2 ilk içerik fazı = Faz 4 (a11y 89→100) girildi. Kapsam: A11Y1 renk kontrastı (marka yeşili imza korunur, bağlam-özel) + A11Y2 hero `<dl>` markup + A11Y3 dil-switcher aria; ana sayfa-birincil, perf/CLS regresyonsuz. v0.2 sırası a11y→test→perf→Umami. Aktif Faz 4, Adım research.
 
 <!-- KURAL: Bu satır her oturum sonunda ÜZERİNE YAZILIR — tek satır, tek cümle. "Önceki:" / "Eski:" prefix ile kümülatif yığma YASAK; HTML comment'e sarma da yasak (CLAUDE.md → Doküman Disiplini). Tarih + kısa özet yeterli; detay için git log + ilgili PHASE/TASK dokümanları. -->
 
@@ -8,10 +8,10 @@
 
 ## Aktif Faz
 
-**Faz:** Yok — v0.1 tamamlandı (prd-review dahil). v0.2 ilk fazı henüz girilmedi (discuss-phase'de damgalanır).
-**Adım:** v0.1 prd-review ✅ → sıradaki: v0.2 discuss-phase (yeni oturum)
-**İlerleme:** v0.1 kapandı (3 faz + prd-review: PRD değişiklik yok); Aktif Versiyon v0.2'ye geçti → sıradaki ilk faz kapsam tartışması
-**Son Faz Dokümanı:** `phases/PHASE-3.md` (✅ v0.1 son fazı)
+**Faz:** 4 — v0.2 erişilebilirlik (a11y 89→100), ana sayfa. 🔄 Devam ediyor (kapsam tartışması tamam).
+**Adım:** research — kapsam tartışması ✅ → sıradaki: `/devflow:research-phase 4` (yeni oturum)
+**İlerleme:** Faz 4 girildi (discuss-phase 4); 3 a11y iş birimi (A11Y1 kontrast / A11Y2 hero `<dl>` / A11Y3 dil-switcher aria) MODULE-MAP'e atandı. Henüz task yok (plan-phase'de).
+**Son Faz Dokümanı:** `phases/PHASE-4.md` (🔄 aktif)
 
 ---
 
@@ -28,17 +28,17 @@
 
 ## Aktif Task
 
-**Task:** Yok — v0.1 tamam; v0.2 henüz planlanmadı (faz döngüsü dışında).
-**Durum:** Aktif task yok; sıradaki adım v0.2 discuss-phase
-**İlerleme:** Adım v0.2 discuss-phase → `/devflow:discuss-phase` (yeni oturum)
+**Task:** Yok — Faz 4 girildi ama task'lar henüz yazılmadı (research → plan-phase'de).
+**Durum:** Aktif task yok; sıradaki adım Faz 4 research
+**İlerleme:** Adım research → `/devflow:research-phase 4` (yeni oturum)
 
 ---
 
 ## Task Durumu (Aktif Faz)
 
-> Aktif faz yok — v0.1 versiyon-sonu fazları (1,2,3) tamamlandı, faz döngüsü dışına çıkıldı (sıradaki: prd-review). Tamamlanan tüm task'lar arşivde (`tasks/archive/`); faz detayları `phases/PHASE-N.md`'de. Yeni faz açılınca (v0.2 discuss-phase) bu tablo yeniden doldurulur.
+> Faz 4 (v0.2 a11y) girildi ama task'lar henüz yazılmadı — kapsam tartışması bitti, research → plan-phase task'ları üretecek. Tablo plan-phase 4'te doldurulur.
 
-_(Aktif faz task'ı yok.)_
+_(Faz 4 task'ı henüz yok — plan-phase'de oluşturulacak.)_
 
 ---
 
@@ -68,12 +68,12 @@ _(Aktif faz task'ı yok.)_
 
 ## Hızlı Erişim
 
-**Aktif Task:** Yok — v0.1 tamam (prd-review dahil); sıradaki: v0.2 `/devflow:discuss-phase`
-**Aktif Faz:** Yok — v0.2 ilk fazı henüz girilmedi; Aktif Versiyon v0.2, Versiyon Sonu Durumu: içerik_fazları
+**Aktif Task:** Yok — Faz 4 girildi; sıradaki: `/devflow:research-phase 4`
+**Aktif Faz:** 4 — v0.2 erişilebilirlik (a11y 89→100) 🔄; Aktif Versiyon v0.2, Versiyon Sonu Durumu: içerik_fazları
 **Task Sistemi:** `tasks/TASKS-README.md`
 **PRD (karar kaynağı):** `PRD/VIZYON.md` · `PRD/VERSIONS.md` · `PRD/features/`
 **Revize Backlog (bilinen sorunlar):** `docs/REVIZE-BACKLOG.md`
 
 ---
 
-**Son Güncelleme:** 2026-06-29 — prd-review (v0.1): PRD değişiklik yok (bilinçli karar); ILKELER perf/a11y "korunan taban ≠ brief hedefi" nüansı + sıradaki versiyon v0.2 = a11y/perf+teknik temel sabitlendi. Aktif Versiyon v0.2, Versiyon Sonu Durumu içerik_fazları. Sıradaki: v0.2 `/devflow:discuss-phase`.
+**Son Güncelleme:** 2026-06-29 — discuss-phase 4: v0.2 ilk içerik fazı = Faz 4 (a11y 89→100) girildi. Kapsam: A11Y1 renk kontrastı (marka yeşili imza korunur, bağlam-özel) + A11Y2 hero `<dl>` markup + A11Y3 dil-switcher aria; ana sayfa-birincil, perf/CLS regresyonsuz. v0.2 sırası a11y→test→perf→Umami. Aktif Faz 4, Adım research.

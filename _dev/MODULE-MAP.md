@@ -124,6 +124,10 @@ M6 (SEO/Deploy) ─────────────────────>
 | TD3: Ana sayfa perf/Lighthouse doğrulama (mobil+masaüstü, brief bütçesi + taban) | M6 | v0.1 | 2 | ✅ |
 | **— v0.1 versiyon-sonu senaryo testi (Faz 3 — çapraz doğrulama, yeni feature üretmez) —** | | | | |
 | S1–S8: v0.1 ana sayfa uçtan-uca senaryo doğrulaması (giriş/yolculuk/mod/kontrol/taksonomi/5-dil/chatbot/adversarial) | tümü | v0.1 | 3 | ✅ |
+| **— v0.2 a11y iş birimleri (Faz 4 — ana sayfa erişilebilirlik 89→100) —** | | | | |
+| A11Y1: Renk kontrastı WCAG AA (marka yeşili imza korunur, bağlam-özel; soluk gri metinler eşiğe) | M1 (+M2) | v0.2 | 4 | 🔄 |
+| A11Y2: Hero `<dl>`/`dlitem` geçersiz markup düzeltme | M2 | v0.2 | 4 | 🔄 |
+| A11Y3: Dil-switcher aria-mismatch (label-content-name) düzeltme | M3 (+M4) | v0.2 | 4 | 🔄 |
 
 **Durum simgeleri:**
 - ⬜ **Bekliyor** — Fazı henüz başlamadı
@@ -137,4 +141,4 @@ M6 (SEO/Deploy) ─────────────────────>
 
 ---
 
-**Son Güncelleme:** 2026-06-29 — review-phase 3: S1–S8 senaryo doğrulaması ✅ (UAT 10/10, kapsam-içi bug yok, kaynak değişmedi). v0.1 versiyon-sonu fazları tamam.
+**Son Güncelleme:** 2026-06-29 — discuss-phase 4: v0.2 a11y iş birimleri (A11Y1 renk kontrastı / A11Y2 hero `<dl>` markup / A11Y3 dil-switcher aria) Faz 4'e atandı (🔄). Kaynak: `docs/perf/README.md` a11y 89 kırılımı + DECISIONS 2026-06-28.

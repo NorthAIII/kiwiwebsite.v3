@@ -22,6 +22,7 @@ Faz numaraları **global, sürekli ve append-only**'dir — versiyon değişse b
 | 1 | Ana sayfa TR içerik & ses revizesi | v0.1: Nasıl Çalışır 4 adım + gym tek-otomasyon + F5 dürüstlük + F6 hero CTA | ✅ |
 | 2 | v0.1 versiyon-sonu teknik borç kapatma | TD1 non-TR çeviri senkronu + TD2 ölü anahtar hijyeni + TD3 ana sayfa perf/Lighthouse doğrulama | ✅ |
 | 3 | v0.1 versiyon-sonu senaryo testi | v0.1 ana sayfa uçtan-uca doğrulama (S1–S8: giriş/yolculuk/mod/kontrol/taksonomi/5-dil/chatbot/adversarial); TR öncelik, otonom, keşfet+kaydet+triyaj | ✅ |
+| 4 | v0.2 erişilebilirlik (a11y 89→100) | a11y A11Y1 renk kontrastı (marka yeşili imza korunur, bağlam-özel) + A11Y2 hero `<dl>` markup + A11Y3 dil-switcher aria; ana sayfa-birincil, perf/CLS regresyonsuz | 🔄 |
 
 **Durum simgeleri:**
 - 🔄 **Devam ediyor** — discuss-phase başladı (aktif faz)
@@ -36,7 +37,12 @@ Faz numaraları **global, sürekli ve append-only**'dir — versiyon değişse b
 
 > Yaklaşan faz konuları — **numarasız**. Faza girildiğinde (discuss-phase) buradan çıkar, numara (mevcut en büyük faz no + 1) alıp Faz Durumu tablosuna 🔄 olarak geçer. Aşağıdakiler güçlü revize için aday konulardır; kesin kapsam ve sıra PRD/discuss-phase'de netleşir.
 
-_(Şu an numarasız sıradaki içerik fazı yok — v0.1'in tek içerik fazı Faz 1 olarak girildi. Faz 1 tamamlanınca versiyon-sonu sabit fazları gelir: teknik borç → senaryo testi → prd-review; bunlar dinamik, faza girince doğrudan tabloya eklenir.)_
+**v0.2 kalan fazları** (sıra discuss-phase 4'te sabitlendi: a11y → teknik temel → perf → Umami; Faz 4 = a11y girildi):
+- **Test altyapısı (D1)** — kümülatif test ilkesi teknik temeli; "test = build + UAT" geçici durumunu kapatır, a11y/perf kazanımını otomatik regresyon testine bağlayabilir.
+- **Mobil perf / LCP** (87 / 3.1s → brief bütçesi ≥95 / <2.5s) — ana kaynak Living Flow WebGL (craft-duyarlı, üst eksen → aceleyle dokunulmaz).
+- **Umami analytics (E1)** — `docs/UMAMI-ANALYTICS.md` spec'i; canlıda saydığı gözle doğrulanır.
+
+> v0.2 içerik fazları bitince versiyon-sonu sabit fazları gelir: teknik borç → senaryo testi → prd-review (dinamik, faza girince doğrudan tabloya eklenir). Faz ayrımı (kaç faz) her discuss-phase'de netleşir.
 
 <!-- KURAL: Bu liste YAKIN ufku tutar (örn. aktif versiyonun kalan fazları), uzak gelecek değil — uzak ileriye dönük plan PRD/VERSIONS.md'dedir. Numara YAZMA (numara faza girince damgalanır). Bir konu faza girince bu listeden silinir (mezuniyet — soft delete yasak: HTML comment/üstü çizili/"Önceki:" prefix yok). -->
 <!-- NOT: VERSIONS.md feature→versiyon haritasını tekrar etme; burada faz konusu (geliştirme birimi) + milestone tutulur, feature listesi değil. -->
@@ -70,6 +76,6 @@ _(Şu an numarasız sıradaki içerik fazı yok — v0.1'in tek içerik fazı Fa
 
 ---
 
-**Son Güncelleme:** 2026-06-29 — review-phase 3: Faz 3 (v0.1 Senaryo Testi) ✅ tamamlandı; geçiş notu eklendi. v0.1 versiyon-sonu fazları (1,2,3) tamam → Versiyon Sonu Durumu prd_review_bekliyor (zorunlu prd-review).
+**Son Güncelleme:** 2026-06-29 — discuss-phase 4: Faz 4 (v0.2 erişilebilirlik a11y 89→100) 🔄 olarak Faz Durumu tablosuna eklendi (faz promosyonu); Sıradaki Fazlar v0.2 kalan fazlarıyla (test altyapısı → perf → Umami) güncellendi.
 
 <!-- KURAL: Bu satır her güncellemede ÜZERİNE YAZILIR. "Önceki:" prefix ile kümülatif yığma YASAK (CLAUDE.md → Doküman Disiplini). -->
