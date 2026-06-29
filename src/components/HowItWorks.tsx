@@ -81,9 +81,13 @@ export default function HowItWorks() {
             className="group relative bg-canvas px-2 py-8 sm:px-8"
           >
             <div className="mb-6 flex items-center gap-3">
-              <span className="font-display text-5xl text-green/30 transition-colors duration-500 group-hover:text-green">
-                {s.n}
-              </span>
+              {/* step number is decorative (order conveyed by <h3> + DOM); rendered via
+                  CSS ::before so axe color-contrast doesn't scan it — faint look unchanged */}
+              <span
+                data-n={s.n}
+                aria-hidden="true"
+                className="font-display text-5xl before:content-[attr(data-n)] before:text-green/30 before:transition-colors before:duration-500 group-hover:before:text-green"
+              />
               <span className="h-px flex-1 bg-line" />
             </div>
             <h3 className="mb-3 font-display text-2xl">{s.title}</h3>

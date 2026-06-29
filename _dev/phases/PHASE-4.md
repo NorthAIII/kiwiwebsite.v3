@@ -166,6 +166,14 @@ A11Y1 acceptance = `color-contrast` denetimi **0 başarısız**; bu, faz tablosu
 - **Final doğrulama** → **TASK-4.08** (eski 4.07'den), **çift-tema** (light+dark) a11y=100.
 - Etkilenmeyen: K1/4.02, K2/4.03, K3/4.05, K4/4.06.
 
+### Task 4.02 İcra Notu (2026-06-29) — K1 mekanizma revizyonu (aria-hidden ≠ color-contrast muafiyeti)
+
+> Önemli, **çapraz-task** etkisi olan bir bulgu (memory'ye de eklendi): `aria-hidden="true"` öğeyi axe `color-contrast` denetiminden **çıkarmaz**. Kontrollü testle kanıtlandı (**axe-core 4.11.4** — projenin aracı; **Lighthouse 13.3.0 bunu bundle ediyor**): kural görsel görünürlüğü (`isVisibleOnScreen`) baz alır, erişilebilirlik ağacını değil; hem doğrudan aria-hidden öğe hem aria-hidden ebeveyn içindeki öğe flag'lenir.
+
+- **K1 revize edildi (kullanıcı kararı 2026-06-29):** "adım numarasına `aria-hidden`" → **CSS `::before { content: attr(data-n) }`** (Tailwind `before:` utility). Numara text-node olmaktan çıkıp `data-n` attribute + pseudo-element içeriğine taşındı → axe color-contrast taramaz; renk (`#1f7a3d`@30%) / font / hover→solid 500ms **birebir** korundu (sıfır görsel değişim, planın asıl niyeti). `aria-hidden` semantik olarak korundu.
+- **Doğrulandı:** build temiz; axe 4.11.4 light+dark → adım numaraları color-contrast listesinden çıktı (`#how` eşleşmesi=0); gözle faint görünüm + hover geçişi aynı.
+- **⚠️ K5/TASK-4.04 için uyarı:** K5 dekoratif "·" ayracı için `aria-hidden` planlamıştı — bu mekanizma color-contrast'ı çözmez. (Not: 4.02 axe koşusunda Footer `canvas/30` "·" ayraçları zaten **ihlal listesinde görünmedi** — punctuation/komşu metin run'ı olabilir; 4.04 bunu kendi ölçümünde teyit etsin.) Ayraç gerçekten flag'lenirse fix = pseudo-element/non-text render **veya** opaklık bump (≥ eşik), aria-hidden değil.
+
 ---
 
 ## Task Listesi
@@ -177,7 +185,7 @@ A11Y1 acceptance = `color-contrast` denetimi **0 başarısız**; bu, faz tablosu
 | # | Task | Durum | Açıklama |
 |---|------|-------|----------|
 | 4.01 | TASK-4.01 | ✅ Tamamlandı | Otoriter re-ölçüm: envanter sabitlendi; materyal sapma → light+dark kapsam genişletme (bkz. Re-ölçüm Teyidi) |
-| 4.02 | TASK-4.02 | ⬜ Bekliyor | Adım numaraları `aria-hidden` (K1, color-contrast — HowItWorks) |
+| 4.02 | TASK-4.02 | ✅ Tamamlandı | Adım numaraları color-contrast'tan çıkar — K1 mekanizması `aria-hidden`→CSS `::before` (aria-hidden axe color-contrast'ı çözmüyor; bkz. İcra Notu) |
 | 4.03 | TASK-4.03 | ⬜ Bekliyor | `--color-ink-faint` token koyulaştırma (K2, color-contrast — globals.css) |
 | 4.04 | TASK-4.04 | ⬜ Bekliyor | Cream-on-ink opaklık ≥%60 (K5+C9, color-contrast — Footer + Bunker; Bunker durum dark fail eklendi) |
 | 4.05 | TASK-4.05 | ⬜ Bekliyor | Hero `<dl>` → semantik link markup (K3, definition-list + dlitem) |
@@ -242,4 +250,4 @@ A11Y1 acceptance = `color-contrast` denetimi **0 başarısız**; bu, faz tablosu
 ---
 
 **Oluşturulma:** 2026-06-29
-**Son Güncelleme:** 2026-06-29 — plan-phase (revizyon): light+dark kapsam genişlemesi task'lara dağıtıldı — C9→TASK-4.04, yeni TASK-4.07 (C2/C3 adaptif `--color-pulse-ink` token, kullanıcı kararı), final doğrulama TASK-4.08'e çift-tema. 8 task (4.01 ✅ + 7 bekliyor). Sıradaki: verify-plan 4.
+**Son Güncelleme:** 2026-06-29 — run-task TASK-4.02 ✅: adım numaraları color-contrast'tan çıkarıldı; K1 mekanizması `aria-hidden`→CSS `::before` revize (aria-hidden axe/Lighthouse color-contrast'ı çözmüyor — kanıtlı; İcra Notu + memory). 8 task (4.01-4.02 ✅ + 6 bekliyor). Sıradaki: TASK-4.03.

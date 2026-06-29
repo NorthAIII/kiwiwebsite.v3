@@ -7,7 +7,7 @@
 >
 > Bu yapı şişmeyi önler: index ince kalır (hep yüklü), detay yalnızca gerekince okunur.
 
-**Son Güncelleme:** 2026-06-29 — run-task 4.01: Teknik Tuzaklar'a "a11y/perf ölçümünde tema tuzağı" eklendi (Lighthouse default DARK; bg-ink panel inversion → light+dark ayrı doğrula).
+**Son Güncelleme:** 2026-06-29 — run-task 4.02: Teknik Tuzaklar'a "`aria-hidden` color-contrast'tan muaf tutmaz" eklendi (axe görsel görünürlüğü baz alır; doğru fix = pseudo-element/kontrast-geçen renk; TASK-4.04/K5'i etkiler).
 
 <!-- KURAL: Bu satır her güncellemede ÜZERİNE YAZILIR. "Önceki:" prefix ile kümülatif yığma YASAK (CLAUDE.md → Doküman Disiplini). -->
 
@@ -17,6 +17,7 @@
 
 <!-- Proje genelinde geçerli beklenmedik davranışlar/bug'lar ve çözümleri (pasif gözlem: "şu böyle davranır, dikkat"). Tekrar eden, eyleme/kontrole bağlı bir "şu adımda şu kontrolü yap" kuralıysa → Süreç Disiplinleri. -->
 
+- [`aria-hidden` color-contrast'tan muaf tutmaz](memory/aria-hidden-color-contrast-muafiyeti-degil.md) — **Yaygın yanlış varsayım:** dekoratif düşük-kontrast öğeye `aria-hidden="true"` eklemek onu axe/Lighthouse `color-contrast` denetiminden çıkarmaz. axe-core 4.11.4 ile kanıtlı: kural **görsel görünürlüğü** (`isVisibleOnScreen`) baz alır, AT-ağacını değil — doğrudan aria-hidden öğe de, aria-hidden ebeveyn içindeki öğe de **hâlâ flag'lenir**. Lighthouse 13.3.0 bu axe'ı bundle ediyor → a11y skoruna katkı yok. Görsel-koruyan doğru fix: CSS pseudo-element (`::before { content: attr() }`, text-node değil) veya kontrast-geçen renk; SVG text "incomplete" verir. (TASK-4.02; TASK-4.04/K5 ayraç planını etkiler.)
 - [a11y/perf ölçümünde tema tuzağı](memory/a11y-olcum-tema-tuzagi.md) — Kanonik Lighthouse (`--headless=new`) **DARK** render eder (init `prefers-color-scheme: dark`'a düşer; v0.1 baseline de dark'tı), "light gate" değil; a11y skoru iki temada aynı ama color-contrast **öğeleri** farklı. `bg-ink`/`text-canvas` panelleri tema ile ters çevrilir → kontrast pass/fail flip eder; **her zaman light+dark doğrula**. Tema zorlamak için Playwright `emulateMedia({colorScheme})`; tam envanter için `reducedMotion:'reduce'` + scroll (Lighthouse full-motion'da reveal `opacity:0`'ı atlar). axe-core lighthouse npx cache'inde gömülü (offline enjekte).
 - **Tarayıcı-tabanlı doğrulamada `/` (prefixsiz TR) Accept-Language ile otomatik locale'e yönlenir** (next-intl `localeDetection`; örn. `Accept-Language: en-US` → `/en`). curl bunu **tetiklemez** (header göndermez) → aynı sayfa curl'de TR-200 ama Playwright/tarayıcıda `/en` görünebilir; bu tutarsızlık **bug değil**, beklenen davranış. TR-birincil testlerde `NEXT_LOCALE=tr` cookie kullan (cookie precedence > Accept-Language). (Faz 3 S5/S6/S8'de 3× karşılaşıldı; detay → `phases/PHASE-3.md` Task-Spesifik Öğrenimler.)
 
