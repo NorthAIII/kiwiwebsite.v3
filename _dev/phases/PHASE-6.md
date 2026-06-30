@@ -210,7 +210,27 @@ Masaüstü: 100→100, LCP 764→694ms. Dağılımlar örtüşmüyor (baseline m
 
 ## UAT Sonuçları
 
-> Bu bölüm `/devflow:verify-phase 6` oturumunda doldurulacak.
+**Tarih:** 2026-06-30 (verify-phase 6, otonom test modu)
+**Toplam Senaryo:** 12 | **Geçen:** 12 | **Kalan:** 0
+
+> Otonom modda koşuldu (ortam = 6.07 temsilî ortamı: node20 + Chrome150 + Playwright + Lighthouse). Görsel craft boyutu (senaryo 8/9/11) task icrasında (6.02/6.03/6.05) gözle doğrulanmıştı; UAT'de kod/yapı + ölçümle teyit edildi (kullanıcı onayı: "yeterli, kapat"). Milestone ölçümünün otoriter before/after kaynağı TASK-6.07 (`docs/perf/README.md` → Faz 6 final); UAT bağımsız reprodüksiyon koşusu final durumu doğruladı.
+
+| # | Senaryo | Sonuç | Not |
+|---|---------|-------|-----|
+| 1 | Fresh prod build temiz geçer (`next build`, 0 hata) | ✅ Geçti | Temiz build, 0 hata |
+| 2 | i18n parite: Vitest 6/6 + build 0 `MISSING_MESSAGE` (5 dil anahtar pariteti) | ✅ Geçti | Vitest 6/6; build `MISSING_MESSAGE` yok |
+| 3 | a11y = 100 çift-tema: Playwright/axe `/` light+dark 0 WCAG AA ihlal (Faz 4 kazanımı korunur) | ✅ Geçti | Playwright/axe 2/2 (light+dark, 0 ihlal) |
+| 4 | Milestone: mobil TR `/` perf/LCP **ölçülebilir** iyileşme (aynı-ortam baseline→final) | ✅ Geçti | UAT reprodüksiyon: median perf **91** / LCP **3222ms** / FCP 1506 (TR `/` cookie) ≈ 6.07 final (90/3164ms); 6.07 baseline→final 84→90 / 3604→3164 (dağılımlar örtüşmez, otoriter) |
+| 5 | Masaüstü perf regresyonsuz (100, LCP bütçe içi) | ✅ Geçti | 3/3 perf 100, LCP ~687ms |
+| 6 | CLS ≈ 0 (mobil + masaüstü; ortam-bağımsız en güvenilir sinyal) | ✅ Geçti | 0.0000 tüm koşular (mobil+masaüstü) |
+| 7 | L1: Hero `opacity:0` reveal-gate kaldırıldı → hero metni LCP-uygun (K-R1) | ✅ Geçti | `Hero.tsx:18` `gsap.set(...,{ y: 36 })` — opacity yok |
+| 8 | L1: Hero kayma (`y`) imza hareketi korundu; reduced-motion'da içerik görünür (craft + edge) | ✅ Geçti | `Hero.tsx:16` reduced-motion early-return; `y:36→0` timeline korundu (görsel craft 6.02'de gözle ✓) |
+| 9 | L2: Mobilde WebGL init idle/post-load'a ertelenir; static base hero'yu kaplar — boş kalmaz (K-R2) | ✅ Geçti | `LivingFlow.tsx:79` koşulsuz static base wash; mobil rIC+2s timeout (görsel geç-belirme 6.03'te gözle ✓) |
+| 10 | L2: Safari (no `requestIdleCallback`) fallback → flow yine init olur; masaüstü rAF korundu (edge/adversarial) | ✅ Geçti | `LivingFlow.tsx:44-73` üç yol: masaüstü rAF / mobil rIC / Safari load+timeout |
+| 11 | L3: Fraunces SOFT/WONK budandı → tipografi görsel birebir + woff2 küçüldü; `layout.tsx`+`not-found.tsx` drift yok (K-R3) | ✅ Geçti | SOFT/WONK kullanımı grep'te yok (craft-nötr); build woff2 217KB; iki dosya `axes:["opsz"]` |
+| 12 | Brief mobil bütçe açığı dürüstçe belgelendi (DECISIONS + perf README); hedef düşürülmedi / craft feda edilmedi (ILKELER) | ✅ Geçti | DECISIONS 2026-06-30 (Faz 6 sonucu + P2 iptal) + perf README "brief mobil bütçe hâlâ AÇIK" |
+
+**Otomatik kontroller (Adım 1):** CI 4/4 faz commit'i `success` · security-review 0 bulgu (saf görsel/perf değişikliği, güvenlik yüzeyi yok) · build + Vitest + Playwright/axe yeşil. Düzeltme task'ı doğmadı.
 
 ---
 
@@ -233,4 +253,4 @@ Masaüstü: 100→100, LCP 764→694ms. Dağılımlar örtüşmüyor (baseline m
 ---
 
 **Oluşturulma:** 2026-06-30
-**Son Güncelleme:** 2026-06-30 — run-task TASK-6.07 ✅ (faz-sonu final): temsilî ortamda aynı-ortam before/after — Faz 6 lever'ları mobil perf 84→90 / LCP 3604→3164ms **ölçülebilir iyileştirdi** (sürücü L3 font budama; L1+L2 tek başına delta yok = 6.04 doğrulandı + network-lever rafinajı). Brief mobil bütçe hâlâ açık (90/3164ms); guardrail'ler yeşil (a11y=100 çift-tema, CLS≈0, masaüstü 100, i18n parite). Tüm fazdaki task'lar tamam → sıradaki adım `/devflow:verify-phase 6`.
+**Son Güncelleme:** 2026-06-30 — verify-phase 6 ✅ (UAT): 12/12 senaryo geçti (otonom mod, 6.07 temsilî ortamı). Otomatik kontroller temiz (CI 4/4 `success` · security-review 0 bulgu · build/Vitest/axe yeşil); milestone bağımsız reprodüksiyonla teyit (mobil median perf 91/LCP 3222ms ≈ final 90/3164ms); guardrail'ler regresyonsuz. Düzeltme task'ı doğmadı → sıradaki adım `/devflow:review-phase 6` (retrospektif + ✅ dondurma).

@@ -1,6 +1,6 @@
 # DURUM — Proje Dashboard
 
-**Son Güncelleme:** 2026-06-30 — run-task TASK-6.07 ✅ (faz-sonu final ölçüm): temsilî ortamda aynı-ortam before/after — Faz 6 lever'ları mobil perf 84→90 / LCP 3604→3164ms **ölçülebilir iyileştirdi** (sürücü L3 font budama; L1+L2 tek başına delta yok). Brief mobil bütçe hâlâ açık (90/3164ms); guardrail'ler yeşil. Fazdaki tüm tasklar tamam → sıradaki adım `/devflow:verify-phase 6`.
+**Son Güncelleme:** 2026-06-30 — verify-phase 6 ✅ (UAT): 12/12 senaryo **geçti** (otonom mod); otomatik kontroller temiz (CI 4/4 success · security-review 0 bulgu · build/Vitest/axe yeşil). Milestone "ölçülebilir iyileşme" UAT reprodüksiyonuyla teyit (mobil median perf 91/LCP 3222ms ≈ 6.07 final); guardrail'ler regresyonsuz. Düzeltme task'ı yok → sıradaki adım `/devflow:review-phase 6`.
 
 <!-- KURAL: Bu satır her oturum sonunda ÜZERİNE YAZILIR — tek satır, tek cümle. "Önceki:" / "Eski:" prefix ile kümülatif yığma YASAK; HTML comment'e sarma da yasak (CLAUDE.md → Doküman Disiplini). Tarih + kısa özet yeterli; detay için git log + ilgili PHASE/TASK dokümanları. -->
 
@@ -9,9 +9,9 @@
 ## Aktif Faz
 
 **Faz:** 6 — Mobil perf / LCP (v0.2). Kapsam discuss-phase 6'da damgalandı: ana sayfa TR `/` mobil-birincil, brief hedef (≥95 / <2.5s) / craft tavan. Faz 5 (test altyapısı D1) ✅; Faz 4 (v0.2 a11y 89→100) ✅.
-**Adım:** verify → `/devflow:verify-phase 6` (yeni oturum): fazdaki tüm tasklar tamam (6.01 ✅ ölç-önce, 6.02 ✅ L1, 6.03 ✅ L2, 6.04 ✅ ara-ölç, 6.05 ✅ L3, 6.06 ❌ iptal craft-gate, **6.07 ✅ faz-sonu final**) → UAT.
-**İlerleme:** **TASK-6.07 (faz-sonu final ölçüm) tamamlandı.** Temsilî ortamda (node20+Chrome150, flags birebir; 6.01/6.04'ün ağır-SwiftShader anomalisi tekrarlanmadı) aynı-ortam before/after: lever-öncesi baseline (`git checkout e5a4ef1 -- src` ile aynı ortamda build) **perf 84 / LCP 3604ms / TBT 261ms = Faz-4 birebir**; final (L1+L2+L3) **perf 90 / LCP 3164ms / FCP 1506 / TBT 178** (CLS≈0). LCP dağılımları örtüşmüyor → **milestone "ölçülebilir iyileşme" ✓** (−440ms/−12%). Masaüstü 100→100, LCP 764→694. **Attribution: sürücü L3 (font budama)** — L1+L2 tek başına delta yok (3604→3755; 6.04 çekirdek bulgusu temsilî ortamda da doğru), L3 eklenince 3755→3164 (Lantern simüle throttled font-download'u modeller → ~113KB↓ woff2 lab-görünür; **6.04 rafinajı:** network lever'ı atlanmıştı). **Brief mobil bütçe (≥95/<2.5s) hâlâ AÇIK** (90/3164ms) ama baseline'a göre kapandı; kalan açık = CPU-bound WebGL main-thread (P2 craft-gate'te iptal, 6.06). Masaüstü bütçe içinde. **Guardrail'ler yeşil:** a11y=100 çift-tema (Playwright/axe light+dark 0 WCAG AA), CLS≈0, masaüstü 100, i18n parite (vitest 6/6 + build 0 MISSING_MESSAGE). Kanonik artefakt `docs/perf/home-{mobile,desktop}-20260630-faz6.{html,json}` + attribution kanıtı `-{baseline,l1l2only}.json`; tam tablolar `docs/perf/README.md`. Hedef düşürülmedi/craft feda edilmedi (DECISIONS 2026-06-30). **Devralınan sahipli borç (kapsam dışı):** alt-sayfa derin a11y + `text-pulse` ink-panel süpürmesi.
-**Son Faz Dokümanı:** `phases/PHASE-6.md` (🔄 — tüm task'lar tamam (6.07 ✅ faz-sonu, 6.06 ❌ iptal); sıradaki verify-phase 6 → UAT)
+**Adım:** review → `/devflow:review-phase 6` (yeni oturum): UAT ✅ (12/12 geçti, düzeltme task'ı yok); otomatik kontroller temiz. Faz review + retrospektif + ✅ dondurma kaldı.
+**İlerleme:** **verify-phase 6 (UAT) tamamlandı — 12/12 senaryo geçti.** Otonom modda (6.07 temsilî ortamı: node20+Chrome150+Playwright+Lighthouse) tüm senaryolar koşuldu: build temiz · i18n parite (Vitest 6/6 + 0 MISSING_MESSAGE) · a11y=100 çift-tema (Playwright/axe 2/2) · milestone reprodüksiyon (mobil median perf 91/LCP 3222ms/CLS 0 ≈ 6.07 final 90/3164ms; baseline→final otoriter 6.07'de) · masaüstü 100 (LCP ~687ms) · CLS≈0 · L1/L2/L3 kod-yapı doğrulamaları (opacity:0 yok·static base koşulsuz·Safari fallback·SOFT/WONK budanmış birebir) · brief-açık dürüst kayıt (DECISIONS+perf README). Otomatik kontroller: CI 4/4 `success`, security-review 0 bulgu, build/Vitest/axe yeşil. **Düzeltme task'ı doğmadı.** Görsel craft (8/9/11) task icrasında gözle doğrulanmıştı + kullanıcı UAT onayı "yeterli". Devralınan sahipli borç (kapsam dışı, sonraki faza): alt-sayfa derin a11y + `text-pulse` ink-panel süpürmesi. Detay → `phases/PHASE-6.md` "UAT Sonuçları" + "Faz-Sonu Final Ölçüm".
+**Son Faz Dokümanı:** `phases/PHASE-6.md` (🔄 — tüm task'lar tamam; UAT ✅ 12/12; sıradaki review-phase 6 → retrospektif + ✅ dondurma)
 
 ---
 
@@ -28,9 +28,9 @@
 
 ## Aktif Task
 
-**Task:** Aktif task yok — Faz 6'nın tüm task'ları tamamlandı (6.07 ✅ faz-sonu final; 6.06 ❌ iptal). Sıradaki adım faz döngüsünde `/devflow:verify-phase 6` (UAT).
-**Durum:** Faz döngüsü `verify` adımında. TASK-6.07 ✅ tamamlandı (2026-06-30, faz-sonu final ölçüm + kanonik artefakt + DECISIONS + guardrail regresyon).
-**İlerleme:** TASK-6.07 fazın otoriter kapanış ölçümünü üretti (verify-phase'in dayanacağı sayılar). Temsilî ortamda aynı-ortam before/after lever'ların mobil perf/LCP'yi ölçülebilir iyileştirdiğini kanıtladı (84→90 / 3604→3164ms; sürücü L3). Brief mobil bütçe hâlâ açık, dürüstçe kaydedildi; guardrail'ler regresyonsuz. Detay → Aktif Faz "İlerleme" + `phases/PHASE-6.md` "Faz-Sonu Final Ölçüm" + `docs/perf/README.md`.
+**Task:** Aktif task yok — Faz 6'nın tüm task'ları tamam, UAT ✅ (12/12 geçti, düzeltme task'ı doğmadı). Sıradaki adım faz döngüsünde `/devflow:review-phase 6` (retrospektif + ✅ dondurma).
+**Durum:** Faz döngüsü `review` adımında. verify-phase 6 ✅ tamamlandı (2026-06-30, UAT 12/12 + otomatik kontroller temiz).
+**İlerleme:** UAT tüm milestone + guardrail senaryolarını otonom doğruladı (12/12). Milestone "ölçülebilir iyileşme" bağımsız reprodüksiyonla teyit (mobil median perf 91/LCP 3222ms ≈ 6.07 final); guardrail'ler regresyonsuz (a11y=100 çift-tema, CLS≈0, masaüstü 100, i18n parite); security-review 0 bulgu. Detay → Aktif Faz "İlerleme" + `phases/PHASE-6.md` "UAT Sonuçları".
 
 ---
 
@@ -76,12 +76,12 @@
 
 ## Hızlı Erişim
 
-**Aktif Task:** Yok — Faz 6'nın tüm task'ları tamam (6.01–6.05 ✅, 6.06 ❌ iptal, **6.07 ✅ faz-sonu final**). Sıradaki adım: `/devflow:verify-phase 6` (UAT).
-**Aktif Faz:** 6 — Mobil perf / LCP · adım=verify; Faz 5 ✅; Faz 4 ✅; Aktif Versiyon v0.2, Versiyon Sonu Durumu: içerik_fazları
+**Aktif Task:** Yok — Faz 6 task'ları tamam, UAT ✅ 12/12. Sıradaki adım: `/devflow:review-phase 6` (retrospektif + ✅ dondurma).
+**Aktif Faz:** 6 — Mobil perf / LCP · adım=review; Faz 5 ✅; Faz 4 ✅; Aktif Versiyon v0.2, Versiyon Sonu Durumu: içerik_fazları
 **Task Sistemi:** `tasks/TASKS-README.md`
 **PRD (karar kaynağı):** `PRD/VIZYON.md` · `PRD/VERSIONS.md` · `PRD/features/`
 **Revize Backlog (bilinen sorunlar):** `docs/REVIZE-BACKLOG.md`
 
 ---
 
-**Son Güncelleme:** 2026-06-30 — run-task TASK-6.07 ✅ (faz-sonu final ölçüm): temsilî ortamda aynı-ortam before/after — Faz 6 lever'ları mobil perf 84→90 / LCP 3604→3164ms ölçülebilir iyileştirdi (sürücü L3); brief mobil bütçe hâlâ açık (90/3164ms), dürüstçe kaydedildi; guardrail'ler yeşil. Fazdaki tüm tasklar tamam → sıradaki: `/devflow:verify-phase 6` (UAT).
+**Son Güncelleme:** 2026-06-30 — verify-phase 6 ✅ (UAT): 12/12 senaryo geçti (otonom mod); otomatik kontroller temiz (CI 4/4 · security-review 0 bulgu · build/Vitest/axe yeşil); milestone reprodüksiyonla teyit; guardrail'ler regresyonsuz; düzeltme task'ı yok → sıradaki: `/devflow:review-phase 6`.
