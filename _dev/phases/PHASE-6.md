@@ -143,7 +143,7 @@ TR `/` mobil diagnostic (Lighthouse 13.3.0, 4× CPU throttle, Moto-G sınıfı) 
 | 6.04 | TASK-6.04 | ✅ Tamamlandı | Ara-ölç: L1+L2 → ölçülebilir Lantern delta YOK (mobil LCP 3615ms ≈ 3608ms taban); brief LCP lab'da açık; L3 yapılır, P2 tetiklendi (craft-gate) |
 | 6.05 | TASK-6.05 | ✅ Tamamlandı | L3: Fraunces SOFT/WONK axes budama (`layout.tsx`+`not-found.tsx`) — craft-nötr hijyen; build temiz, woff2 ~113KB↓ (336→222KB, ~%34), tipografi birebir |
 | 6.06 | TASK-6.06 | ❌ İptal | P2: Living Flow mobil degradasyon ayarı — craft-gate'te **iptal** (kullanıcı kararı 2026-06-30). Mobil LCP açığı kanıtlı Lantern artefaktı (hero ~185ms render); imzaya simüle-sayı için dokunulmaz. Kod değişmedi. Gerekçe → DECISIONS 2026-06-30 |
-| 6.07 | TASK-6.07 | ⬜ Bekliyor | Faz sonu ölçüm + kanonik artefakt + DECISIONS + guardrail regresyon |
+| 6.07 | TASK-6.07 | ✅ Tamamlandı | Faz-sonu final: aynı-ortam before/after — mobil perf 84→90 / LCP 3604→3164ms (sürücü L3); brief mobil açık; guardrail'ler yeşil (a11y=100 çift-tema, CLS≈0, masaüstü 100, i18n parite) |
 
 **Durum simgeleri:** ⬜ Bekliyor | 🔄 Devam ediyor | ⏸️ Duraklatıldı | ✅ Tamamlandı | 🔴 Bloke | ❌ İptal
 
@@ -182,6 +182,32 @@ Mobil LCP 3.6s **Lantern-simüle**: throttle'sız gözlenen trace'te LCP element
 
 ---
 
+## Faz-Sonu Final Ölçüm (TASK-6.07)
+
+> `/devflow:run-task` TASK-6.07 (2026-06-30). Otoriter faz-sonu ölçüm; verify-phase'in dayanacağı sayılar. Tam tablolar + metodoloji: `docs/perf/README.md` → "Faz 6 / TASK-6.07 final". Kanonik artefakt: `docs/perf/home-{mobile,desktop}-20260630-faz6.{html,json}`. Asıl Sonuç/Retrospektif review-phase'de.
+
+**Ortam dönüşü (kritik):** 6.07 ölçümü **temsilî ortamda** yapıldı (node 20.20.2 + Chrome 150, flags birebir) — 6.01/6.04'ün ağır-SwiftShader anomalisi (perf 62 / TBT 1842ms) burada tekrarlanmadı. Aynı ortamda `git checkout e5a4ef1 -- src` ile lever-öncesi baseline yeniden build edilip ölçüldü → perf 84 / LCP 3604ms / TBT 261ms (**Faz-4 ile birebir**). Bu, faz-içi before/after'ı tek tutarlı ortamda apples-to-apples kıldı; perf/TBT bu ortamda Faz-4 ile karşılaştırılabilir.
+
+**Aynı-ortam before/after (TR `/` mobil median, 5 koşu):**
+
+| Metrik | Baseline (lever öncesi) | Final (L1+L2+L3) | Delta |
+|---|---|---|---|
+| perf | 84 | **90** | +6 |
+| LCP | 3604 ms | **3164 ms** | −440 ms (−12%) |
+| FCP | 1656 ms | 1506 ms | −150 ms |
+| CLS | ≈0 | ≈0 | = |
+| TBT | 261 ms | 178 ms | −83 ms |
+
+Masaüstü: 100→100, LCP 764→694ms. Dağılımlar örtüşmüyor (baseline min 3603 > final max 3231) → **milestone "ölçülebilir iyileşme" ✓**.
+
+**Attribution — sürücü L3, L1+L2 değil:** Aynı ortamda L1+L2 tek başına delta vermiyor (LCP 3604→3755, gürültü — 6.04 çekirdek bulgusu temsilî ortamda da doğru); iyileşmenin tamamını **L3 (Fraunces budama)** sürüyor (L1+L2 üstüne 3755→3164). Sebep: LCP elementi Fraunces `display:swap` hero metni; Lantern simüle throttled ağı modeller → ~113KB↓ woff2 lab-görünür. **6.04 rafinajı:** 6.04 "lab-görünür tek lever = WebGL iş yükü (P2)" derken network lever'ını (L3) atlamıştı.
+
+**Brief bütçe (dürüst):** mobil perf 90 (<95) / LCP 3164ms (>2.5s) → **brief mobil bütçe hâlâ AÇIK** ama baseline'a göre kapandı; kalan açık = CPU-bound WebGL main-thread (P2 craft-gate'te iptal, 6.06). Masaüstü bütçe içinde. Hedef düşürülmedi, craft feda edilmedi (DECISIONS 2026-06-30).
+
+**Guardrail regresyon (hepsi yeşil):** a11y=100 çift-tema (Playwright/axe `/` light+dark, 0 WCAG AA ihlal — Faz 4 kazanımı korundu) · CLS≈0 (mobil+masaüstü) · masaüstü perf 100 · i18n parite (vitest 6/6 + build 0 `MISSING_MESSAGE`).
+
+---
+
 ## UAT Sonuçları
 
 > Bu bölüm `/devflow:verify-phase 6` oturumunda doldurulacak.
@@ -207,4 +233,4 @@ Mobil LCP 3.6s **Lantern-simüle**: throttle'sız gözlenen trace'te LCP element
 ---
 
 **Oluşturulma:** 2026-06-30
-**Son Güncelleme:** 2026-06-30 — run-task TASK-6.06 ❌ İptal (craft-gate, kullanıcı kararı): P2 (Living Flow mobil degradasyon) koşulmadı; imza görseline dokunulmadı (kod değişmedi). Gerekçe: 6.04 kanıtladı ki mobil LCP açığı (~3.6s) **Lantern simülasyon artefaktı** (hero metni gözlemde ~185ms render; 3.6s = 4× CPU throttle altında WebGL main-thread simülasyonu) — imza craft'ı (üst eksen) bir simüle-sayı için riske atılmaz. Kalan açık dürüstçe belgeli (v0.1 deseni; gerçek doğrulama = gerçek-cihaz/Vercel field). Sıradaki: TASK-6.07 (faz sonu ölçüm + kanonik artefakt + DECISIONS + guardrail).
+**Son Güncelleme:** 2026-06-30 — run-task TASK-6.07 ✅ (faz-sonu final): temsilî ortamda aynı-ortam before/after — Faz 6 lever'ları mobil perf 84→90 / LCP 3604→3164ms **ölçülebilir iyileştirdi** (sürücü L3 font budama; L1+L2 tek başına delta yok = 6.04 doğrulandı + network-lever rafinajı). Brief mobil bütçe hâlâ açık (90/3164ms); guardrail'ler yeşil (a11y=100 çift-tema, CLS≈0, masaüstü 100, i18n parite). Tüm fazdaki task'lar tamam → sıradaki adım `/devflow:verify-phase 6`.

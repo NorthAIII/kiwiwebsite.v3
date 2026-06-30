@@ -9,6 +9,20 @@
 
 <!-- Her yeni karar aşağıdaki formatta en üste eklenir (en yeni en üstte) -->
 
+### 2026-06-30 — Faz 6 sonucu: lever'lar mobil perf/LCP'yi ölçülebilir iyileştirdi (sürücü L3); brief mobil bütçe hâlâ açık (TASK-6.07)
+
+**Bağlam:** run-task TASK-6.07 (Faz 6 faz-sonu otoriter ölçüm + kanonik artefakt + guardrail regresyon). 6.04, ağır-SwiftShader devcontainer'ında (perf 62 / TBT 1842ms) L1+L2'nin ölçülebilir Lantern delta üretmediğini ve "lab lever ilerlemesini LCP ekseninde güvenilir ölçemez; tek kalan lab-görünür lever = WebGL iş yükünü azaltmak (P2)" sonucuna varmıştı. 6.07 ölçümü **temsilî ortamda** (node 20.20.2 + Chrome 150, flags birebir) yapıldı; bu ortamın lever-öncesi baseline'ı (aynı ortamda `git checkout e5a4ef1 -- src` ile yeniden build edilip ölçüldü) **perf 84 / LCP 3604ms / TBT 261ms** verdi — Faz-4 ortamıyla birebir. Yani 6.01/6.04'ün şişkinliği o devcontainer'a özgü bir anomaliymiş; 6.07'de perf/TBT de Faz-4 ile karşılaştırılabilir oldu, faz-içi before/after tek tutarlı ortamda apples-to-apples yapılabildi.
+
+**Bulgu (aynı-ortam before/after, TR `/` mobil median, 5 koşu):** baseline perf 84 / LCP 3604ms / FCP 1656 / TBT 261 → **final (L1+L2+L3) perf 90 / LCP 3164ms / FCP 1506 / TBT 178** (CLS≈0 sabit). LCP dağılımları örtüşmüyor (baseline min 3603 > final max 3231) → gerçek iyileşme (−440ms / −12%). Masaüstü 100→100, LCP 764→694ms. **Attribution:** L1+L2 tek başına delta vermiyor (LCP 3604→3755, gürültü — 6.04 çekirdek bulgusu temsilî ortamda da doğru); iyileşmenin tamamını **L3 (Fraunces SOFT/WONK budama)** sürüyor (L1+L2 üstüne 3755→3164, −590ms). Sebep: LCP elementi hero metni (Fraunces `display:swap`), Lighthouse mobil preset'i simüle network throttle (Lantern) uygular → ~113KB küçülen woff2 simülasyonda görünür.
+
+**Karar:** Faz 6 milestone'u ("ölçülebilir mobil perf/LCP iyileşmesi") **karşılandı**; brief mobil bütçe (perf ≥95 / LCP <2.5s) **karşılanmadı** (final 90 / 3164ms) ve kalan açık dürüstçe kaydedildi — hedef düşürülmedi, craft feda edilmedi. Kanonik artefaktlar `home-{mobile,desktop}-20260630-faz6.{html,json}` (Faz-4 kanoniklerini korur); attribution kanıtı `home-mobile-20260630-faz6-{baseline,l1l2only}.json`.
+
+**Gerekçe:** Kalan mobil açık = 4× CPU throttle altında WebGL main-thread init (CPU-bound); bunu kapatacak tek lever WebGL gerçek iş yükünü azaltmaktı (P2), 6.06'da craft-gate'te iptal edildi (imza üst eksen). **6.04 rafinajı (dürüst kayıt):** 6.04 "lab-görünür tek lever = P2 (WebGL iş yükü)" derken yalnız CPU/main-thread lever'larını düşünmüş, **network lever'ını (L3) atlamıştı** — Lantern simüle throttled font-download'u modellediği için L3 lab-görünür kazanç sağladı. L1+L2 gerçek-cihaz-doğru + craft-koruyucu (commit'li, regresyonsuz). Guardrail'ler yeşil: a11y=100 çift-tema (Playwright/axe light+dark, 0 WCAG AA), CLS≈0, masaüstü 100, i18n parite (vitest 6/6 + build 0 `MISSING_MESSAGE`). Brief bütçesinin nihai doğrulaması yine gerçek-cihaz/Vercel field gerektirir (throttle gerçekçiliği + gerçek GPU lab'dan lehte olabilir).
+
+**İlgili Task/Faz:** run-task TASK-6.07 (Faz 6 / v0.2 mobil perf-LCP, faz-sonu); detay + tam tablolar → `docs/perf/README.md` "Faz 6 / TASK-6.07 final"; Lantern körlüğü/network nüansı → `_dev/memory/lighthouse-lantern-render-timing-korligi.md`.
+
+---
+
 ### 2026-06-30 — P2 (Living Flow mobil degradasyon) craft-gate'te iptal: imzaya simüle-sayı için dokunulmaz (Faz 6)
 
 **Bağlam:** run-task TASK-6.06 (Faz 6 son lever). 6.04 ara-ölçü L1+L2'nin lab'da ölçülebilir Lantern delta üretmediğini, brief LCP'nin lab'da açık (mobil ~3.6s) kaldığını gösterdi ve P2'yi (Living Flow mobil degradasyon: DPR cap / particle / erken-static) **craft-gate** ile tetikledi — "lab'da simüle-LCP'yi azaltabilecek tek kalan lever WebGL gerçek iş yükü, ama craft-duyarlı". Task ön-koşulu bulanıktı: literal okumada "lab açık → koş", ama 6.04 kök nedeni kanıtlı bir **Lantern simülasyon artefaktı** (LCP elementi = hero metni, throttle'sız gözlemde `elementRenderDelay` 173↔173ms birebir → hero zaten ~185ms'de render; 3.6s = 4× CPU throttle altında WebGL main-thread'in *simülasyonu*).
