@@ -24,6 +24,7 @@ Faz numaraları **global, sürekli ve append-only**'dir — versiyon değişse b
 | 3 | v0.1 versiyon-sonu senaryo testi | v0.1 ana sayfa uçtan-uca doğrulama (S1–S8: giriş/yolculuk/mod/kontrol/taksonomi/5-dil/chatbot/adversarial); TR öncelik, otonom, keşfet+kaydet+triyaj | ✅ |
 | 4 | v0.2 erişilebilirlik (a11y 89→100) | a11y A11Y1 renk kontrastı (marka yeşili imza korunur, bağlam-özel) + A11Y2 hero `<dl>` markup + A11Y3 dil-switcher aria; ana sayfa-birincil, perf/CLS regresyonsuz | ✅ |
 | 5 | v0.2 test altyapısı (D1) | Kümülatif test harness (Vitest+RTL / Playwright+axe-core) + ilk GitHub Actions CI + tohum testler (i18n 5-dil parite + a11y regresyon `/` light+dark) | ✅ |
+| 6 | v0.2 mobil perf / LCP | Ana sayfa TR `/` mobil perf/LCP brief bütçesine (≥95 / <2.5s) yaklaştırma — brief hedef / craft tavan; önce WebGL-dışı kazanımlar (P1) sonra Living Flow degradasyon ayarı (P2); a11y=100/CLS=0/masaüstü regresyonsuz | 🔄 |
 
 **Durum simgeleri:**
 - 🔄 **Devam ediyor** — discuss-phase başladı (aktif faz)
@@ -38,8 +39,7 @@ Faz numaraları **global, sürekli ve append-only**'dir — versiyon değişse b
 
 > Yaklaşan faz konuları — **numarasız**. Faza girildiğinde (discuss-phase) buradan çıkar, numara (mevcut en büyük faz no + 1) alıp Faz Durumu tablosuna 🔄 olarak geçer. Aşağıdakiler güçlü revize için aday konulardır; kesin kapsam ve sıra PRD/discuss-phase'de netleşir.
 
-**v0.2 kalan fazları** (sıra discuss-phase 4'te sabitlendi: a11y → teknik temel → perf → Umami; Faz 4 = a11y, Faz 5 = test altyapısı girildi):
-- **Mobil perf / LCP** (87 / 3.1s → brief bütçesi ≥95 / <2.5s) — ana kaynak Living Flow WebGL (craft-duyarlı, üst eksen → aceleyle dokunulmaz).
+**v0.2 kalan fazları** (sıra discuss-phase 4'te sabitlendi: a11y → teknik temel → perf → Umami; Faz 4 = a11y, Faz 5 = test altyapısı, Faz 6 = mobil perf/LCP girildi):
 - **Umami analytics (E1)** — `docs/UMAMI-ANALYTICS.md` spec'i; canlıda saydığı gözle doğrulanır.
 
 > v0.2 içerik fazları bitince versiyon-sonu sabit fazları gelir: teknik borç → senaryo testi → prd-review (dinamik, faza girince doğrudan tabloya eklenir). Faz ayrımı (kaç faz) her discuss-phase'de netleşir.
@@ -73,11 +73,12 @@ Faz numaraları **global, sürekli ve append-only**'dir — versiyon değişse b
 | Faz 3 ✅ (Senaryo Testi) → versiyon sonu | 2026-06-29 | S1–S8 + UAT 10/10; kapsam-içi bug yok, kaynak değişmedi; v0.1 versiyon-sonu fazları (1,2,3) tamam; Versiyon Sonu Durumu → prd_review_bekliyor; sıradaki = zorunlu prd-review |
 | Faz 4 ✅ (v0.2 a11y) → sonraki içerik fazı | 2026-06-30 | a11y 89→100 çift-tema (UAT 14/14, kalite 8 eksen); imza/perf/parite korundu; Versiyon Sonu Durumu içerik_fazları (değişmez); sıradaki = test altyapısı D1 (discuss-phase 5 promote eder) |
 | Faz 5 ✅ (v0.2 test altyapısı D1) → sonraki içerik fazı | 2026-06-30 | İlk test altyapısı (UAT 13/13, kalite 8 eksen ✅): 3 katman (Vitest node/jsdom + Playwright/axe) + ilk GitHub Actions CI + 2 tohum (i18n parite + a11y regresyon); src/+messages/ 0 değişiklik; Versiyon Sonu Durumu içerik_fazları (değişmez); sıradaki = mobil perf/LCP (discuss-phase 6 promote eder) |
+| Faz 6 girildi (v0.2 mobil perf/LCP) | 2026-06-30 | discuss-phase 6: kapsam tartışması tamam; ana sayfa TR `/` mobil-birincil, brief hedef / craft tavan, önce WebGL-dışı → degradasyon ayarı; Sıradaki Fazlar'dan mezun, tabloya 🔄; sıradaki adım research-phase 6 |
 
 <!-- KURAL: Her geçiş için TEK satır + kısa not. Geçiş gerekçesi/detayı PHASE-N.md retrospektifindedir, burada tekrar edilmez. "Önceki:" prefix veya HTML comment ile detay yığma YASAK (CLAUDE.md → Doküman Disiplini). -->
 
 ---
 
-**Son Güncelleme:** 2026-06-30 — review-phase 5: Faz 5 (v0.2 test altyapısı D1) ✅ tamamlandı (UAT 13/13, 8 kalite ekseni, geçiş notu eklendi). Versiyon Sonu Durumu içerik_fazları (değişmez); sıradaki içerik fazı = mobil perf/LCP (Sıradaki Fazlar'da numarasız; discuss-phase 6 promote eder).
+**Son Güncelleme:** 2026-06-30 — discuss-phase 6: Faz 6 (v0.2 mobil perf/LCP) Faz Durumu tablosuna 🔄 eklendi, Sıradaki Fazlar'dan mezun edildi (Umami kaldı). Kapsam: ana sayfa TR `/` mobil-birincil, brief hedef / craft tavan; sıradaki adım research-phase 6.
 
 <!-- KURAL: Bu satır her güncellemede ÜZERİNE YAZILIR. "Önceki:" prefix ile kümülatif yığma YASAK (CLAUDE.md → Doküman Disiplini). -->

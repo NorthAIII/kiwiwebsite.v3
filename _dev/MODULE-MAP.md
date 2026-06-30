@@ -134,6 +134,9 @@ M6 (SEO/Deploy) ─────────────────────>
 | D1.3: a11y regresyon tohum testi (Playwright+axe, `/` light+dark 0 ihlal) | M1–M3 (a11y) | v0.2 | 5 | ✅ |
 | D1.4: CI iskeleti (ilk GitHub Actions: build + Vitest job + Playwright/a11y ayrı job) | M6 | v0.2 | 5 | ✅ |
 | D1.5: Kümülatif test convention notu (test yeri/koşma + "her feature kendi testini ekler") | M6 / docs | v0.2 | 5 | ✅ |
+| **— v0.2 mobil perf iş birimleri (Faz 6 — ana sayfa TR `/` mobil perf/LCP, brief hedef / craft tavan) —** | | | | |
+| P1: WebGL-dışı mobil perf kazanımları (font/JS bundle/asset/render-path; imza dokunulmaz) | M6 (+M1) | v0.2 | 6 | 🔄 |
+| P2: Living Flow mobil degradasyon ayarı (DPR cap/particle/erken static; craft korunur) | M1 | v0.2 | 6 | 🔄 |
 
 **Durum simgeleri:**
 - ⬜ **Bekliyor** — Fazı henüz başlamadı
@@ -147,4 +150,4 @@ M6 (SEO/Deploy) ─────────────────────>
 
 ---
 
-**Son Güncelleme:** 2026-06-30 — review-phase 5: v0.2 teknik temel iş birimleri D1.1–D1.5 (test harness + i18n parite tohum + a11y regresyon tohum + ilk GitHub Actions CI + convention notu) Durum ✅ (Faz 5 tamamlandı, UAT 13/13, src/+messages/ 0 değişiklik). Faz 4 a11y iş birimleri ✅ korundu.
+**Son Güncelleme:** 2026-06-30 — discuss-phase 6: v0.2 mobil perf iş birimleri P1 (WebGL-dışı kazanımlar) + P2 (Living Flow mobil degradasyon ayarı) eklendi, Faz 6'ya atandı, Durum 🔄 (ana sayfa TR `/` mobil-birincil; brief hedef / craft tavan). Faz 5 D1.x ve Faz 4 a11y iş birimleri ✅ korundu.
