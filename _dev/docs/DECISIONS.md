@@ -9,6 +9,20 @@
 
 <!-- Her yeni karar aşağıdaki formatta en üste eklenir (en yeni en üstte) -->
 
+### 2026-06-30 — Test altyapısı mimarisi: Vitest + Playwright/axe + GitHub Actions (Faz 5 / D1)
+
+**Bağlam:** research-phase 5. Projede test altyapısı yoktu ("test" = `next build` + elle/otonom doğrulama geçici konvansiyonu). Kümülatif harness'in (ILKELER "test atlanmaz, üstüne koyarak büyür") **runner + ilk CI + yüksek-değerli tohum** çerçevesinde kurulması gerekiyordu. Mevcut yığın ESM-ağır: three.js `transpilePackages`, Next 15 App Router, React 19, 5-dilli next-intl. Ampirik saptama: Playwright/axe **proje bağımlılığı değildi** (Faz 4 npx cache kullandı); i18n paritesi şu an tam (5×183 anahtar).
+
+**Seçenekler (research'te değerlendirildi):** Runner: Vitest vs Jest. E2E/a11y: @axe-core/playwright vs jest-axe vs Lighthouse-CI/pa11y. DOM env: jsdom vs happy-dom. i18n tohum: anahtar-kümesi vs değer karşılaştırması. axe kapsamı: WCAG etiketleri vs full ruleset (best-practice dahil). DOM/component katmanı: şimdi kur+smoke / şimdi kur / ertele.
+
+**Karar:** **Vitest 4** (node + jsdom çift ortam) + **@playwright/test 1.61.1 + @axe-core/playwright 4.12.1** + **ilk GitHub Actions CI** (2 job: build+vitest hızlı / playwright-a11y chromium). Tohum = i18n 5-dil **anahtar-kümesi** paritesi (node) + a11y regresyon `/` light+dark (Playwright/axe) + jsdom yolunu kanıtlayan **minik component smoke** (kullanıcı kararı 2026-06-30). axe kapsamı = **WCAG etiketleri** `wcag2a/2aa/21a/21aa` (kullanıcı kararı 2026-06-30). Playwright hedefi = prod build; chromium-only.
+
+**Gerekçe:** Vitest ESM-native → three/Next 15/React 19 zincirine Jest'in `next/jest`+ESM sürtünmesi olmadan oturur (kalıcılık, ILKELER). @axe-core/playwright gerçek tarayıcıda kontrast/markup ölçer (jest-axe'in jsdom yanıltıcı yeşili değil), Faz 4 zemini birebir korunur. i18n testi **değeri değil anahtarı** karşılaştırır → TR-tek-kaynak + stale-çeviri stratejisiyle (DECISIONS 2026-06-27/06-28) uyumlu. **WCAG etiketleri** kritik nüansı çözer: Faz 4 a11y=100 **Lighthouse alt-kümesiydi**; ham axe full-ruleset (axe-core 4.12.1, best-practice dahil) "0 ihlal"i garanti etmez → WCAG AA'ya scope, Faz 4'ün kilitlediği standardı regresyona bağlar. Her katman uçtan-uca bir tohumla kanıtlanır ("her katman kanıtlanır" milestone'u). Bağımlılık ekleme install anında ayrıca teyit edilir (Dokunulmazlar).
+
+**İlgili Task/Faz:** research-phase 5 (Faz 5 / v0.2 test altyapısı D1); detay → `phases/PHASE-5.md` "Araştırma Bulguları". Plan/icra: plan-phase 5.
+
+---
+
 ### 2026-06-30 — Yeni tasarım-sistemi token'ı: `--color-pulse-ink` (ink-zemin adaptif imza-yeşili)
 
 **Bağlam:** TASK-4.07 (Faz 4 a11y, C2/C3). Gym sektör paneli `bg-ink` + `text-canvas`; imza pulse-yeşili öğeler (adım no 01/02/03 + "Canlı ürünü gör" CTA) `text-pulse` (`#6fe36f`) kullanıyordu. Dark modda `--color-ink` krem'e (`#f2f1e8`) döndüğü için panel zemini krem oluyor → parlak pulse krem üzerinde 1.22 (color-contrast fail). Mevcut hiçbir yeşil token panelin **her iki halinde** (light=koyu zemin / dark=krem zemin) 4.5'i geçmiyordu — tek statik renk çözemez (DEV-2 dark-inversion).

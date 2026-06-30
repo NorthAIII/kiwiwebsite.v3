@@ -71,20 +71,55 @@
 
 ## Araştırma Bulguları
 
-> Bu bölüm `/devflow:research-phase 5` oturumunda doldurulur.
+> `/devflow:research-phase 5` (2026-06-30). Discuss'taki yığın kararı doğrulandı + sürümler ampirik saptandı (npm registry, tahmin değil) + 2 karar noktası kullanıcıya sunuldu/çözüldü.
+
+### Mevcut Durum (ampirik doğrulandı)
+
+- **i18n paritesi şu an tam:** 5 dilde de **183 yaprak anahtar**, 0 eksik / 0 fazla (recursive flatten karşılaştırması) → i18n parite tohumu mevcut durumda **yeşil** geçer; fail-on-regression kanıtı için tek anahtar silmek yeterli.
+- **Playwright/axe proje bağımlılığı DEĞİL.** Discuss'taki "zaten projede" notu Faz 4'ün **npx cache** kullanımına aitti. `package.json`/`node_modules`'ta yok; `package-lock.json`'daki `@playwright/test` yalnızca Next'in **opsiyonel peer** referansıdır (yanıltıcı). → Taze install gerekir.
+- Temiz başlangıç: `vitest.config`/`playwright.config`/`tests/` yok, `.github/` yok, eslint kurulu değil. Node v24.16 / npm 11.13.
 
 ### Değerlendirilen Yaklaşımlar
-- [Yaklaşım 1]: [Açıklama, artılar, eksiler]
-- **Seçilen:** [Hangisi ve neden]
+
+- **Test runner: Vitest vs Jest** — **Vitest** (discuss kararı doğrulandı). ESM-native, Vite transform ile three.js `transpilePackages` + Next 15 ESM zincirine sürtünmesiz; Jest'in `next/jest` + ESM + three transpile setup'ı kırılgan. Ampirik: vitest 4.1.9 engines `node>=24` ✓.
+- **E2E/a11y: @axe-core/playwright vs jest-axe vs Lighthouse-CI/pa11y** — **@axe-core/playwright**. Gerçek tarayıcıda render+CSS+kontrast (Faz 4 ile aynı zemin), playwright 1.61.1 Faz 4'te zaten kullanıldı. jest-axe jsdom'da koşar ama jsdom gerçek layout/CSS/kontrastı yansıtmaz → a11y için yanıltıcı yeşil. Lighthouse-CI perf fazına ait (ayrı v0.2 fazı, kapsam dışı).
+- **DOM env: jsdom vs happy-dom** — **jsdom** (29.1.1). Spec-tamlığı RTL + a11y-bilinçli proje + kalıcılık önceliğiyle (ILKELER) hizalı; happy-dom hızlı ama eksik.
+- **i18n parite: anahtar-kümesi vs değer karşılaştırması** — **anahtar kümesi** (recursive flatten, hem eksik hem fazla yönü). Değer **karşılaştırılmaz**: TR tek kaynak, stale çeviri versiyon-sınırına dek serbest; yalnız eksik/fazla anahtar fail (dil stratejisi → DECISIONS 2026-06-27/06-28, M4).
+- **Seçilen yığın:** Vitest (node + jsdom) ikili katman + Playwright/axe. Her katman uçtan-uca bir tohumla kanıtlanır (milestone Q1).
 
 ### Kullanılacak Araçlar/Kütüphaneler
-- [Araç 1]: [Versiyon, ne için]
+
+Hepsi **yeni devDependency** (hiçbiri kurulu değil); gerçek `npm install` **install anında ayrıca teyit** edilir (Dokunulmazlar — package.json/lock + gerekirse tsconfig test tipleri).
+
+| Paket | Sürüm | Ne için |
+|-------|-------|---------|
+| `vitest` | 4.1.9 | Test runner (node + jsdom) |
+| `@vitejs/plugin-react` | 6.0.3 | JSX transform (yalnız component katmanı) — peer **vite ^8** |
+| `@testing-library/react` | 16.3.2 | Component render (React 19 destekli ✓) |
+| `@testing-library/jest-dom` | 6.9.1 | DOM matcher'ları (setupFiles ile yüklenir) |
+| `jsdom` | 29.1.1 | Component testleri için DOM ortamı |
+| `@playwright/test` | 1.61.1 | E2E/a11y koşucu (Faz 4 npx playwright-core 1.61.1 ile **birebir**) |
+| `@axe-core/playwright` | 4.12.1 | axe denetimi (**axe-core ~4.12.1** bundle eder) |
 
 ### Dikkat Edilecekler
-- [Tuzak/Risk 1]: [Nasıl kaçınılacak]
+
+1. **🔴 Lighthouse-altküme ≠ ham axe full-ruleset + sürüm drift (en kritik).** Faz 4'ün **a11y=100**'ü **Lighthouse** skorudur (Lighthouse axe'ın WCAG'a maplenmiş **alt kümesini** koşar, axe-core 4.11.4). Ham `@axe-core/playwright` varsayılan olarak **best-practice dahil tüm ruleset'i** koşar ve **axe-core 4.12.1** kullanır. İki fark birikince "Lighthouse a11y=100" → "@axe-core/playwright 0 ihlal" **garanti etmez**; tohum, Lighthouse'un saymadığı best-practice ihlalleri (region/landmark/heading-order) yüzünden regresyon olmadan kırmızı çıkabilir. **Kaçınma:** axe kapsamı `withTags(['wcag2a','wcag2aa','wcag21a','wcag21aa'])` (kullanıcı kararı) → WCAG AA standardını kilitler, best-practice gürültüsü dışarıda. Yine de plan/icrada `/` light+dark'a **ampirik koş**, gerçek 0-ihlal baseline'ı sabitle (Faz 4 DEV-1 dersinin tekrarı). *Kaynak: Faz 4 a11y=100 → `phases/PHASE-4.md`; axe-core 4.11.4 (Lighthouse bundle) vs 4.12.1 (@axe-core/playwright bundle).*
+2. **Locale tuzağı.** `/` (prefixsiz TR) Accept-Language ile otomatik `/en` vb.'ye yönlenir (next-intl `localeDetection`); test ortamında da geçerli. TR ölçümünde **`NEXT_LOCALE=tr` cookie şart** (cookie precedence > Accept-Language). *Tanımlayıcı: `NEXT_LOCALE` = next-intl runtime cookie (dış/runtime — repoda env/sabit değil). Kaynak: MEMORY "Accept-Language redirect tuzağı".*
+3. **Tema tuzağı.** a11y daima **light + dark iki koşu**; `bg-ink`/`text-canvas` panelleri (SectorSolutions, Bunker, Footer) dark'ta krem'e döner → kontrast pass/fail flip eder. Playwright `emulateMedia({ colorScheme })`. *Kaynak: MEMORY "a11y ölçümünde tema tuzağı".*
+4. **Reveal `opacity:0` tuzağı.** Full-motion'da scroll-reveal içerik `opacity:0` kalır → axe gizli içeriği atlar (yanlış yeşil). `emulateMedia({ reducedMotion: 'reduce' })` + **uçtan-uca scroll** şart. *Kaynak: Faz 4 DEV-5 → `phases/PHASE-4.md`.*
+5. **three.js/WebGL jsdom'da yok.** Living Flow birim-test edilmez (kapsam dışı, teyit). Component **smoke** testi WebGL'siz, app-bağımsız trivial bir component olmalı (next-intl/GSAP/three sürüklememeli) — amaç toolchain öz-kanıtı.
+6. **Vitest çift-ortam ayrımı.** i18n parite = **node** ortamı (default, hızlı, DOM gerekmez); component smoke = **jsdom** (`// @vitest-environment jsdom` pragma). `setupFiles` jest-dom matcher'larını yükler; `@vitejs/plugin-react` yalnız JSX transform için. Kümülatif büyüyünce `test.projects` (node/jsdom ayrı proje) ile bölünür.
+7. **Playwright = taze install.** `npx playwright install --with-deps chromium` (yerel + CI). package-lock referansına güvenme (madde: mevcut durum).
+8. **CI build maliyeti.** İlk CI'da iki job da `next build` koşar (basit/robust). `.next` artifact paylaşımı bilinçli **ileri optimizasyon** (şimdi değil).
 
 ### Teknik Kararlar
-- [Karar 1]: [Gerekçe]
+
+- **axe kapsamı = WCAG etiketleri** (`wcag2a/2aa/21a/21aa`) — *kullanıcı kararı 2026-06-30.* Faz 4'ün kilitlediği standardı regresyona bağlar; best-practice ayrı/bilinçli ele alınır.
+- **Vitest DOM/component katmanı = şimdi kur + minik render-smoke testi** — *kullanıcı kararı 2026-06-30.* RTL+jsdom+jest-dom+plugin-react kurulur VE jsdom yolunu kanıtlayan tek minik smoke testi eklenir (harness öz-kanıtı; geniş component kapsamı değil). Seed böylece **3 kanıtlı katman**: Vitest-node (i18n parite) · Vitest-jsdom (smoke) · Playwright/axe (a11y regresyon).
+- **Vitest ortamı:** default `node` + component testlerde `jsdom` pragma (ileride `test.projects`'e geçiş).
+- **Playwright hedefi:** prod build (`next build && next start` üzerinden `webServer`), Faz 4 ölçüm zemini; **chromium-only** (a11y tek motor yeter, CI hızlı).
+- **CI = ilk GitHub Actions:** 2 job — *hızlı* (`npm ci` → `next build` → `vitest` [birim+i18n]) + *a11y* (`npm ci` → `playwright install chromium` → `next build` → `playwright` [a11y]); push + PR, **revize branch dahil**. npm + playwright-browser cache.
+- **Tüm devDependency ekleme install anında teyit** (Dokunulmazlar) — bilinçli tek sefer.
 
 ---
 
@@ -156,4 +191,4 @@
 ---
 
 **Oluşturulma:** 2026-06-30
-**Son Güncelleme:** 2026-06-30 — discuss-phase 5: kapsam tartışması tamamlandı (altyapı + tohum kümülatif başlangıç; Vitest+RTL / Playwright+axe-core yığını; ilk GitHub Actions CI; tohum = i18n 5-dil parite + a11y regresyon `/` light+dark). Sıradaki: research-phase 5.
+**Son Güncelleme:** 2026-06-30 — research-phase 5: teknik araştırma tamamlandı. Sürümler ampirik saptandı (vitest 4.1.9 / @playwright/test 1.61.1 / @axe-core/playwright 4.12.1 vb.); i18n paritesi şu an tam (5×183 anahtar). 2 karar: axe kapsamı = WCAG etiketleri; DOM katmanı şimdi kur + minik smoke (seed = 3 kanıtlı katman). En kritik risk: Lighthouse-altküme ≠ ham axe full-ruleset (plan/icrada ampirik koşulacak). Sıradaki: plan-phase 5.
