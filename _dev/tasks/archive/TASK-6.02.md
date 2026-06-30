@@ -1,6 +1,6 @@
 # TASK-6.02: L1 — Hero reveal opacity → transform-only
 
-**Durum:** ⬜ Bekliyor
+**Durum:** ✅ Tamamlandı
 **Modül:** M2 (modules/M2-Sayfalar-Bolumler.md) — Hero; craft M1 imzası
 **Feature:** P1 — WebGL-dışı mobil perf kazanımı (LCP)
 **Faz:** Phase 6 (phases/PHASE-6.md)
@@ -35,13 +35,13 @@ Research K-R1 (PHASE-6 + DECISIONS 2026-06-30): `opacity:0` LCP adaylığını k
 
 ## Alt Görevler
 
-- [ ] **1. Reveal'i transform-only yap**
+- [x] **1. Reveal'i transform-only yap**
   - `Hero.tsx:18` `gsap.set("[data-hero]", { opacity: 0, y: 36 })` → `opacity:0`'ı kaldır (yalnız `{ y: 36 }` kalır)
   - Timeline `.to(...)` adımlarındaki `opacity: 1` hedeflerini kaldır/`y: 0`-only yap (satır 21-25) — elementler başlangıçta görünür (opacity 1) kalmalı, yalnız `y` ile kayar
   - Reduced-motion erken-return (`Hero.tsx:16`) korunur (zaten reveal'i atlar)
   - Stagger zamanlaması (0.15/0.32/0.55/0.7/0.85) ve ease (`power3.out`) — imza timing korunur, değiştirilmez
 
-- [ ] **2. Craft gözle doğrulama (iki tema + etkileşim)**
+- [~] **2. Craft gözle doğrulama (iki tema + etkileşim)** — mekanik kanıt + DOM teyidi yapıldı; insan-gözü light+dark + cursor/scroll onayı headless software-GL ortamda yapılamadı, gerçek tarayıcıda kullanıcıya bırakıldı
   - Local prod build/preview'da hero giriş animasyonunu **light + dark** izle: yukarı kayma imzası akıcı mı, "snap"/bozuk görünmüyor mu
   - Cursor hover + scroll'da Living Flow + hero etkileşimi bozulmadı mı
   - Headline ilk frame'de görünür mü (LCP-uygun); reduced-motion'da statik (kayma yok) mu
@@ -68,12 +68,12 @@ src/components/
 
 ## Test Kriterleri
 
-- [ ] `next build` temiz geçer (TS strict, lint)
-- [ ] Hero `<h1>` ilk paint'te görünür (opacity:0 yok) — DOM/visual teyit
-- [ ] Reveal kayma imzası **light + dark** akıcı (gözle, snap/bozulma yok)
-- [ ] Cursor hover + scroll etkileşimi bozulmadı (Living Flow + hero)
-- [ ] reduced-motion'da reveal atlanır (statik, kayma yok) — mevcut davranış korunur
-- [ ] CLS gözle/ölçümle 0 (layout kayması yok)
+- [x] `next build` temiz geçer (TS strict, lint) — ✅ Compiled successfully, 37/37 sayfa, uyarı yok
+- [x] Hero `<h1>` ilk paint'te görünür (opacity:0 yok) — DOM teyit (`tr.html` prerender, inline opacity:0 yok)
+- [~] Reveal kayma imzası **light + dark** akıcı — kayma timeline'ı byte-birebir korundu (mekanik kanıt); insan-gözü light+dark onayı headless software-GL ortamda yapılamadı → gerçek tarayıcıda kullanıcı onayına bırakıldı
+- [~] Cursor hover + scroll etkileşimi bozulmadı — ilgili kod (Magnetic/LivingFlow/scroll) bu task'ta değişmedi; gözle nihai onay kullanıcıda
+- [x] reduced-motion'da reveal atlanır (statik, kayma yok) — `Hero.tsx:16` erken-return korundu
+- [x] CLS gözle/ölçümle 0 — y-transform compositor-only, elementler layout alanını kaplıyor → yapı gereği CLS=0
 
 ---
 
@@ -86,46 +86,53 @@ src/components/
 
 ## Tamamlanma Kriterleri
 
-- [ ] Tüm alt görevler tamamlandı
-- [ ] Tüm test kriterleri karşılandı
-- [ ] Git commit & push yapıldı (conventional commits formatı)
-- [ ] Bu doküman güncellendi (oturum kaydı)
-- [ ] DURUM.md güncellendi
+- [x] Tüm alt görevler tamamlandı (craft-gözle maddesi ortam-kısıtlı, kullanıcı onayına işaretlendi)
+- [x] Tüm test kriterleri karşılandı (gözle-craft hariç — ortam-kısıtlı, dürüst kayıt)
+- [x] Git commit & push yapıldı (conventional commits formatı)
+- [x] Bu doküman güncellendi (oturum kaydı)
+- [x] DURUM.md güncellendi
 
 ---
 
 ## Oturum Kayıtları
 
-### Oturum — [TARİH]
+### Oturum — 2026-06-30
 
-**Durum:** [✅/🔄/⏸️/🔴]
+**Durum:** ✅
 
 **Yapılanlar:**
--
+- `Hero.tsx:18` `gsap.set("[data-hero]", { opacity: 0, y: 36 })` → `{ y: 36 }` (opacity:0 kaldırıldı).
+- Timeline 5 `.to(...)` adımındaki `opacity: 1` hedefleri kaldırıldı → yalnız `y: 0` (l1/l2/sub/cta/stats). Stagger zamanlaması (0.15/0.32/0.55/0.7/0.85), ease (`power3.out`), süreler (1.1 / 0.9) birebir korundu.
+- reduced-motion erken-return (`Hero.tsx:16`) yerinde — değiştirilmedi.
 
 **Sorunlar:**
--
+- Yok. Mekanik, tek-kanal (opacity) çıkarma; kayma timeline'ı dokunulmadı.
 
 **Kararlar:**
--
+- Craft tavan: kayma hareketi byte-birebir korunduğu için imzada yeni "snap" riski yok; tek görsel delta önceden onaylı fade kaybı (K-R1). Bu yüzden craft değişimi düşük-risk; kullanıcıya getirilecek bir çatışma çıkmadı.
+- İnsan-gözü craft doğrulaması (light+dark motion + cursor/scroll) bu headless software-GL devcontainer'da faithful yapılamadı → gerçek tarayıcıda nihai göz-onayı kullanıcıya bırakıldı (TASK-6.01 dürüst-kayıt deseni). Mekanik kanıt + DOM teyidi tamamlandı.
 
 **Dosya Değişiklikleri:**
--
+- `src/components/Hero.tsx` — reveal transform-only (8 satır net diff, tek dosya).
 
 **Test Sonuçları:**
--
+- `npx next build` ✅ temiz: "Compiled successfully", lint + TS strict geçti, 37/37 statik sayfa, uyarı yok.
+- Prerender DOM teyidi (`.next/server/app/tr.html`): tüm `data-hero` elementleri mevcut, **inline `opacity:0` yok** → hero metni ilk paint'te tam görünür (LCP-uygun; TASK-6.01 ampirik LCP elementi = hero metni).
+- CLS: y-transform compositor-only, elementler layout alanını zaten kaplıyor (section `min-h-[100svh]`) → CLS=0 yapı gereği korunur.
+- LCP delta ölçümü bu task'ta DEĞİL → TASK-6.04 ara-ölç (L1+L2 sonrası, aynı node20+Chrome150 ortamı).
 
 ---
 
 ## Sonuç Özeti
 
-**Tamamlanma Tarihi:** [Tarih]
+**Tamamlanma Tarihi:** 2026-06-30
 
 **Ne Yapıldı:**
--
+- Hero giriş reveal'i transform-only yapıldı: `opacity:0` kaldırıldı (LCP adaylığını kıran kanal), kayma (`y`) imzası + timing korundu. Headline LCP-uygun kaldı; fade feda edildi (onaylı).
 
 **Öğrenilenler:**
--
+- `gsap.set` opacity:0 yalnız client-side (hydration sonrası) uygulanıyordu → sunucu HTML zaten opacity:1; fakat Lighthouse JS koştuğu için ölçümde opacity:0 etkiliydi (research metodoloji teyidi). Transform-only ile element ölçüm boyunca da LCP-uygun.
+- Motion timing'e dokunmadan yalnız opacity kanalını çıkarmak craft-riskini minimuma indirir: kayma imzası değişmez, yalnız önceden-onaylı fade kaybolur.
 
 ---
 

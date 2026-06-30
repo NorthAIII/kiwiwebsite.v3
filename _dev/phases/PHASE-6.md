@@ -138,7 +138,7 @@ TR `/` mobil diagnostic (Lighthouse 13.3.0, 4× CPU throttle, Moto-G sınıfı) 
 | # | Task | Durum | Açıklama |
 |---|------|-------|----------|
 | 6.01 | TASK-6.01 | ✅ Tamamlandı | Ölç-önce: LCP elementi = **hero metni** (ampirik); TR `/` mobil element-denetimli taban (perf 62 · LCP 3608ms, software-GL ortamı) — L1 yüksek-etki doğrulandı |
-| 6.02 | TASK-6.02 | ⬜ Bekliyor | L1: Hero reveal opacity→transform-only (`Hero.tsx`) — LCP-uygun headline, kayma imzası korunur |
+| 6.02 | TASK-6.02 | ✅ Tamamlandı | L1: Hero reveal opacity→transform-only (`Hero.tsx`) — `opacity:0` kaldırıldı, kayma imzası+timing korundu; hero LCP-uygun, build temiz, CLS=0 |
 | 6.03 | TASK-6.03 | ⬜ Bekliyor | L2: WebGL init mobilde idle/post-load deferral (`LivingFlow.tsx`) — main-thread LCP penceresinde boşalır |
 | 6.04 | TASK-6.04 | ⬜ Bekliyor | Ara-ölç: L1+L2 sonrası median + L3/P2 karar kapısı |
 | 6.05 | TASK-6.05 | ⬜ Bekliyor | L3: Fraunces SOFT/WONK axes budama (`layout.tsx`+`not-found.tsx`) — craft-nötr, woff2 küçülür |
@@ -174,4 +174,4 @@ TR `/` mobil diagnostic (Lighthouse 13.3.0, 4× CPU throttle, Moto-G sınıfı) 
 ---
 
 **Oluşturulma:** 2026-06-30
-**Son Güncelleme:** 2026-06-30 — run-task TASK-6.01 ✅: araç zinciri devcontainer'a kuruldu (node20+Chrome150+LH13.3.0, kullanıcı onayı); element-denetimli ölçüm. **LCP elementi = hero metni** (mobil sub `<p>`, masaüstü H1 `<span>`), opacity:0 reveal altında → L1 yüksek-etki doğrulandı. Mobil taban perf 62 / LCP 3608ms (software-GL ortamı; LCP/FCP/CLS önceki ortamla birebir, perf/TBT şişkin). Sıradaki: TASK-6.02 (L1).
+**Son Güncelleme:** 2026-06-30 — run-task TASK-6.02 ✅ (L1): `Hero.tsx:18` reveal `opacity:0`→transform-only — LCP adaylığını kıran opacity kanalı kaldırıldı, kayma `y` imzası + stagger/ease/süre birebir korundu (fade feda, K-R1). Build temiz (37/37); prerender DOM'da inline opacity:0 yok → hero metni LCP-uygun; CLS=0 yapı gereği. Gözle craft nihai onayı (light+dark + cursor/scroll) headless software-GL'de yapılamadı → gerçek tarayıcıda kullanıcıya bırakıldı. LCP delta TASK-6.04 ara-ölçte. Sıradaki: TASK-6.03 (L2: WebGL deferral).

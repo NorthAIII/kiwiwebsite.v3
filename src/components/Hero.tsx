@@ -15,14 +15,14 @@ export default function Hero() {
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const ctx = gsap.context(() => {
-      gsap.set("[data-hero]", { opacity: 0, y: 36 });
+      gsap.set("[data-hero]", { y: 36 });
       gsap
         .timeline({ defaults: { ease: "power3.out", duration: 1.1 } })
-        .to("[data-hero='l1']", { opacity: 1, y: 0 }, 0.15)
-        .to("[data-hero='l2']", { opacity: 1, y: 0 }, 0.32)
-        .to("[data-hero='sub']", { opacity: 1, y: 0, duration: 0.9 }, 0.55)
-        .to("[data-hero='cta']", { opacity: 1, y: 0, duration: 0.9 }, 0.7)
-        .to("[data-hero='stats']", { opacity: 1, y: 0, duration: 0.9 }, 0.85);
+        .to("[data-hero='l1']", { y: 0 }, 0.15)
+        .to("[data-hero='l2']", { y: 0 }, 0.32)
+        .to("[data-hero='sub']", { y: 0, duration: 0.9 }, 0.55)
+        .to("[data-hero='cta']", { y: 0, duration: 0.9 }, 0.7)
+        .to("[data-hero='stats']", { y: 0, duration: 0.9 }, 0.85);
     }, root);
     return () => ctx.revert();
   }, []);
