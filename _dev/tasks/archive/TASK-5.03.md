@@ -1,6 +1,6 @@
 # TASK-5.03: Playwright + axe Harness + a11y Regresyon Tohum Testi (`/` light+dark)
 
-**Durum:** ⬜ Bekliyor
+**Durum:** ✅ Tamamlandı
 **Modül:** M6 (infra, çapraz) + M1–M3 (a11y yüzeyi) — `modules/M6-SEO-Deploy.md`
 **Feature:** D1.1 (test harness — Playwright/axe katmanı) + D1.3 (a11y regresyon tohum)
 **Faz:** Phase 5 (phases/PHASE-5.md)
@@ -128,36 +128,46 @@ tests/e2e/
 
 ## Oturum Kayıtları
 
-### Oturum — [TARİH]
+### Oturum — 2026-06-30
 
-**Durum:** [✅/🔄/⏸️]
+**Durum:** ✅
 
 **Yapılanlar:**
-- [...]
+- 2 devDep eklendi (caret, projede tutarlı): `@playwright/test@^1.61.1` (Faz 4 playwright-core 1.61.1 ile birebir), `@axe-core/playwright@^4.12.1` (axe-core 4.12.1 bundle). `npx playwright install chromium` → chromium-1228 (`--with-deps` gerekmedi; Faz 4 OS deps mevcut).
+- `playwright.config.ts` (YENİ): chromium-only, `testDir: ./tests/e2e`, `testMatch: **/*.spec.ts`, `retries:0`, prod webServer `npm run build && npm run start` (port 3000, timeout 180s, `reuseExistingServer:!CI`), `baseURL`.
+- `package.json`: `test:e2e` scripti (`playwright test`).
+- `tests/e2e/home-a11y.spec.ts` (YENİ): light+dark parametrize iki test; `NEXT_LOCALE=tr` cookie + `emulateMedia({colorScheme, reducedMotion:'reduce'})` + uçtan-uca scroll + `AxeBuilder.withTags(['wcag2a','wcag2aa','wcag21a','wcag21aa']).analyze()` → `violations` boş.
+- `.gitignore`: Playwright çıktı klasörleri eklendi (`/test-results/`, `/playwright-report/`, `/blob-report/`, `/playwright/.cache/`) — `.claude/` satırına dokunulmadı.
 
 **Sorunlar:**
-- [...]
+- Yok. Ampirik baseline beklendiği gibi temiz (Karar Noktaları akışı tetiklenmedi — WCAG-AA scope `/` light+dark'ta 0 ihlal, Faz 4 standardıyla uyumlu).
+- `npm install --save-exact` ilk denemede pinledi; projedeki caret konvansiyonuna hizalamak için caret ile yeniden kuruldu (package-lock zaten kesin sürümü kilitler → CI reproducibility korunur).
 
 **Kararlar:**
-- [...] · docs/DECISIONS.md'ye eklendi: [Evet/Hayır]
+- Ampirik baseline beklenenle örtüştü → yeni DECISIONS girişi gerekmedi (Referans: yalnız beklenmedik ihlalde DECISIONS). · docs/DECISIONS.md'ye eklendi: Hayır
 
 **Dosya Değişiklikleri:**
-- [...]
+- `package.json` (+2 devDep, +1 script), `package-lock.json`, `.gitignore`, `playwright.config.ts` (YENİ), `tests/e2e/home-a11y.spec.ts` (YENİ). `src/` ve build çıktısı değişmedi (regresyon enjeksiyonu geri alındı, `git diff src/` temiz).
 
 **Test Sonuçları:**
-- [...]
+- **Ampirik baseline:** `npm run test:e2e` → `/` light + dark **2/2 yeşil**, 0 ihlal (gerçek koşu, varsayım değil).
+- **Fail-on-regression:** light-tema `--color-ink` token'ı soluk tona (`#d8d7d0`) çevrildi → light testi `color-contrast` (wcag143/wcag2aa) ihlaliyle **kırmızı**, dark yeşil kaldı (tema ayrımı da kanıtlandı) → token geri alındı → tekrar **2/2 yeşil**.
+- **Regresyon yok:** `npm run test` (Vitest) **6/6 yeşil** (e2e doğru exclude); `npm run build` **temiz**.
 
 ---
 
 ## Sonuç Özeti
 
-**Tamamlanma Tarihi:** [Tarih]
+**Tamamlanma Tarihi:** 2026-06-30
 
 **Ne Yapıldı:**
-- [...]
+- Projenin ilk E2E/a11y katmanı kuruldu: `@playwright/test` + `@axe-core/playwright` (chromium-only, prod-build webServer) + `npm run test:e2e`.
+- a11y regresyon tohumu (`tests/e2e/home-a11y.spec.ts`): `/` light+dark, WCAG-etiketli (`wcag2a/2aa/21a/21aa`) axe 0 ihlal. Faz 4'ün a11y=100 kazanımı artık otomatik regresyona bağlı. Seed'in 3 kanıtlı katmanından **3.'sü** (Vitest-node · Vitest-jsdom · **Playwright/axe**) → seed tamam.
 
 **Öğrenilenler:**
-- [...]
+- 🔴 kritik risk **gerçekleşmedi**: WCAG-AA scope ile `/` light+dark ampirik 0 ihlal — Lighthouse-altküme vs ham full-ruleset farkı `withTags` ile başarıyla nötralize edildi (best-practice gürültüsü dışarıda). Ham full-ruleset olsaydı region/landmark uyarıları gelebilirdi; WCAG etiketleri kararı doğrulandı.
+- Fail-on-regression light'ta kırmızı + dark'ta yeşil çıkması, tema-token ayrımının (`bg-ink`/`text-canvas` inversion) testte de gerçekten ayrıştığını kanıtladı → iki-koşu zorunluluğu (memory tema tuzağı) ampirik teyitli.
+- `reducedMotion:'reduce'` + uçtan-uca scroll kombinasyonu reveal `opacity:0` tuzağını kapattı; baseline gizli içerik atlamadan ölçüldü.
 
 ---
 

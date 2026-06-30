@@ -31,5 +31,11 @@ yarn-error.log*
 *.tsbuildinfo
 .playwright-mcp/
 
+# playwright (test çıktıları — repo'ya girmez)
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+
 # Claude Code / DevFlow local tooling (private — installed per-machine, not for the public repo)
 .claude/
