@@ -174,6 +174,15 @@ A11Y1 acceptance = `color-contrast` denetimi **0 başarısız**; bu, faz tablosu
 - **Doğrulandı:** build temiz; axe 4.11.4 light+dark → adım numaraları color-contrast listesinden çıktı (`#how` eşleşmesi=0); gözle faint görünüm + hover geçişi aynı.
 - **⚠️ K5/TASK-4.04 için uyarı:** K5 dekoratif "·" ayracı için `aria-hidden` planlamıştı — bu mekanizma color-contrast'ı çözmez. (Not: 4.02 axe koşusunda Footer `canvas/30` "·" ayraçları zaten **ihlal listesinde görünmedi** — punctuation/komşu metin run'ı olabilir; 4.04 bunu kendi ölçümünde teyit etsin.) Ayraç gerçekten flag'lenirse fix = pseudo-element/non-text render **veya** opaklık bump (≥ eşik), aria-hidden değil.
 
+### Task 4.08 İcra Notu (2026-06-30) — final doğrulama + baseline `/en`-mislabel düzeltmesi (DEV-6)
+
+> Faz milestone'u doğrulandı; ayrıca **çapraz-task** etkili bir ölçüm bulgusu (perf/README + memory'ye işlendi).
+
+- **a11y=100 çift-tema teyitli:** Lighthouse kanonik (dark) TR `/` mobil+masaüstü a11y 100; 4 denetim color-contrast pass / label-mismatch pass / definition-list+dlitem **N/A** (K3 ile `<dl>` kaldırıldı → notApplicable, fail değil). axe (emulateMedia + reducedMotion + scroll) **light + dark** TR `/`: 4 denetim 0 + **tam tarama 0 toplam ihlal** (39 pass, her tema). K1-K5 + C2/C3/C9 hepsi doğrulandı.
+- **DEV-6 (kritik, çapraz-task): v0.1 perf baseline TR `/` değil `/en` ölçmüş.** Cookie'siz kanonik koşu Chrome `Accept-Language` ile `/`→`/en` redirect olur (next-intl `localeDetection`; MEMORY'deki redirect tuzağı **Lighthouse'da da** geçerli — Chrome tabanlı). Kanıt: v0.1 artifact `home-{mobile,desktop}-20260628.json` `finalUrl=/en`. README "Ana sayfa (`/`, TR varsayılan)" etiketi yanlıştı (sayılar doğru, locale-etiketi yanlış). → Düzeltildi (perf/README intro + v0.1 başlık + Metodoloji).
+- **Perf regresyon yok (apples-to-apples):** post-fix build `/en` (baseline-birebir komut) → mobil perf 87 / LCP 3156ms / FCP 1056ms / CLS 0 = baseline **birebir**; masaüstü perf 100 / CLS 0 = baseline. Lantern simülasyonu deterministik olduğu için "birebir" = Faz 4'ün CSS-renk/markup/aria fixleri **sıfır perf maliyeti**. TR `/` (cookie ile, yeni ölçülen) mobil 84 / masaüstü 99 — `/en`'den ağır TR hero metni, **regresyon değil** (baseline bu sayfayı hiç ölçmemişti). Korunan taban (ILKELER §2) regresyonsuz.
+- **Süreç dersi:** İleride perf ölçerken TR varsayılan sayfası için `NEXT_LOCALE=tr` cookie **şart** (yoksa `/en` ölçülür); karşılaştırmada hep **aynı locale**. (perf/README Metodoloji + MEMORY tuzak satırı güncellendi.)
+
 ---
 
 ## Task Listesi
@@ -191,7 +200,7 @@ A11Y1 acceptance = `color-contrast` denetimi **0 başarısız**; bu, faz tablosu
 | 4.05 | TASK-4.05 | ✅ Tamamlandı | Hero `<dl>`/`<dt>`/`<dd>` → `<div>`+`<span class="block">` (K3; data-hero korundu, görünüm birebir; axe light+dark definition-list 0 + dlitem 0) |
 | 4.06 | TASK-4.06 | ✅ Tamamlandı | Dil-switcher `aria-label`'a locale kodu (K4; `${LABELS[locale]} (${locale.toUpperCase()})`, kod-only; axe label-content-name-mismatch light+dark × 5 dil 0) |
 | 4.07 | TASK-4.07 | ✅ Tamamlandı | Gym-panel pulse-yeşili dark-inversion fix (C2/C3): yeni adaptif `--color-pulse-ink` token (light `#6fe36f`/dark `#1f7a3d`); axe color-contrast light+dark 0 (dark 1.22→4.74) |
-| 4.08 | TASK-4.08 | ⬜ Bekliyor | Final doğrulama: a11y=100 **çift-tema** (light+dark) + perf/CLS regresyonsuz + `docs/perf/` taban |
+| 4.08 | TASK-4.08 | ✅ Tamamlandı | Final doğrulama: a11y=100 **çift-tema** teyit (axe light+dark 0 toplam ihlal); perf/CLS regresyonsuz (apples-to-apples `/en` birebir baseline); taban + DEV-1/locale düzeltmeleri kaydedildi |
 
 **Durum simgeleri:** ⬜ Bekliyor | 🔄 Devam ediyor | ⏸️ Duraklatıldı | ✅ Tamamlandı | 🔴 Bloke | ❌ İptal
 
@@ -250,4 +259,4 @@ A11Y1 acceptance = `color-contrast` denetimi **0 başarısız**; bu, faz tablosu
 ---
 
 **Oluşturulma:** 2026-06-29
-**Son Güncelleme:** 2026-06-30 — run-task TASK-4.07 ✅: gym-panel pulse-yeşili dark-inversion fix (C2/C3). Yeni adaptif `--color-pulse-ink` token (`globals.css` `@theme` light `#6fe36f` = mevcut pulse / `html.dark` `#1f7a3d` = marka-yeşili); `SectorSolutions.tsx` adım no (L131) + seeLive CTA (L143) `text-pulse`→`text-pulse-ink`; `bg-pulse` canlı-nokta dokunulmadı. axe-core 4.11.4 (Playwright fresh-prod-serve :4173, emulateMedia + reducedMotion + scroll): light+dark sayfa geneli color-contrast **0 ihlal** (dark adım no/CTA 1.22→4.74); görsel light birebir, dark okunur koyu-yeşil. DECISIONS'a token kararı eklendi. build temiz (37 sayfa). 8 task (4.01-4.07 ✅ + 4.08 bekliyor). Sıradaki: TASK-4.08 (final çift-tema a11y=100 doğrulaması).
+**Son Güncelleme:** 2026-06-30 — run-task TASK-4.08 ✅: final çift-tema doğrulama. a11y=100 mobil+masaüstü (Lighthouse kanonik dark, TR `/`); axe light+dark TR `/` tam tarama **0 toplam ihlal** (39 pass/tema). Perf/CLS regresyonsuz — DEV-6: v0.1 baseline aslında `/en` ölçmüş (artifact finalUrl kanıtı), apples-to-apples `/en` repro birebir baseline (mobil 87/LCP3156/CLS0, masaüstü 100/CLS0); TR `/` 84/99 yeni profil, regresyon değil. perf/README'ye v0.2/Faz 4 bölümü + DEV-1/locale düzeltmeleri; kanonik artifact 20260630 + repro kaydedildi. **Fazın 8 task'ı tamam (4.01-4.08 ✅)** — sıradaki adım: verify-phase (UAT).

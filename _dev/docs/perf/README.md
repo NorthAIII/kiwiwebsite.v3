@@ -1,12 +1,18 @@
 # Perf Taban Kayıtları — Ana Sayfa Lighthouse
 
-Ana sayfa (`/`, TR varsayılan) Lighthouse perf/a11y tabanları. Ölçüm **yerel production build** üzerinde (`next build && next start`); revize branch canlıya deploy olmuyor (kiwiailab.com eski kodu yansıtır) → bu "yerel taban". İlk taban: **v0.1, 2026-06-28** (TASK-2.03 / Phase 2).
+Ana sayfa Lighthouse perf/a11y tabanları. Ölçüm **yerel production build** üzerinde (`next build && next start`); revize branch canlıya deploy olmuyor (kiwiailab.com eski kodu yansıtır) → bu "yerel taban". İlk taban: **v0.1, 2026-06-28** (TASK-2.03 / Phase 2). En güncel ölçüm: **v0.2 / Faz 4, 2026-06-30** (TASK-4.08; a11y 89→100).
 
-Kanonik artefaktlar: `home-mobile-20260628.{html,json}` · `home-desktop-20260628.{html,json}`.
+> ⚠️ **İki kanonik-koşu tuzağı (Faz 4 TASK-4.01/4.08 düzeltmeleri — okumadan ölçme):**
+> 1. **Ölçülen-locale:** Cookie'siz kanonik koşu Chrome `Accept-Language` ile `/` → **`/en`**'e redirect olur (next-intl `localeDetection`). v0.1 tabanı bu yüzden "TR `/`" değil, aslında **`/en`**'i ölçtü (artifact `finalUrl=/en` ile kanıtlı). **TR varsayılan** sayfasını ölçmek için `NEXT_LOCALE=tr` cookie şart (Lighthouse `--extra-headers='{"Cookie":"NEXT_LOCALE=tr"}'`). TR `/` sayfası `/en`'den **ağırdır** (hero metni daha uzun) — perf/LCP/FCP farkı buradan gelir, regresyon değil.
+> 2. **Render-teması:** Kanonik `--headless=new` koşusu **DARK** render eder (tema init `prefers-color-scheme: dark`'a düşer) → Lighthouse a11y skoru **dark** temayı ölçer. Belirli temayı zorlamak için Playwright `emulateMedia({colorScheme})`. Detay → `_dev/memory/a11y-olcum-tema-tuzagi.md`.
+
+Kanonik artefaktlar:
+- **v0.1 (2026-06-28)** — `home-{mobile,desktop}-20260628.{html,json}` · *ölçülen sayfa: `/en`* (yukarıdaki #1)
+- **v0.2/Faz 4 (2026-06-30)** — `home-{mobile,desktop}-20260630.{html,json}` (TR `/`, a11y=100); regresyon-repro `home-{mobile,desktop}-en-baseline-repro-20260630.json` (`/en`, baseline ile aynı sayfa)
 
 ---
 
-## v0.1 Tabanı (2026-06-28)
+## v0.1 Tabanı (2026-06-28) — ölçülen sayfa: `/en`
 
 ### Özet Skorlar (temsilî / median)
 
@@ -69,6 +75,65 @@ TBT'nin 206 ↔ 5065 ms savrulması = saf host-zamanlama gürültüsü (sayfa de
 
 ---
 
+## v0.2 / Faz 4 — Erişilebilirlik a11y 89 → 100 (2026-06-30, TASK-4.08)
+
+Faz 4 fixleri (K1–K5 + C2/C3/C9: yalnız CSS renk/token + markup/aria; kaynak JS/layout/asset değişmedi) sonrası **otoriter final ölçüm**. Fresh-prod-serve (`rm -rf .next && next build` → `next start -p 4173`, listening-PID 1751728 teyit), düşük host-yükü (load 0.7–2.3), çoklu koşu median.
+
+### A11y = 100 milestone — TR `/` kanonik (Lighthouse, dark) + çift-tema axe
+
+| Preset (TR `/`, median) | a11y | color-contrast | definition-list | dlitem | label-content-name-mismatch |
+|---|---|---|---|---|---|
+| Mobil | **100** | pass (0 öğe) | N/A | N/A | pass |
+| Masaüstü | **100** | pass (0 öğe) | N/A | N/A | pass |
+
+> `definition-list` + `dlitem` artık **N/A** (notApplicable): K3 ile Hero `<dl>` tamamen kaldırıldı → denetlenecek öğe yok (fail → N/A, hedeflenen sonuç).
+
+**axe** (TR `/`, `emulateMedia colorScheme` + `reducedMotion:'reduce'` + uçtan-uca scroll → tam reveal envanteri; 4 denetim + tam tarama):
+
+| Tema | 4-denetim gate | Tam axe taraması |
+|---|---|---|
+| Light (krem `rgb(247,246,241)`) | **0 ihlal** | **0 toplam ihlal** (39 pass) |
+| Dark (ink `rgb(19,21,16)`) | **0 ihlal** | **0 toplam ihlal** (39 pass) |
+
+### Perf/CLS regresyon — apples-to-apples (`/en`, baseline ile **aynı** sayfa)
+
+Regresyon ancak aynı sayfa karşılaştırılırsa anlamlı. Baseline `/en` ölçtü → post-fix build de `/en` (cookie'siz, baseline-birebir komut) ölçüldü:
+
+| Sayfa | Metrik | v0.1 baseline (`/en`) | Post-fix (`/en`) | Verdi |
+|---|---|---|---|---|
+| Mobil | perf | 87 | **87** | = (regresyon yok) |
+| Mobil | LCP | 3156 ms | **3156 ms** | = (birebir) |
+| Mobil | FCP | 1056 ms | **1056 ms** | = (birebir) |
+| Mobil | CLS | 0 | **0** | = |
+| Masaüstü | perf | 100 | **100** | = |
+| Masaüstü | LCP | 689 ms | **645 ms** | = (gürültü) |
+| Masaüstü | CLS | 0 | **0** | = |
+| (her ikisi) | **a11y** | 89 | **100** | **+11 (fazın hedefi)** ✅ |
+
+> Lighthouse mobil metrikleri Lantern simülasyonuyla **deterministik**; aynı build + aynı sayfa mobil perf/LCP/FCP'yi **birebir** üretiyor → Faz 4'ün CSS-renk/markup/aria değişiklikleri **sıfır perf maliyeti**. CLS=0 her yerde (ortam-bağımsız). **Korunan taban (ILKELER §2) regresyonsuz.**
+
+### TR `/` profili (yeni — ilk kez otoriter ölçüldü)
+
+TR varsayılan sayfası `/en`'den ağır (hero metni daha uzun) → daha düşük perf/LCP. Baseline bu sayfayı **hiç ölçmemişti** (cookie'siz `/en`'e gidiyordu); dolayısıyla aşağı sayılar **regresyon değil**, ilk TR `/` kaydı:
+
+| Preset (TR `/`) | perf (koşular → median) | a11y | LCP | FCP | CLS | TBT |
+|---|---|---|---|---|---|---|
+| Mobil | 84/84/87/87/84 → **84** | 100 | ~3604 ms | ~1656 ms | 0 | 173–278 ms |
+| Masaüstü | 99/99/100 → **99** | 100 | ~765 ms | ~368 ms | 0 | 0 ms |
+
+> **v0.2 ileri-takip:** TR `/` artık varsayılan-locale takip noktası (en temsilî sayfa). Mobil TR profili (perf 84, LCP 3.6s) brief perf bütçesinin (≥95, LCP<2.5s) altında — bu, **adanmış perf fazının** (v0.2 sonraki iş kolu) konusudur; Faz 4 a11y fazı olarak perf'i yalnız **regresyonsuz** tuttu (kapsam dışı, discuss kararı).
+
+### Craft (gözle, her iki tema) — imza korundu
+
+- **Marka yeşili + pulse imza:** light gym-panel parlak pulse (`#6fe36f`); dark krem-panelde `text-pulse-ink` koyu-yeşil (`#1f7a3d`) okunur + `bg-pulse` canlı-nokta parlak (C2/C3 dürüst+okunur).
+- **text-ink-faint hiyerarşisi:** muted-okunur (her iki tema); Hero stats görünüm **birebir** (dl→div görünmez); "Nasıl çalışır" 01-04 + gym-panel 01-03 faint numaralar yerinde.
+
+### i18n parite
+
+- **Yeni anahtar YOK** (K4 kod-only `LABELS`, pulse-ink token-only) → 5 dil (tr/en/ar/de/es) eşzamanlılığı bozulmadı. Build 37 sayfa (5 locale × route) üretti, 0 `MISSING_MESSAGE`.
+
+---
+
 ## Karar — Bütçe Karşılanmadı (contingency)
 
 Bulgu kullanıcıya getirildi (TASK-2.03 Karar Noktası). Optimizasyon/a11y düzeltmesi bu fazın (Phase 2 teknik borç) kapsamı dışı (discuss-phase). Disposition → DURUM "Sıradaki Adım" + `docs/DECISIONS.md` (2026-06-28).
@@ -78,13 +143,18 @@ Bulgu kullanıcıya getirildi (TASK-2.03 Karar Noktası). Optimizasyon/a11y düz
 ## Metodoloji (tekrar için)
 
 ```
-npm run build && npm run start -- -p 3000      # yerel production sunum (dev build ile ÖLÇÜLMEZ)
+rm -rf .next && npm run build && npm run start -- -p 4173   # fresh yerel production sunum (dev build ile ÖLÇÜLMEZ)
 CHROME_PATH=/usr/bin/google-chrome
 LH="node ~/.npm/_npx/<hash>/node_modules/lighthouse/cli/index.js"   # npx cache (13.3.0); package.json'a EKLENMEZ
-# Mobil:    $LH http://localhost:3000/ --output=json,html --chrome-flags="--headless=new --no-sandbox" --quiet
+# TR `/`  : $LH http://localhost:4173/ --output=json,html --extra-headers='{"Cookie":"NEXT_LOCALE=tr"}' --chrome-flags="--headless=new --no-sandbox" --quiet
 # Masaüstü: aynı + --preset=desktop
+# /en (baseline-birebir, regresyon repro): cookie'yi at — Accept-Language `/` → `/en` redirect'i tetiklenir
 ```
 
+- **Locale şart (yukarıdaki tuzak #1):** TR `/` için `NEXT_LOCALE=tr` cookie; cookie'siz `/en` ölçülür. Karşılaştırmada **aynı sayfayı** kullan.
+- **Render dark (tuzak #2):** kanonik koşu dark; light teyidi için Playwright `emulateMedia({colorScheme:'light'})`.
+- **axe (tam a11y envanteri):** Playwright + `emulateMedia({colorScheme, reducedMotion:'reduce'})` + uçtan-uca scroll + offline axe enjeksiyonu (`page.addScriptTag({path: ~/.npm/_npx/<hash>/node_modules/axe-core/axe.min.js})`); Lighthouse full-motion alt-fold reveal'ları (`opacity:0`) kaçırır → axe reduced-motion tam envanteri verir.
+- **Fresh-prod-serve disiplini:** `rm -rf .next` + net port + listening-PID = senin process'in teyidi (stray `next-server` yanlış-negatifi; MEMORY Süreç Disiplinleri).
 - **Yük gözlemi zorunlu:** her koşuda `cat /proc/loadavg` — host çekişmesi (yüksek load) TBT/LCP/perf'i bozar (a11y/CLS'yi değil). Düşük yükte (≤ ~6) ölç.
 - Her preset 3+ koşu → median; localhost ağ-iyimser → perf "yerel taban", a11y/CLS ortamdan bağımsız (en güvenilir).
 - Lighthouse `prefers-reduced-motion` set etmez → Living Flow WebGL tam-yük (gerçekçi en-kötü) ölçülür.
