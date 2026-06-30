@@ -23,6 +23,7 @@ Faz numaraları **global, sürekli ve append-only**'dir — versiyon değişse b
 | 2 | v0.1 versiyon-sonu teknik borç kapatma | TD1 non-TR çeviri senkronu + TD2 ölü anahtar hijyeni + TD3 ana sayfa perf/Lighthouse doğrulama | ✅ |
 | 3 | v0.1 versiyon-sonu senaryo testi | v0.1 ana sayfa uçtan-uca doğrulama (S1–S8: giriş/yolculuk/mod/kontrol/taksonomi/5-dil/chatbot/adversarial); TR öncelik, otonom, keşfet+kaydet+triyaj | ✅ |
 | 4 | v0.2 erişilebilirlik (a11y 89→100) | a11y A11Y1 renk kontrastı (marka yeşili imza korunur, bağlam-özel) + A11Y2 hero `<dl>` markup + A11Y3 dil-switcher aria; ana sayfa-birincil, perf/CLS regresyonsuz | ✅ |
+| 5 | v0.2 test altyapısı (D1) | Kümülatif test harness (Vitest+RTL / Playwright+axe-core) + ilk GitHub Actions CI + tohum testler (i18n 5-dil parite + a11y regresyon `/` light+dark) | 🔄 |
 
 **Durum simgeleri:**
 - 🔄 **Devam ediyor** — discuss-phase başladı (aktif faz)
@@ -37,8 +38,7 @@ Faz numaraları **global, sürekli ve append-only**'dir — versiyon değişse b
 
 > Yaklaşan faz konuları — **numarasız**. Faza girildiğinde (discuss-phase) buradan çıkar, numara (mevcut en büyük faz no + 1) alıp Faz Durumu tablosuna 🔄 olarak geçer. Aşağıdakiler güçlü revize için aday konulardır; kesin kapsam ve sıra PRD/discuss-phase'de netleşir.
 
-**v0.2 kalan fazları** (sıra discuss-phase 4'te sabitlendi: a11y → teknik temel → perf → Umami; Faz 4 = a11y girildi):
-- **Test altyapısı (D1)** — kümülatif test ilkesi teknik temeli; "test = build + UAT" geçici durumunu kapatır, a11y/perf kazanımını otomatik regresyon testine bağlayabilir.
+**v0.2 kalan fazları** (sıra discuss-phase 4'te sabitlendi: a11y → teknik temel → perf → Umami; Faz 4 = a11y, Faz 5 = test altyapısı girildi):
 - **Mobil perf / LCP** (87 / 3.1s → brief bütçesi ≥95 / <2.5s) — ana kaynak Living Flow WebGL (craft-duyarlı, üst eksen → aceleyle dokunulmaz).
 - **Umami analytics (E1)** — `docs/UMAMI-ANALYTICS.md` spec'i; canlıda saydığı gözle doğrulanır.
 
@@ -77,6 +77,6 @@ Faz numaraları **global, sürekli ve append-only**'dir — versiyon değişse b
 
 ---
 
-**Son Güncelleme:** 2026-06-30 — review-phase 4: Faz 4 (v0.2 a11y 89→100) ✅ Tamamlandı (UAT 14/14, kalite 8 eksen); geçiş notu eklendi. Versiyon Sonu Durumu içerik_fazları (değişmez); sıradaki içerik fazı = test altyapısı D1 (discuss-phase 5).
+**Son Güncelleme:** 2026-06-30 — discuss-phase 5: Faz 5 (v0.2 test altyapısı D1) Faz Durumu tablosuna 🔄 eklendi; "Test altyapısı (D1)" Sıradaki Fazlar'dan mezun edildi. Kapsam: kümülatif harness (Vitest+RTL / Playwright+axe-core) + ilk GitHub Actions CI + tohum (i18n parite + a11y regresyon). Sıradaki: research-phase 5.
 
 <!-- KURAL: Bu satır her güncellemede ÜZERİNE YAZILIR. "Önceki:" prefix ile kümülatif yığma YASAK (CLAUDE.md → Doküman Disiplini). -->

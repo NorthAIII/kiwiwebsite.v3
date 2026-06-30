@@ -1,6 +1,6 @@
 # DURUM — Proje Dashboard
 
-**Son Güncelleme:** 2026-06-30 — review-phase 4 ✅: Faz 4 (v0.2 a11y 89→100) tamamlandı. Retrospektif + 8 kalite ekseni PHASE-4'e yazıldı (Marka&Craft/Erişilebilirlik/Güvenlik/Bakım/Perf ✅; Hata Yönetimi & Test Kapsamı N/A); milestone 5/5, UAT 14/14. Düzeltme task'ı yok. Versiyon Sonu Durumu içerik_fazları (değişmez) → sıradaki içerik fazı: test altyapısı (D1). **Adım=discuss** (sıradaki: discuss-phase 5).
+**Son Güncelleme:** 2026-06-30 — discuss-phase 5: Faz 5 (v0.2 test altyapısı D1) kapsam tartışması tamamlandı, faz tabloya 🔄 girdi. Kapsam = kümülatif harness (Vitest+RTL / Playwright+axe-core) + ilk GitHub Actions CI + tohum testler (i18n 5-dil parite Vitest + a11y regresyon `/` light+dark Playwright/axe). Kararlar PHASE-5.md'ye yazıldı. Versiyon Sonu Durumu içerik_fazları (değişmez). **Adım=research** (sıradaki: research-phase 5).
 
 <!-- KURAL: Bu satır her oturum sonunda ÜZERİNE YAZILIR — tek satır, tek cümle. "Önceki:" / "Eski:" prefix ile kümülatif yığma YASAK; HTML comment'e sarma da yasak (CLAUDE.md → Doküman Disiplini). Tarih + kısa özet yeterli; detay için git log + ilgili PHASE/TASK dokümanları. -->
 
@@ -8,10 +8,10 @@
 
 ## Aktif Faz
 
-**Faz:** 5 — Test altyapısı (D1) (geçici ad; Sıradaki Fazlar ilk maddesi). Faz 4 (v0.2 a11y 89→100) ✅ **review tamamlandı**; sıradaki faz henüz girilmedi (discuss-phase promote eder).
-**Adım:** discuss → `/devflow:discuss-phase 5`: v0.2 sıradaki içerik fazının (test altyapısı D1) kapsam tartışması (yeni oturum).
-**İlerleme:** Faz 4 ✅ kapandı — a11y 89→**100 çift-tema** (UAT 14/14, milestone 5/5, 8 kalite ekseni). A11Y1 (K1 `::before` + K2 ink-faint token + K5/C9/C10 cream-on-ink + C2/C3 yeni `--color-pulse-ink`) + A11Y2 (hero `<dl>`→semantik link) + A11Y3 (dil-switcher aria WCAG 2.5.3). İmza/perf/parite korundu; düzeltme task'ı yok. Retrospektif + kalite kontrol PHASE-4'e yazıldı; **sahipli sonraki-faz borcu:** alt-sayfa derin a11y + `text-pulse` ink-panel süpürmesi (`--color-pulse-ink` swap yalnız ana sayfada).
-**Son Faz Dokümanı:** `phases/PHASE-4.md` (✅ tamamlandı)
+**Faz:** 5 — Test altyapısı (D1). 🔄 **discuss tamamlandı** (discuss-phase 5, 2026-06-30); kapsam PHASE-5.md'ye yazıldı. Faz 4 (v0.2 a11y 89→100) ✅.
+**Adım:** research → `/devflow:research-phase 5`: kümülatif test harness + tohum testler için teknik araştırma (yeni oturum).
+**İlerleme:** Kapsam = **altyapı + yüksek-değerli tohum** (kümülatif başlangıç). Yığın: **Vitest (+RTL +jest-dom) + Playwright (@playwright/test) + @axe-core/playwright.** CI: **ilk GitHub Actions** (build + Vitest/birim+i18n hızlı job + Playwright/a11y ayrı job). Tohum: **i18n 5-dil parite** (Vitest) + **a11y regresyon `/` light+dark** (Playwright/axe — Faz 4 a11y=100'ü kilitler). + kısa test convention notu. **Çapraz konu:** package.json devDependency ekleme install anında teyit (Dokunulmazlar); araç davranışını ampirik yokla (Faz 4 retro dersi). **Devralınan borç:** alt-sayfa derin a11y + `text-pulse` ink-panel süpürmesi (harness sonra genişletir).
+**Son Faz Dokümanı:** `phases/PHASE-5.md` (🔄 discuss tamamlandı)
 
 ---
 
@@ -28,19 +28,19 @@
 
 ## Aktif Task
 
-**Task:** — Aktif task yok. Faz 4 ✅ (review tamam). Sıradaki adım faz döngüsünde discuss-phase 5 (task değil).
-**Durum:** Faz 4 kapandı; Faz 5 task'ları discuss→research→plan sonrası oluşur.
-**İlerleme:** `/devflow:discuss-phase 5` ile v0.2 sıradaki içerik fazını (test altyapısı D1) başlat (yeni oturum).
+**Task:** — Aktif task yok. Faz 5 discuss ✅; task'lar research→plan sonrası oluşur.
+**Durum:** Faz 5 (test altyapısı D1) 🔄 — kapsam tartışıldı. Sıradaki adım faz döngüsünde research-phase 5 (task değil).
+**İlerleme:** `/devflow:research-phase 5` ile harness/araç/CI teknik araştırmasını başlat (yeni oturum).
 
 ---
 
 ## Task Durumu (Aktif Faz)
 
-> Faz 5 (test altyapısı D1) henüz **girilmedi** — discuss→research→plan sonrası task'lar oluşur. Faz 4 (v0.2 a11y) ✅ tamamlandı; 8 task'ı (4.01-4.08) `tasks/archive/`'da, detay `phases/PHASE-4.md`.
+> Faz 5 (test altyapısı D1) 🔄 — discuss ✅, **henüz planlanmadı** (research→plan sonrası task'lar oluşur). Faz 4 (v0.2 a11y) ✅; 8 task'ı (4.01-4.08) `tasks/archive/`'da, detay `phases/PHASE-4.md`.
 
 | # | Task | Durum | Açıklama |
 |---|------|-------|----------|
-| — | — | — | Faz 5 henüz planlanmadı (discuss-phase 5 bekliyor) |
+| — | — | — | Faz 5 henüz planlanmadı (research-phase 5 → plan-phase 5 sonrası) |
 
 ---
 
@@ -62,12 +62,12 @@
 
 ## Hızlı Erişim
 
-**Aktif Task:** — yok; Faz 4 ✅ (review tamam). Sıradaki adım: `/devflow:discuss-phase 5` (test altyapısı D1)
-**Aktif Faz:** 5 — Test altyapısı (D1) (geçici ad, henüz girilmedi) · adım=discuss; Faz 4 ✅; Aktif Versiyon v0.2, Versiyon Sonu Durumu: içerik_fazları
+**Aktif Task:** — yok; Faz 5 discuss ✅. Sıradaki adım: `/devflow:research-phase 5` (test harness teknik araştırması)
+**Aktif Faz:** 5 — Test altyapısı (D1) 🔄 · adım=research; Faz 4 ✅; Aktif Versiyon v0.2, Versiyon Sonu Durumu: içerik_fazları
 **Task Sistemi:** `tasks/TASKS-README.md`
 **PRD (karar kaynağı):** `PRD/VIZYON.md` · `PRD/VERSIONS.md` · `PRD/features/`
 **Revize Backlog (bilinen sorunlar):** `docs/REVIZE-BACKLOG.md`
 
 ---
 
-**Son Güncelleme:** 2026-06-30 — review-phase 4 ✅: Faz 4 (v0.2 a11y 89→100) tamamlandı. Retrospektif + 8 kalite ekseni PHASE-4'e yazıldı; milestone 5/5, UAT 14/14, düzeltme task'ı yok. PHASES/MODULE-MAP ✅ işaretlendi. Versiyon Sonu Durumu içerik_fazları → sıradaki: discuss-phase 5 (test altyapısı D1).
+**Son Güncelleme:** 2026-06-30 — discuss-phase 5: Faz 5 (v0.2 test altyapısı D1) kapsam tartışması tamamlandı; faz tabloya 🔄 girdi (PHASES/MODULE-MAP güncellendi). Kapsam = kümülatif harness (Vitest+RTL / Playwright+axe-core) + ilk GitHub Actions CI + tohum (i18n parite + a11y regresyon). Adım=research → research-phase 5.
