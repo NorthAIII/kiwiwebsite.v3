@@ -1,6 +1,6 @@
 # DURUM — Proje Dashboard
 
-**Son Güncelleme:** 2026-06-30 — plan-phase 6: 7 task dokümanı oluşturuldu (TASK-6.01-6.07). Sıra: ölç-önce (LCP elementi + taban) → L1 hero reveal transform-only → L2 WebGL idle deferral → ara-ölç (L3/P2 karar kapısı) → L3 Fraunces axes budama → P2 Living Flow mobil degradasyon (koşullu) → faz-sonu ölçüm+kayıt. Ölçüm task'ları node'lu ortam ister. Adım → verify-plan.
+**Son Güncelleme:** 2026-06-30 — verify-plan 6: 7 task dokümanı (6.01-6.07) fresh context ile doğrulandı; tüm kod referansları (hat no dahil) gerçekle bire bir teyit edildi, milestone/gereksinim/kalite/tutarlılık tam. Mekanik düzeltme 0, yapısal değişiklik 0. Adım → task; ilk task TASK-6.01 aktif.
 
 <!-- KURAL: Bu satır her oturum sonunda ÜZERİNE YAZILIR — tek satır, tek cümle. "Önceki:" / "Eski:" prefix ile kümülatif yığma YASAK; HTML comment'e sarma da yasak (CLAUDE.md → Doküman Disiplini). Tarih + kısa özet yeterli; detay için git log + ilgili PHASE/TASK dokümanları. -->
 
@@ -9,7 +9,7 @@
 ## Aktif Faz
 
 **Faz:** 6 — Mobil perf / LCP (v0.2). Kapsam discuss-phase 6'da damgalandı: ana sayfa TR `/` mobil-birincil, brief hedef (≥95 / <2.5s) / craft tavan. Faz 5 (test altyapısı D1) ✅; Faz 4 (v0.2 a11y 89→100) ✅.
-**Adım:** verify-plan → `/devflow:verify-plan 6` (yeni oturum): 7 task dokümanını (6.01-6.07) milestone/gereksinim/kalite/tutarlılık açısından doğrula.
+**Adım:** task → `/devflow:run-task` (yeni oturum): ilk task TASK-6.01 (ölç-önce: LCP elementi + TR `/` mobil taban) çalıştırılır. verify-plan ✅ (referanslar gerçekle bire bir, milestone tam, mekanik/yapısal düzeltme yok).
 **İlerleme:** Araştırma tamam. Kök neden: **CPU-bound WebGL main-thread** (mobil "Other" 3663ms vs masaüstü 1202ms, tek fark 4× CPU throttle; FCP 1657ms ama LCP 3604ms = 1.9s bloke boşluğu). İki craft-koruyucu P1 lever (kullanıcı onayı 2026-06-30): **hero reveal transform-only** (`Hero.tsx:18` opacity:0 LCP cezası) + **WebGL idle/post-load deferral** (`LivingFlow.tsx:40` yalnız 1 rAF); yardımcı **Fraunces SOFT/WONK budama** (`layout.tsx:13`, kullanılmıyor → craft-nötr). **Açık:** LCP elementi (metin/canvas) ampirik teyitsiz → ilk task `largest-contentful-paint-element` denetimli ölçüm yapmalı. Guardrail: a11y=100 çift-tema (CI) / CLS=0 / masaüstü 99-100 / i18n parite. **Ölçüm:** TR `/` mobil median + `NEXT_LOCALE=tr` cookie + fresh prod build + düşük host-yük (`docs/perf/README.md`); **node bu oturum ortamında yok** → ölçüm/build node'lu ortamda. **Devralınan sahipli borç (kapsam dışı):** alt-sayfa derin a11y + `text-pulse` ink-panel süpürmesi. **Başlangıç tabanı:** TR `/` mobil perf 84 / LCP ~3.6s.
 **Son Faz Dokümanı:** `phases/PHASE-6.md` (🔄 — araştırma bulguları yazıldı)
 
@@ -28,9 +28,9 @@
 
 ## Aktif Task
 
-**Task:** Yok — 7 task dokümanı yazıldı (TASK-6.01-6.07), henüz çalıştırılmadı. Sıradaki adım plan doğrulama.
-**Durum:** Faz döngüsü `verify-plan` adımında. Sıradaki: `/devflow:verify-plan 6` (yeni oturum).
-**İlerleme:** Faz 6 task'ları lever'lardan üretildi (ölç-önce → L1 → L2 → ara-ölç → L3 → P2 koşullu → faz-sonu). plan-phase'de task çalıştırılmaz; doğrulama ayrı oturumda.
+**Task:** TASK-6.01 — Ölç-önce: LCP elementi tespiti + TR `/` mobil perf taban (element-denetimli Lighthouse). Bekliyor, çalıştırılmadı.
+**Durum:** Faz döngüsü `task` adımında (verify-plan tamam). Sıradaki: `/devflow:run-task` (yeni oturum, TASK-6.01).
+**İlerleme:** 7 task verify-plan'de doğrulandı (referanslar gerçekle bire bir teyit, milestone/gereksinim/kalite/tutarlılık tam, düzeltme gerekmedi). TASK-6.01 ölçüm task'ı → node'lu ortam ister (yoksa 🔴).
 
 ---
 
@@ -40,7 +40,7 @@
 
 | # | Task | Durum | Açıklama |
 |---|------|-------|----------|
-| 6.01 | TASK-6.01 | ⬜ Bekliyor | Ölç-önce: LCP elementi + TR `/` mobil taban (element-denetimli) |
+| 6.01 | TASK-6.01 | 🔄 Aktif | Ölç-önce: LCP elementi + TR `/` mobil taban (element-denetimli) |
 | 6.02 | TASK-6.02 | ⬜ Bekliyor | L1: Hero reveal opacity→transform-only |
 | 6.03 | TASK-6.03 | ⬜ Bekliyor | L2: WebGL init mobilde idle/post-load deferral |
 | 6.04 | TASK-6.04 | ⬜ Bekliyor | Ara-ölç: L1+L2 sonrası median + L3/P2 karar kapısı |
@@ -68,12 +68,12 @@
 
 ## Hızlı Erişim
 
-**Aktif Task:** Yok — 7 task yazıldı (6.01-6.07), bekliyor. Sıradaki adım: `/devflow:verify-plan 6`
-**Aktif Faz:** 6 — Mobil perf / LCP · adım=verify-plan; Faz 5 ✅; Faz 4 ✅; Aktif Versiyon v0.2, Versiyon Sonu Durumu: içerik_fazları
+**Aktif Task:** TASK-6.01 (ölç-önce: LCP elementi + TR `/` mobil taban). Sıradaki adım: `/devflow:run-task`
+**Aktif Faz:** 6 — Mobil perf / LCP · adım=task; Faz 5 ✅; Faz 4 ✅; Aktif Versiyon v0.2, Versiyon Sonu Durumu: içerik_fazları
 **Task Sistemi:** `tasks/TASKS-README.md`
 **PRD (karar kaynağı):** `PRD/VIZYON.md` · `PRD/VERSIONS.md` · `PRD/features/`
 **Revize Backlog (bilinen sorunlar):** `docs/REVIZE-BACKLOG.md`
 
 ---
 
-**Son Güncelleme:** 2026-06-30 — plan-phase 6: 7 task dokümanı oluşturuldu (TASK-6.01-6.07; ölç-önce → L1 hero reveal → L2 WebGL deferral → ara-ölç → L3 font budama → P2 degradasyon koşullu → faz-sonu ölçüm). PHASE-6 task listesi + DURUM güncellendi; adım verify-plan → `/devflow:verify-plan 6`.
+**Son Güncelleme:** 2026-06-30 — verify-plan 6: 7 task (6.01-6.07) fresh context ile doğrulandı; kod referansları (Hero.tsx:18, LivingFlow.tsx:40, layout/not-found.tsx fontlar, FlowCanvas DPR/particle) gerçekle bire bir teyit; milestone/gereksinim/kalite/tutarlılık tam; mekanik 0 / yapısal 0. Adım task → `/devflow:run-task` (TASK-6.01 aktif).

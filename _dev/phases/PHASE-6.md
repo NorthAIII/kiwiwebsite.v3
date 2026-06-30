@@ -137,7 +137,7 @@ TR `/` mobil diagnostic (Lighthouse 13.3.0, 4× CPU throttle, Moto-G sınıfı) 
 
 | # | Task | Durum | Açıklama |
 |---|------|-------|----------|
-| 6.01 | TASK-6.01 | ⬜ Bekliyor | Ölç-önce: LCP elementi tespiti + TR `/` mobil perf taban (element-denetimli Lighthouse) — lever önceliğini sabitler |
+| 6.01 | TASK-6.01 | 🔄 Aktif | Ölç-önce: LCP elementi tespiti + TR `/` mobil perf taban (element-denetimli Lighthouse) — lever önceliğini sabitler |
 | 6.02 | TASK-6.02 | ⬜ Bekliyor | L1: Hero reveal opacity→transform-only (`Hero.tsx`) — LCP-uygun headline, kayma imzası korunur |
 | 6.03 | TASK-6.03 | ⬜ Bekliyor | L2: WebGL init mobilde idle/post-load deferral (`LivingFlow.tsx`) — main-thread LCP penceresinde boşalır |
 | 6.04 | TASK-6.04 | ⬜ Bekliyor | Ara-ölç: L1+L2 sonrası median + L3/P2 karar kapısı |
@@ -174,4 +174,4 @@ TR `/` mobil diagnostic (Lighthouse 13.3.0, 4× CPU throttle, Moto-G sınıfı) 
 ---
 
 **Oluşturulma:** 2026-06-30
-**Son Güncelleme:** 2026-06-30 — plan-phase 6: 7 task dokümanı oluşturuldu (6.01-6.07; ölç-önce → L1 → L2 → ara-ölç → L3 → P2 koşullu → faz-sonu). Sıradaki adım: verify-plan 6.
+**Son Güncelleme:** 2026-06-30 — verify-plan 6: 7 task fresh context ile doğrulandı (kod referansları gerçekle bire bir teyit, milestone/gereksinim/kalite/tutarlılık tam, düzeltme gerekmedi). TASK-6.01 aktif; sıradaki adım: run-task.
