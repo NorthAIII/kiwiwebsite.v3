@@ -1,6 +1,6 @@
 # TASK-6.03: L2 — WebGL init'ini mobilde idle/post-load'a ertele
 
-**Durum:** ⬜ Bekliyor
+**Durum:** ✅ Tamamlandı
 **Modül:** M1 (modules/M1-LivingFlow-TasarimSistemi.md) — Living Flow degradasyon
 **Feature:** P1 / render-path — WebGL init LCP penceresi dışına
 **Faz:** Phase 6 (phases/PHASE-6.md)
@@ -36,17 +36,17 @@ Research K-R2 (PHASE-6 + DECISIONS 2026-06-30): tek en büyük lever olabilir, c
 
 ## Alt Görevler
 
-- [ ] **1. Init ertelemesini idle/post-load'a taşı**
+- [x] **1. Init ertelemesini idle/post-load'a taşı**
   - `LivingFlow.tsx:40` `requestAnimationFrame(...)` → mobilde (`lowPower` / `max-width:768px`) `requestIdleCallback` (fallback: `window.addEventListener("load", ...)` veya `setTimeout` ~birkaç yüz ms) ile WebGL mode set et
   - Masaüstü/yüksek-güç davranışı korunabilir (rAF) veya aynı idle stratejisi — ama faz kapsamı **mobil-birincil**; masaüstü perf 99-100 regresyonsuz kalmalı
   - `requestIdleCallback` desteklenmeyen tarayıcıda (Safari) timeout fallback şart
   - Cleanup (cancel) her yola eklensin (mevcut `cancelAnimationFrame` deseni gibi) — unmount sızıntısı yok
 
-- [ ] **2. Static base wash + fallback korunur**
+- [x] **2. Static base wash + fallback korunur**
   - `mode: "idle"` durumunda zaten static radyal yeşil zemin render ediliyor (satır 47-54) → erteleme sırasında hero zemini boş/beyaz kalmamalı (canvas gelene dek static wash görünür)
   - reduced-motion / no-WebGL `static` yolu değişmez (erken return, satır 30-34)
 
-- [ ] **3. Craft + main-thread gözle/teyit (iki tema)**
+- [~] **3. Craft + main-thread gözle/teyit (iki tema)** — yapısal: idle deferral + SSR base wash teyitli; gözle craft (light+dark, cursor/scroll) + main-thread "Other" LCP-dışı median → 6.04 ara-ölç + gerçek tarayıcı kullanıcı onayı (headless software-GL kısıtı)
   - Mobil emülasyon/gerçek cihazda flow'un ~0.5-1s geç ama akıcı belirdiğini izle (light + dark); "kayıp/bozuk/snap" görünmemeli
   - Cursor/scroll etkileşimi flow geldikten sonra tam çalışıyor mu
   - Performance trace / Lighthouse'ta WebGL "Other" işinin LCP penceresi **dışına** kaydığını teyit (asıl ölçüm 6.04'te median ile)
@@ -90,57 +90,67 @@ src/components/living-flow/
 
 ## Tamamlanma Kriterleri
 
-- [ ] Tüm alt görevler tamamlandı
-- [ ] Tüm test kriterleri karşılandı
-- [ ] Git commit & push yapıldı (conventional commits formatı)
-- [ ] Bu doküman güncellendi (oturum kaydı)
-- [ ] DURUM.md güncellendi
+- [x] Tüm alt görevler tamamlandı (görsel/median teyit hariç → 6.04 + gerçek tarayıcı)
+- [x] Tüm test kriterleri karşılandı (ortam-bağımsız olanlar; gözle craft/median → 6.04)
+- [x] Git commit & push yapıldı (conventional commits formatı)
+- [x] Bu doküman güncellendi (oturum kaydı)
+- [x] DURUM.md güncellendi
 
 ---
 
 ## Test Kriterleri
 
-- [ ] `next build` temiz geçer
-- [ ] WebGL init mobilde idle/post-load'a ertelendi; `requestIdleCallback` yok ise timeout fallback çalışır (Safari)
-- [ ] Erteleme penceresinde static base wash görünür (hero arkası boş değil), iki tema
-- [ ] Flow geç ama akıcı belirir (light + dark, gözle craft); cursor/scroll flow sonrası tam çalışır
-- [ ] Main-thread WebGL "Other" işi LCP penceresi dışına kaydı (trace/Lighthouse teyidi)
-- [ ] CLS=0; masaüstü perf 99-100 regresyonsuz; unmount cleanup sızıntısı yok
+- [x] `next build` temiz geçer (37/37, type-check pass)
+- [x] WebGL init mobilde idle/post-load'a ertelendi; `requestIdleCallback` yok ise timeout fallback çalışır (Safari: post-load+200ms / readyState complete ise setTimeout)
+- [x] Erteleme penceresinde static base wash görünür (SSR `tr.html`'de base wash mevcut, `<canvas>`=0); iki tema (token-temelli, tema-uyumlu)
+- [~] Flow geç ama akıcı belirir (light + dark, gözle craft); cursor/scroll flow sonrası tam çalışır → gerçek tarayıcı kullanıcı onayı (headless software-GL kısıtı)
+- [~] Main-thread WebGL "Other" işi LCP penceresi dışına kaydı → yapısal (idle deferral); median teyit 6.04 ara-ölçte
+- [x] CLS=0 yapı gereği (canvas layout-dışı, base wash hep mevcut); masaüstü rAF değişmedi (regresyonsuz); tüm yollarda unmount cleanup var (sızıntı yok)
 
 ---
 
 ## Oturum Kayıtları
 
-### Oturum — [TARİH]
+### Oturum — 2026-06-30
 
-**Durum:** [✅/🔄/⏸️/🔴]
+**Durum:** ✅
 
 **Yapılanlar:**
--
+- `LivingFlow.tsx:32-75` (useEffect) erteleme mantığı cihaza göre dallandırıldı: **masaüstü/yüksek-güç → mevcut `requestAnimationFrame` davranışı korundu** (regresyonsuz, zaten bütçede); **mobil/düşük-güç (`lowPower`) → `requestIdleCallback(start, { timeout: 2000 })`** ile WebGL mode set'i idle'a ertelendi (timeout cap 2000ms → meşgul thread'de de garanti tetik).
+- **Safari fallback** (`requestIdleCallback` yok): `document.readyState === "complete"` ise kısa `setTimeout(200)`; değilse `window.addEventListener("load", …, { once:true })` sonrası `setTimeout(200)`. Erteleme penceresinde static base wash hep render (mode `idle` → yalnız radyal yeşil zemin; SSR'da da mevcut, hero boş kalmaz).
+- Tüm yollarda cleanup: `cancelAnimationFrame` / `cancelIdleCallback` / `clearTimeout` / `removeEventListener` — unmount sızıntısı yok.
+- Erteleme mekanizması = **idle/post-load** (research K-R2 tercihi); IntersectionObserver'a yükseltme yapılmadı (main-thread teyidi yapısal olarak idle ile sağlanıyor, gereksiz karmaşıklıktan kaçınıldı) → DECISIONS'a yeni kayıt gerekmedi (K-R2 zaten kayıtlı).
+
+**Son Yaklaşım:** Tek dosya (`LivingFlow.tsx`) içinde useEffect dallanması — high-power rAF, low-power idle+timeout+Safari-load fallback. Build temiz, SSR base wash teyitli.
+
+**Sonraki Adım Detayı:** Yok — task tamamlandı. Sıradaki TASK-6.04 (ara-ölç) L1+L2 median LCP delta'sını ölçecek (aynı node20+Chrome150 ortamı, `NEXT_LOCALE=tr` cookie); WebGL "Other" işinin LCP penceresi dışına kaydığı orada median ile teyit edilecek.
 
 **Sorunlar:**
--
+- **TS strict tuzağı:** İlk denemede guard `"requestIdleCallback" in window` yazıldı → `next build` type-check `Property 'addEventListener' does not exist on type 'never'` ile kırıldı. Neden: `requestIdleCallback` lib.dom.d.ts'de Window üzerinde **zorunlu** tipli; `in` operatörü negatif dalda **tüm `window` nesnesini** `never`'a daraltıyor. Çözüm: guard'ı property üzerine taşı — `typeof window.requestIdleCallback === "function"` (yalnız property'yi daraltır, `window` Window kalır). Build temiz geçti. (Faz retrosu adayı: TS strict + `in` narrowing.)
 
 **Kararlar:**
-- docs/DECISIONS.md'ye eklendi: [Evet/Hayır]
+- docs/DECISIONS.md'ye eklendi: Hayır (erteleme stratejisi research K-R2'de zaten kararlaştırıldı; IO'ya yükseltme yapılmadı → yeni karar yok).
 
 **Dosya Değişiklikleri:**
--
+- `src/components/living-flow/LivingFlow.tsx` — useEffect erteleme dallanması + docblock güncellemesi (init: masaüstü rAF / mobil idle-post-load). Tek dosya.
 
 **Test Sonuçları:**
--
+- `next build` ✅ temiz (37/37 sayfa, type-check pass — `in`→`typeof` düzeltmesinden sonra).
+- SSR prerender (`tr.html`): static base wash (`radial-gradient(60% 50% at 70% 18%`) **mevcut**, `<canvas>` sayısı **0** (ssr:false + deferral) → erteleme penceresinde hero boş kalmaz, teyitli.
+- CLS=0 yapı gereği (canvas `absolute/pointer-events-none`, layout dışı; base wash hep mevcut). i18n kod-only → 5 dil bozulmaz.
+- Gözle craft (flow geç-ama-akıcı, light+dark, cursor/scroll) + main-thread "Other" LCP-dışı median teyidi: headless software-GL'de faithful değil → 6.04 ara-ölç + gerçek tarayıcı kullanıcı onayına bırakıldı (6.02 deseni).
 
 ---
 
 ## Sonuç Özeti
 
-**Tamamlanma Tarihi:** [Tarih]
+**Tamamlanma Tarihi:** 2026-06-30
 
 **Ne Yapıldı:**
--
+- Mobilde (low-power) WebGL init'i 1-rAF yerine `requestIdleCallback`+2s-timeout (Safari: post-load+200ms) ile LCP penceresi dışına ertelendi; masaüstü rAF davranışı regresyonsuz korundu. Static base wash erteleme boyunca hero zeminini doldurur.
 
 **Öğrenilenler:**
--
+- TS strict'te `"prop" in window` (lib.dom'da zorunlu tipli prop) negatif dalda `window`'u `never`'a daraltır → guard'ı `typeof window.prop === "function"` ile property üzerine al (faz retrosu adayı).
 
 ---
 
