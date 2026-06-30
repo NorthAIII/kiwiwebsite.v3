@@ -1,6 +1,6 @@
 # Phase 4: v0.2 Erişilebilirlik (a11y 89 → 100)
 
-**Durum:** 🔄 Devam ediyor
+**Durum:** ✅ Tamamlandı
 
 <!-- Bu doküman faza girince (discuss-phase) oluşur; durum 🔄 ile başlar. Henüz girilmemiş fazların dokümanı/numarası olmaz — PHASES.md → Sıradaki Fazlar'da numarasız konu olarak durur. -->
 <!-- KURAL: Bu doküman tek-okunabilir kalmalı (CLAUDE.md → Boyut ve Bölünme). Bir bölüm büyüyüp kırmızı çizgiye (~20k token) yaklaşırsa faz HÂLÂ AKTİFKEN `PHASE-N-<slug>.md`'ye bölünür — parent'ta self-yeten özet + pointer kalır, içerik taşınıp silinir, parent o fazın mini-index'i olur. Tamamlandıktan (✅) sonra bölme yasaktır; verify-phase ve review-phase fazı dondurmadan önce boyutu kontrol eder. -->
@@ -235,42 +235,64 @@ A11Y1 acceptance = `color-contrast` denetimi **0 başarısız**; bu, faz tablosu
 
 ## Retrospektif
 
-> Bu bölüm `/devflow:review-phase` oturumunda doldurulur.
+> Bu bölüm `/devflow:review-phase 4` oturumunda dolduruldu (2026-06-30).
 
 ### Ne İyi Gitti?
-- [Tekrarlanması gereken pratikler]
+- **"Ölç-önce" disiplini stale planı erken yakaladı.** TASK-4.01 otoriter re-ölçümü (faz açılışı) hem bayatlamış baseline'ı hem kritik **DEV-1**'i (kanonik Lighthouse light değil **DARK** render eder) tek fix yazılmadan ortaya çıkardı — yoksa K1-K5 "tamam" sayılırken dark fail'ler (C2/C3/C9) gizli kalırdı. Milestone #1'in "ölç + doğrula" çerçevesi (Faz 2/3 dersi) tam da bunu sağladı.
+- **Çapraz-task bulgular icra sırasında kanıtlanıp yayıldı.** `aria-hidden ≠ color-contrast muafiyeti` (TASK-4.02) varsayımla değil kontrollü testle (axe-core 4.11.4) kanıtlandı, kullanıcıya getirildi, mekanizma CSS `::before`'a revize edildi, **TASK-4.04'ün ayraç planına uyarı olarak taşındı** ve memory'ye işlendi. Örnek disiplin.
+- **Craft üst-ekseni her fix'te korundu (pazarlık-dışı imza).** Hiçbir düzeltme imza yeşilini global düzleştirmedi: adım no'lar `::before` ile birebir faint; `--color-pulse-ink` adaptif token light'ta **birebir** (`#6fe36f`), dark'ta okunur marka-yeşili (`#1f7a3d`, keyfi değil = `--color-green`). Sıfır görsel regresyon + kullanıcı görsel onayı (UAT 8/14).
+- **Token tek-kaynak yaklaşımı tutarlı (QUALITY §5).** `--color-ink-faint` koyulaştırma + yeni `--color-pulse-ink` token öğe-bazlı swap yerine tasarım-sistemiyle uyumlu, bakım-dostu çözüm; hardcode yok.
+- **DEV-6 dürüst kök-neden.** TR `/` perf "düşüşü" paniğinde gerçek neden (v0.1 baseline aslında `/en` ölçmüş, locale-redirect tuzağı Lighthouse'da da geçerli) bulundu, `docs/perf/README.md` yanlış etiketi düzeltildi — örtbas edilmedi, apples-to-apples ile regresyonsuzluk kanıtlandı.
 
 ### Ne Kötü Gitti?
-- [Sorunlar ve darboğazlar]
+- **Araştırma/plan, araç davranışı hakkındaki varsayımlarda iki kez yanıldı — yalnız icra düzeltti.** (a) "Lighthouse light ölçer → gate LIGHT" (research K6) **ters** çıktı (DEV-1, kanonik dark); maliyet: kapsamın light+dark'a genişlemesi + 2 yeni fix yüzeyi (C2/C3, C9). (b) "aria-hidden color-contrast'tan çıkarır" (research K1) **yanlış** çıktı; maliyet: K1 mekanizma revizyonu. İkisi de WCAG/araç davranışının research'te **ampirik denenmeden hesaplanmasından** doğdu; 4.01 (ölç-önce task'ı) doğru güvenlik ağıydı ama plan+verify-plan yanlış varsayımla koştu, sonra revize edildi.
+- **Overlay-zemin tuzağı (TASK-4.04).** `bg-canvas/[0.06]` overlay dark'ta krem paneli koyulaştırınca çıplak panelde geçen `/60` (4.41) overlay satırında eşik altı kaldı → `/70` gerekti. Nominal panel zemini ≠ efektif composite zemin; küçük ama planın öngöremediği bir ince katman (DEV-2'nin alt katmanı).
+- **Discuss-phase stale veriyle başladı.** "bright `#8af28a` → koyu yeşil varyant" premisi stale baseline'a dayanıyordu; gerçek sorun hue değil opaklık/soluk-token'dı. Research düzeltti ama kapsam tartışması yanlış zeminde açıldı.
 
 ### Sonraki Faz İçin Öneriler
-- [Alınan dersler, tavsiyeler]
+- **Ölçüm-bağımlı fazlarda araç davranışını planlamadan önce ampirik yokla.** Bu fazın iki büyük mid-faz düzeltmesi (DEV-1 dark render, aria-hidden≠contrast) araç-davranışı varsayımıydı. Sıradaki ölçüm-yoğun faz (perf) için aracın gerçekte ne ölçtüğünü (tema/locale/profil) fix task'ları yazılmadan doğrula. (İki somut tuzak zaten memory'de: `a11y-olcum-tema-tuzagi` + Accept-Language redirect.)
+- **Alt-sayfa a11y artık bilinen, sahipli borç.** Ana sayfa a11y=100 ve global fix'ler (LanguageSwitcher, Footer, `--color-ink-faint` token) alt sayfalara yayılır — **ancak** `--color-pulse-ink` swap yalnız `SectorSolutions`'ta yapıldı; token global tanımlı ama alt sayfalarda `text-pulse` ink-panelde kalmışsa dark-inversion sorunu sürer. Sonraki a11y/alt-sayfa fazı: tüm alt sayfalarda `text-pulse` (+genel a11y) süpürmesi.
+- **v0.2 kalan sırası (discuss-phase 4):** test altyapısı (D1) → perf → Umami. Sıradaki faz = **test altyapısı (D1)**; perf fazı DEV-6 disiplininden doğrudan yararlanır (TR `/` karşılaştırmalarında `NEXT_LOCALE=tr` cookie şart, hep aynı locale).
+
+### Task-Spesifik Teknik Öğrenimler
+<!-- Bu fazdaki task'larda öğrenilen ama proje genelinde geçerli olmayan teknik nüanslar. MEMORY.md'nin değil, faz retrosunun evidir. (aria-hidden ve locale-redirect tuzakları proje-geneli olduğu için memory'de.) -->
+- **CSS `::before { content: attr(data-n) }` = dekoratif metni axe color-contrast'tan craft-koruyarak çıkarmanın yolu.** aria-hidden çalışmaz (görsel görünürlüğü baz alır); SVG `<text>` "incomplete" verir; pseudo-element text-node olmadığı için taranmaz, görünüm birebir korunur (TASK-4.02).
+- **Yarı-saydam overlay efektif kontrastı düşürür.** Kontrastı nominal panel zemini değil **gerçek composite zemin** üzerinden hesapla (`bg-canvas/[N]` overlay krem paneli koyulaştırır → /60 yetmez, /70) (TASK-4.04).
+- **Tailwind v4 `@theme` `--color-*` → `text-*` utility'sini otomatik üretir.** `--color-pulse-ink` eklenince `text-pulse-ink` ayrı tanım gerektirmeden build'de oluştu (TASK-4.07).
+- **Lighthouse'un kendi a11y koşusu axe'tan AZ color-contrast node görür** (alt-fold reveal `opacity:0` atlanır) → tam envanter için `reducedMotion:'reduce'` + uçtan-uca scroll şart (DEV-5).
+
+### DevFlow'a Öneri
+<!-- DevFlow yöntemine dair (proje-özel OLMAYAN) iyileştirme; kullanıcıya bildirilir, ayrı oturumda DevFlow'a taşınır. -->
+- **Plan'ı ampirik mevcut-durum ölçümüne dayanan fazlarda (a11y/perf denetimleri), otoriter ölçümü research-phase içinde yapmayı değerlendir.** Bu fazda research K1-K6 + plan 7 task + verify-plan hepsi varsayımla koştu; ilk task (4.01 re-ölçüm) materyal sapma bulup plan revizyonu (yeni 4.07, C9→4.04, çift-tema) gerektirdi. Ölç-önce task'ı doğru güvenlik ağıydı ama ölçüm research'te yapılsaydı plan ilk seferde doğru olurdu. (Karşı-görüş: canlı ölçüm task işi sayılabilir — denge tartışmalı; bu yüzden DevFlow'a "değerlendir" notu, zorunlu kural değil.)
 
 ---
 
 ## Kalite Kontrol Sonuçları
 
-> Bu bölüm `/devflow:review-phase` oturumunda doldurulur.
+> QUALITY.md eksenleri sistematik kontrol edildi. Faz yüzeyi: 7 kaynak dosyada cerrahi sunum-katmanı değişiklik (+32/−24, yalnız renk/token/markup/aria); `next build` exit 0 / 37 sayfa / 0 uyarı (review oturumunda re-teyit).
 
 | Eksen | Durum | Not |
 |-------|-------|-----|
-| Modülerlik | ✅ / ⚠️ / ❌ | ... |
-| Güvenlik | ✅ / ⚠️ / ❌ | ... |
-| Bakım Maliyeti | ✅ / ⚠️ / ❌ | ... |
-| Performans | ✅ / ⚠️ / ❌ | ... |
-| Hata Yönetimi | ✅ / ⚠️ / ❌ | ... |
-| Test Kapsamı | ✅ / ⚠️ / ❌ | ... |
-| Erişilebilirlik | ✅ / N/A | ... |
+| Marka & Craft (imza) | ✅ | Üst eksen korundu. İmza yeşili global düzleşmedi; adım no'lar `::before` faint birebir; `--color-pulse-ink` light birebir (`#6fe36f`) / dark okunur marka-yeşili. Sıfır görsel regresyon + kullanıcı onayı (UAT 8/14). |
+| Erişilebilirlik | ✅ | Fazın çekirdek ekseni. a11y 89→**100 çift-tema** (mobil+masaüstü); 4 denetim 0-fail (light+dark, tam tarama 0 ihlal/39 pass); klavye-nav + 2px yeşil focus + reduced-motion + RTL/AR doğrulandı (UAT 11-13). |
+| Güvenlik | ✅ | security-review 0 bulgu; diff sunum-katmanı, `src/app/api/` dokunulmadı; `content:attr(data-n)` çalıştırılamayan metin-sink, `dangerouslySetInnerHTML` yok; secret env'de. |
+| Bakım Maliyeti | ✅ | Token tek-kaynak yaklaşımı (`--color-ink-faint` koyulaştırma + yeni `--color-pulse-ink`) öğe-bazlı swap'a tercih edildi; hardcode renk yok (token globals.css'te); değişiklik cerrahi (7 dosya). |
+| Performans | ✅ | Korunan taban regresyonsuz (apples-to-apples `/en` birebir: mobil 87/masaüstü 100/CLS 0 dört koşu). Fix'ler renk/token/markup/aria → deterministik Lantern birebir = sıfır perf maliyeti. Brief bütçesi (mobil ≥95) hâlâ açık ama bilinçle kapsam dışı (perf fazı). |
+| Hata Yönetimi | ✅ N/A | Degradasyon yolları (Living Flow fallback, chatbot offline) dokunulmadı → regresyon yüzeyi yok; sunum-katmanı fix yeni hata yolu açmaz. |
+| Test Kapsamı | ⚠️ N/A | Test altyapısı yok (proje-geneli aspirasyonel — QUALITY §8). Faz manuel Lighthouse + axe ile doğruladı (proje konvansiyonu "test = build + UAT" ile tutarlı). Altyapı kurulumu sıradaki faz adayı (D1) — fazın eksikliği değil. |
+| Yerelleştirme & RTL | ✅ | Yeni i18n anahtarı yok (`messages/` 0 değişiklik → parite korundu); aria-label component-içi `LABELS` (5 dil); RTL/AR `dir=rtl` + "العربية (AR)" doğrulandı (UAT 10-11). |
+
+**Kullanıcı yolculuğu & boşluk:** Ana sayfa tüm tema ve dillerde tutarlı; a11y kazanımları gören kullanıcıya görünmez (craft korundu) ama AT/klavye/kontrast kullanıcısı için gerçek. Akışta kopukluk yok. **Bilinen, sahipli boşluk:** alt-sayfa derin a11y denetlenmedi (kapsam dışı); özellikle `--color-pulse-ink` swap yalnız ana sayfada → alt sayfalarda `text-pulse` ink-panel dark-inversion'ı sürebilir. Orphan değil — Kapsam Dışı + retro "Sonraki Faz Önerileri"nde kayıtlı, sonraki a11y/alt-sayfa fazına yönlendirildi.
 
 ---
 
 ## Sonuç
 
-- **Tamamlanma Tarihi:** [Tarih]
-- **Toplam Task:** [Sayı]
-- **Notlar:** [Önemli kararlar, sonraki faza aktarılanlar]
+- **Tamamlanma Tarihi:** 2026-06-30
+- **Toplam Task:** 8 (4.01-4.08, hepsi ✅; UAT 14/14; düzeltme task'ı yok)
+- **Notlar:** a11y 89→**100 çift-tema** (mobil+masaüstü); A11Y1 renk kontrastı (K1 `::before` + K2 ink-faint token + K5/C9/C10 cream-on-ink + C2/C3 yeni `--color-pulse-ink` token) + A11Y2 hero `<dl>`→semantik link + A11Y3 dil-switcher aria (WCAG 2.5.3). İmza yeşili korundu (craft üst eksen), perf/CLS regresyonsuz (apples-to-apples `/en`), i18n parite (yeni anahtar yok). 8 kalite ekseni ✅/N/A (test-kapsamı N/A — altyapı yok). **Sonraki faza aktarılan (sahipli):** alt-sayfa derin a11y + `text-pulse` ink-panel süpürmesi (`--color-pulse-ink` swap yalnız ana sayfada); araç-davranışını planlamadan önce ampirik yokla (DEV-1/aria-hidden dersi). Versiyon Sonu Durumu = `içerik_fazları` → sıradaki içerik fazı: test altyapısı (D1).
 
 ---
 
 **Oluşturulma:** 2026-06-29
-**Son Güncelleme:** 2026-06-30 — verify-phase 4 (UAT) ✅: 14 senaryonun **14'ü geçti**, otonom test modu (fresh-prod-serve bağımsız re-run; kaynak 4.07'den beri değişmedi → HEAD = 4.08 build). a11y=100 mobil+masaüstü; axe light+dark tam tarama 0 ihlal/39 pass; 5-dil aria + RTL/AR `dir=rtl` + klavye-nav/yeşil-focus + reduced-motion + perf/CLS regresyonsuz teyit; marka imza craft kullanıcı onayı. Otomatik kontroller: CI/CD & bot yok, **security-review 0 bulgu** (sunum-katmanı diff, `src/app/api/` dokunulmadı). Düzeltme task'ı yok. Sıradaki adım: review-phase 4.
+**Son Güncelleme:** 2026-06-30 — review-phase 4 ✅: retrospektif + 8 kalite ekseni faz dokümanına yazıldı (Marka&Craft/Erişilebilirlik/Güvenlik/Bakım/Performans ✅; Hata Yönetimi & Test Kapsamı N/A — altyapı/yüzey yok). Milestone 5/5; UAT 14/14. Faz ✅ tamamlandı; sıradaki = discuss-phase 5 (test altyapısı D1). doc-scan: ~8.3k token (tek-okuma rahat, bölme gerekmedi).
