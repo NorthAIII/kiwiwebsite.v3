@@ -1,6 +1,6 @@
 # TASK-6.01: Ölç-önce — LCP elementi tespiti + TR `/` mobil perf taban
 
-**Durum:** ⬜ Bekliyor
+**Durum:** 🔴 Bloke (ölçüm ortamı yok — node/npm/Chrome; node'lu ortamda koşulacak)
 **Modül:** M6 (modules/M6-SEO-Deploy.md) + M1 ölçüm hedefi
 **Feature:** P1/P2 ölçüm temeli (lever önceliğini sabitler)
 **Faz:** Phase 6 (phases/PHASE-6.md)
@@ -101,24 +101,38 @@ _dev/phases/
 
 ## Oturum Kayıtları
 
-### Oturum — [TARİH]
+### Oturum — 2026-06-30
 
-**Durum:** [✅/🔄/⏸️/🔴]
+**Durum:** 🔴 Bloke
 
 **Yapılanlar:**
--
+- Oturum başlangıç protokolü + komuta özgü dokümanlar okundu (PHASE-6 Araştırma Bulguları, perf/README metodolojisi, tema/locale ölçüm tuzakları).
+- Ortam taraması yapıldı: ölçüm araç zinciri bu devcontainer'da yok. Her yol kontrol edildi (PATH, nvm, fnm, volta, /usr/bin, /usr/local/bin) → **node ❌, npm/pnpm/yarn ❌, google-chrome/chromium ❌**. Host yükü uygun (loadavg 1.12 / 20 çekirdek) — sorun yük değil, toolchain yokluğu.
+- Kullanıcıya bağımlılık bloğu bildirildi; karar: **node'lu ortamda koş** (bu oturum pause, yeni oturumda run-task).
 
 **Sorunlar:**
--
+- TASK-6.01 saf ölçüm task'ı; fresh prod build (`npm run build`), serve (`npm run start`) ve element-denetimli Lighthouse koşusu (node + Chrome) gerektirir. Hiçbiri mevcut değil → ölçüm yapılamaz.
+- Task dokümanı + research K-R4: LCP elementi **tahminle yazılamaz**, ampirik teyit şart. Bu yüzden "ilerleyip element varsayımı yazma" yolu kapalı — doğru hamle bloke.
 
 **Kararlar:**
--
+- Task 🔴 Bloke; kod/ölçüm değişikliği yapılmadı (ortam mutasyonu — node/Chrome kurulumu — kullanıcı tarafından bu oturumda istenmedi).
+- Tahmin yok: LCP elementi ve TR `/` mobil taban ampirik koşuda sabitlenecek.
 
 **Dosya Değişiklikleri:**
--
+- `_dev/tasks/TASK-6.01.md` — durum 🔴 Bloke + bu oturum kaydı
+- `_dev/phases/PHASE-6.md` — Task Listesi'nde 6.01 → 🔴 Bloke
+- `_dev/DURUM.md` — bloke durumu + handoff notu
 
 **Test Sonuçları:**
--
+- Yok (ölçüm ortamı bloke). Kod değişmedi, build/test koşulamadı.
+
+**Son Yaklaşım:**
+- Ölçüm metodolojisi `docs/perf/README.md`'de hazır; tek eksik node+Chrome'lu ortam. Yaklaşım değişmiyor — node'lu ortamda alt görevler 1→2→3 sırayla koşulur.
+
+**Sonraki Adım Detayı (node'lu ortamda devam):**
+1. `rm -rf .next && npm run build && npm run start -- -p 4173` — fresh prod build + serve; listening-PID teyidi (`ss -ltnp`), `cat /proc/loadavg` düşük yük (≤~6).
+2. Element-denetimli Lighthouse: TR `/` için `--extra-headers='{"Cookie":"NEXT_LOCALE=tr"}'` ŞART (cookie'siz `/en` ölçülür); çıktı `largest-contentful-paint-element` denetimini **içermeli** (tam audit set, daraltma yapma). 3+ koşu → median; mobil preset + masaüstü teyit (`--preset=desktop`).
+3. LCP elementini audit çıktısından oku (tahmin yok), TR `/` mobil median perf/LCP/FCP/CLS/TBT'yi `docs/perf/README.md`'ye element-denetimli çalışma tabanı olarak yaz; PHASE-6 "Dikkat Edilecekler"deki "LCP elementi ampirik teyitli DEĞİL" notunu teyitli sonuçla güncelle + lever önceliği çıkarımı (metin → L1 yüksek; canvas → L2 baskın).
 
 ---
 
