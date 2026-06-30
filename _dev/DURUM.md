@@ -1,6 +1,6 @@
 # DURUM — Proje Dashboard
 
-**Son Güncelleme:** 2026-06-30 — plan-phase 5: Faz 5 (v0.2 test altyapısı D1) 5 task'a bölündü ve dokümanları yazıldı. Seed=3 kanıtlı katman 1:1 task: 5.01 Vitest-node+i18n parite · 5.02 Vitest-jsdom+smoke · 5.03 Playwright/axe+a11y regresyon (`/` light+dark) · 5.04 ilk GitHub Actions CI (fast+a11y job) · 5.05 test convention notu. Her runner kur+kanıtla (fail-on-regression). Versiyon Sonu Durumu içerik_fazları (değişmez). **Adım=verify-plan** (sıradaki: verify-plan 5).
+**Son Güncelleme:** 2026-06-30 — verify-plan 5: 5 task dokümanı temiz context ile review edildi — sorun bulunamadı (0 mekanik düzeltme, 0 yapısal değişiklik). Referans gerçeklik-kontrolü ampirik geçti (i18n paritesi 5×183 anahtar 0 eksik/0 fazla; `.github/`+test-config yok=ilk CI; locale/script referansları tutarlı). Milestone 1–6, D1.1–D1.5 ve research Dikkat #1–#8 tam kapsandı. **Adım=task** (sıradaki: run-task TASK-5.01).
 
 <!-- KURAL: Bu satır her oturum sonunda ÜZERİNE YAZILIR — tek satır, tek cümle. "Önceki:" / "Eski:" prefix ile kümülatif yığma YASAK; HTML comment'e sarma da yasak (CLAUDE.md → Doküman Disiplini). Tarih + kısa özet yeterli; detay için git log + ilgili PHASE/TASK dokümanları. -->
 
@@ -8,10 +8,10 @@
 
 ## Aktif Faz
 
-**Faz:** 5 — Test altyapısı (D1). 🔄 **plan tamamlandı** (plan-phase 5, 2026-06-30); discuss ✅ + research ✅. Faz 4 (v0.2 a11y 89→100) ✅.
-**Adım:** verify-plan → `/devflow:verify-plan 5`: 5 task dokümanını review et (yeni oturum).
-**İlerleme:** 5 task yazıldı — seed=3 kanıtlı katman 1:1 task'a: **5.01** Vitest-node kur + i18n 5-dil parite tohum (D1.1+D1.2) · **5.02** Vitest-jsdom + component smoke (D1.1) · **5.03** Playwright/axe kur + a11y regresyon `/` light+dark (D1.1+D1.3) · **5.04** ilk GitHub Actions CI, fast+a11y job (D1.4) · **5.05** test convention notu docs/TESTING.md (D1.5). Her runner kur+kanıtla (fail-on-regression). Sıra lineer (5.01→5.05). **🔴 En kritik risk (5.03):** Faz 4 a11y=100 Lighthouse alt-kümesiydi; ham axe full-ruleset ≠ 0 ihlal garantisi → axe kapsamı **WCAG etiketleri**; icrada `/` light+dark ampirik koş, baseline sabitle. **Devralınan borç:** alt-sayfa derin a11y + `text-pulse` ink-panel süpürmesi (harness sonra genişletir).
-**Son Faz Dokümanı:** `phases/PHASE-5.md` (🔄 plan tamamlandı — Task Listesi dolu)
+**Faz:** 5 — Test altyapısı (D1). 🔄 **plan ✅ + verify-plan ✅** (2026-06-30); discuss ✅ + research ✅. Faz 4 (v0.2 a11y 89→100) ✅.
+**Adım:** task → `/devflow:run-task` (yeni oturum): TASK-5.01'den başla. (verify-plan tamamlandı — 0 düzeltme/değişiklik.)
+**İlerleme:** 5 task review'dan geçti — seed=3 kanıtlı katman 1:1 task'a: **5.01** Vitest-node kur + i18n 5-dil parite tohum (D1.1+D1.2) · **5.02** Vitest-jsdom + component smoke (D1.1) · **5.03** Playwright/axe kur + a11y regresyon `/` light+dark (D1.1+D1.3) · **5.04** ilk GitHub Actions CI, fast+a11y job (D1.4) · **5.05** test convention notu docs/TESTING.md (D1.5). Her runner kur+kanıtla (fail-on-regression). Sıra lineer (5.01→5.05). **🔴 En kritik risk (5.03):** Faz 4 a11y=100 Lighthouse alt-kümesiydi; ham axe full-ruleset ≠ 0 ihlal garantisi → axe kapsamı **WCAG etiketleri**; icrada `/` light+dark ampirik koş, baseline sabitle. **Devralınan borç:** alt-sayfa derin a11y + `text-pulse` ink-panel süpürmesi (harness sonra genişletir).
+**Son Faz Dokümanı:** `phases/PHASE-5.md` (🔄 plan ✅ + verify-plan ✅ — Task Listesi dolu, review'dan geçti)
 
 ---
 
@@ -28,15 +28,15 @@
 
 ## Aktif Task
 
-**Task:** — Aktif task yok. Faz 5 planlandı (5 task ⬜); task icrası verify-plan'dan **sonra** başlar (sıradaki: TASK-5.01).
-**Durum:** Faz 5 (test altyapısı D1) 🔄 — discuss ✅ + research ✅ + plan ✅. Sıradaki adım faz döngüsünde verify-plan 5 (task değil).
-**İlerleme:** `/devflow:verify-plan 5` ile 5 task dokümanını review et (yeni oturum). Onaylanınca run-task TASK-5.01'den başla.
+**Task:** TASK-5.01 sıradaki (⬜ Bekliyor) — `/devflow:run-task` ile başlar. verify-plan review'dan geçti, icra serbest.
+**Durum:** Faz 5 (test altyapısı D1) 🔄 — discuss ✅ + research ✅ + plan ✅ + verify-plan ✅. Sıradaki adım faz döngüsünde run-task TASK-5.01.
+**İlerleme:** `/devflow:run-task` ile TASK-5.01'i (Vitest-node kurulumu + i18n 5-dil parite tohum) çalıştır (yeni oturum).
 
 ---
 
 ## Task Durumu (Aktif Faz)
 
-> Faz 5 (test altyapısı D1) 🔄 — discuss ✅ + research ✅ + **plan ✅** (5 task ⬜, verify-plan bekliyor). Faz 4 (v0.2 a11y) ✅; 8 task'ı (4.01-4.08) `tasks/archive/`'da, detay `phases/PHASE-4.md`.
+> Faz 5 (test altyapısı D1) 🔄 — discuss ✅ + research ✅ + plan ✅ + **verify-plan ✅** (5 task ⬜, run-task bekliyor). Faz 4 (v0.2 a11y) ✅; 8 task'ı (4.01-4.08) `tasks/archive/`'da, detay `phases/PHASE-4.md`.
 
 | # | Task | Durum | Açıklama |
 |---|------|-------|----------|
@@ -66,12 +66,12 @@
 
 ## Hızlı Erişim
 
-**Aktif Task:** — yok; Faz 5 planlandı (5 task ⬜). Sıradaki adım: `/devflow:verify-plan 5` (task review); onaylanınca TASK-5.01
-**Aktif Faz:** 5 — Test altyapısı (D1) 🔄 · adım=verify-plan; Faz 4 ✅; Aktif Versiyon v0.2, Versiyon Sonu Durumu: içerik_fazları
+**Aktif Task:** TASK-5.01 sıradaki (⬜; 5 task ⬜). Sıradaki adım: `/devflow:run-task` → TASK-5.01
+**Aktif Faz:** 5 — Test altyapısı (D1) 🔄 · adım=task (run-task); Faz 4 ✅; Aktif Versiyon v0.2, Versiyon Sonu Durumu: içerik_fazları
 **Task Sistemi:** `tasks/TASKS-README.md`
 **PRD (karar kaynağı):** `PRD/VIZYON.md` · `PRD/VERSIONS.md` · `PRD/features/`
 **Revize Backlog (bilinen sorunlar):** `docs/REVIZE-BACKLOG.md`
 
 ---
 
-**Son Güncelleme:** 2026-06-30 — plan-phase 5: 5 task dokümanı oluşturuldu (5.01–5.05), Task Listesi PHASE-5'e yazıldı. Seed=3 kanıtlı katman 1:1 task; her runner kur+kanıtla. Adım=verify-plan → verify-plan 5.
+**Son Güncelleme:** 2026-06-30 — verify-plan 5: 5 task dokümanı review edildi, sorun bulunamadı (0 düzeltme/değişiklik). Referans gerçeklik-kontrolü ampirik geçti. Adım=task → run-task TASK-5.01.
