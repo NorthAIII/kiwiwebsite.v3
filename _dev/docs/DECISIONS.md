@@ -9,6 +9,20 @@
 
 <!-- Her yeni karar aşağıdaki formatta en üste eklenir (en yeni en üstte) -->
 
+### 2026-06-30 — Yeni tasarım-sistemi token'ı: `--color-pulse-ink` (ink-zemin adaptif imza-yeşili)
+
+**Bağlam:** TASK-4.07 (Faz 4 a11y, C2/C3). Gym sektör paneli `bg-ink` + `text-canvas`; imza pulse-yeşili öğeler (adım no 01/02/03 + "Canlı ürünü gör" CTA) `text-pulse` (`#6fe36f`) kullanıyordu. Dark modda `--color-ink` krem'e (`#f2f1e8`) döndüğü için panel zemini krem oluyor → parlak pulse krem üzerinde 1.22 (color-contrast fail). Mevcut hiçbir yeşil token panelin **her iki halinde** (light=koyu zemin / dark=krem zemin) 4.5'i geçmiyordu — tek statik renk çözemez (DEV-2 dark-inversion).
+
+**Seçenekler (kullanıcıya sunuldu, 2026-06-29):** (1) adım no `aria-hidden` + CTA nötr renk; (2) hibrit; (3) **adaptif `--color-pulse-ink` token** — light `#6fe36f` (= mevcut pulse, görünüm değişmez), dark `#1f7a3d` (krem panelde 4.74 ✅).
+
+**Karar (kullanıcı onayı 2026-06-29, icra 2026-06-30):** Seçenek 3 — yeni semantik token `--color-pulse-ink`. `globals.css` `@theme` (light `#6fe36f`) + `html.dark` (dark `#1f7a3d`). Tüketiciler: yalnız `SectorSolutions.tsx` (panel-içi adım no + seeLive CTA, `text-pulse-ink`). `bg-pulse` canlı-nokta (dekoratif 1.5px grafik) `text-pulse` ailesinde değil, **dokunulmadı** (imza canlı göstergesi parlak pulse kalır).
+
+**Gerekçe:** Marka & Craft üst eksen (ILKELER §1) — light görünüm **birebir** korunur (token light = eski pulse), yalnız dark'ta okunur koyu-yeşile döner (soluk-pulse → legible, craft iyileştirmesi). Dark değer keyfi değil: `#1f7a3d` = `--color-green` light marka-yeşili (logo/CTA'da zaten var). Token-sistemiyle uyumlu, hardcode yok (QUALITY §5). aria-hidden tercih edilmedi: kullanıcı dürüst/okunur fix istedi + CTA interaktif (gizlenemez). axe-core 4.11.4 light+dark: ikisinde de color-contrast 0 ihlal; perf/CLS regresyonsuz (yalnız renk token + class swap).
+
+**İlgili Task/Faz:** run-task TASK-4.07 (Faz 4 / v0.2 a11y); kaynak DEV-2 → `phases/PHASE-4.md` "Re-ölçüm Teyidi".
+
+---
+
 ### 2026-06-29 — Faz 4 a11y gate LIGHT değil **LIGHT + DARK** (re-ölçüm düzeltmesi)
 
 **Bağlam:** run-task TASK-4.01 otoriter re-ölçümü (Lighthouse 13.3.0 + axe-core 4.11.4, her iki tema, mobil+masaüstü), bir önceki kararın (aşağıdaki "kontrast düzeltme mekanizması") **"Lighthouse light-mode ölçer → gate LIGHT"** önkabulünü **yanlışladı**: kanonik `npx lighthouse --headless=new` koşusu siteyi **DARK** render ediyor (tema init `prefers-color-scheme: dark`'a düşüyor; v0.1 baseline'ı da dark'tı). a11y=89 her iki temada aynı (aynı 4 denetim) ama color-contrast'ta **başarısız öğeler temaya göre değişir**. Kritik: `bg-ink`/`text-canvas` panelleri (SectorSolutions, Bunker, Footer) dark'ta krem'e döndüğü için yeni dark-only fail'ler çıktı — **C2** gym-panel adım no `text-pulse` ×3 (`SectorSolutions.tsx:131`, 1.22), **C3** "Canlı ürünü gör" `text-pulse` (`:143`, 1.22), **C9** Bunker durum `text-canvas/50` (`Bunker.tsx:58`, 3.36) — hiçbiri eski K1-K5 kapsamında değildi. Sonuç: K1-K5 tek başına a11y=100'e ulaşamaz (kanonik dark koşuda text-pulse fail kalır).

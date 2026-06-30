@@ -1,6 +1,6 @@
 # TASK-4.07: SectorSolutions gym paneli pulse-yeşili dark-inversion fix (color-contrast — C2/C3)
 
-**Durum:** ⬜ Bekliyor
+**Durum:** ✅ Tamamlandı
 **Modül:** M1 (Tasarım Sistemi — F1.4 token) + M2 (Sayfalar — F2.4 sektör çözümleri)
 **Feature:** A11Y1 (renk kontrastı WCAG AA) — dark-mode panel-inversion pulse-yeşili
 **Faz:** Phase 4 (phases/PHASE-4.md)
@@ -41,23 +41,23 @@ Bu task TASK-4.01 re-ölçümünün **DEV-2** bulgusundan doğdu (kapsam dışı
 
 ## Alt Görevler
 
-- [ ] **1. `--color-pulse-ink` token'ını ekle (light + dark)**
-  - `src/app/globals.css` `@theme` bloğu (L14 `--color-pulse` altına) — `--color-pulse-ink: #6fe36f;` (light; = mevcut pulse, koyu panelde değişmez görünüm)
-  - `src/app/globals.css` `html.dark` bloğu (L38 `--color-pulse` altına) — `--color-pulse-ink: #1f7a3d;` (dark; krem panelde 4.74 ✅ — `--color-green` light değeriyle aynı marka-yeşili, keyfi değil)
-  - Tailwind v4 `@theme` `--color-*` → `text-pulse-ink` utility'sini otomatik üretir
+- [x] **1. `--color-pulse-ink` token'ını ekle (light + dark)**
+  - `src/app/globals.css` `@theme` bloğu (`--color-pulse` altına) — `--color-pulse-ink: #6fe36f;` (light; = mevcut pulse, koyu panelde değişmez görünüm) + açıklayıcı yorum
+  - `src/app/globals.css` `html.dark` bloğu (`--color-pulse` altına) — `--color-pulse-ink: #1f7a3d;` (dark; krem panelde 4.74 ✅ — `--color-green` light değeriyle aynı marka-yeşili, keyfi değil)
+  - Tailwind v4 `@theme` `--color-*` → `text-pulse-ink` utility'sini otomatik üretti (build doğruladı)
 
-- [ ] **2. Adım numaralarını `text-pulse-ink`'e geçir**
+- [x] **2. Adım numaralarını `text-pulse-ink`'e geçir**
   - `src/components/SectorSolutions.tsx:131` — `text-pulse` → `text-pulse-ink` (adım no span, `0${i+1}`)
 
-- [ ] **3. seeLive CTA'yı `text-pulse-ink`'e geçir**
-  - `src/components/SectorSolutions.tsx:143` — CTA `className`'inde `text-pulse` → `text-pulse-ink` ("Canlı ürünü gör" linki; ok span'ı rengi inherit eder, ayrıca dokunmaya gerek yok)
+- [x] **3. seeLive CTA'yı `text-pulse-ink`'e geçir**
+  - `src/components/SectorSolutions.tsx:143` — CTA `className`'inde `text-pulse` → `text-pulse-ink` ("Canlı ürünü gör" linki; ok span'ı rengi inherit eder, dokunulmadı)
 
-- [ ] **4. Doğrula (build + axe + görsel, her iki tema)**
-  - `next build` temiz (0 hata/uyarı)
-  - axe ana sayfa **light**: adım no + CTA `color-contrast` flag'lemiyor (zaten geçiyordu — regresyon yok teyidi)
-  - axe ana sayfa **dark**: adım no + CTA artık `color-contrast` flag'lemiyor (1.22 → 4.74)
-  - Gözle **light**: panel + pulse öğeleri birebir aynı (token light = eski pulse)
-  - Gözle **dark**: adım no + CTA okunur koyu-yeşil; `bg-pulse` canlı-nokta hâlâ parlak pulse (dokunulmadı); panel hiyerarşisi makul
+- [x] **4. Doğrula (build + axe + görsel, her iki tema)**
+  - `next build` temiz (37 sayfa, 0 hata/uyarı)
+  - axe ana sayfa **light**: adım no (×3) + CTA `color-contrast` flag'lemiyor — sayfa geneli color-contrast ihlali **0** (regresyon yok)
+  - axe ana sayfa **dark**: adım no + CTA artık flag'lenmiyor (1.22 → 4.74); sayfa geneli color-contrast ihlali **0** (son text-pulse fail'i de kapandı)
+  - Gözle **light**: panel + pulse öğeleri birebir aynı (rengi `rgb(111,227,111)` = `#6fe36f` teyit)
+  - Gözle **dark**: adım no + CTA okunur koyu-yeşil (`rgb(31,122,61)` = `#1f7a3d`); `bg-pulse` canlı-nokta hâlâ parlak pulse (dokunulmadı); panel hiyerarşisi makul
 
 ---
 
@@ -89,31 +89,56 @@ src/components/
 
 ## Test Kriterleri
 
-- [ ] `next build` temiz geçer (0 hata/uyarı)
-- [ ] axe ana sayfa **dark**: gym-panel adım no (×3) + seeLive CTA `color-contrast` **flag'lemiyor** (1.22 → ~4.74)
-- [ ] axe ana sayfa **light**: aynı öğeler flag'lenmiyor (regresyon yok — zaten geçiyordu)
-- [ ] Gözle **light**: panel + pulse öğeleri görünüm birebir aynı (token light = eski pulse)
-- [ ] Gözle **dark**: adım no + CTA okunur koyu-yeşil; `bg-pulse` canlı-nokta parlak pulse korundu
-- [ ] i18n etkisi yok (anahtar/metin değişmedi); `next build` 37 sayfa
+- [x] `next build` temiz geçer (37 sayfa, 0 hata/uyarı)
+- [x] axe ana sayfa **dark**: gym-panel adım no (×3) + seeLive CTA `color-contrast` **flag'lemiyor** (1.22 → 4.74); sayfa geneli color-contrast = 0
+- [x] axe ana sayfa **light**: aynı öğeler flag'lenmiyor (regresyon yok); sayfa geneli color-contrast = 0
+- [x] Gözle **light**: panel + pulse öğeleri görünüm birebir aynı (`#6fe36f` teyit)
+- [x] Gözle **dark**: adım no + CTA okunur koyu-yeşil (`#1f7a3d`); `bg-pulse` canlı-nokta parlak pulse korundu
+- [x] i18n etkisi yok (anahtar/metin değişmedi); `next build` 37 sayfa
 
 ---
 
 ## Tamamlanma Kriterleri
 
-- [ ] Tüm alt görevler tamamlandı
-- [ ] Tüm test kriterleri karşılandı
-- [ ] Git commit & push yapıldı
-- [ ] Bu doküman güncellendi (oturum kaydı)
-- [ ] DURUM.md güncellendi
+- [x] Tüm alt görevler tamamlandı
+- [x] Tüm test kriterleri karşılandı
+- [x] Git commit & push yapıldı
+- [x] Bu doküman güncellendi (oturum kaydı)
+- [x] DURUM.md güncellendi
 
 ---
 
 ## Oturum Kayıtları
 
-### Oturum — [TARİH]
+### Oturum — 2026-06-30
 
-**Durum:** [doldurulacak]
+**Durum:** ✅ Tamamlandı
+
+**Yapılanlar:**
+- `--color-pulse-ink` adaptif token eklendi: `globals.css` `@theme` → `#6fe36f` (light, = mevcut `--color-pulse`), `html.dark` → `#1f7a3d` (dark). Tailwind v4 `@theme` → `text-pulse-ink` utility'sini otomatik üretti.
+- `SectorSolutions.tsx`: adım no span (L131) + seeLive CTA (L143) `text-pulse` → `text-pulse-ink`. `bg-pulse` canlı-nokta (L120) **dokunulmadı** (imza canlı göstergesi).
+- Doğrulama: build temiz (37 sayfa); fresh prod-serve (:4173, listening PID teyit) + axe-core 4.11.4 (Playwright, sistem Chrome, emulateMedia colorScheme + reducedMotion + scroll) light+dark; gym paneli screenshot light+dark.
+
+**Sorunlar:**
+- ESM script `playwright`'i NODE_PATH'ten çözemedi → mutlak yol + CommonJS default-import (`import pkg; const {chromium}=pkg`). Playwright chromium-1229 eksikti → `executablePath: /usr/bin/google-chrome` (Lighthouse'un kanonik Chrome'u).
+
+**Kararlar:**
+- `--color-pulse-ink` semantik token'ı (ink-zemin imza-yeşili aksanı; light=pulse, dark=koyu marka-yeşili) kalıcı tasarım-sistemi eklemesi.
+- docs/DECISIONS.md'ye eklendi: Evet (2026-06-30 — adaptif pulse-ink token)
+
+**Kalan İşler:**
+- Yok (task tamamlandı). Faz 4 son adımı: TASK-4.08 final çift-tema a11y=100 doğrulaması.
+
+**Dosya Değişiklikleri:**
+- `src/app/globals.css` → `--color-pulse-ink` token (light `@theme` + dark `html.dark`) + açıklayıcı yorum
+- `src/components/SectorSolutions.tsx` → adım no (L131) + seeLive CTA (L143): `text-pulse` → `text-pulse-ink`
+
+**Test Sonuçları:**
+- `next build`: temiz, 37 sayfa, 0 hata/uyarı.
+- axe color-contrast (fresh-prod-serve :4173, axe-core 4.11.4): **light** sayfa geneli 0 ihlal (adım no + CTA `rgb(111,227,111)`=`#6fe36f`, birebir eski); **dark** sayfa geneli 0 ihlal (adım no + CTA `rgb(31,122,61)`=`#1f7a3d`, 1.22→4.74). pulse-ilişkili ihlal her iki temada 0.
+- Gözle (1400px, light+dark): light panel/pulse birebir; dark adım no + CTA okunur koyu-yeşil, `bg-pulse` canlı-nokta parlak pulse korundu.
 
 ---
 
 **Oluşturulma:** 2026-06-29
+**Tamamlanma:** 2026-06-30

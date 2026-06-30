@@ -190,7 +190,7 @@ A11Y1 acceptance = `color-contrast` denetimi **0 başarısız**; bu, faz tablosu
 | 4.04 | TASK-4.04 | ✅ Tamamlandı | Cream-on-ink opaklık (K5+C9+C10 — Footer /60, Bunker status /60, metrik /70; ayraçlar aria-hidden; axe light 0 / dark yalnız text-pulse) |
 | 4.05 | TASK-4.05 | ✅ Tamamlandı | Hero `<dl>`/`<dt>`/`<dd>` → `<div>`+`<span class="block">` (K3; data-hero korundu, görünüm birebir; axe light+dark definition-list 0 + dlitem 0) |
 | 4.06 | TASK-4.06 | ✅ Tamamlandı | Dil-switcher `aria-label`'a locale kodu (K4; `${LABELS[locale]} (${locale.toUpperCase()})`, kod-only; axe label-content-name-mismatch light+dark × 5 dil 0) |
-| 4.07 | TASK-4.07 | ⬜ Bekliyor | Gym-panel pulse-yeşili dark-inversion fix (C2/C3, adaptif `--color-pulse-ink` token) |
+| 4.07 | TASK-4.07 | ✅ Tamamlandı | Gym-panel pulse-yeşili dark-inversion fix (C2/C3): yeni adaptif `--color-pulse-ink` token (light `#6fe36f`/dark `#1f7a3d`); axe color-contrast light+dark 0 (dark 1.22→4.74) |
 | 4.08 | TASK-4.08 | ⬜ Bekliyor | Final doğrulama: a11y=100 **çift-tema** (light+dark) + perf/CLS regresyonsuz + `docs/perf/` taban |
 
 **Durum simgeleri:** ⬜ Bekliyor | 🔄 Devam ediyor | ⏸️ Duraklatıldı | ✅ Tamamlandı | 🔴 Bloke | ❌ İptal
@@ -250,4 +250,4 @@ A11Y1 acceptance = `color-contrast` denetimi **0 başarısız**; bu, faz tablosu
 ---
 
 **Oluşturulma:** 2026-06-29
-**Son Güncelleme:** 2026-06-30 — run-task TASK-4.06 ✅: Dil-switcher `aria-label` hardcoded "Language / Dil" → dinamik `${LABELS[locale]} (${locale.toUpperCase()})` (`LanguageSwitcher.tsx:63`, kod-only; LABELS component-içi sabit → yeni i18n anahtarı yok, parite tetiklenmez). axe-core 4.11.4 (Playwright, fresh-prod-serve :4173): `label-content-name-mismatch` light+dark × 5 dil = **0 ihlal** (Nav+Footer 2 mount). 5 dilde label görünür locale kodunu içeriyor (Türkçe (TR)…العربية (AR)); AR dir=rtl + menü aç/seç/Escape teyit. build temiz (37 sayfa). 8 task (4.01-4.06 ✅ + 4.07/4.08 bekliyor). Sıradaki: TASK-4.07.
+**Son Güncelleme:** 2026-06-30 — run-task TASK-4.07 ✅: gym-panel pulse-yeşili dark-inversion fix (C2/C3). Yeni adaptif `--color-pulse-ink` token (`globals.css` `@theme` light `#6fe36f` = mevcut pulse / `html.dark` `#1f7a3d` = marka-yeşili); `SectorSolutions.tsx` adım no (L131) + seeLive CTA (L143) `text-pulse`→`text-pulse-ink`; `bg-pulse` canlı-nokta dokunulmadı. axe-core 4.11.4 (Playwright fresh-prod-serve :4173, emulateMedia + reducedMotion + scroll): light+dark sayfa geneli color-contrast **0 ihlal** (dark adım no/CTA 1.22→4.74); görsel light birebir, dark okunur koyu-yeşil. DECISIONS'a token kararı eklendi. build temiz (37 sayfa). 8 task (4.01-4.07 ✅ + 4.08 bekliyor). Sıradaki: TASK-4.08 (final çift-tema a11y=100 doğrulaması).

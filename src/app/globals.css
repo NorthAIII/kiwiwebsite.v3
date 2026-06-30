@@ -12,6 +12,9 @@
   --color-green: #1f7a3d;
   --color-green-deep: #155a2c;
   --color-pulse: #6fe36f;
+  /* Pulse green tuned for ink-bg panels: matches --color-pulse on dark panels;
+     in dark theme the panel inverts to cream, so this darkens to stay legible (WCAG AA). */
+  --color-pulse-ink: #6fe36f;
   --color-line: rgba(18, 20, 15, 0.1);
 
   --font-display: var(--font-fraunces), ui-serif, Georgia, serif;
@@ -36,6 +39,7 @@ html.dark {
   --color-green: #4fb06a;
   --color-green-deep: #2f7d45;
   --color-pulse: #8af28a;
+  --color-pulse-ink: #1f7a3d;
   --color-line: rgba(242, 241, 232, 0.12);
 }
 
