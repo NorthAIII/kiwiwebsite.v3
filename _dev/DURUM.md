@@ -1,6 +1,6 @@
 # DURUM — Proje Dashboard
 
-**Son Güncelleme:** 2026-06-30 — discuss-phase 6: Faz 6 (v0.2 mobil perf/LCP) kapsam tartışması tamamlandı. Kararlar: ana sayfa TR `/` mobil-birincil · brief hedef / craft tavan · önce WebGL-dışı kazanımlar (P1) sonra Living Flow degradasyon ayarı (P2, craft korunur). Guardrail: a11y=100 çift-tema / CLS=0 / masaüstü 99-100 / i18n parite. PHASE-6 oluşturuldu, MODULE-MAP P1/P2 eklendi, PHASES Faz 6 🔄. Adım → research.
+**Son Güncelleme:** 2026-06-30 — research-phase 6: TR `/` mobil LCP araştırması tamam. Kök neden: CPU-bound WebGL main-thread (mobil "Other" 3663ms vs masaüstü 1202ms, tek fark 4× throttle). İki craft-koruyucu P1 lever (kullanıcı onayı): hero reveal transform-only + WebGL idle/post-load deferral; yardımcı Fraunces SOFT/WONK budama. LCP elementi henüz ampirik teyitsiz → ilk task element-denetimli ölçüm. Bulgular PHASE-6'ya + DECISIONS'a yazıldı. Adım → plan.
 
 <!-- KURAL: Bu satır her oturum sonunda ÜZERİNE YAZILIR — tek satır, tek cümle. "Önceki:" / "Eski:" prefix ile kümülatif yığma YASAK; HTML comment'e sarma da yasak (CLAUDE.md → Doküman Disiplini). Tarih + kısa özet yeterli; detay için git log + ilgili PHASE/TASK dokümanları. -->
 
@@ -9,9 +9,9 @@
 ## Aktif Faz
 
 **Faz:** 6 — Mobil perf / LCP (v0.2). Kapsam discuss-phase 6'da damgalandı: ana sayfa TR `/` mobil-birincil, brief hedef (≥95 / <2.5s) / craft tavan. Faz 5 (test altyapısı D1) ✅; Faz 4 (v0.2 a11y 89→100) ✅.
-**Adım:** research → `/devflow:research-phase 6` (yeni oturum): LCP elementi tespiti + WebGL-dışı lever'lar + Living Flow degradasyon eşikleri.
-**İlerleme:** Kapsam tartışması tamam (PHASE-6 oluşturuldu). Karar: önce WebGL-dışı kazanımlar (P1: font/JS bundle/asset/render-path) sonra Living Flow mobil degradasyon ayarı (P2: DPR/particle/erken static — craft korunur, her değişim gözle doğrulanır). Guardrail: a11y=100 çift-tema (CI otomatik) / CLS=0 / masaüstü 99-100 / i18n parite. **Ölçüm:** TR `/` mobil median + `NEXT_LOCALE=tr` cookie şart (DEV-6 dersi), fresh prod build, düşük host-yük (`docs/perf/README.md` metodolojisi). **Devralınan sahipli borç (kapsam dışı):** alt-sayfa derin a11y + `text-pulse` ink-panel süpürmesi. **Başlangıç tabanı:** TR `/` mobil perf 84 / LCP ~3.6s.
-**Son Faz Dokümanı:** `phases/PHASE-6.md` (🔄 — kapsam tartışması yazıldı)
+**Adım:** plan → `/devflow:plan-phase 6` (yeni oturum): araştırma lever'larını task'lara böl (ölç-önce → L1 hero reveal → L2 WebGL deferral → L3 font budama → ara-ölç).
+**İlerleme:** Araştırma tamam. Kök neden: **CPU-bound WebGL main-thread** (mobil "Other" 3663ms vs masaüstü 1202ms, tek fark 4× CPU throttle; FCP 1657ms ama LCP 3604ms = 1.9s bloke boşluğu). İki craft-koruyucu P1 lever (kullanıcı onayı 2026-06-30): **hero reveal transform-only** (`Hero.tsx:18` opacity:0 LCP cezası) + **WebGL idle/post-load deferral** (`LivingFlow.tsx:40` yalnız 1 rAF); yardımcı **Fraunces SOFT/WONK budama** (`layout.tsx:13`, kullanılmıyor → craft-nötr). **Açık:** LCP elementi (metin/canvas) ampirik teyitsiz → ilk task `largest-contentful-paint-element` denetimli ölçüm yapmalı. Guardrail: a11y=100 çift-tema (CI) / CLS=0 / masaüstü 99-100 / i18n parite. **Ölçüm:** TR `/` mobil median + `NEXT_LOCALE=tr` cookie + fresh prod build + düşük host-yük (`docs/perf/README.md`); **node bu oturum ortamında yok** → ölçüm/build node'lu ortamda. **Devralınan sahipli borç (kapsam dışı):** alt-sayfa derin a11y + `text-pulse` ink-panel süpürmesi. **Başlangıç tabanı:** TR `/` mobil perf 84 / LCP ~3.6s.
+**Son Faz Dokümanı:** `phases/PHASE-6.md` (🔄 — araştırma bulguları yazıldı)
 
 ---
 
@@ -28,9 +28,9 @@
 
 ## Aktif Task
 
-**Task:** Yok — Faz 6 kapsam tartışması tamam, henüz task yok; task'lar research→plan akışında oluşacak.
-**Durum:** Faz döngüsü `research` adımında. Sıradaki: `/devflow:research-phase 6` (yeni oturum).
-**İlerleme:** Faz 6 discuss tamam (PHASE-6 oluşturuldu, kapsam yazıldı). Task plan-phase'de üretilecek.
+**Task:** Yok — Faz 6 araştırması tamam, henüz task yok; task'lar plan-phase'de oluşacak.
+**Durum:** Faz döngüsü `plan` adımında. Sıradaki: `/devflow:plan-phase 6` (yeni oturum).
+**İlerleme:** Faz 6 research tamam (PHASE-6 "Araştırma Bulguları" + DECISIONS yazıldı). Task'lar lever'lardan üretilecek.
 
 ---
 
@@ -40,7 +40,7 @@
 
 | # | Task | Durum | Açıklama |
 |---|------|-------|----------|
-| — | (henüz yok) | — | Faz 6 plan-phase'de üretilecek (research sonrası) |
+| — | (henüz yok) | — | Faz 6 plan-phase'de lever'lardan üretilecek (research tamam) |
 
 ---
 
@@ -62,12 +62,12 @@
 
 ## Hızlı Erişim
 
-**Aktif Task:** Yok — Faz 6 discuss tamam. Sıradaki adım: `/devflow:research-phase 6`
-**Aktif Faz:** 6 — Mobil perf / LCP · adım=research; Faz 5 ✅; Faz 4 ✅; Aktif Versiyon v0.2, Versiyon Sonu Durumu: içerik_fazları
+**Aktif Task:** Yok — Faz 6 research tamam. Sıradaki adım: `/devflow:plan-phase 6`
+**Aktif Faz:** 6 — Mobil perf / LCP · adım=plan; Faz 5 ✅; Faz 4 ✅; Aktif Versiyon v0.2, Versiyon Sonu Durumu: içerik_fazları
 **Task Sistemi:** `tasks/TASKS-README.md`
 **PRD (karar kaynağı):** `PRD/VIZYON.md` · `PRD/VERSIONS.md` · `PRD/features/`
 **Revize Backlog (bilinen sorunlar):** `docs/REVIZE-BACKLOG.md`
 
 ---
 
-**Son Güncelleme:** 2026-06-30 — discuss-phase 6: Faz 6 (v0.2 mobil perf/LCP) kapsam tartışması tamam (PHASE-6 oluşturuldu; MODULE-MAP P1/P2 + PHASES Faz 6 🔄 + bu DURUM güncellendi). Ana sayfa TR `/` mobil-birincil, brief hedef / craft tavan; adım research → `/devflow:research-phase 6`.
+**Son Güncelleme:** 2026-06-30 — research-phase 6: TR `/` mobil LCP araştırması tamam (kök neden CPU-bound WebGL main-thread; iki craft-koruyucu P1 lever onaylandı; LCP elementi ampirik teyit ilk task'a). Bulgular PHASE-6 "Araştırma Bulguları" + DECISIONS'a yazıldı; adım plan → `/devflow:plan-phase 6`.

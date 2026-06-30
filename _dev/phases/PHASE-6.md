@@ -65,7 +65,69 @@
 
 ## Araştırma Bulguları
 
-> Bu bölüm `/devflow:research-phase 6` oturumunda doldurulacak. Kritik araştırma soruları: (1) TR `/` mobilde LCP elementi nedir (hero metni / static flow zemini / font)? (2) Hangi WebGL-dışı lever'lar (font display/preload, JS bundle splitting, asset) en yüksek etkili? (3) Living Flow mobil degradasyon eşikleri (mevcut: ≤4 çekirdek/mobil → low; DPR 1-1.6) craft kaybı olmadan ne kadar düşürülebilir?
+> `/devflow:research-phase 6` oturumunda dolduruldu (2026-06-30). Yöntem: node/build yok (taze devcontainer) → **mevcut Lighthouse JSON artefaktları** (`docs/perf/home-{mobile,desktop}-20260630.json`, TR `/`) diagnostic-okuma + kaynak kodu analizi. Ölçüm-temelli, projeye özgü.
+
+### Kök Neden — CPU-bound main-thread WebGL işi (throttle altında)
+
+TR `/` mobil diagnostic (Lighthouse 13.3.0, 4× CPU throttle, Moto-G sınıfı) vs masaüstü (throttle yok), aynı build:
+
+| Metrik | Mobil (TR `/`) | Masaüstü (TR `/`) | Yorum |
+|---|---|---|---|
+| LCP | **3604 ms** (skor 0.61) | 765 ms | Fark = saf CPU throttle |
+| FCP | 1657 ms | 368 ms | FCP→LCP boşluğu mobilde **1.9s** |
+| mainthread **"Other"** | **3663 ms** | 1202 ms | WebGL init (Three.js + GLSL compile) |
+| mainthread Script Eval | 722 ms | 188 ms | — |
+| mainthread toplam | 5012 ms (skor **0**) | — | — |
+| TBT | 270 ms | — | bütçe-içi |
+| server-response | 4 ms (localhost) | — | yerel iyimser; Vercel'de farklı |
+
+**Teşhis:** Masaüstüyle birebir aynı build/sayfa, tek fark CPU throttle. WebGL init'in "Other" işi (shader compile + sahne kurulumu) throttle altında 1.2s→3.7s'e şişip main-thread'i **LCP penceresinde** bloke ediyor. FCP (server-render'lı hero metni) ~1.7s'te boyanıyor ama LCP 3.6s'e kayıyor — boşluk bu bloke penceresi. (Kaynak: `docs/perf/home-{mobile,desktop}-20260630.json`.)
+
+### Değerlendirilen Yaklaşımlar (lever'lar)
+
+- **L1 — Hero reveal'i opacity yerine transform-only yap. [SEÇİLDİ · P1 · craft-koruyucu]**
+  Bulgu: `src/components/Hero.tsx:18` (repoda-tanımlı/site) `gsap.set("[data-hero]", { opacity: 0, y: 36 })` hero `<h1>`'i server-render sonrası **opacity:0'a** çekip ~1.1s timeline ile reveal ediyor; Lighthouse reduced-motion set etmediği için (`docs/perf/README.md` metodoloji) ölçümde de çalışır. `opacity:0` elementi LCP adaylığından çıkarır → LCP geç paint'e kayar; reveal hydration'a, hydration ağır WebGL bundle'ına bağlı.
+  - **Artı:** İmza reveal hareketi görsel olarak korunur (transform/y aynen); headline LCP-uygun kalır. WebGL'den bağımsız (P1).
+  - **Eksi:** Reveal'in opacity-fade'i kaybolur (yalnız kayma kalır) — kullanıcı kararıyla kabul edildi.
+  - **Alternatifler (reddedildi):** headline'ı reveal'den çıkarmak (koreografi headline'da kaybolur); reveal'e dokunmadan yalnız WebGL deferral (metin LCP ise ceza kalır).
+
+- **L2 — WebGL init'ini mobilde LCP penceresi dışına ertele (idle/post-load). [SEÇİLDİ · P1/render-path · craft-koruyucu]**
+  Bulgu: `src/components/living-flow/LivingFlow.tsx:40` (repoda-tanımlı/site) init'i yalnız **1 rAF** geciktiriyor → main-thread'i LCP penceresinde bloke ediyor. LCP elementi canvas ise erteleme hero metnini LCP yapar (→ ~1.7s, bütçe-altı); metin ise main-thread'i boşaltıp reveal/LCP'yi öne çeker. İki senaryoda da kazanç.
+  - **Artı:** Tek en büyük lever olabilir; craft-koruyucu (flow mobilde ~0.5-1s geç belirir, görsel kalite aynı).
+  - **Eksi:** Flow'un mobilde geç belirmesi gözle doğrulanmalı (craft tavan).
+  - **Alternatif:** IntersectionObserver + idle (daha akıllı, biraz karmaşık, aynı LCP kazancı) — şimdilik idle/post-load tercih, gerekirse task'ta IO'ya yükseltilir.
+
+- **L3 — Fraunces font eksenlerini buda (SOFT/WONK kaldır). [ADAY · P1 · craft-nötr]**
+  Bulgu: `src/app/[locale]/layout.tsx:13` (repoda-tanımlı/site) `axes: ["opsz","SOFT","WONK"]` — ama SOFT/WONK hiçbir yerde `font-variation-settings` ile **kullanılmıyor** (grep ile doğrulandı: yalnız `font-display`/`--font-fraunces` kullanımı var). Variable font bu ölü eksen verisini taşıyor. Font yükü ~273KB (4 woff2: 121KB+105KB+29KB+16KB). `display:"swap"` → headline fallback'te boyanıp Fraunces gelince swap eder (LCP'yi oynatabilir).
+  - **Artı:** Eksenleri budamak craft-nötr (kullanılmadıkları için görsel çıktı birebir aynı), woff2 küçülür. `not-found.tsx:9` aynı tanımı tekrarlıyor — birlikte güncellenir.
+  - **Eksi:** Kazanç görece küçük (LCP'nin ana kapısı CPU, network değil — localhost'ta gizli; Vercel'de daha görünür).
+
+- **L4 — Three.js chunk küçültme. [REDDEDİLDİ/düşük öncelik]**
+  Bulgu: `bd904a5c.*.js` chunk 100KB'ın **84KB'ı kullanılmıyor** (unused-javascript; three'nin büyük kısmı). Tree-shake three için zor; download/parse maliyeti (TBT'ye katkı) ama LCP'nin ana kapısı **main-thread "Other"**, bu değil. Kapsam-dışı bırakıldı.
+
+- **Seçilen:** L1 + L2 (P1, craft-koruyucu, en yüksek etki) → L3 (craft-nötr yardımcı) → L2'nin yetmediği yerde P2 degradasyon ayarı (DPR cap/particle, discuss'ta onaylı). Sıra: önce ölç (LCP elementini kesinleştir), sonra L1/L2, ara-ölç, gerekirse L3/P2.
+
+### Kullanılacak Araçlar/Kütüphaneler
+
+- **Yeni paket yok.** Tüm lever'lar mevcut stack içinde (GSAP timeline ayarı, `requestIdleCallback`/timeout, `next/font/google` axes parametresi, R3F/three deferral). Paket ekleme/çıkarma yok → `package.json` dokunulmaz korunur.
+- **Ölçüm:** mevcut yerleşik metodoloji (`docs/perf/README.md`) — fresh prod build + Lighthouse npx-cache (13.3.0) + `NEXT_LOCALE=tr` cookie + median + `cat /proc/loadavg`. **Ek:** ölçüm task'ı Lighthouse'u `largest-contentful-paint-element` denetimini **içerecek** şekilde koşmalı (mevcut artefaktlar kürlenmiş diagnostic setiyle koşmuş, bu denetim yok → LCP elementi henüz teyitli değil).
+- **Not (ortam):** Bu oturumun devcontainer'ında node/npm **yok** — ölçüm/build gerektiren task'lar node'lu ortamda koşulmalı (MEMORY ortam notu).
+
+### Dikkat Edilecekler
+
+- **LCP elementi ampirik teyitli DEĞİL** (metin mi canvas mı). İlk ölçüm task'ı `largest-contentful-paint-element` denetimiyle koşup elementi sabitlemeli — tüm lever önceliği buna göre netleşir. Kaynak: yeni ölçüm (mevcut JSON'larda denetim yok).
+- **Craft tavan (pazarlık dışı):** L1/L2 craft-etkili → her değişim **iki tema + cursor/scroll etkileşimi gözle** doğrulanmalı (discuss guardrail). Flow'un mobilde geç belirmesi kabul ama "kayıp/bozuk" görünmemeli.
+- **Lighthouse reduced-motion set etmez** → hero reveal + full-yük WebGL ölçülür (gerçekçi en-kötü). L1 fix'i bu yüzden ölçülebilir; doğrulamada reduced-motion'lı axe taraması ayrı (a11y envanteri).
+- **i18n parite:** Lever'lar içerik anahtarına dokunmuyor (font axes/JS/GSAP/deferral kod-only) → 5 dil eşzamanlılığı bozulmaz. `layout.tsx` + `not-found.tsx` font tanımı **birlikte** güncellenir (drift önleme).
+- **Korunan tabanlar regresyonsuz:** a11y=100 çift-tema (CI yakalar), CLS=0, masaüstü perf 99-100. L2 deferral CLS yaratmamalı (canvas absolute/pointer-events-none, layout dışı — risk düşük ama ölçülür).
+- **Locale ölçüm tuzağı:** TR `/` için `NEXT_LOCALE=tr` cookie şart; cookie'siz `/en` ölçülür (DEV-6 dersi). Regresyon karşılaştırmasında hep aynı locale.
+
+### Teknik Kararlar
+
+- **K-R1: Hero reveal opacity yerine transform-only.** Gerekçe: `opacity:0` LCP adaylığını kırar; transform LCP-nötr. İmza hareketi (kayma) korunur, fade feda edilir (kullanıcı onayı). Craft-koruyucu, WebGL-bağımsız en yüksek etki.
+- **K-R2: WebGL init'i mobilde idle/post-load'a ertele.** Gerekçe: main-thread'i LCP penceresinde boşaltır; LCP elementi ne olursa olsun kazandırır. Flow ~0.5-1s geç belirir (yalnız mobil, gözle doğrulanır). IntersectionObserver'a yükseltme task'a açık.
+- **K-R3: Fraunces SOFT/WONK eksenlerini buda (craft-nötr yardımcı).** Gerekçe: kullanılmıyorlar → görsel birebir aynı, woff2 küçülür. `layout.tsx` + `not-found.tsx` birlikte.
+- **K-R4: Ölç-önce sıralaması.** İlk task LCP elementini ampirik sabitler (element denetimli Lighthouse); lever uygulama ve P2 degradasyon ayarı ölçüm bulgusuna göre. Three.js chunk küçültme kapsam-dışı (LCP kapısı değil).
 
 ---
 

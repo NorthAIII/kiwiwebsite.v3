@@ -9,6 +9,20 @@
 
 <!-- Her yeni karar aşağıdaki formatta en üste eklenir (en yeni en üstte) -->
 
+### 2026-06-30 — TR `/` mobil LCP kök nedeni CPU-bound WebGL main-thread; iki craft-koruyucu lever (Faz 6)
+
+**Bağlam:** research-phase 6. TR `/` mobil LCP 3.6s (brief <2.5s altı). Mevcut Lighthouse JSON artefaktları (`docs/perf/home-{mobile,desktop}-20260630.json`) diagnostic-okuma + kaynak analizi: mobil mainthread "Other" (WebGL init/shader compile) **3663ms** vs masaüstü 1202ms — tek fark 4× CPU throttle. FCP 1657ms ama LCP 3604ms (1.9s boşluk) → main-thread LCP penceresinde bloke. Ayrıca kodda keşif: `Hero.tsx:18` hero `<h1>`'i `gsap.set(opacity:0)` ile gizleyip reveal ediyor (Lighthouse reduced-motion set etmez → ölçümde çalışır) → `opacity:0` LCP adaylığını kırar. **LCP elementi (metin/canvas) henüz ampirik teyitli değil** — mevcut JSON'larda `largest-contentful-paint-element` denetimi yok.
+
+**Seçenekler (kullanıcıya sunuldu, 2026-06-30):** Hero reveal: transform-only / headline'ı reveal'den çıkar / reveal'e dokunma. WebGL deferral: idle-post-load / IntersectionObserver / sadece-ölç-sonra-karar.
+
+**Karar (kullanıcı onayı 2026-06-30):** (1) **Hero reveal transform-only** — opacity-fade kaldırılır, kayma korunur (imza hareketi görsel olarak yaşar, headline LCP-uygun kalır). (2) **WebGL init mobilde idle/post-load'a ertelenir** — main-thread LCP penceresinde boşalır (flow ~0.5-1s geç belirir, yalnız mobil, gözle doğrulanır). Yardımcı: Fraunces SOFT/WONK eksenleri budanır (kullanılmıyor → craft-nötr). İlk task LCP elementini element-denetimli Lighthouse ile sabitler (ölç-önce). Three.js chunk küçültme kapsam-dışı (LCP kapısı main-thread, network değil).
+
+**Gerekçe:** Marka & Craft üst eksen (ILKELER §1) — iki lever de craft-koruyucu (reveal kayması ve flow görseli korunur), WebGL-bağımsız/render-path = discuss "önce çevre" kararıyla hizalı. `opacity:0` LCP-adaylık kuralı + WebGL'in LCP penceresi dışına ertelenmesi gelecekteki hero/efekt işine de uygulanır (durable ilke). i18n parite bozulmaz (kod-only); korunan tabanlar (a11y=100, CLS=0, masaüstü 99-100) regresyonsuz tutulur.
+
+**İlgili Task/Faz:** research-phase 6 (Faz 6 / v0.2 mobil perf-LCP); detay → `phases/PHASE-6.md` "Araştırma Bulguları". Plan/icra: plan-phase 6.
+
+---
+
 ### 2026-06-30 — Test altyapısı mimarisi: Vitest + Playwright/axe + GitHub Actions (Faz 5 / D1)
 
 **Bağlam:** research-phase 5. Projede test altyapısı yoktu ("test" = `next build` + elle/otonom doğrulama geçici konvansiyonu). Kümülatif harness'in (ILKELER "test atlanmaz, üstüne koyarak büyür") **runner + ilk CI + yüksek-değerli tohum** çerçevesinde kurulması gerekiyordu. Mevcut yığın ESM-ağır: three.js `transpilePackages`, Next 15 App Router, React 19, 5-dilli next-intl. Ampirik saptama: Playwright/axe **proje bağımlılığı değildi** (Faz 4 npx cache kullandı); i18n paritesi şu an tam (5×183 anahtar).
