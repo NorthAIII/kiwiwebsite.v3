@@ -72,11 +72,11 @@ export default function Footer() {
           <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
             <KiwiMark size={18} className="text-green" />
             <span className="font-medium text-canvas">Kiwi AI Lab</span>
-            <span className="text-canvas/30">·</span>
+            <span aria-hidden="true" className="text-canvas/30">·</span>
             <a href="mailto:kivanc@kiwiailab.com" className="hover:text-canvas">
               kivanc@kiwiailab.com
             </a>
-            <span className="text-canvas/30">·</span>
+            <span aria-hidden="true" className="text-canvas/30">·</span>
             <div className="flex items-center gap-1">
               {SOCIALS.filter((s) => s.href !== "#").map((s) => (
                 <a
@@ -94,9 +94,9 @@ export default function Footer() {
             </div>
           </div>
           <div className="flex items-center gap-6">
-            <span className="text-canvas/40">{t("language")}</span>
+            <span className="text-canvas/60">{t("language")}</span>
             <LanguageSwitcher tone="soft" drop="up" />
-            <span className="text-canvas/40">
+            <span className="text-canvas/60">
               © {year} {t("rights")}
             </span>
           </div>

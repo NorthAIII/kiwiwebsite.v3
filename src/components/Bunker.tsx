@@ -55,7 +55,7 @@ export default function Bunker() {
           >
             <div className="mb-6 flex items-center justify-between">
               <span className="font-display text-lg">Crew OS</span>
-              <span className="text-xs text-canvas/50">
+              <span className="text-xs text-canvas/60">
                 {t("statusLive")} · 4 {t("flowsLabel")}
               </span>
             </div>
@@ -82,7 +82,7 @@ export default function Bunker() {
                       />
                     )}
                   </span>
-                  <span className="w-16 text-right text-xs tabular-nums text-canvas/45">
+                  <span className="w-16 text-right text-xs tabular-nums text-canvas/70">
                     {r.state === "running" ? t("statusActive") : t("statusQueued")}
                   </span>
                 </div>
