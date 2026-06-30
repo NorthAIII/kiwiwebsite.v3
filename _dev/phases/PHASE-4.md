@@ -208,14 +208,28 @@ A11Y1 acceptance = `color-contrast` denetimi **0 başarısız**; bu, faz tablosu
 
 ## UAT Sonuçları
 
-> Bu bölüm `/devflow:verify-phase` oturumunda doldurulur.
+**Tarih:** 2026-06-30
+**Toplam Senaryo:** 14 | **Geçen:** 14 | **Kalan:** 0
+**Test modu:** Otonom (fresh-prod-serve :4173 PID 1850192; Lighthouse 13.3.0 + axe-core 4.11.4 npx cache; playwright-core 1.61.1 + chromium-1228; host load 0.2–0.7). Kaynak build 4.07'den beri değişmedi → mevcut build = 4.08'in ölçtüğü build; bu UAT bağımsız re-run ile HEAD'i doğrular.
 
-**Tarih:** [tarih]
-**Toplam Senaryo:** X | **Geçen:** Y | **Kalan:** Z
+**Otomatik kontroller (Adım 1):** CI/CD pipeline yok (`.github/workflows`/`vercel.json` yok; Vercel git-entegrasyonu, revize branch canlıya deploy olmuyor) · dependabot/renovate/kalite-botu yok · **security-review: 0 bulgu** (faz diff'i sunum-katmanı CSS/token + markup/aria; `src/app/api/` dokunulmadı; `content:attr(data-n)` çalıştırılamayan metin-sink, `dangerouslySetInnerHTML` yok). → Düzeltme task'ı gerektiren otomatik bulgu yok.
 
 | # | Senaryo | Sonuç | Not |
 |---|---------|-------|-----|
-| 1 | [Senaryo 1] | ✅/❌ | [not] |
+| 1 | **Lighthouse a11y = 100** (mobil + masaüstü, TR `/`, kanonik dark) — Milestone #1 | ✅ Geçti | TR `/` mobil 100 / masaüstü 100 (finalUrl=`/` TR teyit) |
+| 2 | **axe color-contrast 0 — Light tema** (TR `/` tam tarama, emulateMedia + reducedMotion + scroll) — Milestone #2 | ✅ Geçti | Tam tarama 0 ihlal / 39 pass (bg `rgb(247,246,241)` krem) |
+| 3 | **axe color-contrast 0 — Dark tema** (TR `/` tam tarama) — Milestone #2 + kapsam kararı (gate=light+dark) | ✅ Geçti | Tam tarama 0 ihlal / 39 pass (bg `rgb(19,21,16)` ink) |
+| 4 | **A11Y2: `definition-list` + `dlitem` 0/N/A** — Hero `<dl>` → semantik link markup | ✅ Geçti | `dl` sayısı 0 (K3 kaldırdı); her iki denetim 0; `data-hero="stats"` div mevcut |
+| 5 | **A11Y3: `label-content-name-mismatch` 0 — 5 dilde** (dil-switcher) | ✅ Geçti | tr/en/ar/de/es aria-label görünür kodu içeriyor ("Türkçe (TR)" … "Español (ES)") |
+| 6 | **K1: adım no color-contrast'tan çıktı + faint görünüm/hover** (`::before content:attr(data-n)`) | ✅ Geçti | axe color-contrast node listesi boş; faint hayalet görünüm birebir (screenshot light+dark) |
+| 7 | **C2/C3: gym-panel pulse-yeşili dark'ta okunur** (`text-pulse-ink`), light birebir | ✅ Geçti | computed light `#6fe36f` birebir / dark `#1f7a3d` okunur; axe 0 (screenshot) |
+| 8 | **Marka yeşili imza korundu — craft regresyonu yok** (light+dark) — Milestone #3, QUALITY §1 | ✅ Geçti | Kullanıcı görsel onayı (2026-06-30): imza korundu, regresyon yok |
+| 9 | **Perf/CLS korunan taban regresyonsuz** (apples-to-apples `/en`) — Milestone #4 | ✅ Geçti | `/en` masaüstü perf 100/CLS 0; mobil perf 92 (≥87 baseline)/LCP 3004ms/CLS 0; CLS=0 dört koşuda |
+| 10 | **i18n parite + temiz build** (5 dil, yeni anahtar yok) — Milestone #5, QUALITY §4 | ✅ Geçti | build exit 0; 5 home prerender (tr/en/ar/de/es); 0 `MISSING_MESSAGE` |
+| 11 | **RTL (AR) bozulmadı** (dl→div + aria; `dir=rtl`) | ✅ Geçti | `/ar` `dir=rtl`, htmlLang=ar, aria-label locale-özel "العربية (AR)" |
+| 12 | **Klavye navigasyonu + görünür focus** (dil-switcher) — QUALITY §2 | ✅ Geçti | 7 Tab'da ulaşılır; focus-visible 2px solid `rgb(31,122,61)` yeşil; Enter→aria-expanded=true/listbox; Esc→kapanır |
+| 13 | **reduced-motion tam fallback** — QUALITY §2/§6 | ✅ Geçti | reducedMotion+uçtan-uca scroll taramada 0 ihlal (tam reveal envanteri, light+dark) |
+| 14 | **Token tek-kaynak craft taraması** (`--color-ink-faint`/`--color-pulse-ink` muted hiyerarşi) — QUALITY §5 | ✅ Geçti | Kullanıcı görsel onayı: muted hiyerarşi korundu, prominent değil (eyebrow solid / gövde muted / faint numaralar hayalet) |
 
 ---
 
@@ -259,4 +273,4 @@ A11Y1 acceptance = `color-contrast` denetimi **0 başarısız**; bu, faz tablosu
 ---
 
 **Oluşturulma:** 2026-06-29
-**Son Güncelleme:** 2026-06-30 — run-task TASK-4.08 ✅: final çift-tema doğrulama. a11y=100 mobil+masaüstü (Lighthouse kanonik dark, TR `/`); axe light+dark TR `/` tam tarama **0 toplam ihlal** (39 pass/tema). Perf/CLS regresyonsuz — DEV-6: v0.1 baseline aslında `/en` ölçmüş (artifact finalUrl kanıtı), apples-to-apples `/en` repro birebir baseline (mobil 87/LCP3156/CLS0, masaüstü 100/CLS0); TR `/` 84/99 yeni profil, regresyon değil. perf/README'ye v0.2/Faz 4 bölümü + DEV-1/locale düzeltmeleri; kanonik artifact 20260630 + repro kaydedildi. **Fazın 8 task'ı tamam (4.01-4.08 ✅)** — sıradaki adım: verify-phase (UAT).
+**Son Güncelleme:** 2026-06-30 — verify-phase 4 (UAT) ✅: 14 senaryonun **14'ü geçti**, otonom test modu (fresh-prod-serve bağımsız re-run; kaynak 4.07'den beri değişmedi → HEAD = 4.08 build). a11y=100 mobil+masaüstü; axe light+dark tam tarama 0 ihlal/39 pass; 5-dil aria + RTL/AR `dir=rtl` + klavye-nav/yeşil-focus + reduced-motion + perf/CLS regresyonsuz teyit; marka imza craft kullanıcı onayı. Otomatik kontroller: CI/CD & bot yok, **security-review 0 bulgu** (sunum-katmanı diff, `src/app/api/` dokunulmadı). Düzeltme task'ı yok. Sıradaki adım: review-phase 4.

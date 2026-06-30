@@ -1,6 +1,6 @@
 # DURUM — Proje Dashboard
 
-**Son Güncelleme:** 2026-06-30 — run-task TASK-4.08 ✅ (fazın son task'ı): final çift-tema a11y=100 doğrulandı (Lighthouse dark mobil+masaüstü + axe light+dark TR `/` tam tarama 0 toplam ihlal). Perf/CLS regresyonsuz — DEV-6: v0.1 baseline aslında `/en` ölçmüş (apples-to-apples `/en` repro birebir baseline); TR `/` 84/99 yeni profil. **Faz 4'ün 8 task'ı tamam** — adım=verify (sıradaki: verify-phase 4 / UAT).
+**Son Güncelleme:** 2026-06-30 — verify-phase 4 (UAT) ✅: 14 senaryonun 14'ü geçti (otonom test; bağımsız fresh-prod re-run, kaynak 4.07'den beri değişmedi → HEAD=4.08 build). a11y=100 mobil+masaüstü, axe light+dark tam tarama 0 ihlal/39 pass, 5-dil aria + RTL/AR + klavye/yeşil-focus + reduced-motion + perf/CLS regresyonsuz + marka craft (kullanıcı onayı). Otomatik: CI/CD & bot yok, security-review 0 bulgu. Düzeltme task'ı yok → **adım=review** (sıradaki: review-phase 4).
 
 <!-- KURAL: Bu satır her oturum sonunda ÜZERİNE YAZILIR — tek satır, tek cümle. "Önceki:" / "Eski:" prefix ile kümülatif yığma YASAK; HTML comment'e sarma da yasak (CLAUDE.md → Doküman Disiplini). Tarih + kısa özet yeterli; detay için git log + ilgili PHASE/TASK dokümanları. -->
 
@@ -8,10 +8,10 @@
 
 ## Aktif Faz
 
-**Faz:** 4 — v0.2 erişilebilirlik (a11y 89→100, light+dark), ana sayfa. 🔄 Tüm task'lar tamam, UAT bekliyor.
-**Adım:** verify → `/devflow:verify-phase 4`: fazın 8 task'ı (4.01-4.08) ✅; sıradaki adım kullanıcı kabul testi (UAT).
-**İlerleme:** TASK-4.08 (final çift-tema doğrulama) tamamlandı — **a11y=100 teyitli**: Lighthouse kanonik (dark) TR `/` mobil (×5) + masaüstü (×3) a11y 100; 4 denetim color-contrast pass(0)/label-mismatch pass/definition-list+dlitem N/A (K3 `<dl>` kaldırıldı); axe (emulateMedia+reducedMotion+scroll) light+dark TR `/` tam tarama **0 toplam ihlal** (39 pass/tema). **Perf/CLS regresyonsuz** (DEV-6: v0.1 baseline `/en` ölçmüş — artifact finalUrl kanıtı; apples-to-apples `/en` repro birebir baseline mobil 87/LCP3156/CLS0 + masaüstü 100/CLS0; TR `/` 84/99 yeni profil değil regresyon). Craft light+dark imza korundu. `docs/perf/` taban + DEV-1/locale düzeltmeleri kaydedildi. K1-K5 + C2/C3/C9 hepsi doğrulandı.
-**Son Faz Dokümanı:** `phases/PHASE-4.md` (🔄 aktif — UAT bekliyor)
+**Faz:** 4 — v0.2 erişilebilirlik (a11y 89→100, light+dark), ana sayfa. 🔄 UAT geçti (14/14), review bekliyor.
+**Adım:** review → `/devflow:review-phase 4`: fazın 8 task'ı (4.01-4.08) ✅ + UAT 14/14 ✅; sıradaki adım faz review & retrospektif.
+**İlerleme:** verify-phase 4 (UAT) tamamlandı — **14 senaryonun 14'ü geçti** (otonom test modu; fresh-prod-serve :4173 bağımsız re-run, kaynak 4.07'den beri değişmedi → HEAD = 4.08 build, UAT bağımsızca doğrular). Kapsam: Lighthouse a11y=100 mobil+masaüstü (TR `/` kanonik dark); axe light+dark TR `/` tam tarama **0 ihlal / 39 pass**; definition-list+dlitem N/A (K3); 5-dil aria-label parite + RTL/AR `dir=rtl` + klavye-nav/2px yeşil focus + reduced-motion tam envanter + perf/CLS regresyonsuz (`/en` masaüstü 100/mobil 92≥87/CLS 0 dört koşu); marka yeşili imza + muted hiyerarşi **kullanıcı görsel onayı**. Otomatik kontroller: CI/CD pipeline & bağımlılık/kalite botu yok; **security-review 0 bulgu** (sunum-katmanı diff, `src/app/api/` dokunulmadı). Düzeltme task'ı oluşturulmadı.
+**Son Faz Dokümanı:** `phases/PHASE-4.md` (🔄 aktif — review bekliyor)
 
 ---
 
@@ -28,9 +28,9 @@
 
 ## Aktif Task
 
-**Task:** — Aktif task yok. Fazın tüm task'ları (4.01-4.08) ✅ tamamlandı.
-**Durum:** 8 task: 4.01-4.08 ✅. Faz icra tamam; UAT bekliyor.
-**İlerleme:** Adım = verify; `/devflow:verify-phase 4` ile kullanıcı kabul testini başlat (yeni oturum).
+**Task:** — Aktif task yok. Fazın tüm task'ları (4.01-4.08) ✅ + UAT 14/14 ✅. Düzeltme task'ı yok.
+**Durum:** 8 task ✅, UAT geçti (14/14). Faz review'a hazır.
+**İlerleme:** Adım = review; `/devflow:review-phase 4` ile faz review & retrospektifi başlat (yeni oturum).
 
 ---
 
@@ -78,12 +78,12 @@
 
 ## Hızlı Erişim
 
-**Aktif Task:** — yok; faz icra tamam (4.01-4.08 ✅). Sıradaki adım: `/devflow:verify-phase 4` (UAT)
-**Aktif Faz:** 4 — v0.2 erişilebilirlik (a11y 89→100, light+dark) 🔄 UAT bekliyor; Aktif Versiyon v0.2, Versiyon Sonu Durumu: içerik_fazları
+**Aktif Task:** — yok; faz icra (4.01-4.08 ✅) + UAT (14/14 ✅) tamam. Sıradaki adım: `/devflow:review-phase 4`
+**Aktif Faz:** 4 — v0.2 erişilebilirlik (a11y 89→100, light+dark) 🔄 review bekliyor; Aktif Versiyon v0.2, Versiyon Sonu Durumu: içerik_fazları
 **Task Sistemi:** `tasks/TASKS-README.md`
 **PRD (karar kaynağı):** `PRD/VIZYON.md` · `PRD/VERSIONS.md` · `PRD/features/`
 **Revize Backlog (bilinen sorunlar):** `docs/REVIZE-BACKLOG.md`
 
 ---
 
-**Son Güncelleme:** 2026-06-30 — run-task TASK-4.08 ✅ (fazın son task'ı): final çift-tema a11y=100 doğrulandı (Lighthouse dark mobil+masaüstü + axe light+dark TR `/` tam tarama 0 toplam ihlal). Perf/CLS regresyonsuz (DEV-6: baseline `/en` ölçmüş, apples-to-apples repro birebir; TR `/` 84/99 yeni profil). Taban + DEV-1/locale düzeltmeleri kaydedildi. Faz 4'ün 8 task'ı tamam. Sıradaki: verify-phase 4 (UAT).
+**Son Güncelleme:** 2026-06-30 — verify-phase 4 (UAT) ✅: 14/14 senaryo geçti (otonom; bağımsız fresh-prod re-run = HEAD/4.08 build). a11y=100 mobil+masaüstü, axe light+dark 0 ihlal/39 pass, 5-dil aria + RTL/AR + klavye/yeşil-focus + reduced-motion + perf/CLS regresyonsuz + craft kullanıcı onayı. Otomatik: CI/CD & bot yok, security-review 0 bulgu. Düzeltme task'ı yok. Sıradaki: review-phase 4.
