@@ -188,7 +188,7 @@ A11Y1 acceptance = `color-contrast` denetimi **0 başarısız**; bu, faz tablosu
 | 4.02 | TASK-4.02 | ✅ Tamamlandı | Adım numaraları color-contrast'tan çıkar — K1 mekanizması `aria-hidden`→CSS `::before` (aria-hidden axe color-contrast'ı çözmüyor; bkz. İcra Notu) |
 | 4.03 | TASK-4.03 | ✅ Tamamlandı | `--color-ink-faint` token koyulaştırma (K2, color-contrast — globals.css; axe light+dark 0 ink-faint flag) |
 | 4.04 | TASK-4.04 | ✅ Tamamlandı | Cream-on-ink opaklık (K5+C9+C10 — Footer /60, Bunker status /60, metrik /70; ayraçlar aria-hidden; axe light 0 / dark yalnız text-pulse) |
-| 4.05 | TASK-4.05 | ⬜ Bekliyor | Hero `<dl>` → semantik link markup (K3, definition-list + dlitem) |
+| 4.05 | TASK-4.05 | ✅ Tamamlandı | Hero `<dl>`/`<dt>`/`<dd>` → `<div>`+`<span class="block">` (K3; data-hero korundu, görünüm birebir; axe light+dark definition-list 0 + dlitem 0) |
 | 4.06 | TASK-4.06 | ⬜ Bekliyor | Dil-switcher `aria-label`'a locale kodu (K4, label-content-name-mismatch) |
 | 4.07 | TASK-4.07 | ⬜ Bekliyor | Gym-panel pulse-yeşili dark-inversion fix (C2/C3, adaptif `--color-pulse-ink` token) |
 | 4.08 | TASK-4.08 | ⬜ Bekliyor | Final doğrulama: a11y=100 **çift-tema** (light+dark) + perf/CLS regresyonsuz + `docs/perf/` taban |
@@ -250,4 +250,4 @@ A11Y1 acceptance = `color-contrast` denetimi **0 başarısız**; bu, faz tablosu
 ---
 
 **Oluşturulma:** 2026-06-29
-**Son Güncelleme:** 2026-06-30 — run-task TASK-4.04 ✅: cream-on-ink opaklıklar AA'ya (Footer /60, Bunker status /60, metrik /70 — overlay-zemin /60 dark 4.41 yetmedi; ayraçlar aria-hidden). axe light 0 ihlal / dark kalan 4 hepsi `text-pulse` (TASK-4.07 C2/C3). İcra bulgusu: yarı-saydam overlay zemini efektif kontrastı düşürür (DEV-2 alt katmanı — retro adayı). 8 task (4.01-4.04 ✅ + 4 bekliyor). Sıradaki: TASK-4.05.
+**Son Güncelleme:** 2026-06-30 — run-task TASK-4.05 ✅: Hero stats `<dl>`/`<dt>`/`<dd>` → `<div>`+`<span class="block">` (K3; öğeler etiketli linkler, tanım listesi değil). `data-hero="stats"` `<div>`'e taşındı (GSAP giriş selector'ı sağlam), class'lar birebir → sıfır görsel değişim. axe light+dark: `definition-list` 0 + `dlitem` 0 (tümden kapandı); dark kalan 4 yalnız `text-pulse` (TASK-4.07 C2/C3). AR RTL + 0 MISSING_MESSAGE teyit. 8 task (4.01-4.05 ✅ + 3 bekliyor). Sıradaki: TASK-4.06.

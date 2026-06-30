@@ -83,7 +83,7 @@ export default function Hero() {
             </a>
           </div>
 
-          <dl
+          <div
             data-hero="stats"
             className="mt-16 flex max-w-2xl flex-wrap items-center gap-x-8 gap-y-5 border-t border-line pt-6"
           >
@@ -97,12 +97,12 @@ export default function Hero() {
                 <span className="absolute inset-0 animate-ping rounded-full bg-green opacity-60" />
               </span>
               <span className="leading-tight">
-                <dd className="text-sm font-medium text-ink transition-colors group-hover:text-green">
+                <span className="block text-sm font-medium text-ink transition-colors group-hover:text-green">
                   {t("stats.liveProduct")}
-                </dd>
-                <dt className="text-xs uppercase tracking-[0.12em] text-ink-faint">
+                </span>
+                <span className="block text-xs uppercase tracking-[0.12em] text-ink-faint">
                   {t("stats.liveLabel")}
-                </dt>
+                </span>
               </span>
             </Link>
 
@@ -125,15 +125,15 @@ export default function Hero() {
                 <circle cx="11" cy="11" r="2.1" fill="currentColor" />
               </svg>
               <span className="leading-tight">
-                <dd className="text-sm font-medium text-ink transition-colors group-hover:text-green">
+                <span className="block text-sm font-medium text-ink transition-colors group-hover:text-green">
                   {t("stats.crewOs")}
-                </dd>
-                <dt className="text-xs uppercase tracking-[0.12em] text-ink-faint">
+                </span>
+                <span className="block text-xs uppercase tracking-[0.12em] text-ink-faint">
                   {t("stats.crewOsLabel")}
-                </dt>
+                </span>
               </span>
             </Link>
-          </dl>
+          </div>
         </div>
       </div>
 
