@@ -1,6 +1,6 @@
 # Phase 6: Mobil Perf / LCP (ana sayfa TR `/`)
 
-**Durum:** 🔄 Devam ediyor
+**Durum:** ✅ Tamamlandı
 
 <!-- Bu doküman faza girince (discuss-phase) oluştu; durum 🔄 ile başlar. -->
 <!-- KURAL: Bu doküman tek-okunabilir kalmalı (CLAUDE.md → Boyut ve Bölünme). Bir bölüm büyüyüp kırmızı çizgiye (~20k token) yaklaşırsa faz HÂLÂ AKTİFKEN `PHASE-6-<slug>.md`'ye bölünür — parent'ta self-yeten özet + pointer kalır. Tamamlandıktan (✅) sonra bölme yasaktır. -->
@@ -236,21 +236,65 @@ Masaüstü: 100→100, LCP 764→694ms. Dağılımlar örtüşmüyor (baseline m
 
 ## Retrospektif
 
-> Bu bölüm `/devflow:review-phase 6` oturumunda doldurulacak.
+> `/devflow:review-phase 6` oturumunda dolduruldu (2026-06-30).
+
+### Ne İyi Gitti?
+
+- **Ölç-önce disiplini (6.01).** LCP elementi optimizasyondan ÖNCE ampirik sabitlendi (hero metni, canvas değil) — varsayımla lever seçilmedi. discuss "LCP elementi research'te tespit edilir" kararı icrada gerçekten korundu.
+- **Ara-ölç karar kapısı (6.04).** L1+L2'nin lab'da delta üretmediği yarı yolda yakalandı; körü körüne devam edilmedi. Kök neden (Lantern artefaktı) kanıtla teşhis edildi, L3-yap / P2-craft-gate kararı buradan çıktı.
+- **Craft-gate ile imza koruması (6.06).** P2, kanıtlı bir lab artefaktına (simüle-LCP) dayanan müdahaleyi reddetti — Marka & Craft üst ekseni bir simüle-sayı için riske atılmadı. Çıkan durable ilke DECISIONS'a yazıldı.
+- **Dürüst kayıt deseni sürdürüldü (v0.1).** Brief mobil açık sessizce gizlenmedi/hedef düşürülmedi; DECISIONS + perf README'de açıkça belgelendi. Milestone ("ölçülebilir iyileşme") ile brief-bütçe ("≥95/<2.5s") ayrımı net tutuldu.
+- **Ortam anomalisi teşhis edildi (6.07).** 6.01/6.04'ün ağır-SwiftShader şişkinliği (perf 62/TBT 1842) bir devcontainer anomalisi olarak tanındı; temsilî ortamda (node20+Chrome150) baseline `git checkout e5a4ef1` ile yeniden sabitlenip before/after tek tutarlı ortamda apples-to-apples yapıldı.
+- **Faz 5 harness'i çalıştı.** a11y=100 çift-tema + i18n parite guardrail'leri CI'da otomatik korundu — perf lever'larının regresyon yapmadığı elle değil otomatik doğrulandı (Faz 5 yatırımının ilk getirisi).
+
+### Ne Kötü Gitti?
+
+- **Ölçüm ortamı istikrarsızlığı bir tur maliyete + yarı-yanlış ara-sonuca yol açtı.** 6.01/6.04 ağır-SwiftShader devcontainer'ında koştu; yalnız 6.07'nin temsilî ortamı Faz-4-kıyaslanabilir sayı verdi. 6.04 bu yüzden "lab-görünür tek lever = WebGL iş yükü (P2)" sonucuna vardı ve **network lever'ını (L3) atladı** — 6.07 bunu rafine etmek zorunda kaldı (L3 aslında lab-görünür ve iyileşmenin sürücüsü çıktı). Maliyet: ekstra ölçüm turu + düzeltilmesi gereken ara-sonuç.
+- **Lantern körlüğü yüksek yorum yükü getirdi.** "Lab artefaktı mı gerçek-cihaz açığı mı" ayrımı fazın en çok kafa yoran kısmıydı; her ölçüm sonucu bu mercekten yeniden okunmak zorunda kaldı.
+- **node/npm'siz ortam sürtünmesi.** Ölçüm task'ları node'lu ortam gerektirdi; 6.01 başta 🔴 bloke işaretlendi (f68db65), ortam kurulduktan sonra çözüldü. (Faz 5 retro önerisi bunu önceden işaret etmişti.)
+
+### Sonraki Faz İçin Öneriler
+
+- **Perf ölçümünde ÖNCE ortamı sabitle, sonra delta'ya güven.** Aynı ortamda lever-öncesi baseline'ı yeniden ölç (SwiftShader/host-yük anomalisi için sanity koşusu); cross-environment mutlak perf/TBT'ye güvenme (LCP/FCP/CLS Lantern-deterministik, kıyaslanabilir — perf/TBT software-GL'de şişer). Bu zaten memory'de kayıtlı (`lighthouse-lantern...` + host-loadavg disiplini); Faz 6 onu doğruladı.
+- **Brief mobil bütçenin nihai doğrulaması gerçek-cihaz/Vercel field gerektirir (metodolojik duvar).** Lab Lantern observed trace'i throttle'sız alıp simüle ediyor; gerçek GPU + gerçekçi throttle lehte olabilir. İleride bir Vercel preview-temelli Lighthouse/PageSpeed ölçüm task'ı bu duvarı aşabilir.
+- **Brief mobil açık (90/3164ms) hâlâ açık; tek kalan lever P2 (WebGL gerçek iş yükü) ve craft-gate'li.** Peşine düşülürse önce gerçek-cihaz kanıtı toplanmalı (6.06 ilkesi: lab metriği tek başına imzaya dokunmayı haklı çıkarmaz).
+- **Sahipli devir borcu korunuyor:** alt-sayfa derin a11y + `text-pulse` ink-panel dark-inversion süpürmesi (Faz 4→5→6 devri). Faz 5 harness'i hazır; sonraki a11y/alt-sayfa fazına.
+
+### Task-Spesifik Teknik Öğrenimler
+<!-- Bu fazdaki task'larda öğrenilen ama proje genelinde geçerli olmayan teknik nüanslar. MEMORY.md'nin değil, faz retrosunun evidir. -->
+- **Lantern network-lever görünürlüğü asimetrisi.** Saf render-**zamanlama** lever'ları (L1 opacity-gate kaldırma, L2 idle deferral) Lantern lab'da görünmez (observed trace throttle'sız) AMA network/asset-boyutu lever'ı (L3 ~113KB↓ woff2) **görünür** — Lantern simüle throttled ağı modeller. LCP elementi `display:swap` Fraunces hero metni olduğu için L3 doğrudan LCP'yi oynattı. (Proje-geneli özet zaten memory'de; bu faz onu kanıtladı/rafine etti.)
+- **"Her zaman mevcut static base wash" degradasyon deseni.** `LivingFlow.tsx:79` koşulsuz CSS radial-gradient zemin → WebGL init ertelense de (mobil idle/2s-timeout) hero asla boş kalmaz; aynı katman no-WebGL fallback'i de. Defer-ederken-boş-bırakma tuzağını yapısal olarak çözen desen.
+- **`requestIdleCallback` + timeout-cap + Safari post-load üç-yol deseni.** `LivingFlow.tsx:44-73`: masaüstü rAF (korundu) / mobil rIC(timeout:2000) / Safari (rIC yok) → `load`+200ms (veya readyState complete ise direkt). Safari fallback olmadan flow hiç init olmazdı (6.03 edge).
+- **SwiftShader devcontainer perf/TBT şişkinliği ortama-özgü.** Aynı build/sayfa: ağır-SwiftShader devcontainer perf 62/TBT 1842 vs temsilî node20+Chrome150 perf 84/TBT 261. Mutlak perf/TBT kıyasında baseline'ı **aynı** ortamda sabitle (6.07 yöntemi).
 
 ---
 
 ## Kalite Kontrol Sonuçları
 
-> Bu bölüm `/devflow:review-phase 6` oturumunda doldurulacak.
+> QUALITY.md eksenleri sistematik kontrol edildi. Faz yüzeyi: yalnız 4 dosya (`Hero.tsx` L1, `LivingFlow.tsx` L2, `layout.tsx`+`not-found.tsx` L3), +47/−14; `messages/` 0 değişiklik. P2 (`FlowCanvas.tsx`/`LivingFlow.tsx` parametreleri) craft-gate'te iptal → kod değişmedi. Çekirdek eksenler: **Performans** + **Marka & Craft**.
+
+| Eksen | Durum | Not |
+|-------|-------|-----|
+| Marka & Craft (imza) | ✅ | L1 kayma imzası korundu (yalnız opacity-fade feda, kullanıcı onayı); L2 flow mobilde ~0.5-1s geç belirir ama static base kaplar (boş/bozuk değil); L3 craft-nötr (kullanılmayan axes, tipografi birebir). P2 imzayı korumak için **iptal** (üst eksen). Görsel craft 6.02/6.03/6.05'te gözle ✓, UAT 8/9/11'de teyit. |
+| Erişilebilirlik | ✅ | Faz a11y yüzeyi getirmedi; Faz 4 a11y=100 çift-tema kazanımı CI a11y job ile otomatik korundu (Playwright/axe `/` light+dark 0 WCAG AA ihlal). Hero/LivingFlow `aria-hidden` dekoratif zemin korundu. |
+| Güvenlik | ✅ | `/security-review` 0 bulgu (saf görsel/perf değişikliği, API yüzeyi yok). `/api/chat` dokunulmadı; secret yok; deploy yok (Vercel hâlâ yalnız `main`). |
+| Bakım Maliyeti | ✅ | `LivingFlow.tsx` üç-yol degradasyon iyi yorumlandı, tek sorumluluk; `Hero.tsx` minimal değişim (yalnız opacity prop kaldırma); L3 iki dosya (`layout`+`not-found`) **birlikte** güncellendi (drift yok). Hardcode yeni değer yok. |
+| Performans | ✅ | **Çekirdek eksen:** ölçülebilir iyileşme (perf 84→90, LCP −440ms/−12%, dağılımlar örtüşmez); guardrail'ler yeşil (masaüstü 100, CLS≈0). Brief mobil bütçe (≥95/<2.5s) açık ama dürüstçe belgelendi (kök neden CPU-bound WebGL, P2 craft-gate). WebGL init LCP penceresi dışına ertelendi (L2) → render-path iyileşti. |
+| Hata Yönetimi & Degradasyon | ✅ | **Güçlendi:** static base wash her zaman mevcut (defer/no-WebGL'de hero boş kalmaz); Safari post-load fallback (rIC yok → flow yine init); reduced-motion + no-WebGL StaticFlow korundu. Yeni hata yolu açılmadı. |
+| Test Kapsamı | ✅ | Yeni test eklenmedi (faz src davranışı a11y/i18n değil perf değiştirdi) ama Faz 5 tohumları (i18n parite + a11y regresyon) lever'ların regresyon yapmadığını CI'da otomatik yakaladı. **Not:** perf'in kendisi otomatik CI testinde değil — elle Lighthouse metodolojisi (`docs/perf/README.md`); perf-CI gelecekte değerlendirilebilir (bilinçli açık, Lantern/ortam istikrarsızlığı nedeniyle bugün güvenilir CI-perf zor). |
+| Yerelleştirme & RTL | ✅ | Tüm lever'lar kod-only (font axes/GSAP/deferral) → içerik anahtarına dokunulmadı; i18n parite tohumu 6/6 + build 0 `MISSING_MESSAGE`. RTL yüzeyine dokunulmadı. |
+
+**Kullanıcı yolculuğu & boşluk:** Ana sayfa deneyimi tutarlı korundu — craft bozulmadı, flow mobilde biraz geç belirir ama static base kaplar (boş/kopuk durum yok). **Bilinen, sahipli boşluklar (orphan değil):** (1) brief mobil bütçe açık — kök neden CPU-bound WebGL main-thread, P2 craft-gate'te iptal, DECISIONS+perf README'de kayıtlı; (2) brief'in nihai doğrulaması gerçek-cihaz/Vercel field gerektirir (metodolojik duvar); (3) alt-sayfa derin a11y + `text-pulse` süpürmesi (Faz 4 devri) sonraki faza. Üçü de Kapsam Dışı + retro önerilerinde kayıtlı.
 
 ---
 
 ## Sonuç
 
-> Bu bölüm `/devflow:review-phase 6` oturumunda doldurulacak.
+- **Tamamlanma Tarihi:** 2026-06-30
+- **Toplam Task:** 7 (6.01-6.05 + 6.07 ✅; 6.06 ❌ iptal; UAT 12/12; düzeltme task'ı yok)
+- **Notlar:** Ana sayfa TR `/` mobil perf/LCP **ölçülebilir biçimde iyileşti** (perf 84→90, LCP 3604→3164ms, −440ms/−12%, dağılımlar örtüşmez) — milestone karşılandı. Sürücü **L3** (Fraunces SOFT/WONK budama, ~113KB↓ woff2, Lantern network-görünür); L1 (hero reveal transform-only) + L2 (WebGL idle deferral) gerçek-cihaz-doğru + craft-koruyucu ama lab'da delta vermedi (regresyonsuz korundu). P2 (Living Flow degradasyon) craft-gate'te iptal — imza üst eksen, müdahale gerekçesi kanıtlı Lantern artefaktıydı. Brief mobil bütçe (≥95/<2.5s) **açık** kaldı ve dürüstçe belgelendi (hedef düşürülmedi, craft feda edilmedi — v0.1 deseni). Guardrail'ler regresyonsuz: a11y=100 çift-tema, CLS≈0, masaüstü 100, i18n parite. 8 kalite ekseni ✅. Önceki faz (5) önerileri uygulandı (cookie disiplini, temsilî-ortam/CI-merkezli doğrulama, sahipli a11y borcu korundu). **Sonraki faza aktarılan (sahipli):** brief mobil açık (gerçek-cihaz/Vercel field doğrulaması) + alt-sayfa derin a11y + `text-pulse` süpürmesi. Versiyon Sonu Durumu = `içerik_fazları` → sıradaki içerik fazı: Umami analytics (E1).
 
 ---
 
 **Oluşturulma:** 2026-06-30
-**Son Güncelleme:** 2026-06-30 — verify-phase 6 ✅ (UAT): 12/12 senaryo geçti (otonom mod, 6.07 temsilî ortamı). Otomatik kontroller temiz (CI 4/4 `success` · security-review 0 bulgu · build/Vitest/axe yeşil); milestone bağımsız reprodüksiyonla teyit (mobil median perf 91/LCP 3222ms ≈ final 90/3164ms); guardrail'ler regresyonsuz. Düzeltme task'ı doğmadı → sıradaki adım `/devflow:review-phase 6` (retrospektif + ✅ dondurma).
+**Son Güncelleme:** 2026-06-30 — review-phase 6 ✅: retrospektif + kalite kontrol (8 eksen ✅) + sonuç yazıldı; faz dondurma ✅. Milestone karşılandı (ölçülebilir iyileşme, sürücü L3); brief mobil açık dürüstçe kaydedildi; P2 craft-gate iptal; guardrail'ler regresyonsuz. Önceki faz önerileri uygulandı. Versiyon Sonu Durumu içerik_fazları → sıradaki içerik fazı Umami (E1).

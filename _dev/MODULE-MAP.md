@@ -135,14 +135,17 @@ M6 (SEO/Deploy) ─────────────────────>
 | D1.4: CI iskeleti (ilk GitHub Actions: build + Vitest job + Playwright/a11y ayrı job) | M6 | v0.2 | 5 | ✅ |
 | D1.5: Kümülatif test convention notu (test yeri/koşma + "her feature kendi testini ekler") | M6 / docs | v0.2 | 5 | ✅ |
 | **— v0.2 mobil perf iş birimleri (Faz 6 — ana sayfa TR `/` mobil perf/LCP, brief hedef / craft tavan) —** | | | | |
-| P1: WebGL-dışı mobil perf kazanımları (font/JS bundle/asset/render-path; imza dokunulmaz) | M6 (+M1) | v0.2 | 6 | 🔄 |
-| P2: Living Flow mobil degradasyon ayarı (DPR cap/particle/erken static; craft korunur) | M1 | v0.2 | 6 | 🔄 |
+| P1: WebGL-dışı mobil perf kazanımları (font/JS bundle/asset/render-path; imza dokunulmaz) | M6 (+M1) | v0.2 | 6 | ✅ |
+| P2: Living Flow mobil degradasyon ayarı (DPR cap/particle/erken static; craft korunur) | M1 | v0.2 | 6 | ❌ İptal |
 
 **Durum simgeleri:**
 - ⬜ **Bekliyor** — Fazı henüz başlamadı
 - 🔄 **Devam ediyor** — Fazı aktif, task'lar çalışılıyor (discuss-phase'de faz başlatıldığında set edilir)
 - 🟡 **Kısmen tamamlandı** — Bazı task'ları bitti ama tamamı değil (bazıları sonraki fazlara kaldı)
 - ✅ **Tamamlandı** — Tüm kabul kriterleri karşılandı, UAT'tan geçti (review-phase'de set edilir)
+- ❌ **İptal** — Faz içinde bilinçle koşulmadı/iptal edildi (kod değişmedi); gerekçe `docs/DECISIONS.md`'de
+
+> **P2 (Living Flow mobil degradasyon) ❌ İptal (Faz 6, 2026-06-30):** craft-gate'te iptal — müdahale gerekçesi kanıtlı bir Lantern lab artefaktıydı (gerçek-cihaz açığı değil), imza Living Flow simüle-sayı için riske atılmadı. Kod değişmedi. Kalan brief mobil açık dürüstçe kaydedildi (`docs/DECISIONS.md` 2026-06-30). P1 (L1+L2+L3) ✅ ölçülebilir iyileşme sağladı (sürücü L3).
 
 > Modül detayları (sorumluluk, feature kabul kriterleri, edge case'ler) → `modules/MX-ModulAdi.md`
 > Versiyon sütunu PRD'deki VERSIONS.md'den aktarılır. Faz sütunu sadece planlanmış fazlar için doldurulur, henüz planlanmamış feature'lar "—" kalır.
@@ -150,4 +153,4 @@ M6 (SEO/Deploy) ─────────────────────>
 
 ---
 
-**Son Güncelleme:** 2026-06-30 — discuss-phase 6: v0.2 mobil perf iş birimleri P1 (WebGL-dışı kazanımlar) + P2 (Living Flow mobil degradasyon ayarı) eklendi, Faz 6'ya atandı, Durum 🔄 (ana sayfa TR `/` mobil-birincil; brief hedef / craft tavan). Faz 5 D1.x ve Faz 4 a11y iş birimleri ✅ korundu.
+**Son Güncelleme:** 2026-06-30 — review-phase 6: Faz 6 ✅. P1 (WebGL-dışı kazanımlar: L1+L2+L3) → ✅ (ölçülebilir mobil perf/LCP iyileşmesi, sürücü L3); P2 (Living Flow degradasyon) → ❌ İptal (craft-gate, kod değişmedi). Faz 5 D1.x ve Faz 4 a11y iş birimleri ✅ korundu.
