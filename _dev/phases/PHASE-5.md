@@ -131,9 +131,15 @@ Hepsi **yeni devDependency** (hiçbiri kurulu değil); gerçek `npm install` **i
 
 | # | Task | Durum | Açıklama |
 |---|------|-------|----------|
-| — | — | ⬜ | plan-phase 5'te doldurulacak |
+| 5.01 | TASK-5.01 | ⬜ Bekliyor | Vitest kurulumu (node) + i18n 5-dil parite tohum testi (D1.1+D1.2) |
+| 5.02 | TASK-5.02 | ⬜ Bekliyor | Vitest jsdom katmanı + component smoke tohum testi (D1.1) |
+| 5.03 | TASK-5.03 | ⬜ Bekliyor | Playwright + axe harness + a11y regresyon tohum, `/` light+dark (D1.1+D1.3) |
+| 5.04 | TASK-5.04 | ⬜ Bekliyor | CI iskeleti — ilk GitHub Actions (fast + a11y job) (D1.4) |
+| 5.05 | TASK-5.05 | ⬜ Bekliyor | Kümülatif test convention notu (docs/TESTING.md) (D1.5) |
 
 **Durum simgeleri:** ⬜ Bekliyor | 🔄 Devam ediyor | ⏸️ Duraklatıldı | ✅ Tamamlandı | 🔴 Bloke | ❌ İptal
+
+**Seed = 3 kanıtlı katman → 1:1 task:** Vitest-node (5.01) · Vitest-jsdom (5.02) · Playwright/axe (5.03). Her runner kendi devDependency'sini kurup kendi tohumuyla "kur+kanıtla" milestone'una göre kanıtlanır. Sıra lineer (5.01→5.05); 5.02 vitest.config'i genişletir, 5.04 üç runner komutunu gerektirir, 5.05 hepsini belgeler.
 
 ---
 
@@ -191,4 +197,4 @@ Hepsi **yeni devDependency** (hiçbiri kurulu değil); gerçek `npm install` **i
 ---
 
 **Oluşturulma:** 2026-06-30
-**Son Güncelleme:** 2026-06-30 — research-phase 5: teknik araştırma tamamlandı. Sürümler ampirik saptandı (vitest 4.1.9 / @playwright/test 1.61.1 / @axe-core/playwright 4.12.1 vb.); i18n paritesi şu an tam (5×183 anahtar). 2 karar: axe kapsamı = WCAG etiketleri; DOM katmanı şimdi kur + minik smoke (seed = 3 kanıtlı katman). En kritik risk: Lighthouse-altküme ≠ ham axe full-ruleset (plan/icrada ampirik koşulacak). Sıradaki: plan-phase 5.
+**Son Güncelleme:** 2026-06-30 — plan-phase 5: 5 task yazıldı (5.01 Vitest-node+i18n parite · 5.02 Vitest-jsdom+smoke · 5.03 Playwright/axe+a11y regresyon · 5.04 ilk GitHub Actions CI · 5.05 test convention notu). Seed=3 kanıtlı katman 1:1 task'a; her runner kur+kanıtla (fail-on-regression). Sıradaki: verify-plan 5.

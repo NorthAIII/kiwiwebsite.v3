@@ -1,6 +1,6 @@
 # DURUM — Proje Dashboard
 
-**Son Güncelleme:** 2026-06-30 — research-phase 5: Faz 5 (v0.2 test altyapısı D1) teknik araştırma tamamlandı. Sürümler ampirik saptandı (vitest 4.1.9 / @playwright/test 1.61.1 / @axe-core/playwright 4.12.1); i18n paritesi şu an tam (5×183 anahtar); Playwright/axe taze install gerekir (Faz 4 npx'ti). 2 karar: axe=WCAG etiketleri, DOM katmanı şimdi kur+minik smoke (seed=3 kanıtlı katman). Bulgular PHASE-5'e + mimari özet DECISIONS'a yazıldı. Versiyon Sonu Durumu içerik_fazları (değişmez). **Adım=plan** (sıradaki: plan-phase 5).
+**Son Güncelleme:** 2026-06-30 — plan-phase 5: Faz 5 (v0.2 test altyapısı D1) 5 task'a bölündü ve dokümanları yazıldı. Seed=3 kanıtlı katman 1:1 task: 5.01 Vitest-node+i18n parite · 5.02 Vitest-jsdom+smoke · 5.03 Playwright/axe+a11y regresyon (`/` light+dark) · 5.04 ilk GitHub Actions CI (fast+a11y job) · 5.05 test convention notu. Her runner kur+kanıtla (fail-on-regression). Versiyon Sonu Durumu içerik_fazları (değişmez). **Adım=verify-plan** (sıradaki: verify-plan 5).
 
 <!-- KURAL: Bu satır her oturum sonunda ÜZERİNE YAZILIR — tek satır, tek cümle. "Önceki:" / "Eski:" prefix ile kümülatif yığma YASAK; HTML comment'e sarma da yasak (CLAUDE.md → Doküman Disiplini). Tarih + kısa özet yeterli; detay için git log + ilgili PHASE/TASK dokümanları. -->
 
@@ -8,10 +8,10 @@
 
 ## Aktif Faz
 
-**Faz:** 5 — Test altyapısı (D1). 🔄 **research tamamlandı** (research-phase 5, 2026-06-30); discuss ✅. Faz 4 (v0.2 a11y 89→100) ✅.
-**Adım:** plan → `/devflow:plan-phase 5`: harness kurulumu + 3 tohum + CI için task yazımı (yeni oturum).
-**İlerleme:** Yığın doğrulandı (sürümler ampirik): **vitest 4.1.9 (node+jsdom) + @vitejs/plugin-react + @testing-library/react 16.3.2 + jest-dom + jsdom + @playwright/test 1.61.1 + @axe-core/playwright 4.12.1** — hepsi taze devDependency (install anında teyit). CI: **ilk GitHub Actions** (2 job: build+vitest hızlı / playwright-a11y chromium). Tohum (3 kanıtlı katman): **i18n 5-dil parite** node/Vitest (şu an tam: 5×183 anahtar) + **component smoke** jsdom + **a11y regresyon `/` light+dark** Playwright/axe. **🔴 En kritik risk:** Faz 4 a11y=100 Lighthouse alt-kümesiydi; ham axe full-ruleset ≠ 0 ihlal garantisi → axe kapsamı **WCAG etiketleri** (karar), plan/icrada `/` light+dark ampirik koş. **Çapraz konu:** devDependency install anında teyit; araç davranışını ampirik yokla. **Devralınan borç:** alt-sayfa derin a11y + `text-pulse` ink-panel süpürmesi (harness sonra genişletir).
-**Son Faz Dokümanı:** `phases/PHASE-5.md` (🔄 research tamamlandı — Araştırma Bulguları dolu)
+**Faz:** 5 — Test altyapısı (D1). 🔄 **plan tamamlandı** (plan-phase 5, 2026-06-30); discuss ✅ + research ✅. Faz 4 (v0.2 a11y 89→100) ✅.
+**Adım:** verify-plan → `/devflow:verify-plan 5`: 5 task dokümanını review et (yeni oturum).
+**İlerleme:** 5 task yazıldı — seed=3 kanıtlı katman 1:1 task'a: **5.01** Vitest-node kur + i18n 5-dil parite tohum (D1.1+D1.2) · **5.02** Vitest-jsdom + component smoke (D1.1) · **5.03** Playwright/axe kur + a11y regresyon `/` light+dark (D1.1+D1.3) · **5.04** ilk GitHub Actions CI, fast+a11y job (D1.4) · **5.05** test convention notu docs/TESTING.md (D1.5). Her runner kur+kanıtla (fail-on-regression). Sıra lineer (5.01→5.05). **🔴 En kritik risk (5.03):** Faz 4 a11y=100 Lighthouse alt-kümesiydi; ham axe full-ruleset ≠ 0 ihlal garantisi → axe kapsamı **WCAG etiketleri**; icrada `/` light+dark ampirik koş, baseline sabitle. **Devralınan borç:** alt-sayfa derin a11y + `text-pulse` ink-panel süpürmesi (harness sonra genişletir).
+**Son Faz Dokümanı:** `phases/PHASE-5.md` (🔄 plan tamamlandı — Task Listesi dolu)
 
 ---
 
@@ -28,19 +28,23 @@
 
 ## Aktif Task
 
-**Task:** — Aktif task yok. Faz 5 discuss ✅ + research ✅; task'lar plan-phase 5 sonrası oluşur.
-**Durum:** Faz 5 (test altyapısı D1) 🔄 — kapsam + araştırma tamamlandı. Sıradaki adım faz döngüsünde plan-phase 5 (task değil).
-**İlerleme:** `/devflow:plan-phase 5` ile harness kurulumu + 3 tohum + CI task'larını yaz (yeni oturum).
+**Task:** — Aktif task yok. Faz 5 planlandı (5 task ⬜); task icrası verify-plan'dan **sonra** başlar (sıradaki: TASK-5.01).
+**Durum:** Faz 5 (test altyapısı D1) 🔄 — discuss ✅ + research ✅ + plan ✅. Sıradaki adım faz döngüsünde verify-plan 5 (task değil).
+**İlerleme:** `/devflow:verify-plan 5` ile 5 task dokümanını review et (yeni oturum). Onaylanınca run-task TASK-5.01'den başla.
 
 ---
 
 ## Task Durumu (Aktif Faz)
 
-> Faz 5 (test altyapısı D1) 🔄 — discuss ✅ + research ✅, **henüz planlanmadı** (plan-phase 5 sonrası task'lar oluşur). Faz 4 (v0.2 a11y) ✅; 8 task'ı (4.01-4.08) `tasks/archive/`'da, detay `phases/PHASE-4.md`.
+> Faz 5 (test altyapısı D1) 🔄 — discuss ✅ + research ✅ + **plan ✅** (5 task ⬜, verify-plan bekliyor). Faz 4 (v0.2 a11y) ✅; 8 task'ı (4.01-4.08) `tasks/archive/`'da, detay `phases/PHASE-4.md`.
 
 | # | Task | Durum | Açıklama |
 |---|------|-------|----------|
-| — | — | — | Faz 5 henüz planlanmadı (plan-phase 5 sonrası) |
+| 5.01 | TASK-5.01 | ⬜ Bekliyor | Vitest kurulumu (node) + i18n 5-dil parite tohum |
+| 5.02 | TASK-5.02 | ⬜ Bekliyor | Vitest jsdom katmanı + component smoke tohum |
+| 5.03 | TASK-5.03 | ⬜ Bekliyor | Playwright + axe + a11y regresyon (`/` light+dark) |
+| 5.04 | TASK-5.04 | ⬜ Bekliyor | CI iskeleti — ilk GitHub Actions (fast + a11y job) |
+| 5.05 | TASK-5.05 | ⬜ Bekliyor | Kümülatif test convention notu (docs/TESTING.md) |
 
 ---
 
@@ -62,12 +66,12 @@
 
 ## Hızlı Erişim
 
-**Aktif Task:** — yok; Faz 5 discuss ✅ + research ✅. Sıradaki adım: `/devflow:plan-phase 5` (harness + tohum + CI task yazımı)
-**Aktif Faz:** 5 — Test altyapısı (D1) 🔄 · adım=plan; Faz 4 ✅; Aktif Versiyon v0.2, Versiyon Sonu Durumu: içerik_fazları
+**Aktif Task:** — yok; Faz 5 planlandı (5 task ⬜). Sıradaki adım: `/devflow:verify-plan 5` (task review); onaylanınca TASK-5.01
+**Aktif Faz:** 5 — Test altyapısı (D1) 🔄 · adım=verify-plan; Faz 4 ✅; Aktif Versiyon v0.2, Versiyon Sonu Durumu: içerik_fazları
 **Task Sistemi:** `tasks/TASKS-README.md`
 **PRD (karar kaynağı):** `PRD/VIZYON.md` · `PRD/VERSIONS.md` · `PRD/features/`
 **Revize Backlog (bilinen sorunlar):** `docs/REVIZE-BACKLOG.md`
 
 ---
 
-**Son Güncelleme:** 2026-06-30 — research-phase 5: teknik araştırma tamamlandı. Bulgular PHASE-5 "Araştırma Bulguları"na, mimari özet DECISIONS'a yazıldı. Sürümler ampirik (vitest 4.1.9 / playwright 1.61.1 / axe-core/playwright 4.12.1); 2 karar (axe=WCAG etiketleri, DOM şimdi kur+smoke). Adım=plan → plan-phase 5.
+**Son Güncelleme:** 2026-06-30 — plan-phase 5: 5 task dokümanı oluşturuldu (5.01–5.05), Task Listesi PHASE-5'e yazıldı. Seed=3 kanıtlı katman 1:1 task; her runner kur+kanıtla. Adım=verify-plan → verify-plan 5.
