@@ -7,7 +7,7 @@
 >
 > Bu yapı şişmeyi önler: index ince kalır (hep yüklü), detay yalnızca gerekince okunur.
 
-**Son Güncelleme:** 2026-06-30 — run-task 4.08: Accept-Language redirect tuzağı satırı Lighthouse/perf-baseline örneğiyle zenginleştirildi (cookie'siz Lighthouse `/en` ölçer → v0.1 baseline yanlış-locale; perf ölçümünde TR `/` için `NEXT_LOCALE=tr` cookie şart).
+**Son Güncelleme:** 2026-06-30 — run-task 5.04: Ortam & Araç Notları'na "CI gözlemi `gh` olmadan public Actions REST API+curl ile" satırı eklendi (repo public; `gh`/`node`/`python` her oturum ortamında olmayabilir).
 
 <!-- KURAL: Bu satır her güncellemede ÜZERİNE YAZILIR. "Önceki:" prefix ile kümülatif yığma YASAK (CLAUDE.md → Doküman Disiplini). -->
 
@@ -36,6 +36,7 @@
 - Deploy: Vercel `north-ai/kiwi-ai-lab-v3` (her `main` push → otomatik deploy). Canlı: kiwiailab.com
 - Chatbot env: `ANTHROPIC_API_KEY` (zorunlu, canlıda Vercel env'de), `CHAT_MODEL` (opsiyonel, varsayılan `claude-opus-4-8`).
 - [Repo haritası](memory/repo-haritasi.md) — frontend = `NorthAIII/kiwiwebsite.v3` (bu repo, public); backend ayrı/private = `NorthAIII/kiwi-ai-lab`; eski repo'lar terk edilmiş öncül (yeniden kullanma).
+- **CI (GitHub Actions) gözlemi `gh` olmadan da yapılabilir** — repo **public** olduğundan Actions run/job durumu auth'suz REST API ile okunur: `curl -s "https://api.github.com/repos/NorthAIII/kiwiwebsite.v3/actions/runs?head_sha=<sha>"` → run id; sonra `/actions/runs/<id>/jobs` `jq '.jobs[] | "\(.name): \(.conclusion)"'` ile job-seviyesi `conclusion=success` ampirik teyit edilir (`gh run watch` eşdeğeri). CI workflow: `.github/workflows/ci.yml` (fast + a11y job; TASK-5.04). Ortam notu: bazı oturum ortamlarında `gh`/`node`/`python` kurulu olmayabilir (taze cloud devcontainer) — workflow GitHub runner'da koştuğu için node yerelde gerekmez.
 - [DevFlow sistemi](memory/devflow-sistemi.md) — DevFlow özel araç (`github.com/36337/DevFlow`); bu yüzden public repo'da `.claude/` gitignore'da, `_dev/` commit'lenir.
 
 ## Çapraz Öğrenimler

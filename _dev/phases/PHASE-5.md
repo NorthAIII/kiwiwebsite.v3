@@ -134,7 +134,7 @@ Hepsi **yeni devDependency** (hiçbiri kurulu değil); gerçek `npm install` **i
 | 5.01 | TASK-5.01 | ✅ Tamamlandı | Vitest kurulumu (node) + i18n 5-dil parite tohum testi (D1.1+D1.2) |
 | 5.02 | TASK-5.02 | ✅ Tamamlandı | Vitest jsdom katmanı + component smoke tohum testi (D1.1) |
 | 5.03 | TASK-5.03 | ✅ Tamamlandı | Playwright + axe harness + a11y regresyon tohum, `/` light+dark (D1.1+D1.3) |
-| 5.04 | TASK-5.04 | ⬜ Bekliyor | CI iskeleti — ilk GitHub Actions (fast + a11y job) (D1.4) |
+| 5.04 | TASK-5.04 | ✅ Tamamlandı | CI iskeleti — ilk GitHub Actions (fast + a11y job) (D1.4) |
 | 5.05 | TASK-5.05 | ⬜ Bekliyor | Kümülatif test convention notu (docs/TESTING.md) (D1.5) |
 
 **Durum simgeleri:** ⬜ Bekliyor | 🔄 Devam ediyor | ⏸️ Duraklatıldı | ✅ Tamamlandı | 🔴 Bloke | ❌ İptal
@@ -197,4 +197,4 @@ Hepsi **yeni devDependency** (hiçbiri kurulu değil); gerçek `npm install` **i
 ---
 
 **Oluşturulma:** 2026-06-30
-**Son Güncelleme:** 2026-06-30 — run-task 5.03 ✅: Playwright/axe (chromium-only, prod webServer) + a11y regresyon tohumu (`/` light+dark, WCAG-etiketli axe) kuruldu/kanıtlandı (2 devDep + chromium-1228; `npm run test:e2e` 2/2 yeşil 0 ihlal; fail-on-regression light kırmızı↔geri yeşil; Vitest 6/6; build temiz). **Seed = 3 kanıtlı katman tamam** (Vitest-node · Vitest-jsdom · Playwright/axe). 🔴 kritik risk gerçekleşmedi: WCAG-AA scope `withTags` ile Lighthouse-altküme vs ham full-ruleset farkı nötralize, ampirik 0 ihlal. İcra nüansı (retro adayı): fail-on-regression light kırmızı + dark yeşil çıkışı tema-token inversion'ını testte de kanıtladı (iki-koşu zorunluluğu ampirik). Kalan: 5.04 CI iskeleti · 5.05 convention notu. Sıradaki: run-task 5.04.
+**Son Güncelleme:** 2026-06-30 — run-task 5.04 ✅: Projenin ilk CI'ı (`.github/workflows/ci.yml`) kuruldu — `on: push[**] + pull_request`, `concurrency` cancel-in-progress, `permissions: contents:read`; 2 paralel job: **fast** (checkout→setup-node 24→`npm ci`→`build`→`test`) + **a11y** (+`actions/cache` ms-playwright lockfile-key→`playwright install --with-deps chromium`→`test:e2e`; webServer kendi build koşar → ayrı build adımı yok, research #8 ile tutarlı). Revize branch push → run `28470864743` → **iki job da ilk denemede yeşil** (fast ~47s · a11y ~82s). İcra nüansı (retro adayı): ortamda `gh`/`node`/`python` yok (taze cloud devcontainer) → kanıtlama `gh` yerine **public Actions REST API + curl** ile (repo public, auth gerekmedi) — `gh`'ye eşdeğer ampirik gözlem. CI yalnız doğrular, deploy etmez. Kalan: 5.05 convention notu. Sıradaki: run-task 5.05.
