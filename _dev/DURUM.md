@@ -1,6 +1,6 @@
 # DURUM — Proje Dashboard
 
-**Son Güncelleme:** 2026-06-30 — run-task 5.05 ✅: `_dev/docs/TESTING.md` (test convention notu) yazıldı — komutlar + test yerleri + 3 katman + a11y ölçüm disiplini (özet+pointer) + kümülatif beklenti + CI; INDEX Bilgi Havuzu'na işlendi. Komut/yol↔artefakt birebir eşleşme statik doğrulandı (node yok → yerel koşu yok; yeşillik TASK-5.04 CI'da kanıtlı). **Faz 5 tüm task'lar ✅ (5/5) → Adım=verify** (sıradaki: `/devflow:verify-phase 5`).
+**Son Güncelleme:** 2026-06-30 — verify-phase 5 ✅: UAT 13/13 geçti (otonom mod — node yok, CI + statik + task-kayıtlı kanıt). Otomatik kontroller: CI HEAD run `28471662528` iki job + her adım yeşil; `/security-review` HIGH/MEDIUM bulgu yok. Fail-on-regression task-kayıtlı (5.01 i18n + 5.03 a11y). Düzeltme task'ı yok → **Adım=review** (sıradaki: `/devflow:review-phase 5`).
 
 <!-- KURAL: Bu satır her oturum sonunda ÜZERİNE YAZILIR — tek satır, tek cümle. "Önceki:" / "Eski:" prefix ile kümülatif yığma YASAK; HTML comment'e sarma da yasak (CLAUDE.md → Doküman Disiplini). Tarih + kısa özet yeterli; detay için git log + ilgili PHASE/TASK dokümanları. -->
 
@@ -8,10 +8,10 @@
 
 ## Aktif Faz
 
-**Faz:** 5 — Test altyapısı (D1). 🔄 **icra tamam, UAT bekliyor** — 5.01 ✅ + 5.02 ✅ + 5.03 ✅ + 5.04 ✅ + 5.05 ✅ (5/5); plan ✅ + verify-plan ✅ + discuss ✅ + research ✅. Faz 4 (v0.2 a11y 89→100) ✅.
-**Adım:** verify → `/devflow:verify-phase 5` (yeni oturum): faz UAT'i.
-**İlerleme:** 5.01 ✅ + 5.02 ✅ + 5.03 ✅ → seed = 3 kanıtlı katman; **5.04 ✅** ilk GitHub Actions CI (fast: build+Vitest · a11y: Playwright/axe), iki job paralel yeşil (run `28470864743`) → seed otomatik regresyon korumalı; **5.05 ✅** `docs/TESTING.md` convention notu (komutlar + 3 katman + a11y disiplini özet/pointer + kümülatif beklenti + CI) → harness sahipli/sürdürülebilir. **Faz icrası tamam (5/5)**, sıradaki adım UAT. **Devralınan borç:** alt-sayfa derin a11y + `text-pulse` ink-panel süpürmesi (harness sonra genişletir).
-**Son Faz Dokümanı:** `phases/PHASE-5.md` (🔄 icra tamam — 5.01–5.05 hepsi ✅, UAT bekliyor)
+**Faz:** 5 — Test altyapısı (D1). 🔄 **UAT geçti, review bekliyor** — 5.01 ✅ + 5.02 ✅ + 5.03 ✅ + 5.04 ✅ + 5.05 ✅ (5/5); discuss ✅ + research ✅ + plan ✅ + verify-plan ✅ + **verify (UAT 13/13) ✅**. Faz 4 (v0.2 a11y 89→100) ✅.
+**Adım:** review → `/devflow:review-phase 5` (yeni oturum): faz review + retrospektif + kalite kontrol.
+**İlerleme:** Seed = 3 kanıtlı katman (Vitest-node i18n parite · Vitest-jsdom smoke · Playwright/axe a11y); ilk GitHub Actions CI (fast + a11y) iki job yeşil; `docs/TESTING.md` convention notu. **UAT 13/13 ✅** (otonom: CI run `28471662528` iki job+her adım yeşil + statik çapraz-kontrol + fail-on-regression task-kayıtlı 5.01/5.03); `/security-review` HIGH/MEDIUM yok; düzeltme task'ı doğmadı. **Devralınan borç:** alt-sayfa derin a11y + `text-pulse` ink-panel süpürmesi (harness sonra genişletir).
+**Son Faz Dokümanı:** `phases/PHASE-5.md` (🔄 UAT 13/13 ✅, review bekliyor)
 
 ---
 
@@ -28,15 +28,15 @@
 
 ## Aktif Task
 
-**Task:** TASK-5.05 ✅ Tamamlandı — Faz 5'in son task'ı. 5.01 ✅ + 5.02 ✅ + 5.03 ✅ + 5.04 ✅ + 5.05 ✅ (5/5).
-**Durum:** Faz 5 (test altyapısı D1) 🔄 — icra tamam, UAT bekliyor. Sıradaki adım faz döngüsünde `/devflow:verify-phase 5`.
-**İlerleme:** Fazdaki tüm task'lar tamamlandı. `/devflow:verify-phase 5` ile faz UAT'ini çalıştır (yeni oturum).
+**Task:** Yok — Faz 5 tüm task'lar ✅ (5/5) ve UAT 13/13 ✅. Düzeltme task'ı doğmadı.
+**Durum:** Faz 5 (test altyapısı D1) 🔄 — UAT geçti, review bekliyor. Sıradaki adım faz döngüsünde `/devflow:review-phase 5`.
+**İlerleme:** UAT tamam (13/13). `/devflow:review-phase 5` ile faz review + retrospektif + kalite kontrolünü çalıştır (yeni oturum).
 
 ---
 
 ## Task Durumu (Aktif Faz)
 
-> Faz 5 (test altyapısı D1) 🔄 — icra tamam: 5.01 ✅ + 5.02 ✅ + 5.03 ✅ + 5.04 ✅ + 5.05 ✅ (5/5). discuss ✅ + research ✅ + plan ✅ + verify-plan ✅. UAT bekliyor. Faz 4 (v0.2 a11y) ✅; 8 task'ı (4.01-4.08) `tasks/archive/`'da, detay `phases/PHASE-4.md`.
+> Faz 5 (test altyapısı D1) 🔄 — icra tamam: 5.01 ✅ + 5.02 ✅ + 5.03 ✅ + 5.04 ✅ + 5.05 ✅ (5/5). discuss ✅ + research ✅ + plan ✅ + verify-plan ✅ + verify (UAT 13/13) ✅. Review bekliyor. Faz 4 (v0.2 a11y) ✅; 8 task'ı (4.01-4.08) `tasks/archive/`'da, detay `phases/PHASE-4.md`.
 
 | # | Task | Durum | Açıklama |
 |---|------|-------|----------|
@@ -74,12 +74,12 @@
 
 ## Hızlı Erişim
 
-**Aktif Task:** Yok — Faz 5 tüm task'lar ✅ (5/5). Sıradaki adım: `/devflow:verify-phase 5` (faz UAT)
-**Aktif Faz:** 5 — Test altyapısı (D1) 🔄 icra tamam · adım=verify (verify-phase); Faz 4 ✅; Aktif Versiyon v0.2, Versiyon Sonu Durumu: içerik_fazları
+**Aktif Task:** Yok — Faz 5 tüm task'lar ✅ (5/5) + UAT 13/13 ✅. Sıradaki adım: `/devflow:review-phase 5` (faz review)
+**Aktif Faz:** 5 — Test altyapısı (D1) 🔄 UAT geçti · adım=review (review-phase); Faz 4 ✅; Aktif Versiyon v0.2, Versiyon Sonu Durumu: içerik_fazları
 **Task Sistemi:** `tasks/TASKS-README.md`
 **PRD (karar kaynağı):** `PRD/VIZYON.md` · `PRD/VERSIONS.md` · `PRD/features/`
 **Revize Backlog (bilinen sorunlar):** `docs/REVIZE-BACKLOG.md`
 
 ---
 
-**Son Güncelleme:** 2026-06-30 — run-task 5.05 ✅: `docs/TESTING.md` test convention notu yazıldı (komutlar + 3 katman + a11y disiplini özet/pointer + kümülatif beklenti + CI), INDEX'e işlendi. Komut/yol↔artefakt birebir eşleşme statik doğrulandı (node yok; yeşillik TASK-5.04 CI'da). Faz 5 tüm task'lar ✅ (5/5) → adım=verify → `/devflow:verify-phase 5`.
+**Son Güncelleme:** 2026-06-30 — verify-phase 5 ✅: faz UAT 13/13 geçti (otonom mod). Otomatik kontroller: CI HEAD run `28471662528` iki job + her adım yeşil; `/security-review` HIGH/MEDIUM yok. Fail-on-regression task-kayıtlı (5.01/5.03). Düzeltme task'ı doğmadı → adım=review → `/devflow:review-phase 5`.

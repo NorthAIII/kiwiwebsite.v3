@@ -145,14 +145,28 @@ Hepsi **yeni devDependency** (hiçbiri kurulu değil); gerçek `npm install` **i
 
 ## UAT Sonuçları
 
-> Bu bölüm `/devflow:verify-phase 5` oturumunda doldurulur.
+**Tarih:** 2026-06-30
+**Toplam Senaryo:** 13 | **Geçen:** 13 | **Kalan:** 0
 
-**Tarih:** [tarih]
-**Toplam Senaryo:** X | **Geçen:** Y | **Kalan:** Z
+> Doğrulama zemini: ortamda node/npm/gh **yok** (taze devcontainer, MEMORY) → runner'lar yerelde koşulamaz (kullanıcı kararı: **otonom** mod — CI + statik + kayıt). Üç kanıt kaynağı: (a) **CI** — faz HEAD commit'i (64f22c1) run `28471662528`, iki job + her adım `conclusion=success` (public Actions REST API ile ampirik); (b) **statik çapraz-kontrol** — config/test/workflow artefaktları; (c) **task-kayıtlı ampirik kanıt** — fail-on-regression icrada gösterildi (TASK-5.01/5.03).
+>
+> **Otomatik kontrol bulguları (Adım 1):** CI HEAD run iki job + her adım yeşil (S2/S4/S5/S8 zemini). `/security-review` (faz değişiklikleri: ci.yml + config + tests + i18n + Faz 4 component a11y) → **HIGH/MEDIUM bulgu yok** (CI least-privilege `contents:read`, secret yok, deploy yok; i18n düz metin/XSS yok; test config eval/deserialization yok; `/api/chat` değişmedi, zaten girdi doğruluyor). Bot/PR/bağımlılık-tarayıcı: yok (proje CI yeni; Dependabot yapılandırılmamış). → Düzeltme task'ı doğuran bulgu yok.
 
 | # | Senaryo | Sonuç | Not |
 |---|---------|-------|-----|
-| 1 | [Senaryo 1] | ✅/❌ | [not] |
+| 1 | Runner komutları & config repoda (D1.1 · M1): `test`/`test:watch`/`test:e2e` script'leri + vitest.config + vitest.setup + playwright.config | ✅ Geçti | Statik: package.json 11-13 + 4 config dosyası repoda |
+| 2 | Vitest node + i18n parite tohumu yeşil (D1.2 · M2): 5 dil 183 anahtar parite | ✅ Geçti | CI fast "Vitest" step success; kaba leaf sayımı 5×~183 tutarlı |
+| 3 | i18n parite fail-on-regression (M2): eksik anahtar → kırmızı | ✅ Geçti | TASK-5.01 kayıt: `de.json/meta.title` sil → kırmızı (`EKSİK: ['meta.title']`) → geri al → yeşil |
+| 4 | Vitest jsdom + component smoke yeşil (D1.1): jsdom render + jest-dom matcher | ✅ Geçti | smoke.test.tsx pragma+render+toBeInTheDocument; CI vitest run kapsar |
+| 5 | Playwright/axe a11y tohumu yeşil — `/` light+dark WCAG-AA 0 ihlal (D1.3 · M3) | ✅ Geçti | CI a11y "Playwright/axe" step success |
+| 6 | a11y fail-on-regression (M3): kontrast regresyonu → kırmızı (light), dark yeşil kalır | ✅ Geçti | TASK-5.03 kayıt: light `--color-ink`→soluk → light `color-contrast` kırmızı, dark yeşil (tema ayrımı da kanıtlı) → geri al → 2/2 yeşil |
+| 7 | a11y ölçüm disiplini doğru kodlandı: NEXT_LOCALE=tr cookie + emulateMedia(colorScheme+reducedMotion) + uçtan-uca scroll + WCAG etiketleri | ✅ Geçti | home-a11y.spec.ts'te dördü de mevcut + light/dark döngü |
+| 8 | CI iskeleti — iki job yeşil (D1.4 · M4): fast (build+vitest) + a11y (playwright/axe) her adım success | ✅ Geçti | run `28471662528` job+adım seviyesi tümü success |
+| 9 | CI tetikleme: push (tüm branch, revize dahil) + pull_request | ✅ Geçti | ci.yml `on: push branches:["**"] + pull_request`; HEAD run head_branch=revize/devflow-kurulum, event=push |
+| 10 | CI güvenlik yüzeyi: deploy yok · `permissions: contents:read` · secret CI'da yok · canlı (`main`) korunur | ✅ Geçti | ci.yml statik + security-review temiz; deploy adımı yok, concurrency cancel |
+| 11 | Yanlış-yeşil korumaları: playwright retries:0 + forbidOnly(CI) + runner ayrımı (vitest e2e exclude / playwright testMatch) | ✅ Geçti | playwright.config retries:0 + forbidOnly + vitest exclude tests/e2e + testMatch *.spec.ts |
+| 12 | Kümülatif convention notu (D1.5 · M5): docs/TESTING.md var, INDEX'e işli, komut/yol artefaktlarla birebir | ✅ Geçti | TESTING.md komutlar/yerler/3 katman/a11y disiplini/CI hepsi artefaktlarla eşleşir; INDEX'te |
+| 13 | Regresyon yok — runtime/build izolasyonu (M6): faz5 yalnız devDeps+config+CI+tests/+.gitignore; src/ + messages/ değişmedi; CI build temiz | ✅ Geçti | `git diff e7265e5^..HEAD` yalnız altyapı; src/+messages/ boş; CI build step success |
 
 ---
 
