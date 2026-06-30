@@ -131,7 +131,7 @@ Hepsi **yeni devDependency** (hiçbiri kurulu değil); gerçek `npm install` **i
 
 | # | Task | Durum | Açıklama |
 |---|------|-------|----------|
-| 5.01 | TASK-5.01 | ⬜ Bekliyor | Vitest kurulumu (node) + i18n 5-dil parite tohum testi (D1.1+D1.2) |
+| 5.01 | TASK-5.01 | ✅ Tamamlandı | Vitest kurulumu (node) + i18n 5-dil parite tohum testi (D1.1+D1.2) |
 | 5.02 | TASK-5.02 | ⬜ Bekliyor | Vitest jsdom katmanı + component smoke tohum testi (D1.1) |
 | 5.03 | TASK-5.03 | ⬜ Bekliyor | Playwright + axe harness + a11y regresyon tohum, `/` light+dark (D1.1+D1.3) |
 | 5.04 | TASK-5.04 | ⬜ Bekliyor | CI iskeleti — ilk GitHub Actions (fast + a11y job) (D1.4) |
@@ -197,4 +197,4 @@ Hepsi **yeni devDependency** (hiçbiri kurulu değil); gerçek `npm install` **i
 ---
 
 **Oluşturulma:** 2026-06-30
-**Son Güncelleme:** 2026-06-30 — plan-phase 5: 5 task yazıldı (5.01 Vitest-node+i18n parite · 5.02 Vitest-jsdom+smoke · 5.03 Playwright/axe+a11y regresyon · 5.04 ilk GitHub Actions CI · 5.05 test convention notu). Seed=3 kanıtlı katman 1:1 task'a; her runner kur+kanıtla (fail-on-regression). Sıradaki: verify-plan 5.
+**Son Güncelleme:** 2026-06-30 — run-task 5.01 ✅: Vitest-node runner + i18n 5-dil parite tohumu kuruldu/kanıtlandı (yeşil 5/5 → fail-on-regression kırmızı → yeşil; build temiz). 3 kanıtlı katmanın 1.'si. `next-intl/routing` node-ESM'de sürtünmesiz import edildi (araştırma riski materyalize olmadı). Sıradaki: run-task 5.02.
