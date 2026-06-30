@@ -1,6 +1,6 @@
 # TASK-6.06: P2 — Living Flow mobil degradasyon ayarı (koşullu)
 
-**Durum:** ⬜ Bekliyor
+**Durum:** ❌ İptal (craft-gate — kullanıcı kararı 2026-06-30)
 **Modül:** M1 (modules/M1-LivingFlow-TasarimSistemi.md) — Living Flow degradasyon
 **Feature:** P2 — Living Flow mobil degradasyon ayarı (craft korunarak)
 **Faz:** Phase 6 (phases/PHASE-6.md)
@@ -115,36 +115,40 @@ src/components/living-flow/
 
 ## Oturum Kayıtları
 
-### Oturum — [TARİH]
+### Oturum — 2026-06-30
 
-**Durum:** [✅/❌/🔄/⏸️/🔴]
+**Durum:** ❌ İptal (craft-gate, kullanıcı kararı)
 
 **Yapılanlar:**
--
+- Alt görev 0 (Gerek teyidi) işletildi: 6.04 ara-ölç açığı + kök neden okundu. Craft-gate kullanıcıya getirildi (run-task durma koşulu: Risk + Karar gereksinimi). Kullanıcı **iptal** seçti.
+- Kod **değiştirilmedi** — Living Flow (`FlowCanvas.tsx` / `LivingFlow.tsx`) parametrelerine dokunulmadı.
+- İptal gerekçesi DURUM + PHASE-6 + DECISIONS'a kaydedildi (craft-etkili karar → DECISIONS).
 
 **Sorunlar:**
--
+- Koşulun kendisi bulanıktı: "lab'da brief LCP açık" (mobil ~3.6s) → literal okumada P2 tetiklenir; ama 6.04 kök nedeni **kanıtlı Lantern simülasyon artefaktı** (LCP elementi hero metni, gözlemde ~185ms render; 3.6s = 4× CPU throttle altında WebGL main-thread'in *simülasyonu*). Yani "açık" lab körlüğü, gerçek-cihaz açığı değil.
 
 **Kararlar:**
-- docs/DECISIONS.md'ye eklendi: [Evet/Hayır]
+- docs/DECISIONS.md'ye eklendi: **Evet** (2026-06-30 — P2 craft-gate iptali; imzaya simüle-sayı için dokunmama, v0.1 dürüst-kayıt deseni).
 
 **Dosya Değişiklikleri:**
--
+- Kod: yok.
+- Doküman: `TASK-6.06.md` (bu, ❌), `DURUM.md`, `phases/PHASE-6.md`, `docs/DECISIONS.md`.
 
 **Test Sonuçları:**
--
+- Yok (kod değişmedi → build/ölçüm gereksiz). Korunan tabanlar dokunulmadığı için regresyonsuz (a11y=100, CLS=0, masaüstü 99-100, i18n parite).
 
 ---
 
 ## Sonuç Özeti
 
-**Tamamlanma Tarihi:** [Tarih]
+**Tamamlanma Tarihi:** 2026-06-30 (❌ İptal)
 
 **Ne Yapıldı:**
--
+- P2 (Living Flow mobil degradasyon ayarı) **koşulmadı**, craft-gate'te kullanıcı kararıyla iptal edildi. İmza Living Flow görseline dokunulmadı.
+- Gerekçe: 6.04 kanıtladı ki mobil LCP açığı (~3.6s) Lantern simülasyon artefaktıdır (gerçek-cihazda hero ~185ms render); imza craft'ı (üst eksen) bir simüle-sayı için riske atılmaz. Kalan açık dürüstçe belgeli (v0.1 deseni) — gerçek doğrulama gerçek-cihaz/Vercel field gerektirir.
 
 **Öğrenilenler:**
--
+- Craft-gate koşullu task'ta "lab metriği açık" tek başına müdahaleyi haklı çıkarmaz; metriğin **gerçek-cihaz-geçerli** olup olmadığı (lab artefaktı mı) önce ayrıştırılmalı. Bu durumda kök neden kanıtı (observed renderDelay birebir) iptali destekledi.
 
 ---
 

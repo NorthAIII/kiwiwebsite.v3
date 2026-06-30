@@ -142,7 +142,7 @@ TR `/` mobil diagnostic (Lighthouse 13.3.0, 4× CPU throttle, Moto-G sınıfı) 
 | 6.03 | TASK-6.03 | ✅ Tamamlandı | L2: WebGL init mobilde idle/post-load deferral (`LivingFlow.tsx`) — `requestIdleCallback`+2s-timeout (Safari: post-load fallback); masaüstü rAF korundu, build temiz, CLS=0 |
 | 6.04 | TASK-6.04 | ✅ Tamamlandı | Ara-ölç: L1+L2 → ölçülebilir Lantern delta YOK (mobil LCP 3615ms ≈ 3608ms taban); brief LCP lab'da açık; L3 yapılır, P2 tetiklendi (craft-gate) |
 | 6.05 | TASK-6.05 | ✅ Tamamlandı | L3: Fraunces SOFT/WONK axes budama (`layout.tsx`+`not-found.tsx`) — craft-nötr hijyen; build temiz, woff2 ~113KB↓ (336→222KB, ~%34), tipografi birebir |
-| 6.06 | TASK-6.06 | ⬜ Bekliyor | P2: Living Flow mobil degradasyon ayarı (DPR/particle/erken-static) — **tetiklendi** (lab'da CPU-bound WebGL tek kalan lever); craft-duyarlı → kullanıcı craft-onayı önerilir |
+| 6.06 | TASK-6.06 | ❌ İptal | P2: Living Flow mobil degradasyon ayarı — craft-gate'te **iptal** (kullanıcı kararı 2026-06-30). Mobil LCP açığı kanıtlı Lantern artefaktı (hero ~185ms render); imzaya simüle-sayı için dokunulmaz. Kod değişmedi. Gerekçe → DECISIONS 2026-06-30 |
 | 6.07 | TASK-6.07 | ⬜ Bekliyor | Faz sonu ölçüm + kanonik artefakt + DECISIONS + guardrail regresyon |
 
 **Durum simgeleri:** ⬜ Bekliyor | 🔄 Devam ediyor | ⏸️ Duraklatıldı | ✅ Tamamlandı | 🔴 Bloke | ❌ İptal
@@ -207,4 +207,4 @@ Mobil LCP 3.6s **Lantern-simüle**: throttle'sız gözlenen trace'te LCP element
 ---
 
 **Oluşturulma:** 2026-06-30
-**Son Güncelleme:** 2026-06-30 — run-task TASK-6.05 ✅ (L3): Fraunces `axes` `["opsz","SOFT","WONK"]` → `["opsz"]` iki dosyada birlikte (`layout.tsx`+`not-found.tsx`); SOFT/WONK hiçbir yerde `font-variation-settings` ile kullanılmıyordu (grep-doğrulandı, ölü eksen). Build temiz (37/37); woff2 toplamı **336.532 → 222.624 bytes (~113KB / ~%34 düşüş)** stash+rebuild ile ampirik teyit; tipografi birebir (kullanılmayan eksen → render değişmez), fontlar prerender'da yükleniyor. Craft-nötr hijyen + drift kapatma. Sıradaki: TASK-6.06 (P2, craft-gate — kullanıcı onayı önerilir).
+**Son Güncelleme:** 2026-06-30 — run-task TASK-6.06 ❌ İptal (craft-gate, kullanıcı kararı): P2 (Living Flow mobil degradasyon) koşulmadı; imza görseline dokunulmadı (kod değişmedi). Gerekçe: 6.04 kanıtladı ki mobil LCP açığı (~3.6s) **Lantern simülasyon artefaktı** (hero metni gözlemde ~185ms render; 3.6s = 4× CPU throttle altında WebGL main-thread simülasyonu) — imza craft'ı (üst eksen) bir simüle-sayı için riske atılmaz. Kalan açık dürüstçe belgeli (v0.1 deseni; gerçek doğrulama = gerçek-cihaz/Vercel field). Sıradaki: TASK-6.07 (faz sonu ölçüm + kanonik artefakt + DECISIONS + guardrail).

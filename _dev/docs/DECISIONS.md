@@ -9,6 +9,20 @@
 
 <!-- Her yeni karar aşağıdaki formatta en üste eklenir (en yeni en üstte) -->
 
+### 2026-06-30 — P2 (Living Flow mobil degradasyon) craft-gate'te iptal: imzaya simüle-sayı için dokunulmaz (Faz 6)
+
+**Bağlam:** run-task TASK-6.06 (Faz 6 son lever). 6.04 ara-ölçü L1+L2'nin lab'da ölçülebilir Lantern delta üretmediğini, brief LCP'nin lab'da açık (mobil ~3.6s) kaldığını gösterdi ve P2'yi (Living Flow mobil degradasyon: DPR cap / particle / erken-static) **craft-gate** ile tetikledi — "lab'da simüle-LCP'yi azaltabilecek tek kalan lever WebGL gerçek iş yükü, ama craft-duyarlı". Task ön-koşulu bulanıktı: literal okumada "lab açık → koş", ama 6.04 kök nedeni kanıtlı bir **Lantern simülasyon artefaktı** (LCP elementi = hero metni, throttle'sız gözlemde `elementRenderDelay` 173↔173ms birebir → hero zaten ~185ms'de render; 3.6s = 4× CPU throttle altında WebGL main-thread'in *simülasyonu*).
+
+**Seçenekler (kullanıcıya sunuldu, 2026-06-30):** (1) **İptal (❌)** — açık kanıtlı lab artefaktı, gerçek-cihazda sorun yok; imza görsele dokunma, gap'i dürüstçe kaydet (v0.1 deseni), 6.07'ye geç. (2) En hafif lever (mobil DPR cap 1.6→1.25) — görsel etki en düşük, lab yine kör kalabilir ama gerçek-cihaz WebGL yükü düşer. (3) Önce gerçek-cihaz/Vercel field ölçümü al, sonra karar.
+
+**Karar (kullanıcı onayı 2026-06-30):** Seçenek 1 — **İptal.** P2 koşulmadı; `FlowCanvas.tsx` / `LivingFlow.tsx` parametrelerine **dokunulmadı** (kod değişmedi).
+
+**Gerekçe:** Marka & Craft üst eksen (ILKELER §1). Müdahaleyi haklı çıkaracak metrik açığı **kanıtlı bir lab körlüğü** (Lantern observed trace'i throttle'sız alıp simüle ediyor; gerçek-cihazda LCP elementi ~185ms render) — gerçek-cihaz açığı değil. İmza Living Flow'u bir simüle-sayı için riske atmak craft tavanına (discuss guardrail: "yalnız craft korunarak, ölçülü, gözle") ve dürüst-kayıt ilkesine aykırı: hedef sessizce düşürülmez, craft sessizce feda edilmez, kalan açık açıkça belgelenir. L1+L2+L3 korunur (gerçek-cihaz-doğru + craft-koruyucu, regresyonsuz). **Durable ilke:** craft-gate koşullu task'ta tek başına "lab metriği açık" müdahaleyi haklı çıkarmaz — önce metriğin gerçek-cihaz-geçerli mi yoksa lab artefaktı mı olduğu ayrıştırılır. Brief perf bütçesinin temiz doğrulaması gerçek-cihaz / Vercel field gerektirir (metodolojik duvar, `phases/PHASE-6.md` + `docs/perf/README.md`).
+
+**İlgili Task/Faz:** run-task TASK-6.06 (Faz 6 / v0.2 mobil perf-LCP); kök neden → `phases/PHASE-6.md` "Ara-Ölç Sonucu ve L3/P2 Kararı (TASK-6.04)"; Lantern körlüğü → `_dev/memory/lighthouse-lantern-render-timing-korligi.md`.
+
+---
+
 ### 2026-06-30 — TR `/` mobil LCP kök nedeni CPU-bound WebGL main-thread; iki craft-koruyucu lever (Faz 6)
 
 **Bağlam:** research-phase 6. TR `/` mobil LCP 3.6s (brief <2.5s altı). Mevcut Lighthouse JSON artefaktları (`docs/perf/home-{mobile,desktop}-20260630.json`) diagnostic-okuma + kaynak analizi: mobil mainthread "Other" (WebGL init/shader compile) **3663ms** vs masaüstü 1202ms — tek fark 4× CPU throttle. FCP 1657ms ama LCP 3604ms (1.9s boşluk) → main-thread LCP penceresinde bloke. Ayrıca kodda keşif: `Hero.tsx:18` hero `<h1>`'i `gsap.set(opacity:0)` ile gizleyip reveal ediyor (Lighthouse reduced-motion set etmez → ölçümde çalışır) → `opacity:0` LCP adaylığını kırar. **LCP elementi (metin/canvas) henüz ampirik teyitli değil** — mevcut JSON'larda `largest-contentful-paint-element` denetimi yok.
