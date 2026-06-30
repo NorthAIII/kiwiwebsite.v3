@@ -6,7 +6,7 @@ const fraunces = Fraunces({
   subsets: ["latin"],
   variable: "--font-fraunces",
   display: "swap",
-  axes: ["opsz", "SOFT", "WONK"],
+  axes: ["opsz"],
 });
 
 const geist = Geist({

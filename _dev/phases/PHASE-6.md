@@ -141,7 +141,7 @@ TR `/` mobil diagnostic (Lighthouse 13.3.0, 4× CPU throttle, Moto-G sınıfı) 
 | 6.02 | TASK-6.02 | ✅ Tamamlandı | L1: Hero reveal opacity→transform-only (`Hero.tsx`) — `opacity:0` kaldırıldı, kayma imzası+timing korundu; hero LCP-uygun, build temiz, CLS=0 |
 | 6.03 | TASK-6.03 | ✅ Tamamlandı | L2: WebGL init mobilde idle/post-load deferral (`LivingFlow.tsx`) — `requestIdleCallback`+2s-timeout (Safari: post-load fallback); masaüstü rAF korundu, build temiz, CLS=0 |
 | 6.04 | TASK-6.04 | ✅ Tamamlandı | Ara-ölç: L1+L2 → ölçülebilir Lantern delta YOK (mobil LCP 3615ms ≈ 3608ms taban); brief LCP lab'da açık; L3 yapılır, P2 tetiklendi (craft-gate) |
-| 6.05 | TASK-6.05 | ⬜ Bekliyor | L3: Fraunces SOFT/WONK axes budama (`layout.tsx`+`not-found.tsx`) — craft-nötr hijyen; YAP (lab LCP'yi oynatmaz, network/woff2) |
+| 6.05 | TASK-6.05 | ✅ Tamamlandı | L3: Fraunces SOFT/WONK axes budama (`layout.tsx`+`not-found.tsx`) — craft-nötr hijyen; build temiz, woff2 ~113KB↓ (336→222KB, ~%34), tipografi birebir |
 | 6.06 | TASK-6.06 | ⬜ Bekliyor | P2: Living Flow mobil degradasyon ayarı (DPR/particle/erken-static) — **tetiklendi** (lab'da CPU-bound WebGL tek kalan lever); craft-duyarlı → kullanıcı craft-onayı önerilir |
 | 6.07 | TASK-6.07 | ⬜ Bekliyor | Faz sonu ölçüm + kanonik artefakt + DECISIONS + guardrail regresyon |
 
@@ -207,4 +207,4 @@ Mobil LCP 3.6s **Lantern-simüle**: throttle'sız gözlenen trace'te LCP element
 ---
 
 **Oluşturulma:** 2026-06-30
-**Son Güncelleme:** 2026-06-30 — run-task TASK-6.04 ✅ (ara-ölç/karar kapısı): L1+L2 sonrası TR `/` mobil median ölçülebilir Lantern delta üretmedi (LCP 3615ms ≈ 3608ms taban; perf 62=62; CLS≈0; masaüstü 100, guardrail ✓). Kök neden kanıtlı: mobil LCP 3.6s Lantern-simüle (observed elementRenderDelay 6.01=173.3ms / 6.04=172.9ms birebir; L1 opacity-gate observed darboğaz değil, L2 rIC throttle'sız trace'te anında ateşler → Lantern erken-bloke simüle eder). L1+L2 gerçek-cihaz-doğru, commit'li korunur; lab kazancı gösteremez. Brief LCP lab'da açık (CPU-bound WebGL). **Karar:** L3 (6.05) YAP (craft-nötr hijyen); P2 (6.06) tetiklendi (tek kalan lever) ama craft-duyarlı → kullanıcı craft-onayı önerilir; iptal değil. Metodolojik duvar dürüst kaydedildi (`docs/perf/README.md`). Sıradaki: TASK-6.05 (L3).
+**Son Güncelleme:** 2026-06-30 — run-task TASK-6.05 ✅ (L3): Fraunces `axes` `["opsz","SOFT","WONK"]` → `["opsz"]` iki dosyada birlikte (`layout.tsx`+`not-found.tsx`); SOFT/WONK hiçbir yerde `font-variation-settings` ile kullanılmıyordu (grep-doğrulandı, ölü eksen). Build temiz (37/37); woff2 toplamı **336.532 → 222.624 bytes (~113KB / ~%34 düşüş)** stash+rebuild ile ampirik teyit; tipografi birebir (kullanılmayan eksen → render değişmez), fontlar prerender'da yükleniyor. Craft-nötr hijyen + drift kapatma. Sıradaki: TASK-6.06 (P2, craft-gate — kullanıcı onayı önerilir).
