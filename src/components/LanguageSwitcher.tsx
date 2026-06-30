@@ -60,7 +60,7 @@ export default function LanguageSwitcher({
         onClick={() => setOpen((o) => !o)}
         aria-haspopup="listbox"
         aria-expanded={open}
-        aria-label="Language / Dil"
+        aria-label={`${LABELS[locale]} (${locale.toUpperCase()})`}
         className={`flex items-center gap-1.5 rounded-full px-1.5 py-1 transition-colors ${triggerColor}`}
       >
         {/* globe */}

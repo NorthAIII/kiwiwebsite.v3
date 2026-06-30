@@ -1,6 +1,6 @@
 # TASK-4.06: Dil-switcher `aria-label`'a locale kodu (label-content-name-mismatch — A11Y3)
 
-**Durum:** ⬜ Bekliyor
+**Durum:** ✅ Tamamlandı
 **Modül:** M3 (Etkileşim & UX Primitives) — F3.4 dil kontrolü (+M4 i18n)
 **Feature:** A11Y3 (dil-switcher aria-mismatch)
 **Faz:** Phase 4 (phases/PHASE-4.md)
@@ -37,14 +37,14 @@ Araştırma kararı **K4**. Sorun (`LanguageSwitcher.tsx:63`): `aria-label="Lang
 
 ## Alt Görevler
 
-- [ ] **1. `aria-label`'ı dinamik kur**
+- [x] **1. `aria-label`'ı dinamik kur**
   - `src/components/LanguageSwitcher.tsx:63` — `aria-label="Language / Dil"` → `aria-label={`${LABELS[locale]} (${locale.toUpperCase()})`}`
   - `LABELS` ve `locale` zaten scope'ta (`:8`, `:27`) — yeni import/anahtar yok
 
-- [ ] **2. Doğrula (build + axe + i18n + RTL)**
+- [x] **2. Doğrula (build + axe + i18n + RTL)**
   - `next build` temiz
   - axe ana sayfa (light + dark): `label-content-name-mismatch` **0 başarısız** (Nav + Footer 2 mount)
-  - 5 dilde aria-label anlamlı + locale kodu içeriyor (örn. AR "العربية (AR)") — gözle/MCP ile kontrol
+  - 5 dilde aria-label anlamlı + locale kodu içeriyor (örn. AR "العربية (AR)") — Playwright ile teyit
   - Yeni i18n anahtarı eklenmedi (mesaj dosyaları değişmedi)
 
 ---
@@ -73,29 +73,53 @@ src/components/
 
 ## Test Kriterleri
 
-- [ ] `next build` temiz geçer
-- [ ] axe ana sayfa (light + dark): `label-content-name-mismatch` **0 başarısız** (Nav + Footer mount)
-- [ ] aria-label 5 dilde anlamlı + görünür locale kodunu içeriyor (tr/en/ar/de/es)
-- [ ] Mesaj dosyaları (`messages/*.json`) **değişmedi** (yeni anahtar yok)
-- [ ] Dil menüsü açma/seçme/Escape davranışı bozulmadı
+- [x] `next build` temiz geçer
+- [x] axe ana sayfa (light + dark): `label-content-name-mismatch` **0 başarısız** (Nav + Footer mount)
+- [x] aria-label 5 dilde anlamlı + görünür locale kodunu içeriyor (tr/en/ar/de/es)
+- [x] Mesaj dosyaları (`messages/*.json`) **değişmedi** (yeni anahtar yok)
+- [x] Dil menüsü açma/seçme/Escape davranışı bozulmadı
 
 ---
 
 ## Tamamlanma Kriterleri
 
-- [ ] Tüm alt görevler tamamlandı
-- [ ] Tüm test kriterleri karşılandı
-- [ ] Git commit & push yapıldı
-- [ ] Bu doküman güncellendi (oturum kaydı)
-- [ ] DURUM.md güncellendi
+- [x] Tüm alt görevler tamamlandı
+- [x] Tüm test kriterleri karşılandı
+- [x] Git commit & push yapıldı
+- [x] Bu doküman güncellendi (oturum kaydı)
+- [x] DURUM.md güncellendi
 
 ---
 
 ## Oturum Kayıtları
 
-### Oturum — [TARİH]
+### Oturum — 2026-06-30
 
-**Durum:** [doldurulacak]
+**Durum:** ✅ Tamamlandı
+
+**Yapılanlar:**
+- `src/components/LanguageSwitcher.tsx:63` — hardcoded `aria-label="Language / Dil"` → `aria-label={`${LABELS[locale]} (${locale.toUpperCase()})`}`. Tek satır, tek dosya. `LABELS` (component-içi sabit, `:8-14`) + `locale` (`:27`) zaten scope'ta → yeni import/i18n anahtarı yok.
+- WCAG 2.5.3 Label in Name: görünür metin locale kodu (CSS-uppercase "TR"); yeni erişilebilir ad locale kodunu `(${locale.toUpperCase()})` ile garanti içeriyor.
+
+**Sorunlar:**
+- Doğrulama ortamı kurulumu: projede axe-core/playwright yoktu. Çözüm — axe-core 4.11.4 npx-cache'inden (`~/.npm/_npx/.../axe-core/axe.min.js`, lighthouse bundle'ı içinde) enjekte; Playwright 1.61.1 + Chromium 1228 (cache'te kurulu). İlk denemede pw modülü CommonJS default-export + browser revision 1229≠1228 uyuşmazlığı → 1.61.1 modülü + `executablePath` kurulu headless-shell-1228'e sabitlendi.
+- Smoke testte seçim sonrası URL `/en` göründü → `networkidle` soft-navigation'dan önce çözülmüş (test zamanlaması, kod değil). `waitForFunction(lang==='tr')` ile yeniden test → seçim doğru çalışıyor (EN→`/`, lang=tr, label "Türkçe (TR)").
+
+**Kararlar:**
+- Fix kod-only (component-içi sabit), i18n'leştirilmedi — research K4 kararı (parite yüzeyi açmamak). Yeni karar yok.
+- docs/DECISIONS.md'ye eklendi: Hayır (mevcut K4 kararının icrası).
+
+**Kalan İşler:** Yok.
+
+**Dosya Değişiklikleri:**
+- `src/components/LanguageSwitcher.tsx` → `:63` aria-label hardcoded string → dinamik `${LABELS[locale]} (${locale.toUpperCase()})`. Görünür DOM/CSS, `aria-haspopup`/`aria-expanded`, menü mantığı dokunulmadı.
+
+**Test Sonuçları:**
+- `next build` temiz (37 sayfa).
+- axe-core 4.11.4 (Playwright, fresh prod-serve :4173, PID 1705107 teyit; stray yok): `label-content-name-mismatch` — **light+dark × 5 dil = 0 ihlal**; her sayfada Nav+Footer 2 mount, ikisi de doğru label.
+- aria-label 5 dilde: "Türkçe (TR)" · "English (EN)" · "العربية (AR)" · "Deutsch (DE)" · "Español (ES)" — hepsi görünür locale kodunu içeriyor, anlamlı. AR `dir=rtl` doğru.
+- `messages/*.json` değişmedi (git status: yalnız `LanguageSwitcher.tsx`).
+- Menü davranışı: aç (`aria-expanded` false→true, listbox görünür, 5 seçenek), Escape kapatır (→false), seç (EN→Türkçe → `/`, lang=tr, label güncellenir). Bozulma yok.
 
 ---
 
