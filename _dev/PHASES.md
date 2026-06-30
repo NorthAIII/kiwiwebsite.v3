@@ -23,7 +23,7 @@ Faz numaraları **global, sürekli ve append-only**'dir — versiyon değişse b
 | 2 | v0.1 versiyon-sonu teknik borç kapatma | TD1 non-TR çeviri senkronu + TD2 ölü anahtar hijyeni + TD3 ana sayfa perf/Lighthouse doğrulama | ✅ |
 | 3 | v0.1 versiyon-sonu senaryo testi | v0.1 ana sayfa uçtan-uca doğrulama (S1–S8: giriş/yolculuk/mod/kontrol/taksonomi/5-dil/chatbot/adversarial); TR öncelik, otonom, keşfet+kaydet+triyaj | ✅ |
 | 4 | v0.2 erişilebilirlik (a11y 89→100) | a11y A11Y1 renk kontrastı (marka yeşili imza korunur, bağlam-özel) + A11Y2 hero `<dl>` markup + A11Y3 dil-switcher aria; ana sayfa-birincil, perf/CLS regresyonsuz | ✅ |
-| 5 | v0.2 test altyapısı (D1) | Kümülatif test harness (Vitest+RTL / Playwright+axe-core) + ilk GitHub Actions CI + tohum testler (i18n 5-dil parite + a11y regresyon `/` light+dark) | 🔄 |
+| 5 | v0.2 test altyapısı (D1) | Kümülatif test harness (Vitest+RTL / Playwright+axe-core) + ilk GitHub Actions CI + tohum testler (i18n 5-dil parite + a11y regresyon `/` light+dark) | ✅ |
 
 **Durum simgeleri:**
 - 🔄 **Devam ediyor** — discuss-phase başladı (aktif faz)
@@ -72,11 +72,12 @@ Faz numaraları **global, sürekli ve append-only**'dir — versiyon değişse b
 | Faz 2 ✅ (Teknik Borç) → senaryo testi | 2026-06-28 | TD1/TD2 tam; TD3 taban kaydedildi, bütçe açığı (a11y/mobil-perf) ertelendi (regresyon değil); Versiyon Sonu Durumu → senaryo_testi (discuss-phase 3 promosyonu yapar) |
 | Faz 3 ✅ (Senaryo Testi) → versiyon sonu | 2026-06-29 | S1–S8 + UAT 10/10; kapsam-içi bug yok, kaynak değişmedi; v0.1 versiyon-sonu fazları (1,2,3) tamam; Versiyon Sonu Durumu → prd_review_bekliyor; sıradaki = zorunlu prd-review |
 | Faz 4 ✅ (v0.2 a11y) → sonraki içerik fazı | 2026-06-30 | a11y 89→100 çift-tema (UAT 14/14, kalite 8 eksen); imza/perf/parite korundu; Versiyon Sonu Durumu içerik_fazları (değişmez); sıradaki = test altyapısı D1 (discuss-phase 5 promote eder) |
+| Faz 5 ✅ (v0.2 test altyapısı D1) → sonraki içerik fazı | 2026-06-30 | İlk test altyapısı (UAT 13/13, kalite 8 eksen ✅): 3 katman (Vitest node/jsdom + Playwright/axe) + ilk GitHub Actions CI + 2 tohum (i18n parite + a11y regresyon); src/+messages/ 0 değişiklik; Versiyon Sonu Durumu içerik_fazları (değişmez); sıradaki = mobil perf/LCP (discuss-phase 6 promote eder) |
 
 <!-- KURAL: Her geçiş için TEK satır + kısa not. Geçiş gerekçesi/detayı PHASE-N.md retrospektifindedir, burada tekrar edilmez. "Önceki:" prefix veya HTML comment ile detay yığma YASAK (CLAUDE.md → Doküman Disiplini). -->
 
 ---
 
-**Son Güncelleme:** 2026-06-30 — discuss-phase 5: Faz 5 (v0.2 test altyapısı D1) Faz Durumu tablosuna 🔄 eklendi; "Test altyapısı (D1)" Sıradaki Fazlar'dan mezun edildi. Kapsam: kümülatif harness (Vitest+RTL / Playwright+axe-core) + ilk GitHub Actions CI + tohum (i18n parite + a11y regresyon). Sıradaki: research-phase 5.
+**Son Güncelleme:** 2026-06-30 — review-phase 5: Faz 5 (v0.2 test altyapısı D1) ✅ tamamlandı (UAT 13/13, 8 kalite ekseni, geçiş notu eklendi). Versiyon Sonu Durumu içerik_fazları (değişmez); sıradaki içerik fazı = mobil perf/LCP (Sıradaki Fazlar'da numarasız; discuss-phase 6 promote eder).
 
 <!-- KURAL: Bu satır her güncellemede ÜZERİNE YAZILIR. "Önceki:" prefix ile kümülatif yığma YASAK (CLAUDE.md → Doküman Disiplini). -->

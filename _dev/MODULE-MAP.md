@@ -129,11 +129,11 @@ M6 (SEO/Deploy) ─────────────────────>
 | A11Y2: Hero `<dl>`/`dlitem` geçersiz markup düzeltme | M2 | v0.2 | 4 | ✅ |
 | A11Y3: Dil-switcher aria-mismatch (label-content-name) düzeltme | M3 (+M4) | v0.2 | 4 | ✅ |
 | **— v0.2 teknik temel iş birimleri (Faz 5 — test altyapısı D1, kümülatif harness + tohum) —** | | | | |
-| D1.1: Test harness kurulumu (Vitest+RTL+jest-dom / @playwright/test / @axe-core/playwright + config) | M6 (infra, çapraz) | v0.2 | 5 | 🔄 |
-| D1.2: i18n 5-dil parite tohum testi (Vitest — eksik anahtar = fail) | M4 | v0.2 | 5 | 🔄 |
-| D1.3: a11y regresyon tohum testi (Playwright+axe, `/` light+dark 0 ihlal) | M1–M3 (a11y) | v0.2 | 5 | 🔄 |
-| D1.4: CI iskeleti (ilk GitHub Actions: build + Vitest job + Playwright/a11y ayrı job) | M6 | v0.2 | 5 | 🔄 |
-| D1.5: Kümülatif test convention notu (test yeri/koşma + "her feature kendi testini ekler") | M6 / docs | v0.2 | 5 | 🔄 |
+| D1.1: Test harness kurulumu (Vitest+RTL+jest-dom / @playwright/test / @axe-core/playwright + config) | M6 (infra, çapraz) | v0.2 | 5 | ✅ |
+| D1.2: i18n 5-dil parite tohum testi (Vitest — eksik anahtar = fail) | M4 | v0.2 | 5 | ✅ |
+| D1.3: a11y regresyon tohum testi (Playwright+axe, `/` light+dark 0 ihlal) | M1–M3 (a11y) | v0.2 | 5 | ✅ |
+| D1.4: CI iskeleti (ilk GitHub Actions: build + Vitest job + Playwright/a11y ayrı job) | M6 | v0.2 | 5 | ✅ |
+| D1.5: Kümülatif test convention notu (test yeri/koşma + "her feature kendi testini ekler") | M6 / docs | v0.2 | 5 | ✅ |
 
 **Durum simgeleri:**
 - ⬜ **Bekliyor** — Fazı henüz başlamadı
@@ -147,4 +147,4 @@ M6 (SEO/Deploy) ─────────────────────>
 
 ---
 
-**Son Güncelleme:** 2026-06-30 — discuss-phase 5: v0.2 teknik temel iş birimleri (D1.1–D1.5: test harness + i18n parite tohum + a11y regresyon tohum + ilk GitHub Actions CI + convention notu) Faz 5'e 🔄 atandı (kümülatif test altyapısı). Faz 4 a11y iş birimleri ✅ korundu.
+**Son Güncelleme:** 2026-06-30 — review-phase 5: v0.2 teknik temel iş birimleri D1.1–D1.5 (test harness + i18n parite tohum + a11y regresyon tohum + ilk GitHub Actions CI + convention notu) Durum ✅ (Faz 5 tamamlandı, UAT 13/13, src/+messages/ 0 değişiklik). Faz 4 a11y iş birimleri ✅ korundu.

@@ -1,6 +1,6 @@
 # Phase 5: Test Altyapısı (D1)
 
-**Durum:** 🔄 Devam ediyor
+**Durum:** ✅ Tamamlandı
 
 <!-- Bu doküman faza girince (discuss-phase) oluşur; durum 🔄 ile başlar. Henüz girilmemiş fazların dokümanı/numarası olmaz — PHASES.md → Sıradaki Fazlar'da numarasız konu olarak durur. -->
 <!-- KURAL: Bu doküman tek-okunabilir kalmalı (CLAUDE.md → Boyut ve Bölünme). Bir bölüm büyüyüp kırmızı çizgiye (~20k token) yaklaşırsa faz HÂLÂ AKTİFKEN `PHASE-N-<slug>.md`'ye bölünür — parent'ta self-yeten özet + pointer kalır, içerik taşınıp silinir, parent o fazın mini-index'i olur. Tamamlandıktan (✅) sonra bölme yasaktır; verify-phase ve review-phase fazı dondurmadan önce boyutu kontrol eder. -->
@@ -172,43 +172,61 @@ Hepsi **yeni devDependency** (hiçbiri kurulu değil); gerçek `npm install` **i
 
 ## Retrospektif
 
-> Bu bölüm `/devflow:review-phase 5` oturumunda doldurulur.
+> Bu bölüm `/devflow:review-phase 5` oturumunda dolduruldu (2026-06-30).
 
 ### Ne İyi Gitti?
-- [Tekrarlanması gereken pratikler]
+- **"Kur + kanıtla" çerçevesi her katmanda uçtan-uca fail-on-regression ile kanıtlandı.** Üç runner da yeşil sayılmadan önce kırmızı gösterdi: 5.01 i18n (`de.json/meta.title` sil → kırmızı), 5.03 a11y (light `--color-ink` soluk → light `color-contrast` kırmızı, **dark yeşil kaldı** → tema ayrımı da kanıtlandı), 5.02 jsdom (setup hatasında suite düştü → düzelince geçti). Yeşil = gerçek güvence, vacuous-pass değil. Milestone'un "her katman kanıtlanır" çerçevesi (Faz 2/3/4 dersi) tuttu.
+- **Önceki faz dersi ("araç davranışını planlamadan önce ampirik yokla") bu sefer plan aşamasında uygulandı.** Faz 4'te iki araç-davranışı varsayımı (DEV-1 dark render, aria-hidden≠contrast) ancak icrada düzeltilmişti. Faz 5'in en kritik riski (Lighthouse-altküme ≠ ham axe full-ruleset + sürüm drift) research'te öngörüldü, `withTags(['wcag2a/2aa/21a/21aa'])` kararıyla önlendi ve 5.03'te ampirik 0-ihlal baseline ile teyit edildi → plan **ilk seferde doğruydu**, mid-faz revizyon gerekmedi.
+- **Seed dar ve kümülatif felsefeyle hizalı tutuldu.** 3 kanıtlı katman 1:1 tohumla kapatıldı (Vitest-node·jsdom·Playwright/axe), mevcut bileşenlerin geniş test kapsamına girilmedi; kapsam şişmedi ("az context = yüksek kalite").
+- **Otonom doğrulama disiplini node/gh'siz ortamda işledi.** Ortamda runner yokken (taze devcontainer) UAT üç bağımsız kanıt kaynağıyla yapıldı: CI run (public Actions REST API ile job-seviyesi `conclusion=success`), statik çapraz-kontrol, task-kayıtlı ampirik fail-on-regression. "yml doğru görünüyor" yerine gerçek yeşil run gözlendi (MEMORY süreç disiplini).
+- **Yapısal sıfır-regresyon yüzeyi.** Faz yalnız devDeps + config + CI + `tests/` + `.gitignore`'a dokundu; `src/` ve `messages/` **hiç değişmedi** (`git diff e7265e5^..HEAD` ile doğrulandı) → runtime/build/perf/a11y/i18n korunan tabanı yapısal olarak korundu.
 
 ### Ne Kötü Gitti?
-- [Sorunlar ve darboğazlar]
+- **node/npm/gh yokluğu (taze cloud devcontainer) yerel hızlı-geri-bildirim döngüsünü ortadan kaldırdı.** Runner'lar yerelde koşulamadı; her doğrulama push→CI turuna bağlandı (yavaş döngü). Bloke etmedi (CI + statik + task-kayıt yeterli oldu) ama "kaydet→koş→gör" anlık döngüsü bu ortamda yoktu. Not zaten MEMORY'de kayıtlı (Ortam & Araç Notları).
+- **jest-dom Vitest entegrasyonu ilk denemede kök import ile kırıldı** (`expect is not defined`) → `@testing-library/jest-dom/vitest` subpath gerekti (5.02). Küçük, icrada çözüldü (Task-Spesifik Teknik Öğrenimler'e taşındı).
+- **İki moderate npm audit uyarısı bırakıldı** (vite→transitive postcss, yalnız dev-tooling zinciri — production runtime'a gitmez). `--force` breaking + task kapsamı dışı olduğu için bilinçle dokunulmadı; açık kalem olarak kayıtta (5.01).
 
 ### Sonraki Faz İçin Öneriler
-- [Alınan dersler, tavsiyeler]
+- **Sıradaki faz = mobil perf / LCP (v0.2).** Perf ölçümünde DEV-6 dersi şart: TR `/` için `NEXT_LOCALE=tr` cookie (yoksa `/en` ölçülür), regresyon karşılaştırmasında hep **aynı locale** (memory + perf/README'de kayıtlı). Perf fazı bu fazın a11y harness'inden doğrudan yararlanır: perf fix'lerinin a11y regresyonu yapmadığını CI artık otomatik yakalar.
+- **Kümülatif harness'i kullan — alt-sayfa a11y borcu hâlâ sahipli.** `text-pulse` ink-panel dark-inversion süpürmesi + alt-sayfa derin a11y (Faz 4 devri) için harness artık hazır; dokunulan her component'in a11y yüzeyi varsa tohum genişletmeyi değerlendir (kümülatif ilke).
+- **node/npm'siz ortam tekrar olursa doğrulama CI-merkezli planlanmalı** (yerel koşu varsayma) — ya da ortam node ile hazırlanmalı. Otonom UAT modu bunu zaten kapsıyor; sürtünme yalnız döngü hızında.
+
+### Task-Spesifik Teknik Öğrenimler
+<!-- Bu fazdaki task'larda öğrenilen ama proje genelinde geçerli olmayan teknik nüanslar (araç davranışı, framework bug'ı, vb.). MEMORY.md'nin değil, faz retrosunun evidir. -->
+- **jest-dom + Vitest = `@testing-library/jest-dom/vitest` subpath şart.** Kök `@testing-library/jest-dom` importu Jest-tarzı **global `expect`** bekler ve Vitest'te (`globals:false`) "expect is not defined" verir; resmi entegrasyon `/vitest` subpath'idir (Vitest'in `expect`'ini doğrudan extend eder) (5.02).
+- **`@vitejs/plugin-react@6` (peer `vite ^8`) ile Vitest 4 zincirinde çakışmadı** — ikisi de `vite@8.1.1`'e dedupe oldu; research'in install-anı peer-uyumu doğrulaması yeşil (5.02).
+- **`@/` path alias Vitest'te otomatik resolve edilmez** (Next/tsconfig dışı runner) → `tests/`'ten src'ye relative import gerekli; ileride RTL/component katmanı `@/` kullanırsa `vite-tsconfig-paths` veya `resolve.alias` gerekir (5.01).
+- **Playwright `webServer` + `reuseExistingServer: !CI`** → CI'da a11y job prod build'i (`next build && next start`) kendi koşar; ayrı `next build` adımı gereksiz (çift-build'den kaçınıldı) (5.03/5.04).
+- **`withTags(['wcag2a/2aa/21a/21aa'])` Lighthouse-altküme vs ham axe full-ruleset farkını nötralize etti** — `/` light+dark ampirik 0 ihlal; ham full-ruleset olsaydı region/landmark/heading-order best-practice uyarıları regresyon olmadan kırmızı verebilirdi (5.03).
 
 ---
 
 ## Kalite Kontrol Sonuçları
 
-> Bu bölüm `/devflow:review-phase 5` oturumunda doldurulur.
+> QUALITY.md eksenleri sistematik kontrol edildi. Faz yüzeyi **çapraz-kesen teknik temel**: yalnız devDeps + config + CI + `tests/` + `.gitignore` (+2873/−563, çoğu `package-lock.json`); `src/` ve `messages/` **0 değişiklik**. Bu yüzden çoğu ürün-yüzeyi ekseni yapısal olarak N/A (regresyon yüzeyi yok); fazın çekirdek ekseni **Test Kapsamı**.
 
 | Eksen | Durum | Not |
 |-------|-------|-----|
-| Marka & Craft (imza) | ✅ / ⚠️ / ❌ | ... |
-| Erişilebilirlik | ✅ / ⚠️ / ❌ | ... |
-| Güvenlik | ✅ / ⚠️ / ❌ | ... |
-| Bakım Maliyeti | ✅ / ⚠️ / ❌ | ... |
-| Performans | ✅ / ⚠️ / ❌ | ... |
-| Hata Yönetimi | ✅ / ⚠️ / ❌ | ... |
-| Test Kapsamı | ✅ / ⚠️ / ❌ | ... |
-| Yerelleştirme & RTL | ✅ / ⚠️ / ❌ | ... |
+| Marka & Craft (imza) | ✅ N/A | `src/` dokunulmadı → görsel/motion yüzeyi değişmedi; imza (Living Flow, tipografi, marka yeşili) yapısal olarak korundu. Faz altyapı; craft regresyon yüzeyi yok. |
+| Erişilebilirlik | ✅ | Faz **yeni** a11y yüzeyi getirmedi ama Faz 4'ün a11y=100 çift-tema kazanımını **otomatik regresyona bağladı** (5.03 tohum: `/` light+dark WCAG-AA 0 ihlal, fail-on-regression kanıtlı). Kazanım artık her push/PR'da korunuyor. |
+| Güvenlik | ✅ | `/security-review` HIGH/MEDIUM yok. CI least-privilege `permissions: contents:read`, secret CI'a eklenmedi, **deploy yok** (Vercel hâlâ yalnız `main`); `concurrency` cancel; `/api/chat` dokunulmadı. Test config eval/deserialization içermez. |
+| Bakım Maliyeti | ✅ | Config'ler minimal/tek-sorumluluk (vitest node+jsdom ayrımı pragma ile, playwright chromium-only); caret sürüm konvansiyonu korundu; CI çift-build bilinçle basit/robust (`.next` artifact paylaşımı ileri optimizasyon olarak ertelendi); convention notu (TESTING.md) sürdürülebilirliği yazılı kıldı. |
+| Performans | ✅ N/A | `src/`/build çıktısı değişmedi → korunan taban (ILKELER §2) yapısal regresyonsuz. CI'da iki job da `next build` koşar (bilinçli maliyet, ilk CI basitliği); runtime perf etkisi yok. |
+| Hata Yönetimi | ✅ N/A | Degradasyon yolları (Living Flow fallback, chatbot offline) dokunulmadı. CI'da `ANTHROPIC_API_KEY` yok → chatbot offline fallback'e düşer ama `/` build + a11y scan etkilenmez (5.03 Dikkat #8, ampirik teyitli). Yeni hata yolu açılmadı. |
+| Test Kapsamı | ✅ | **Fazın çekirdek ekseni — aspirasyonel → gerçek.** QUALITY §8'in "altyapı henüz yok" durumu kapandı: 3 kanıtlı katman (Vitest node/jsdom + Playwright/axe) + ilk GitHub Actions CI + 2 tohum (i18n parite + a11y regresyon) + kümülatif convention notu. Her katman fail-on-regression ile uçtan-uca kanıtlandı. (QUALITY §8 bu review'da bayatlamadan güncellendi.) |
+| Yerelleştirme & RTL | ✅ | `messages/` 0 değişiklik → parite korundu (5×183 anahtar). Üstelik i18n parite tohumu artık eksik/fazla anahtarı **otomatik** yakalar (TR-tek-kaynak + stale-çeviri stratejisiyle uyumlu: değer değil anahtar karşılaştırır). RTL yüzeyine dokunulmadı. |
+
+**Kullanıcı yolculuğu & boşluk:** Faz son-kullanıcıya **görünmez** (altyapı) — site deneyimi değişmez, akışta kopukluk yok. "Geliştirici yolculuğu" iyileşti: yeni test eklemek artık yazılı convention'a (TESTING.md) dayanıyor → sahipsiz alan (harness var ama kimse kullanmaz) kapatıldı. **Bilinen, sahipli boşluk:** alt-sayfa derin a11y + `text-pulse` ink-panel dark-inversion süpürmesi (Faz 4 devri) — harness artık hazır, sonraki a11y/alt-sayfa fazına yönlendirildi. Orphan değil: Kapsam Dışı + retro "Sonraki Faz Önerileri"nde kayıtlı.
 
 ---
 
 ## Sonuç
 
-- **Tamamlanma Tarihi:** [Tarih]
-- **Toplam Task:** [Sayı]
-- **Notlar:** [Önemli kararlar, sonraki faza aktarılanlar]
+- **Tamamlanma Tarihi:** 2026-06-30
+- **Toplam Task:** 5 (5.01-5.05, hepsi ✅; UAT 13/13; düzeltme task'ı yok)
+- **Notlar:** Projenin **ilk test altyapısı** (D1) kuruldu: 3 kanıtlı katman (Vitest node/jsdom + Playwright/axe) + ilk GitHub Actions CI (fast + a11y job) + 2 tohum (i18n 5-dil parite + a11y regresyon `/` light+dark) + kümülatif test convention notu. ILKELER "test atlanmaz, üstüne koyarak büyür" ilkesi somutlaştı; "test = build + UAT" geçici konvansiyonu kapatan harness geldi. 8 kalite ekseni ✅ (5'i N/A — faz altyapı, `src/`/`messages/` 0 değişiklik = yapısal regresyon yüzeyi yok). Önceki faz 3 önerisi de uygulandı (araç davranışını ampirik yokla → kritik risk research'te önlendi; alt-sayfa a11y sahipli borç korundu; a11y kazanımı otomatik regresyona bağlandı). **Sonraki faza aktarılan (sahipli):** alt-sayfa derin a11y + `text-pulse` süpürmesi (harness genişletilebilir); node'suz ortamda CI-merkezli doğrulama. Versiyon Sonu Durumu = `içerik_fazları` → sıradaki içerik fazı: mobil perf / LCP.
 
 ---
 
 **Oluşturulma:** 2026-06-30
-**Son Güncelleme:** 2026-06-30 — run-task 5.05 ✅: `docs/TESTING.md` test convention notu yazıldı (komutlar + test yerleri + 3 katman [Vitest node/jsdom + Playwright/axe] + a11y ölçüm disiplini özet/pointer + "yeni test nasıl eklenir" kümülatif beklenti + CI); INDEX Bilgi Havuzu'na işlendi. Komut/yol↔artefakt birebir statik doğrulandı (ortamda node yok → yerel koşu yok; runner yeşilliği TASK-5.04 CI run `28470864743`'te kanıtlı, bu task yalnız doküman). **Faz icrası tamam (5/5)** — 5.01–5.05 hepsi ✅; sıradaki adım verify-phase 5 (UAT). İcra nüansları faz boyunca (retro adayları): taze devcontainer'da `gh`/`node`/`python` yokluğu (CI gözlemi public REST API+curl ile, yerel test koşusu yok); WCAG-`withTags` Lighthouse-altküme vs ham axe farkını nötralize etti. CI yalnız doğrular, deploy etmez.
+**Son Güncelleme:** 2026-06-30 — review-phase 5 ✅: retrospektif + 8 kalite ekseni faz dokümanına yazıldı (Erişilebilirlik/Güvenlik/Bakım/Test Kapsamı ✅; Marka/Performans/Hata Yönetimi N/A — faz altyapı, `src/`+`messages/` 0 değişiklik). Milestone 6/6; UAT 13/13; düzeltme task'ı yok. Faz ✅ tamamlandı; sıradaki = discuss-phase 6 (mobil perf / LCP). Önceki faz 3 önerisi uygulandı (araç ampirik yoklama / alt-sayfa a11y borcu / a11y otomatik regresyon). doc-scan: ~8.5k token (tek-okuma rahat, bölme gerekmedi). QUALITY §8 bayatlaması güncellendi (altyapı artık var).

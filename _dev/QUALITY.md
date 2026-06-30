@@ -66,12 +66,14 @@ Aşağıdaki eksenler bu proje (çok dilli, immersive tanıtım sitesi) için iz
 
 **Kontrol sorusu:** "Kötü niyetli bir kullanıcı `/api/chat`'i nasıl istismar edebilir?"
 
-### 8. Test Kapsamı (aspirasyonel — altyapı henüz yok)
+### 8. Test Kapsamı (kümülatif — altyapı Faz 5'te kuruldu)
 
-- Kritik davranışlar (i18n fallback, redirect'ler, fallback yolları) doğrulanabilir mi?
+- Yeni/değişen davranış kendi testini ekledi mi? (Kümülatif ilke: her feature kendi güvencesini getirir — ILKELER "test atlanmaz, üstüne koyarak büyür".)
+- Doğru katman seçildi mi? **Vitest node** (saf mantık / i18n parite) · **Vitest jsdom** (component render) · **Playwright/axe** (gerçek tarayıcı a11y/E2E). (Detay: `docs/TESTING.md`.)
+- a11y testinde ölçüm disiplini korundu mu (light+dark · `NEXT_LOCALE=tr` cookie · `reducedMotion`+scroll · WCAG `withTags`)?
 - Test yazmak zor mu? (Zorsa kod çok bağımlı.)
 
-**Kontrol sorusu:** "Bir değişiklikten sonra bir şeyin bozulup bozulmadığını nasıl bilirim?" (Not: test altyapısı kurulumu bir teknik faz adayı.)
+**Kontrol sorusu:** "Bir değişiklikten sonra bir şeyin bozulup bozulmadığını CI otomatik yakalar mı?" (Altyapı: 3 katman + GitHub Actions CI, Faz 5 / D1. Komutlar/konvansiyon → `docs/TESTING.md`. Mevcut tohumlar: i18n 5-dil parite + `/` a11y regresyon; kapsam kümülatif büyür.)
 
 ---
 
@@ -103,4 +105,4 @@ Faz review'ı tamamlandığında, kalite kontrol sonuçları ilgili faz doküman
 
 ---
 
-**Son Güncelleme:** 2026-06-28 — kickoff-verify: öncelik sıralaması referansı güncellendi (ILKELER "En Yüksek Öncelikli Eksenler" artık dolu — "henüz konuşulmadı" notu kaldırıldı).
+**Son Güncelleme:** 2026-06-30 — review-phase 5: §8 Test Kapsamı "aspirasyonel — altyapı yok" → "kümülatif — Faz 5'te kuruldu" güncellendi (3 katman + CI; kontrol sorusu CI-otomatik yakalama; konvansiyon → `docs/TESTING.md`).

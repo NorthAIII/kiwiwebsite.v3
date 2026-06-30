@@ -1,6 +1,6 @@
 # DURUM — Proje Dashboard
 
-**Son Güncelleme:** 2026-06-30 — verify-phase 5 ✅: UAT 13/13 geçti (otonom mod — node yok, CI + statik + task-kayıtlı kanıt). Otomatik kontroller: CI HEAD run `28471662528` iki job + her adım yeşil; `/security-review` HIGH/MEDIUM bulgu yok. Fail-on-regression task-kayıtlı (5.01 i18n + 5.03 a11y). Düzeltme task'ı yok → **Adım=review** (sıradaki: `/devflow:review-phase 5`).
+**Son Güncelleme:** 2026-06-30 — review-phase 5 ✅: Faz 5 (test altyapısı D1) tamamlandı — retrospektif + 8 kalite ekseni PHASE-5'e yazıldı (Erişilebilirlik/Güvenlik/Bakım/Test Kapsamı ✅; Marka/Perf/Hata Yönetimi N/A — altyapı, src/+messages/ 0 değişiklik). Milestone 6/6, UAT 13/13, düzeltme yok. QUALITY §8 güncellendi. Versiyon Sonu Durumu içerik_fazları (değişmez) → sıradaki içerik fazı = mobil perf/LCP (`/devflow:discuss-phase 6`).
 
 <!-- KURAL: Bu satır her oturum sonunda ÜZERİNE YAZILIR — tek satır, tek cümle. "Önceki:" / "Eski:" prefix ile kümülatif yığma YASAK; HTML comment'e sarma da yasak (CLAUDE.md → Doküman Disiplini). Tarih + kısa özet yeterli; detay için git log + ilgili PHASE/TASK dokümanları. -->
 
@@ -8,10 +8,10 @@
 
 ## Aktif Faz
 
-**Faz:** 5 — Test altyapısı (D1). 🔄 **UAT geçti, review bekliyor** — 5.01 ✅ + 5.02 ✅ + 5.03 ✅ + 5.04 ✅ + 5.05 ✅ (5/5); discuss ✅ + research ✅ + plan ✅ + verify-plan ✅ + **verify (UAT 13/13) ✅**. Faz 4 (v0.2 a11y 89→100) ✅.
-**Adım:** review → `/devflow:review-phase 5` (yeni oturum): faz review + retrospektif + kalite kontrol.
-**İlerleme:** Seed = 3 kanıtlı katman (Vitest-node i18n parite · Vitest-jsdom smoke · Playwright/axe a11y); ilk GitHub Actions CI (fast + a11y) iki job yeşil; `docs/TESTING.md` convention notu. **UAT 13/13 ✅** (otonom: CI run `28471662528` iki job+her adım yeşil + statik çapraz-kontrol + fail-on-regression task-kayıtlı 5.01/5.03); `/security-review` HIGH/MEDIUM yok; düzeltme task'ı doğmadı. **Devralınan borç:** alt-sayfa derin a11y + `text-pulse` ink-panel süpürmesi (harness sonra genişletir).
-**Son Faz Dokümanı:** `phases/PHASE-5.md` (🔄 UAT 13/13 ✅, review bekliyor)
+**Faz:** 6 — Mobil perf / LCP (v0.2, geçici ad — discuss-phase 6 numara/kapsamı damgalar). Faz 5 (test altyapısı D1) ✅ tamamlandı; Faz 4 (v0.2 a11y 89→100) ✅.
+**Adım:** discuss → `/devflow:discuss-phase 6` (yeni oturum): sonraki içerik fazının (mobil perf/LCP) kapsam tartışması.
+**İlerleme:** Faz 5 kapandı: ilk test altyapısı (3 kanıtlı katman: Vitest node/jsdom + Playwright/axe) + ilk GitHub Actions CI (fast + a11y) + 2 tohum (i18n parite + a11y regresyon) + `docs/TESTING.md`. UAT 13/13, 8 kalite ekseni ✅, src/+messages/ 0 değişiklik. Sıradaki faz **henüz planlanmadı** (discuss-phase açacak). **Devralınan sahipli borç:** alt-sayfa derin a11y + `text-pulse` ink-panel süpürmesi (harness artık hazır, sonraki a11y/alt-sayfa fazı genişletir). Perf fazı için: TR `/` `NEXT_LOCALE=tr` cookie şart (DEV-6 dersi).
+**Son Faz Dokümanı:** `phases/PHASE-5.md` (✅ tamamlandı — retrospektif + kalite kontrol yazıldı)
 
 ---
 
@@ -28,23 +28,19 @@
 
 ## Aktif Task
 
-**Task:** Yok — Faz 5 tüm task'lar ✅ (5/5) ve UAT 13/13 ✅. Düzeltme task'ı doğmadı.
-**Durum:** Faz 5 (test altyapısı D1) 🔄 — UAT geçti, review bekliyor. Sıradaki adım faz döngüsünde `/devflow:review-phase 5`.
-**İlerleme:** UAT tamam (13/13). `/devflow:review-phase 5` ile faz review + retrospektif + kalite kontrolünü çalıştır (yeni oturum).
+**Task:** Yok — Faz 5 ✅ tamamlandı (review dahil). Faz 6 (mobil perf/LCP) henüz planlanmadı; task'lar discuss→plan akışında oluşacak.
+**Durum:** Faz döngüsü `discuss` adımında. Sıradaki: `/devflow:discuss-phase 6` (mobil perf/LCP kapsam tartışması, yeni oturum).
+**İlerleme:** Faz 5 review tamam. Yeni faz task'ı yok — kapsam tartışmasıyla başlanır.
 
 ---
 
 ## Task Durumu (Aktif Faz)
 
-> Faz 5 (test altyapısı D1) 🔄 — icra tamam: 5.01 ✅ + 5.02 ✅ + 5.03 ✅ + 5.04 ✅ + 5.05 ✅ (5/5). discuss ✅ + research ✅ + plan ✅ + verify-plan ✅ + verify (UAT 13/13) ✅. Review bekliyor. Faz 4 (v0.2 a11y) ✅; 8 task'ı (4.01-4.08) `tasks/archive/`'da, detay `phases/PHASE-4.md`.
+> Faz 6 (mobil perf/LCP) henüz **planlanmadı** — discuss/research/plan akışı task üretecek. Faz 5 (test altyapısı D1) ✅ tamamlandı; 5 task'ı (5.01-5.05) `tasks/archive/`'da, detay `phases/PHASE-5.md`. Faz 4 (v0.2 a11y) ✅; 8 task'ı (4.01-4.08) `tasks/archive/`'da, detay `phases/PHASE-4.md`.
 
 | # | Task | Durum | Açıklama |
 |---|------|-------|----------|
-| 5.01 | TASK-5.01 | ✅ Tamamlandı | Vitest kurulumu (node) + i18n 5-dil parite tohum |
-| 5.02 | TASK-5.02 | ✅ Tamamlandı | Vitest jsdom katmanı + component smoke tohum |
-| 5.03 | TASK-5.03 | ✅ Tamamlandı | Playwright + axe + a11y regresyon (`/` light+dark) |
-| 5.04 | TASK-5.04 | ✅ Tamamlandı | CI iskeleti — ilk GitHub Actions (fast + a11y job) |
-| 5.05 | TASK-5.05 | ✅ Tamamlandı | Kümülatif test convention notu (docs/TESTING.md) |
+| — | (henüz yok) | — | Faz 6 discuss-phase'de planlanacak |
 
 ---
 
@@ -52,15 +48,7 @@
 
 > **KURAL:** Sadece son 2 task özeti tutulur, daha eskileri **gerçekten silinir** (HTML comment'e sarma, "Önceki:" prefix, üstü çizili etiket yasak — detay için git log + arşivlenmiş task dokümanı). Her özet kısa formatlı: paragraf yasak, **bullet zorunlu**, "Özet" alanı max 3 bullet.
 
-**TASK-5.05 — Kümülatif test convention notu (docs/TESTING.md)** ✅ (2026-06-30)
-- `_dev/docs/TESTING.md` (YENİ): komutlar (`npm run test` / `test:watch` / `test:e2e`) + test yerleri/config'ler + 3 katman (Vitest node/jsdom + Playwright/axe) ve ne için + a11y ölçüm disiplini (5 madde, **özet+pointer**, kopyalanmadı) + "yeni test nasıl eklenir" (katman seçimi/suffix/kümülatif beklenti) + CI. Kısa, tek-okunabilir. INDEX Bilgi Havuzu'na işlendi.
-- Kanıt: statik çapraz-kontrol — belgelenen komut/yolların hepsi gerçek artefaktlarla birebir eşleşir (package.json 11-13 · tests/ · config'ler · ci.yml). Komut yeşilliği zaten TASK-5.04 CI (run `28470864743`) ile kanıtlı; bu task yalnız doküman, runner değişmedi.
-- Not: ortamda node/npm yok (taze devcontainer) → yerel koşu yapılmadı, gerek de yoktu (CI yeşil). QUALITY §8 bayatlaması review-phase'e bırakıldı.
-
-**TASK-5.04 — CI iskeleti: ilk GitHub Actions (fast + a11y job)** ✅ (2026-06-30)
-- `.github/workflows/ci.yml` (YENİ, projenin ilk CI'ı): `on: push[**] + pull_request`, `concurrency` cancel-in-progress, `permissions: contents:read`. **fast** = checkout→setup-node(24,npm cache)→`npm ci`→`build`→`test`; **a11y** = +`actions/cache` (ms-playwright, lockfile-hash key)→`playwright install --with-deps chromium`→`test:e2e` (webServer kendi build koşar, ayrı build yok).
-- Kanıt: revize branch push → run `28470864743` → iki job da **ilk denemede yeşil** (fast ~47s · a11y ~82s, paralel). `gh` ortamda yok → public Actions REST API+curl ile job-seviyesi `conclusion=success` ampirik gözlendi.
-- Not: CI yalnız doğrular, deploy etmez (Vercel hâlâ yalnız `main`); `ANTHROPIC_API_KEY` CI'da yok → chatbot offline ama `/` build+a11y etkilenmez.
+> Yeni faza (6) geçildi — Faz 5 task özetleri sıfırlandı (detay: `phases/PHASE-5.md` + `tasks/archive/TASK-5.0*.md`). İlk Faz 6 task'ı tamamlanınca buraya özet eklenir.
 
 <!-- KURAL: Sadece son 2 task özeti tutulur, daha eskileri silinir (gerçek silme — HTML comment yasak). -->
 <!-- KURAL: Sadece aktif fazın task'leri gösterilir. Geçmiş fazların bilgileri phases/ klasöründedir. -->
@@ -74,12 +62,12 @@
 
 ## Hızlı Erişim
 
-**Aktif Task:** Yok — Faz 5 tüm task'lar ✅ (5/5) + UAT 13/13 ✅. Sıradaki adım: `/devflow:review-phase 5` (faz review)
-**Aktif Faz:** 5 — Test altyapısı (D1) 🔄 UAT geçti · adım=review (review-phase); Faz 4 ✅; Aktif Versiyon v0.2, Versiyon Sonu Durumu: içerik_fazları
+**Aktif Task:** Yok — Faz 5 ✅ (review dahil). Sıradaki adım: `/devflow:discuss-phase 6` (mobil perf/LCP kapsam tartışması)
+**Aktif Faz:** 6 — Mobil perf / LCP (geçici ad) · adım=discuss; Faz 5 (test altyapısı D1) ✅; Faz 4 ✅; Aktif Versiyon v0.2, Versiyon Sonu Durumu: içerik_fazları
 **Task Sistemi:** `tasks/TASKS-README.md`
 **PRD (karar kaynağı):** `PRD/VIZYON.md` · `PRD/VERSIONS.md` · `PRD/features/`
 **Revize Backlog (bilinen sorunlar):** `docs/REVIZE-BACKLOG.md`
 
 ---
 
-**Son Güncelleme:** 2026-06-30 — verify-phase 5 ✅: faz UAT 13/13 geçti (otonom mod). Otomatik kontroller: CI HEAD run `28471662528` iki job + her adım yeşil; `/security-review` HIGH/MEDIUM yok. Fail-on-regression task-kayıtlı (5.01/5.03). Düzeltme task'ı doğmadı → adım=review → `/devflow:review-phase 5`.
+**Son Güncelleme:** 2026-06-30 — review-phase 5 ✅: Faz 5 (test altyapısı D1) tamamlandı (retrospektif + 8 kalite ekseni PHASE-5'e; QUALITY §8 + PHASES + MODULE-MAP güncellendi). UAT 13/13, milestone 6/6, düzeltme yok. Versiyon Sonu Durumu içerik_fazları (değişmez) → sıradaki = mobil perf/LCP → `/devflow:discuss-phase 6`.
