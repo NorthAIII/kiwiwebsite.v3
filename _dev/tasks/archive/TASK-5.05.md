@@ -1,6 +1,6 @@
 # TASK-5.05: Kümülatif Test Convention Notu (docs/TESTING.md)
 
-**Durum:** ⬜ Bekliyor
+**Durum:** ✅ Tamamlandı
 **Modül:** M6 / docs — `modules/M6-SEO-Deploy.md`
 **Feature:** D1.5 (kümülatif test convention notu)
 **Faz:** Phase 5 (phases/PHASE-5.md)
@@ -91,36 +91,41 @@ _dev/INDEX.md          # Bilgi Havuzu satırı — zaten var
 
 ## Oturum Kayıtları
 
-### Oturum — [TARİH]
+### Oturum — 2026-06-30
 
-**Durum:** [✅/🔄/⏸️]
+**Durum:** ✅
 
 **Yapılanlar:**
-- [...]
+- `_dev/docs/TESTING.md` oluşturuldu (YENİ): komutlar tablosu (`npm run test` / `test:watch` / `test:e2e`) + test yerleri/config'ler + 3 katman (Vitest node/jsdom + Playwright/axe) ve ne için + a11y ölçüm disiplini (5 madde, özet+pointer — kopyalanmadı) + "yeni test nasıl eklenir" (katman seçimi, suffix, kümülatif beklenti) + CI bölümü. Kısa, tek-okunabilir.
+- `_dev/INDEX.md` Bilgi Havuzu tablosuna `docs/TESTING.md` satırı eklendi; "Son Güncelleme" üzerine yazıldı.
 
 **Sorunlar:**
-- [...]
+- Ortamda `node`/`npm` yok (taze cloud devcontainer — MEMORY notuyla birebir); `npm run test` yerelde koşulamadı. Doğrulama statik yapıldı (komut↔script + yol↔artefakt birebir eşleşme) + komutların yeşilliği zaten TASK-5.04 CI run `28470864743` ile ampirik kanıtlı. Belgelenen hiçbir komut/yol uydurma değil.
 
 **Kararlar:**
-- [...] · docs/DECISIONS.md'ye eklendi: [Evet/Hayır]
+- a11y tuzakları kopyalanmadı, özet+pointer verildi (Dokümantasyon İlkeleri: bir bilgi tek yerde) · docs/DECISIONS.md'ye eklendi: Hayır (mimari karar değil)
+- QUALITY §8 "test altyapısı henüz yok" bayatlaması bu task'ta açılmadı — review-phase işi (Dikkat Noktaları gereği, yalnız işaret edildi).
 
 **Dosya Değişiklikleri:**
-- [...]
+- `_dev/docs/TESTING.md` (YENİ)
+- `_dev/INDEX.md` (Bilgi Havuzu satırı + Son Güncelleme)
 
 **Test Sonuçları:**
-- [...]
+- Statik çapraz-kontrol: `npm run test` / `test:watch` / `test:e2e` → package.json satır 11-13 ✓ · `tests/**/*.test.{ts,tsx}` → i18n-parity.test.ts + smoke.test.tsx ✓ · `tests/e2e/**/*.spec.ts` → home-a11y.spec.ts ✓ · vitest/playwright config + ci.yml mevcut ✓ · memory pointer geçerli ✓
+- Runner yeşilliği: TASK-5.04 CI (fast + a11y job, run `28470864743`) — değişmedi (bu task yalnız doküman).
 
 ---
 
 ## Sonuç Özeti
 
-**Tamamlanma Tarihi:** [Tarih]
+**Tamamlanma Tarihi:** 2026-06-30
 
 **Ne Yapıldı:**
-- [...]
+- Faz 5 harness'ini kullanılabilir/sürdürülebilir kılan test convention notu (`docs/TESTING.md`) yazıldı: nerede/nasıl test, 3 katman, a11y ölçüm disiplini (özet+pointer), kümülatif "her feature kendi testini ekler" beklentisi, CI. INDEX'e içerik dokümanı olarak işlendi.
+- Sahipsiz-alan kapatıldı: kümülatif test ilkesi artık yazılı bir convention'a dayanıyor.
 
 **Öğrenilenler:**
-- [...]
+- Doküman task'ında "test" = belgelenen komut/yolların gerçek artefaktlarla birebir eşleşmesi + çalıştığının (CI'dan) bilinmesi; node-yoksunluğu bu doğrulamayı engellemez.
 
 ---
 

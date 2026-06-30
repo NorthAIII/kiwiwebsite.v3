@@ -135,7 +135,7 @@ Hepsi **yeni devDependency** (hiçbiri kurulu değil); gerçek `npm install` **i
 | 5.02 | TASK-5.02 | ✅ Tamamlandı | Vitest jsdom katmanı + component smoke tohum testi (D1.1) |
 | 5.03 | TASK-5.03 | ✅ Tamamlandı | Playwright + axe harness + a11y regresyon tohum, `/` light+dark (D1.1+D1.3) |
 | 5.04 | TASK-5.04 | ✅ Tamamlandı | CI iskeleti — ilk GitHub Actions (fast + a11y job) (D1.4) |
-| 5.05 | TASK-5.05 | ⬜ Bekliyor | Kümülatif test convention notu (docs/TESTING.md) (D1.5) |
+| 5.05 | TASK-5.05 | ✅ Tamamlandı | Kümülatif test convention notu (docs/TESTING.md) (D1.5) |
 
 **Durum simgeleri:** ⬜ Bekliyor | 🔄 Devam ediyor | ⏸️ Duraklatıldı | ✅ Tamamlandı | 🔴 Bloke | ❌ İptal
 
@@ -197,4 +197,4 @@ Hepsi **yeni devDependency** (hiçbiri kurulu değil); gerçek `npm install` **i
 ---
 
 **Oluşturulma:** 2026-06-30
-**Son Güncelleme:** 2026-06-30 — run-task 5.04 ✅: Projenin ilk CI'ı (`.github/workflows/ci.yml`) kuruldu — `on: push[**] + pull_request`, `concurrency` cancel-in-progress, `permissions: contents:read`; 2 paralel job: **fast** (checkout→setup-node 24→`npm ci`→`build`→`test`) + **a11y** (+`actions/cache` ms-playwright lockfile-key→`playwright install --with-deps chromium`→`test:e2e`; webServer kendi build koşar → ayrı build adımı yok, research #8 ile tutarlı). Revize branch push → run `28470864743` → **iki job da ilk denemede yeşil** (fast ~47s · a11y ~82s). İcra nüansı (retro adayı): ortamda `gh`/`node`/`python` yok (taze cloud devcontainer) → kanıtlama `gh` yerine **public Actions REST API + curl** ile (repo public, auth gerekmedi) — `gh`'ye eşdeğer ampirik gözlem. CI yalnız doğrular, deploy etmez. Kalan: 5.05 convention notu. Sıradaki: run-task 5.05.
+**Son Güncelleme:** 2026-06-30 — run-task 5.05 ✅: `docs/TESTING.md` test convention notu yazıldı (komutlar + test yerleri + 3 katman [Vitest node/jsdom + Playwright/axe] + a11y ölçüm disiplini özet/pointer + "yeni test nasıl eklenir" kümülatif beklenti + CI); INDEX Bilgi Havuzu'na işlendi. Komut/yol↔artefakt birebir statik doğrulandı (ortamda node yok → yerel koşu yok; runner yeşilliği TASK-5.04 CI run `28470864743`'te kanıtlı, bu task yalnız doküman). **Faz icrası tamam (5/5)** — 5.01–5.05 hepsi ✅; sıradaki adım verify-phase 5 (UAT). İcra nüansları faz boyunca (retro adayları): taze devcontainer'da `gh`/`node`/`python` yokluğu (CI gözlemi public REST API+curl ile, yerel test koşusu yok); WCAG-`withTags` Lighthouse-altküme vs ham axe farkını nötralize etti. CI yalnız doğrular, deploy etmez.
