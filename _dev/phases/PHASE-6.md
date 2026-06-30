@@ -133,11 +133,17 @@ TR `/` mobil diagnostic (Lighthouse 13.3.0, 4× CPU throttle, Moto-G sınıfı) 
 
 ## Task Listesi
 
-> Bu bölüm `/devflow:plan-phase 6` oturumunda doldurulacak.
+> `/devflow:plan-phase 6` oturumunda dolduruldu (2026-06-30). Sıra: ölç-önce → L1 → L2 → ara-ölç → L3 → P2(koşullu) → faz-sonu ölçüm. Ölçüm task'ları (6.01/6.04/6.07) node'lu ortam gerektirir (bu oturum devcontainer'ında node yok → o task'larda 🔴 olabilir).
 
 | # | Task | Durum | Açıklama |
 |---|------|-------|----------|
-| — | (henüz yok) | — | research → plan akışında oluşacak |
+| 6.01 | TASK-6.01 | ⬜ Bekliyor | Ölç-önce: LCP elementi tespiti + TR `/` mobil perf taban (element-denetimli Lighthouse) — lever önceliğini sabitler |
+| 6.02 | TASK-6.02 | ⬜ Bekliyor | L1: Hero reveal opacity→transform-only (`Hero.tsx`) — LCP-uygun headline, kayma imzası korunur |
+| 6.03 | TASK-6.03 | ⬜ Bekliyor | L2: WebGL init mobilde idle/post-load deferral (`LivingFlow.tsx`) — main-thread LCP penceresinde boşalır |
+| 6.04 | TASK-6.04 | ⬜ Bekliyor | Ara-ölç: L1+L2 sonrası median + L3/P2 karar kapısı |
+| 6.05 | TASK-6.05 | ⬜ Bekliyor | L3: Fraunces SOFT/WONK axes budama (`layout.tsx`+`not-found.tsx`) — craft-nötr, woff2 küçülür |
+| 6.06 | TASK-6.06 | ⬜ Bekliyor | P2: Living Flow mobil degradasyon ayarı (DPR/particle/erken-static) — **koşullu** (6.04 brief'i karşılamadıysa) |
+| 6.07 | TASK-6.07 | ⬜ Bekliyor | Faz sonu ölçüm + kanonik artefakt + DECISIONS + guardrail regresyon |
 
 **Durum simgeleri:** ⬜ Bekliyor | 🔄 Devam ediyor | ⏸️ Duraklatıldı | ✅ Tamamlandı | 🔴 Bloke | ❌ İptal
 
@@ -168,4 +174,4 @@ TR `/` mobil diagnostic (Lighthouse 13.3.0, 4× CPU throttle, Moto-G sınıfı) 
 ---
 
 **Oluşturulma:** 2026-06-30
-**Son Güncelleme:** 2026-06-30 — discuss-phase 6: kapsam tartışması tamamlandı.
+**Son Güncelleme:** 2026-06-30 — plan-phase 6: 7 task dokümanı oluşturuldu (6.01-6.07; ölç-önce → L1 → L2 → ara-ölç → L3 → P2 koşullu → faz-sonu). Sıradaki adım: verify-plan 6.
