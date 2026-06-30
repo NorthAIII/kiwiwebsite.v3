@@ -1,6 +1,6 @@
 # Perf Taban Kayıtları — Ana Sayfa Lighthouse
 
-Ana sayfa Lighthouse perf/a11y tabanları. Ölçüm **yerel production build** üzerinde (`next build && next start`); revize branch canlıya deploy olmuyor (kiwiailab.com eski kodu yansıtır) → bu "yerel taban". İlk taban: **v0.1, 2026-06-28** (TASK-2.03 / Phase 2). En güncel ölçüm: **v0.2 / Faz 6, 2026-06-30** (TASK-6.01; element-denetimli TR `/` mobil çalışma tabanı — LCP elementi = hero metni).
+Ana sayfa Lighthouse perf/a11y tabanları. Ölçüm **yerel production build** üzerinde (`next build && next start`); revize branch canlıya deploy olmuyor (kiwiailab.com eski kodu yansıtır) → bu "yerel taban". İlk taban: **v0.1, 2026-06-28** (TASK-2.03 / Phase 2). En güncel ölçüm: **v0.2 / Faz 6, 2026-06-30** (TASK-6.04; L1+L2 sonrası ara-ölç — Lantern delta yok, brief LCP lab'da açık; aşağıda Faz 6 / TASK-6.04 bölümü).
 
 > ⚠️ **İki kanonik-koşu tuzağı (Faz 4 TASK-4.01/4.08 düzeltmeleri — okumadan ölçme):**
 > 1. **Ölçülen-locale:** Cookie'siz kanonik koşu Chrome `Accept-Language` ile `/` → **`/en`**'e redirect olur (next-intl `localeDetection`). v0.1 tabanı bu yüzden "TR `/`" değil, aslında **`/en`**'i ölçtü (artifact `finalUrl=/en` ile kanıtlı). **TR varsayılan** sayfasını ölçmek için `NEXT_LOCALE=tr` cookie şart (Lighthouse `--extra-headers='{"Cookie":"NEXT_LOCALE=tr"}'`). TR `/` sayfası `/en`'den **ağırdır** (hero metni daha uzun) — perf/LCP/FCP farkı buradan gelir, regresyon değil.
@@ -162,6 +162,32 @@ Faz 6'nın lever önceliğini sabitlemek için **element-denetimli** ölçüm (L
 - **LCP / FCP / CLS — ortamlar arası karşılaştırılabilir (Lantern-deterministik):** bu ortamın mobil LCP'si (3608 ms) önceki Faz-4 ortamıyla (3604 ms) ve FCP (1666 vs 1656 ms) **neredeyse birebir**. Masaüstü LCP 734 ms ≈ Faz-4 765 ms. CLS=0 her yerde.
 - **perf / TBT — bu ortama özgü, ŞİŞKİN, ortamlar arası KARŞILAŞTIRILAMAZ:** bu ortamda mobil TBT **1842 ms** / perf **62**; Faz-4 ortamında TBT ~200 ms / perf 84. Fark host gürültüsü değil (düşük yükte 5 koşu tutarlı) — **yazılım-WebGL (SwiftShader) main-thread'i Faz-4 ortamının GL yolundan kat kat ağır işliyor**. perf skoru bu yüksek TBT tarafından aşağı çekiliyor.
 - **Sonuç:** Faz 6 içi lever karşılaştırmaları (6.04, 6.07) **bu ortamda** ölçüldükçe self-tutarlı (relative delta geçerli). Brief bütçesine (perf ≥95 / LCP <2.5s) mutlak yakınlık değerlendirmesinde **LCP/FCP/CLS güvenilir sinyal**; perf/TBT'nin mutlak değeri bu ortamın software-GL artefaktıyla şişkin, Faz-4'ün 84'üyle bire bir kıyaslanamaz. Başlangıç çalışma tabanı: mobil LCP ~3.6s (brief <2.5s'in üstünde, hedef), perf bu ortamda 62.
+
+---
+
+## v0.2 / Faz 6 — TASK-6.04: L1+L2 sonrası ara-ölç (2026-06-30)
+
+L1 (hero reveal transform-only, 6.02) + L2 (WebGL idle deferral, 6.03) uygulandıktan sonra **aynı ortam/method** ile ara-ölç (karar kapısı). Fresh-prod-serve (`rm -rf .next && next build` temiz → `next start -p 4173`, listening-PID 37141 teyit), düşük yük (load 0.9–1.4), TR `/` (`NEXT_LOCALE=tr`, finalUrl `/` teyit), element-denetimli. Ortam: aynı node 20.20.2 + Chrome 150 + LH 13.3.0 + SwiftShader (flags birebir 6.01). Artefakt: `home-mobile-20260630-6.04-ara.json` (median mobil koşu).
+
+### Median (6.01 tabanıyla yan-yana — aynı ortam, apples-to-apples)
+
+| Preset (TR `/`) | perf (koşular → median) | LCP | FCP | CLS | TBT | LCP elementi |
+|---|---|---|---|---|---|---|
+| Mobil (6.01 taban) | 61/63/63/62/62 → **62** | 3608 ms | 1666 ms | ~0 | 1842 ms | `<p data-hero="sub">` |
+| Mobil (6.04 L1+L2) | 61/62/61/63/62 → **62** | **3615 ms** | **1665 ms** | **~7.3e-6 (≈0)** | **1898 ms** | `<p data-hero="sub">` (değişmedi) |
+| Masaüstü (6.01) | 100/99/99 → **99** | 734 ms | 414 ms | ~0 | 17 ms | `<span data-hero="l2">` |
+| Masaüstü (6.04) | 100/100/100 → **100** | **696 ms** | **416 ms** | **≈0** | 7 ms | `<span data-hero="l2">` (değişmedi) |
+
+**Delta:** mobil LCP +7ms / FCP −1ms / perf 0 / TBT +56ms — hepsi koşu-içi gürültü bandında (LCP 3459–3760). Masaüstü perf 100 (guardrail 99-100 ✓), LCP −38ms, CLS≈0. **L1+L2 ölçülebilir Lantern delta üretmedi.**
+
+### Neden delta yok — Lantern simülasyon artefaktı (kanıtlı)
+
+Mobil LCP skoru (3.6s) **Lantern-simüle**: throttle'sız gözlenen trace'te LCP breakdown = TTFB 12ms + elementRenderDelay **172.9ms** (≈185ms toplam) — yani gözlenen trace'te hero metni hemen render oluyor. 6.01 tabanında da elementRenderDelay **173.3ms** (birebir). 3.6s, Lantern'in 4× CPU throttle altında WebGL main-thread işinin LCP penceresini bloke etmesini **simüle** etmesidir.
+
+- **L1 (opacity→transform):** gözlenen trace'te hero metni zaten ~185ms'de render oluyordu (un-throttled reveal hızlı tamamlanır) → opacity-gate observed darboğaz değildi → Lantern skoru oynamaz. L1 yine de **gerçek-cihaz-doğru** (gerçek throttle altında opacity:0 reveal'i LCP'yi geciktirirdi); lab bu kazancı göremiyor.
+- **L2 (rIC deferral):** `requestIdleCallback({timeout:2000})` throttle'sız gözlenen trace'te thread hemen boşaldığı için **neredeyse anında ateşler** → WebGL init erken yakalanır → Lantern bunu LCP penceresinde bloke eden iş olarak simüle eder (TBT 1898≈1842 birebir). Gerçek meşgul main-thread'de rIC LCP sonrasına ertelerdi; Lantern bunu modelleyemez.
+
+**Dürüst kayıt:** lab (LH Lantern + software-GL), L1/L2'nin gerçek-cihaz kazancını **ölçemiyor**; ikisi de doğru/craft-koruyucu, commit'li tutuluyor. Lab'ın gösterebileceği tek lever = WebGL **gerçek iş yükünü** azaltan P2 (degradasyon ayarı). Brief perf bütçesi bu lab'da temiz doğrulanamaz; gerçek doğrulama gerçek-cihaz/Vercel field verisi gerektirir (v0.1 dürüst-kayıt deseni).
 
 ---
 

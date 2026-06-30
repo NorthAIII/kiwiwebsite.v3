@@ -140,12 +140,45 @@ TR `/` mobil diagnostic (Lighthouse 13.3.0, 4× CPU throttle, Moto-G sınıfı) 
 | 6.01 | TASK-6.01 | ✅ Tamamlandı | Ölç-önce: LCP elementi = **hero metni** (ampirik); TR `/` mobil element-denetimli taban (perf 62 · LCP 3608ms, software-GL ortamı) — L1 yüksek-etki doğrulandı |
 | 6.02 | TASK-6.02 | ✅ Tamamlandı | L1: Hero reveal opacity→transform-only (`Hero.tsx`) — `opacity:0` kaldırıldı, kayma imzası+timing korundu; hero LCP-uygun, build temiz, CLS=0 |
 | 6.03 | TASK-6.03 | ✅ Tamamlandı | L2: WebGL init mobilde idle/post-load deferral (`LivingFlow.tsx`) — `requestIdleCallback`+2s-timeout (Safari: post-load fallback); masaüstü rAF korundu, build temiz, CLS=0 |
-| 6.04 | TASK-6.04 | ⬜ Bekliyor | Ara-ölç: L1+L2 sonrası median + L3/P2 karar kapısı |
-| 6.05 | TASK-6.05 | ⬜ Bekliyor | L3: Fraunces SOFT/WONK axes budama (`layout.tsx`+`not-found.tsx`) — craft-nötr, woff2 küçülür |
-| 6.06 | TASK-6.06 | ⬜ Bekliyor | P2: Living Flow mobil degradasyon ayarı (DPR/particle/erken-static) — **koşullu** (6.04 brief'i karşılamadıysa) |
+| 6.04 | TASK-6.04 | ✅ Tamamlandı | Ara-ölç: L1+L2 → ölçülebilir Lantern delta YOK (mobil LCP 3615ms ≈ 3608ms taban); brief LCP lab'da açık; L3 yapılır, P2 tetiklendi (craft-gate) |
+| 6.05 | TASK-6.05 | ⬜ Bekliyor | L3: Fraunces SOFT/WONK axes budama (`layout.tsx`+`not-found.tsx`) — craft-nötr hijyen; YAP (lab LCP'yi oynatmaz, network/woff2) |
+| 6.06 | TASK-6.06 | ⬜ Bekliyor | P2: Living Flow mobil degradasyon ayarı (DPR/particle/erken-static) — **tetiklendi** (lab'da CPU-bound WebGL tek kalan lever); craft-duyarlı → kullanıcı craft-onayı önerilir |
 | 6.07 | TASK-6.07 | ⬜ Bekliyor | Faz sonu ölçüm + kanonik artefakt + DECISIONS + guardrail regresyon |
 
 **Durum simgeleri:** ⬜ Bekliyor | 🔄 Devam ediyor | ⏸️ Duraklatıldı | ✅ Tamamlandı | 🔴 Bloke | ❌ İptal
+
+---
+
+## Ara-Ölç Sonucu ve L3/P2 Kararı (TASK-6.04)
+
+> `/devflow:run-task` TASK-6.04 (2026-06-30). Aynı ortam/method 6.01 ile apples-to-apples. Tam tablo + kanıt: `docs/perf/README.md` → "Faz 6 / TASK-6.04". Artefakt: `docs/perf/home-mobile-20260630-6.04-ara.json`.
+
+### Bulgu — L1+L2 ölçülebilir Lantern delta üretmedi
+
+| Metrik (TR `/` mobil, median) | 6.01 taban | 6.04 (L1+L2) | Delta |
+|---|---|---|---|
+| perf | 62 | 62 | 0 |
+| LCP | 3608 ms | 3615 ms | +7 ms (gürültü) |
+| FCP | 1666 ms | 1665 ms | −1 ms |
+| CLS | ~0 | ~7.3e-6 (≈0) | = |
+| TBT | 1842 ms | 1898 ms | +56 ms (gürültü) |
+
+Masaüstü: perf **100** (guardrail 99-100 ✓), LCP 696 ms, CLS≈0. LCP elementi her iki preset'te değişmedi (mobil hero `<p>`, masaüstü hero `<span>`).
+
+### Neden — Lantern simülasyon artefaktı (kanıtlı, kök neden)
+
+Mobil LCP 3.6s **Lantern-simüle**: throttle'sız gözlenen trace'te LCP elementRenderDelay 6.01'de **173.3ms**, 6.04'te **172.9ms** (birebir) → hero metni gözlemde zaten ~185ms'de render oluyor. 3.6s, 4× CPU throttle altında WebGL main-thread işinin simülasyonu.
+- **L1** opacity-gate'i kaldırdı ama gözlenen trace'te o gate zaten darboğaz değildi (un-throttled reveal hızlı) → skor oynamaz; L1 yine **gerçek-cihaz-doğru** (lab göremez).
+- **L2** `requestIdleCallback` throttle'sız trace'te anında ateşler → WebGL erken yakalanır → Lantern LCP penceresinde bloke iş olarak simüle eder (TBT birebir). Gerçek meşgul thread'de rIC LCP sonrasına ertelerdi; Lantern modelleyemez.
+
+### Karar (karar kapısı çıktısı)
+
+- **Brief LCP bütçesi (<2.5s) lab'da AÇIK** (mobil ~3.6s). Açık, CPU-bound WebGL init'in Lantern simülasyonu. perf/TBT software-GL şişkin → mutlak kıyas dışı; LCP/FCP/CLS güvenilir sinyal (6.01 ortam uyarısı geçerli).
+- **L1+L2 korunur** (commit'li): gerçek-cihaz-doğru + craft-koruyucu; lab kazancı gösteremiyor ama regresyon da yok (guardrail'ler korundu).
+- **L3 (TASK-6.05): YAP** — craft-nötr hijyen (Fraunces SOFT/WONK budama, woff2 küçülür). Lab LCP'yi oynatmaz (CPU-bound + localhost network-iyimser) ama güvenli, küçük, doğru; faz hijyeni.
+- **P2 (TASK-6.06): TETİKLENDİ ama craft-gate.** Lab'da simüle-LCP'yi azaltabilecek **tek kalan lever** WebGL gerçek iş yükünü düşürmek (DPR cap / particle / erken-static). Ancak: (a) craft-duyarlı — imza Living Flow'a dokunur, discuss guardrail'i "yalnız craft korunarak, ölçülü, gözle doğrulanmış"; (b) gerekçesi bir Lantern-simüle sayıya dayanıyor ve P2 kazancı da software-GL'de tam temiz ölçülemeyebilir. → **Kullanıcı craft-onayı önerilir** (6.06 koşmadan önce: simüle sayı için imzaya dokunmaya değer mi). İptal edilmedi (brief açık + tek kalan lever), ama otomatik koşulmaz.
+
+> **Metodolojik duvar (dürüst kayıt):** bu lab ortamı lever ilerlemesini LCP ekseninde güvenilir ölçemez (Lantern observed trace'i throttle'sız alıp simüle ediyor; software-GL perf/TBT'yi şişiriyor). Brief perf bütçesinin temiz doğrulaması gerçek-cihaz / Vercel field verisi gerektirir. v0.1 dürüst-kayıt deseni: hedef sessizce düşürülmez, craft sessizce feda edilmez, açık belgelenir.
 
 ---
 
@@ -174,4 +207,4 @@ TR `/` mobil diagnostic (Lighthouse 13.3.0, 4× CPU throttle, Moto-G sınıfı) 
 ---
 
 **Oluşturulma:** 2026-06-30
-**Son Güncelleme:** 2026-06-30 — run-task TASK-6.03 ✅ (L2): `LivingFlow.tsx` WebGL init mobilde (low-power) 1-rAF → `requestIdleCallback`+2s-timeout (Safari: post-load+200ms fallback) ile LCP penceresi dışına ertelendi; masaüstü rAF regresyonsuz korundu. Static base wash erteleme boyunca render (SSR `tr.html`'de mevcut, `<canvas>`=0 → hero boş kalmaz). Build temiz (37/37); tüm yollarda unmount cleanup; CLS=0 yapı gereği. İcra notu: TS strict `"prop" in window` negatif dalda `window`'u `never`'a daraltır → guard `typeof window.requestIdleCallback === "function"`'a alındı (retro adayı). Gözle craft (flow geç-ama-akıcı, light+dark, cursor/scroll) + main-thread "Other" LCP-dışı median teyidi: 6.04 ara-ölç + gerçek tarayıcı kullanıcı onayı. Sıradaki: TASK-6.04 (ara-ölç: L1+L2 median + L3/P2 karar kapısı).
+**Son Güncelleme:** 2026-06-30 — run-task TASK-6.04 ✅ (ara-ölç/karar kapısı): L1+L2 sonrası TR `/` mobil median ölçülebilir Lantern delta üretmedi (LCP 3615ms ≈ 3608ms taban; perf 62=62; CLS≈0; masaüstü 100, guardrail ✓). Kök neden kanıtlı: mobil LCP 3.6s Lantern-simüle (observed elementRenderDelay 6.01=173.3ms / 6.04=172.9ms birebir; L1 opacity-gate observed darboğaz değil, L2 rIC throttle'sız trace'te anında ateşler → Lantern erken-bloke simüle eder). L1+L2 gerçek-cihaz-doğru, commit'li korunur; lab kazancı gösteremez. Brief LCP lab'da açık (CPU-bound WebGL). **Karar:** L3 (6.05) YAP (craft-nötr hijyen); P2 (6.06) tetiklendi (tek kalan lever) ama craft-duyarlı → kullanıcı craft-onayı önerilir; iptal değil. Metodolojik duvar dürüst kaydedildi (`docs/perf/README.md`). Sıradaki: TASK-6.05 (L3).
