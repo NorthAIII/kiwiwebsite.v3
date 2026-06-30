@@ -7,7 +7,7 @@
 >
 > Bu yapı şişmeyi önler: index ince kalır (hep yüklü), detay yalnızca gerekince okunur.
 
-**Son Güncelleme:** 2026-06-30 — run-task 5.04: Ortam & Araç Notları'na "CI gözlemi `gh` olmadan public Actions REST API+curl ile" satırı eklendi (repo public; `gh`/`node`/`python` her oturum ortamında olmayabilir).
+**Son Güncelleme:** 2026-06-30 — run-task 6.01: Ortam & Araç Notları'na "Perf ölçüm araç-zinciri devcontainer kurulumu" pointer'ı eklendi (node20+Chrome150+LH13.3.0 kurulumu; Chrome 150 software-WebGL `--enable-unsafe-swiftshader` + `--disable-dev-shm-usage` şartı; software-GL perf/TBT şişirir).
 
 <!-- KURAL: Bu satır her güncellemede ÜZERİNE YAZILIR. "Önceki:" prefix ile kümülatif yığma YASAK (CLAUDE.md → Doküman Disiplini). -->
 
@@ -38,6 +38,7 @@
 - [Repo haritası](memory/repo-haritasi.md) — frontend = `NorthAIII/kiwiwebsite.v3` (bu repo, public); backend ayrı/private = `NorthAIII/kiwi-ai-lab`; eski repo'lar terk edilmiş öncül (yeniden kullanma).
 - **CI (GitHub Actions) gözlemi `gh` olmadan da yapılabilir** — repo **public** olduğundan Actions run/job durumu auth'suz REST API ile okunur: `curl -s "https://api.github.com/repos/NorthAIII/kiwiwebsite.v3/actions/runs?head_sha=<sha>"` → run id; sonra `/actions/runs/<id>/jobs` `jq '.jobs[] | "\(.name): \(.conclusion)"'` ile job-seviyesi `conclusion=success` ampirik teyit edilir (`gh run watch` eşdeğeri). CI workflow: `.github/workflows/ci.yml` (fast + a11y job; TASK-5.04). Ortam notu: bazı oturum ortamlarında `gh`/`node`/`python` kurulu olmayabilir (taze cloud devcontainer) — workflow GitHub runner'da koştuğu için node yerelde gerekmez.
 - [DevFlow sistemi](memory/devflow-sistemi.md) — DevFlow özel araç (`github.com/36337/DevFlow`); bu yüzden public repo'da `.claude/` gitignore'da, `_dev/` commit'lenir.
+- [Perf ölçüm araç-zinciri devcontainer kurulumu](memory/perf-olcum-devcontainer-kurulumu.md) — Taze devcontainer'da node/Chrome yoksa (kullanıcı onayıyla) kur: node20 (NodeSource) + Chrome 150 (resmi repo) + LH 13.3.0 (npx-cache); `npm install` + `git checkout package-lock.json` (lock dokunulmaz; `npm ci` @swc/helpers drift'iyle reddeder). **Chrome-flags ŞART:** `--disable-dev-shm-usage` (64M /dev/shm) + `--enable-unsafe-swiftshader` (Chrome 150 software-WebGL; yoksa Living Flow `TARGET_CRASHED`). LH 13.x LCP elementini `lcp-breakdown-insight`'ta verir (eski `largest-contentful-paint-element` audit'i yok). **Software-GL ortamı perf/TBT'yi şişirir (ortamlar arası kıyaslanamaz); LCP/FCP/CLS Lantern-deterministik (kıyaslanabilir).**
 
 ## Çapraz Öğrenimler
 

@@ -115,7 +115,7 @@ TR `/` mobil diagnostic (Lighthouse 13.3.0, 4× CPU throttle, Moto-G sınıfı) 
 
 ### Dikkat Edilecekler
 
-- **LCP elementi ampirik teyitli DEĞİL** (metin mi canvas mı). İlk ölçüm task'ı `largest-contentful-paint-element` denetimiyle koşup elementi sabitlemeli — tüm lever önceliği buna göre netleşir. Kaynak: yeni ölçüm (mevcut JSON'larda denetim yok).
+- **LCP elementi AMPİRİK TEYİTLİ (TASK-6.01, 2026-06-30): HERO METNİ — canvas/static-flow zemini DEĞİL.** Mobil LCP = `<p data-hero="sub">` (hero alt-başlık metni); masaüstü LCP = `<span data-hero="l2">` (hero `<h1>` yeşil satırı); 5 mobil + 3 masaüstü koşuda stabil. Her iki element `Hero.tsx:18` reveal'inin `opacity:0`'ı altında → reveal LCP'yi geciktirir. **Lever önceliği çıkarımı: L1 (hero reveal transform-only, TASK-6.02) doğrudan LCP elementini hedefler → yüksek etki, sıradaki adım. L2 (WebGL deferral) main-thread/TBT'yi boşaltır — bu ölçüm ortamında software-WebGL TBT'si baskın (1842ms), L2 burada da güçlü.** Not: LH 13.3.0'da eski `largest-contentful-paint-element` audit'i yok; element `lcp-breakdown-insight`'tan okundu (`docs/perf/README.md` Faz 6 bölümü + `home-mobile-20260630-lcp.json`).
 - **Craft tavan (pazarlık dışı):** L1/L2 craft-etkili → her değişim **iki tema + cursor/scroll etkileşimi gözle** doğrulanmalı (discuss guardrail). Flow'un mobilde geç belirmesi kabul ama "kayıp/bozuk" görünmemeli.
 - **Lighthouse reduced-motion set etmez** → hero reveal + full-yük WebGL ölçülür (gerçekçi en-kötü). L1 fix'i bu yüzden ölçülebilir; doğrulamada reduced-motion'lı axe taraması ayrı (a11y envanteri).
 - **i18n parite:** Lever'lar içerik anahtarına dokunmuyor (font axes/JS/GSAP/deferral kod-only) → 5 dil eşzamanlılığı bozulmaz. `layout.tsx` + `not-found.tsx` font tanımı **birlikte** güncellenir (drift önleme).
@@ -137,7 +137,7 @@ TR `/` mobil diagnostic (Lighthouse 13.3.0, 4× CPU throttle, Moto-G sınıfı) 
 
 | # | Task | Durum | Açıklama |
 |---|------|-------|----------|
-| 6.01 | TASK-6.01 | 🔴 Bloke | Ölç-önce: LCP elementi tespiti + TR `/` mobil perf taban (element-denetimli Lighthouse) — lever önceliğini sabitler · **node/Chrome ortamı yok → node'lu ortamda koşulacak** |
+| 6.01 | TASK-6.01 | ✅ Tamamlandı | Ölç-önce: LCP elementi = **hero metni** (ampirik); TR `/` mobil element-denetimli taban (perf 62 · LCP 3608ms, software-GL ortamı) — L1 yüksek-etki doğrulandı |
 | 6.02 | TASK-6.02 | ⬜ Bekliyor | L1: Hero reveal opacity→transform-only (`Hero.tsx`) — LCP-uygun headline, kayma imzası korunur |
 | 6.03 | TASK-6.03 | ⬜ Bekliyor | L2: WebGL init mobilde idle/post-load deferral (`LivingFlow.tsx`) — main-thread LCP penceresinde boşalır |
 | 6.04 | TASK-6.04 | ⬜ Bekliyor | Ara-ölç: L1+L2 sonrası median + L3/P2 karar kapısı |
@@ -174,4 +174,4 @@ TR `/` mobil diagnostic (Lighthouse 13.3.0, 4× CPU throttle, Moto-G sınıfı) 
 ---
 
 **Oluşturulma:** 2026-06-30
-**Son Güncelleme:** 2026-06-30 — run-task TASK-6.01: ölçüm ortamı bloke (node/npm/Chrome yok bu devcontainer'da) → 6.01 🔴 Bloke; node'lu ortamda koşulacak. LCP elementi tahminle yazılmadı (research K-R4). Kod değişmedi.
+**Son Güncelleme:** 2026-06-30 — run-task TASK-6.01 ✅: araç zinciri devcontainer'a kuruldu (node20+Chrome150+LH13.3.0, kullanıcı onayı); element-denetimli ölçüm. **LCP elementi = hero metni** (mobil sub `<p>`, masaüstü H1 `<span>`), opacity:0 reveal altında → L1 yüksek-etki doğrulandı. Mobil taban perf 62 / LCP 3608ms (software-GL ortamı; LCP/FCP/CLS önceki ortamla birebir, perf/TBT şişkin). Sıradaki: TASK-6.02 (L1).

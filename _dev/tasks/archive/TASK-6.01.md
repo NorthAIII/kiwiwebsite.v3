@@ -1,6 +1,6 @@
 # TASK-6.01: Ölç-önce — LCP elementi tespiti + TR `/` mobil perf taban
 
-**Durum:** 🔴 Bloke (ölçüm ortamı yok — node/npm/Chrome; node'lu ortamda koşulacak)
+**Durum:** ✅ Tamamlandı
 **Modül:** M6 (modules/M6-SEO-Deploy.md) + M1 ölçüm hedefi
 **Feature:** P1/P2 ölçüm temeli (lever önceliğini sabitler)
 **Faz:** Phase 6 (phases/PHASE-6.md)
@@ -136,15 +136,50 @@ _dev/phases/
 
 ---
 
+### Oturum — 2026-06-30 (devam — ölçüm ortamı kuruldu)
+
+**Durum:** ✅ Tamamlandı
+
+**Yapılanlar:**
+- Ortam yeniden tarandı: node/npm/Chrome yine yok **ama** passwordless sudo + internet var (önceki oturumdan fark). Kullanıcıya getirildi → karar: **araç zincirini buraya kur ve ölç**.
+- Kuruldu: node 20.20.2 (NodeSource), Google Chrome 150 (resmi repo), Lighthouse 13.3.0 (npx-cache, package.json'a EKLENMEDİ). Proje bağımlılıkları `npm install` ile (`node_modules` only); `package-lock.json` (dokunulmaz) `git checkout` ile geri alındı — lock değişmedi.
+- Fresh prod build (`rm -rf .next && next build`, temiz) + serve `:4173` (listening-PID 26764 = kendi process'im, teyitli). TR `/` cookie ile (`NEXT_LOCALE=tr`, finalUrl `/` teyit).
+- Element-denetimli Lighthouse: 5 mobil + 3 masaüstü koşu, düşük yük (load 0.6–2.1), median.
+
+**Bulgular:**
+- **LCP elementi = HERO METNİ** (5+3 koşuda stabil): mobil `<p data-hero="sub">`, masaüstü `<span data-hero="l2">`. Canvas/static-flow zemini **değil**. Her ikisi `Hero.tsx:18` `gsap.set("[data-hero]",{opacity:0})` reveal'inin altında → reveal LCP'yi geciktirir.
+- **Lever önceliği:** L1 (hero reveal transform-only, TASK-6.02) doğrudan LCP elementini hedefler → **yüksek etki**, sıradaki. L2 main-thread/TBT'yi boşaltır (bu ortamda software-WebGL TBT'si 1842ms baskın → L2 burada da güçlü).
+- Mobil median: perf **62** · LCP **3608ms** · FCP **1666ms** · CLS **0** · TBT **1842ms**. Masaüstü: perf **99** · LCP **734ms** · CLS **0**.
+
+**Sorunlar (ve çözümleri):**
+- Chrome 150 headless ilk koşularda `TARGET_CRASHED`. İki neden: (1) `/dev/shm` 64M (Docker varsayılanı) → `--disable-dev-shm-usage`; (2) Chrome 150 yazılım-WebGL (SwiftShader) için `--enable-unsafe-swiftshader` **şart** (yoksa Living Flow WebGL context alamayıp tab çöker). İkisi eklenince 8/8 koşu temiz.
+- LH 13.3.0'da eski `largest-contentful-paint-element` audit'i **yok** (insight audit'lerine taşınmış) → element `lcp-breakdown-insight`'tan okundu. Research'ün varsaydığı audit adı eskimiş; yeni anahtar kayda geçti.
+- **Ortam-karşılaştırılabilirlik:** LCP/FCP/CLS önceki Faz-4 ortamıyla birebir (Lantern-deterministik); perf/TBT software-GL yüzünden şişkin (TBT 1842 vs ~200, perf 62 vs 84) → mutlak perf/TBT ortamlar arası kıyaslanamaz, faz-içi delta self-tutarlı. Dürüst kayıt `docs/perf/README.md` Faz 6 bölümünde.
+
+**Test Sonuçları:**
+- `next build` temiz (37 sayfa, 0 MISSING_MESSAGE). Serve-PID teyitli. 8 element-denetimli Lighthouse koşusu geçerli (runtimeError yok). Kod değişmedi (saf ölçüm task'ı) → regresyon riski yok.
+
+**Dosya Değişiklikleri:**
+- `_dev/docs/perf/README.md` — Faz 6 / TASK-6.01 element-denetimli TR `/` mobil çalışma tabanı + LCP elementi teyidi + ortam-karşılaştırılabilirlik uyarısı
+- `_dev/docs/perf/home-mobile-20260630-lcp.json` — YENİ, element-denetimli ham artefakt (median mobil koşu)
+- `_dev/phases/PHASE-6.md` — Task tablosu 6.01 → ✅; "Dikkat Edilecekler" LCP elementi teyitli güncellendi; lever önceliği yazıldı
+- `_dev/tasks/TASK-6.01.md` — durum ✅ + bu oturum kaydı + sonuç özeti
+- `_dev/DURUM.md` — task ✅, adım `task` (sıradaki TASK-6.02)
+- `_dev/MEMORY.md` + `_dev/memory/perf-olcum-devcontainer-kurulumu.md` — devcontainer'da perf ölçüm araç-zinciri kurulumu + Chrome 150/shm tuzakları
+
+---
+
 ## Sonuç Özeti
 
-**Tamamlanma Tarihi:** [Tarih]
+**Tamamlanma Tarihi:** 2026-06-30
 
 **Ne Yapıldı:**
--
+- Ölçüm araç zinciri taze devcontainer'a kuruldu (kullanıcı onayı) ve element-denetimli TR `/` mobil/masaüstü Lighthouse tabanı alındı; kod değişmedi.
+- LCP elementi ampirik sabitlendi: **hero metni** (mobil alt-başlık `<p>`, masaüstü H1 `<span>`), opacity:0 reveal altında → L1 yüksek-etki doğrulandı; lever önceliği netleşti.
 
 **Öğrenilenler:**
--
+- Chrome 150 headless'ta software-WebGL için `--enable-unsafe-swiftshader` şart, container'da `--disable-dev-shm-usage` şart (yoksa TARGET_CRASHED). LH 13.3.0 LCP elementini `lcp-breakdown-insight`'ta verir (eski `largest-contentful-paint-element` audit'i yok).
+- Software-GL ortamı perf/TBT'yi şişirir (ortamlar arası kıyaslanamaz) ama LCP/FCP/CLS Lantern-deterministik (kıyaslanabilir) — faz-içi lever delta'ları aynı ortamda self-tutarlı.
 
 ---
 
