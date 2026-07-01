@@ -1,3 +1,4 @@
+import { fileURLToPath } from "node:url";
 import { defineConfig, configDefaults } from "vitest/config";
 import react from "@vitejs/plugin-react";
 
@@ -10,6 +11,13 @@ export default defineConfig({
   // `react()` yalnız JSX transform için (SSR/Next pipeline'ı değil) — component
   // smoke testinin TSX'ini derler (PHASE-5 araştırma: Teknik Kararlar).
   plugins: [react()],
+  // tsconfig `paths` (`@/* → ./src/*`) yansıması — component testleri gerçek
+  // `@/...` modüllerini import edebilsin (ilk kullanım: TASK-7.01 UmamiScript).
+  resolve: {
+    alias: {
+      "@": fileURLToPath(new URL("./src", import.meta.url)),
+    },
+  },
   test: {
     environment: "node",
     // jest-dom matcher'larını (toBeInTheDocument vb.) tüm test dosyalarına yükler.

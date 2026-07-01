@@ -1,6 +1,6 @@
 # TASK-7.01: Umami analytics bileşeni + layout entegrasyonu + izole render testi
 
-**Durum:** ⬜ Bekliyor
+**Durum:** ✅ Tamamlandı
 **Modül:** M6 — SEO & Deploy (modules/M6-SEO-Deploy.md)
 **Feature:** E1 — Umami self-hosted analytics
 **Faz:** Phase 7 (phases/PHASE-7.md)
@@ -32,7 +32,7 @@ Ayrı bir bileşen (`src/components/analytics/umami-script.tsx`) oluştur; `next
 
 ## Alt Görevler
 
-- [ ] **1. Umami bileşenini oluştur**
+- [x] **1. Umami bileşenini oluştur**
   - Dosya: `src/components/analytics/umami-script.tsx` (YENİ)
   - `next/script` `<Script>` döndüren küçük, tek-sorumluluklu bileşen (`UmamiScript`):
     ```tsx
@@ -51,11 +51,11 @@ Ayrı bir bileşen (`src/components/analytics/umami-script.tsx`) oluştur; `next
     ```
   - Hook yok → server component olarak kalabilir (`"use client"` gerekmez; mevcut tema-FOUC `<script>` gibi `<head>`'te çalışır).
 
-- [ ] **2. Layout `<head>`'ine entegre et**
+- [x] **2. Layout `<head>`'ine entegre et**
   - Dosya: `src/app/[locale]/layout.tsx` (mevcut — değişir)
   - Mevcut tema-FOUC `<script>`'in yanına `<UmamiScript />` ekle (import + `<head>` içine bir satır). Additive; mevcut markup korunur.
 
-- [ ] **3. İzole render testi yaz**
+- [x] **3. İzole render testi yaz**
   - Dosya: `tests/umami-script.test.tsx` (YENİ)
   - `// @vitest-environment jsdom` pragma (smoke.test.tsx deseni, Faz 5 konvansiyonu).
   - `vi.mock("next/script", ...)` → mock `<script {...props} />` passthrough döndürür (afterInteractive enjeksiyonunu değil, **bizim geçtiğimiz prop'ları** test etmek için).
@@ -89,31 +89,45 @@ tests/
 
 ## Test Kriterleri
 
-- [ ] `npm test` yeşil — `umami-script.test.tsx` `src` / `data-website-id` / `data-domains` / `strategy` değerlerini assert eder; mevcut tohumlar (i18n parite, smoke) kırılmaz.
-- [ ] `next build` temiz geçer (three transpile + strict TS).
-- [ ] Lokal prod/preview'da `[locale]` head'inde Umami `script.js` isteği ağ sekmesinde görülür — TR `/` (`NEXT_LOCALE=tr` cookie) + en az 1 non-TR locale (örn. `/en`).
-- [ ] Mevcut tema-FOUC script'i + Umami script birlikte, çakışmasız yüklenir.
+- [x] `npm test` yeşil — `umami-script.test.tsx` `src` / `data-website-id` / `data-domains` / `strategy` değerlerini assert eder; mevcut tohumlar (i18n parite, smoke) kırılmaz.
+- [x] `next build` temiz geçer (three transpile + strict TS).
+- [x] Lokal prod/preview'da `[locale]` head'inde Umami `script.js` isteği ağ sekmesinde görülür — TR `/` (`NEXT_LOCALE=tr` cookie) + en az 1 non-TR locale (örn. `/en`).
+- [x] Mevcut tema-FOUC script'i + Umami script birlikte, çakışmasız yüklenir.
 
 ---
 
 ## Tamamlanma Kriterleri
 
-- [ ] Tüm alt görevler tamamlandı
-- [ ] Tüm test kriterleri karşılandı
-- [ ] Git commit & push yapıldı (conventional commits)
-- [ ] Bu doküman güncellendi (oturum kaydı)
-- [ ] DURUM.md + PHASE-7.md güncellendi
+- [x] Tüm alt görevler tamamlandı
+- [x] Tüm test kriterleri karşılandı
+- [x] Git commit & push yapıldı (conventional commits)
+- [x] Bu doküman güncellendi (oturum kaydı)
+- [x] DURUM.md + PHASE-7.md güncellendi
 
 ---
 
 ## Oturum Kayıtları
 
-### Oturum — [TARİH]
+### Oturum — 2026-07-01
 
-**Durum:** [doldurulacak]
+**Durum:** ✅ Tamamlandı
 
 **Yapılanlar:**
-- [doldurulacak]
+- `src/components/analytics/umami-script.tsx` (YENİ) oluşturuldu — `next/script` `<Script strategy="afterInteractive">` ile Umami tag'i spec değerleriyle render eden tek-sorumluluklu server component (`UmamiScript`). Hook yok → `"use client"` gerekmedi.
+- `src/app/[locale]/layout.tsx` `<head>`'ine `<UmamiScript />` + import eklendi (additive; tema-FOUC `<script>`'in yanına). Tüm locale'ler otomatik kapsanır.
+- `tests/umami-script.test.tsx` (YENİ) — `// @vitest-environment jsdom`, `vi.mock("next/script")` passthrough. `src`/`data-website-id`/`data-domains`/`strategy` değerlerini spec'e birebir assert eder.
+- **vitest.config.ts alias eklendi:** `@/* → ./src/*` (tsconfig `paths` yansıması). Bu, gerçek bir `@/` modülü import eden ilk component testiydi; mevcut smoke/parite testleri alias kullanmıyordu → runner'da çözülmüyordu. `fileURLToPath(new URL("./src", import.meta.url))` ile eklendi.
+
+**Test sonucu:**
+- `npm test` yeşil — 7 test (i18n parite + smoke + yeni umami). Mevcut tohumlar kırılmadı.
+- `next build` temiz — "✓ Compiled successfully in 5.0s", 0 hata/uyarı (three transpile + strict TS).
+- Prerender doğrulaması: `umami.kiwiailab.com/script.js` + `data-website-id` **5 locale'in de** (tr/en/ar/de/es) `<head>`'inde, tema-FOUC script'iyle çakışmasız (her locale: umami-ref=1, theme-fouc=1). `afterInteractive` script referansı statik HTML çıktısına dahil ediliyor.
+
+**Son Yaklaşım:** Task tamamlandı — tüm alt görevler + test kriterleri karşılandı.
+
+**Sonraki Adım Detayı:** Fazdaki sıradaki task TASK-7.02 (before/after Lighthouse perf regresyon doğrulaması). Canlı +1 panel doğrulaması bu task'ta değil (`data-domains=kiwiailab.com` preview saymaz) → verify-phase (merge-sonrası).
+
+**Not (yanlış-ev):** vitest alias tuzağı task-icra nüansı — memory değil, faz retrosuna aday (`phases/PHASE-7.md`, review-phase yazar).
 
 ---
 
