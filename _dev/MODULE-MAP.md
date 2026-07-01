@@ -138,7 +138,7 @@ M6 (SEO/Deploy) ─────────────────────>
 | P1: WebGL-dışı mobil perf kazanımları (font/JS bundle/asset/render-path; imza dokunulmaz) | M6 (+M1) | v0.2 | 6 | ✅ |
 | P2: Living Flow mobil degradasyon ayarı (DPR cap/particle/erken static; craft korunur) | M1 | v0.2 | 6 | ❌ İptal |
 | **— v0.2 analytics iş birimi (Faz 7 — site-geneli ölçüm) —** | | | | |
-| E1: Umami self-hosted analytics (`next/script`, `[locale]/layout.tsx` head, afterInteractive; pageview-only, canlıda gözle doğrulanır) | M6 | v0.2 | 7 | 🔄 |
+| E1: Umami self-hosted analytics (`next/script`, `[locale]/layout.tsx` head, afterInteractive; pageview-only, canlıda gözle doğrulanır) | M6 | v0.2 | 7 | 🟡 |
 
 **Durum simgeleri:**
 - ⬜ **Bekliyor** — Fazı henüz başlamadı
@@ -147,6 +147,8 @@ M6 (SEO/Deploy) ─────────────────────>
 - ✅ **Tamamlandı** — Tüm kabul kriterleri karşılandı, UAT'tan geçti (review-phase'de set edilir)
 - ❌ **İptal** — Faz içinde bilinçle koşulmadı/iptal edildi (kod değişmedi); gerekçe `docs/DECISIONS.md`'de
 
+> **E1 (Umami analytics) 🟡 Kısmen (Faz 7, 2026-07-01):** Kod-tarafı tam — bileşen + `[locale]/layout.tsx` head entegrasyonu + izole render testi ✅, perf regresyonsuz ✅ (7.01/7.02), UAT 1-8 ✅, 8 kalite ekseni ✅. Milestone'un **canlı gözle-doğrulama çekirdeği** (S9-10: kiwiailab.com panelinde +1) yapısal kısıt gereği (`data-domains=kiwiailab.com` preview saymaz + merge = tüm revizeyi ilk kez production'a almak) **v0.2 production release** adımına bilinçle ertelendi → o release sonrası canlıda kapanınca ✅ olur. Dürüst kayıt (sahte-geçmiş engellendi, verify re-run kanıtı); gerekçe → `phases/PHASE-7.md` + `docs/DECISIONS.md` 2026-07-01.
+>
 > **P2 (Living Flow mobil degradasyon) ❌ İptal (Faz 6, 2026-06-30):** craft-gate'te iptal — müdahale gerekçesi kanıtlı bir Lantern lab artefaktıydı (gerçek-cihaz açığı değil), imza Living Flow simüle-sayı için riske atılmadı. Kod değişmedi. Kalan brief mobil açık dürüstçe kaydedildi (`docs/DECISIONS.md` 2026-06-30). P1 (L1+L2+L3) ✅ ölçülebilir iyileşme sağladı (sürücü L3).
 
 > Modül detayları (sorumluluk, feature kabul kriterleri, edge case'ler) → `modules/MX-ModulAdi.md`
@@ -155,4 +157,4 @@ M6 (SEO/Deploy) ─────────────────────>
 
 ---
 
-**Son Güncelleme:** 2026-07-01 — discuss-phase 7: E1 (Umami self-hosted analytics) feature satırı eklendi, Faz 7'ye atandı (🔄). v0.2'nin son içerik fazı; pageview-only + afterInteractive, `[locale]/layout.tsx` head. Faz 6/5/4 iş birimleri ✅ korundu.
+**Son Güncelleme:** 2026-07-01 — review-phase 7: E1 (Umami) 🔄→🟡 (kod-tarafı+perf tam, UAT 1-8 ✅; canlı çekirdek S9-10 v0.2 production release'e ertelendi). v0.2 içerik fazları (4-7) tamam; sırada versiyon-sonu fazları.

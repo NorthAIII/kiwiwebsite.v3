@@ -25,7 +25,7 @@ Faz numaraları **global, sürekli ve append-only**'dir — versiyon değişse b
 | 4 | v0.2 erişilebilirlik (a11y 89→100) | a11y A11Y1 renk kontrastı (marka yeşili imza korunur, bağlam-özel) + A11Y2 hero `<dl>` markup + A11Y3 dil-switcher aria; ana sayfa-birincil, perf/CLS regresyonsuz | ✅ |
 | 5 | v0.2 test altyapısı (D1) | Kümülatif test harness (Vitest+RTL / Playwright+axe-core) + ilk GitHub Actions CI + tohum testler (i18n 5-dil parite + a11y regresyon `/` light+dark) | ✅ |
 | 6 | v0.2 mobil perf / LCP | Ana sayfa TR `/` mobil perf/LCP brief bütçesine (≥95 / <2.5s) yaklaştırma — brief hedef / craft tavan; önce WebGL-dışı kazanımlar (P1) sonra Living Flow degradasyon ayarı (P2); a11y=100/CLS=0/masaüstü regresyonsuz | ✅ |
-| 7 | v0.2 Umami analytics (E1) | Self-hosted Umami script'i (`next/script`, `[locale]/layout.tsx` head, afterInteractive) tüm locale'lerde pageview ölçümü; canlıda gözle doğrulanır; Faz 6 perf tabanı regresyonsuz | 🔄 |
+| 7 | v0.2 Umami analytics (E1) | Self-hosted Umami script'i (`next/script`, `[locale]/layout.tsx` head, afterInteractive) tüm locale'lerde pageview ölçümü; canlıda gözle doğrulanır; Faz 6 perf tabanı regresyonsuz | ✅ |
 
 **Durum simgeleri:**
 - 🔄 **Devam ediyor** — discuss-phase başladı (aktif faz)
@@ -77,11 +77,12 @@ Faz numaraları **global, sürekli ve append-only**'dir — versiyon değişse b
 | Faz 6 girildi (v0.2 mobil perf/LCP) | 2026-06-30 | discuss-phase 6: kapsam tartışması tamam; ana sayfa TR `/` mobil-birincil, brief hedef / craft tavan, önce WebGL-dışı → degradasyon ayarı; Sıradaki Fazlar'dan mezun, tabloya 🔄; sıradaki adım research-phase 6 |
 | Faz 6 ✅ (v0.2 mobil perf/LCP) → sonraki içerik fazı | 2026-06-30 | Milestone ✓ (ölçülebilir iyileşme: perf 84→90, LCP −440ms/−12%, sürücü L3); brief mobil açık dürüstçe kaydedildi; P2 craft-gate iptal (imza korundu); UAT 12/12, kalite 8 eksen ✅; guardrail'ler (a11y=100 çift-tema/CLS≈0/masaüstü 100/i18n parite) regresyonsuz; Versiyon Sonu Durumu içerik_fazları (değişmez); sıradaki = Umami (E1) (discuss-phase 7 promote eder) |
 | Faz 7 girildi (v0.2 Umami analytics E1) | 2026-07-01 | discuss-phase 7: kapsam tartışması tamam; pageview-only + afterInteractive + hafif render testi + merge-sonrası canlı doğrulama; `[locale]/layout.tsx` head'e `next/script`; Faz 6 perf tabanı guardrail; Sıradaki Fazlar'dan mezun, tabloya 🔄; sıradaki adım research-phase 7 |
+| Faz 7 ✅ (v0.2 Umami analytics E1) → versiyon-sonu | 2026-07-01 | Milestone kod-tarafı + perf tabanı tam (UAT 1-8 ✅, 8 kalite ekseni ✅); canlı +1 (S9-10) yapısal kısıt gereği v0.2 production release'e ertelendi (dürüst kayıt, sahte-geçmiş engellendi); Faz 6 perf/i18n/a11y guardrail regresyonsuz; v0.2 içerik fazları (4-7) tamam; Versiyon Sonu Durumu içerik_fazları (değişmez); sıradaki = teknik borç fazı (discuss-phase 8 promote eder) |
 
 <!-- KURAL: Her geçiş için TEK satır + kısa not. Geçiş gerekçesi/detayı PHASE-N.md retrospektifindedir, burada tekrar edilmez. "Önceki:" prefix veya HTML comment ile detay yığma YASAK (CLAUDE.md → Doküman Disiplini). -->
 
 ---
 
-**Son Güncelleme:** 2026-07-01 — discuss-phase 7: Faz 7 (v0.2 Umami analytics E1) girildi (🔄); kapsam tartışması tamam (pageview-only, afterInteractive, render testi, merge-sonrası canlı doğrulama). Umami Sıradaki Fazlar'dan mezun; v0.2 içerik fazları tamamlanıyor. Sıradaki adım research-phase 7.
+**Son Güncelleme:** 2026-07-01 — review-phase 7: Faz 7 ✅ (retrospektif + 8-eksen kalite kontrol; milestone kod-tarafı+perf tam, canlı +1 v0.2 production release'e ertelendi — dürüst kayıt). v0.2 içerik fazları (4-7) tamam. Sıradaki = versiyon-sonu teknik borç fazı (discuss-phase 8).
 
 <!-- KURAL: Bu satır her güncellemede ÜZERİNE YAZILIR. "Önceki:" prefix ile kümülatif yığma YASAK (CLAUDE.md → Doküman Disiplini). -->

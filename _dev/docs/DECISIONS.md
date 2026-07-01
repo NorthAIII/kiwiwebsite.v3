@@ -9,6 +9,22 @@
 
 <!-- Her yeni karar aşağıdaki formatta en üste eklenir (en yeni en üstte) -->
 
+### 2026-07-01 — v0.2 canlı-doğrulama işleri (Umami +1 dahil) tek bir bilinçli "v0.2 production release" adımına ertelenir (Faz 7)
+
+**Bağlam:** verify-phase 7. Faz 7 milestone'unun çekirdeği "Umami canlıda (kiwiailab.com) gerçek ziyaret panelinde gözle doğrulandı". Ama `data-domains=kiwiailab.com` preview deploy'larını saymaz → doğrulama yapısal olarak yalnız `main`=canlı'da yapılabilir. Kritik gerçek: `main` HEAD, çalışma branch'inin (`revize/devflow-kurulum`) **89 commit gerisinde** — tüm v0.1+v0.2 revizesi hâlâ unmerged. Yani `main`'e merge, sırf Umami'yi değil **tüm revizeyi ilk kez production'a almak** demek. (verify re-run'da "canlı +1 gördüm" iddiası kanıtla çürütüldü: `git merge-base --is-ancestor` → Umami commit'i origin/main'de değil; canlı HTML'de "umami" 0 kez.)
+
+**Seçenekler:**
+1. Sırf Faz 7 milestone'unu kapatmak için şimdi merge et (tüm revizeyi tek UAT senaryosu için production'a al).
+2. Merge/release'i ayrı, bilinçli bir "v0.2 production release" adımına ertele; Faz 7'yi kod-tarafı tam + canlı-çekirdek açık olarak dürüstçe kapat.
+
+**Karar:** Seçenek 2 (kullanıcı kararı B). Tüm revizenin production'a çıkışı ayrı ve bilinçli bir versiyon-sonu **v0.2 production release** adımıdır; tek bir UAT senaryosu bunu tetiklemez. Umami canlı +1 (UAT S9-10) + genel canlı duman testi o release sonrası kapanır. Faz 7 review ✅ ile kapandı; E1 MODULE-MAP'te 🟡 (canlı çekirdek ertelendi); S9-10 ⏳ merge-bekliyor.
+
+**Gerekçe:** "Canlıya dokunma; `main` canlı, revize `revize/...` branch'lerinde" ilkesi (CLAUDE.md → Commit Stratejisi) production'a çıkışın deliberate olmasını gerektirir — 89 commit'lik bir revizeyi bir analytics doğrulaması için erken açmak bu ilkeyle çelişir. Milestone'un canlı kısmı gizlenmedi/uydurulmadı; dürüstçe açık kaydedildi (sahte-geçmiş engellendi). Bu, "kod ekledim tamamdır deme + iddiayı kanıta bağla" disiplininin (MEMORY → Süreç Disiplinleri) doğal sonucu.
+
+**İlgili Task/Faz:** verify-phase 7 + review-phase 7 (Umami E1); detay → `phases/PHASE-7.md` UAT + Retrospektif. Canlı doğrulama disiplini → `_dev/MEMORY.md` Süreç Disiplinleri.
+
+---
+
 ### 2026-07-01 — Umami (ve genel 3rd-party script) entegrasyonu: ayrı bileşen + next/script mock render testi; preconnect ölç-önce (Faz 7)
 
 **Bağlam:** research-phase 7 (Umami E1). Spec (`docs/UMAMI-ANALYTICS.md`) `<Script>`'i doğrudan `[locale]/layout.tsx` `<head>`'ine koymayı gösteriyor. Ama discuss-phase "hafif render testi" kararı test biriminin ne olacağını açık bırakmıştı. `LocaleLayout` bir `async` server component; `next/font/google` + `next-intl/server`(`setRequestLocale`) + `notFound()` + `<html>/<head>/<body>` sürükler → Vitest/jsdom'da tam-layout render'ı kırılgan (tam da `smoke.test.tsx`'in kaçındığı tuzak). Ayrıca `<Script strategy="afterInteractive">` DOM'a effect ile enjekte eder → bare render'da senkron `<script>` düğümü çıkmayabilir.
