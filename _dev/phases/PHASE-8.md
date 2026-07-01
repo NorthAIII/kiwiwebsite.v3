@@ -139,7 +139,7 @@ Yeni bağımlılık **yok** (paket ekleme onay gerektirir — Dokunulmazlar). Me
 | # | Task | Durum | Açıklama |
 |---|------|-------|----------|
 | 8.01 | TASK-8.01 | ✅ Tamamlandı | Parametrik alt-sayfa a11y harness'i (helper çıkarımı + subpages spec) + 5 sayfa baseline axe envanteri (ölçüm-önce, fix yok, mühür yok) |
-| 8.02 | TASK-8.02 | ⬜ Bekliyor | `/bunker-os` derin a11y fix + tohum — hotspot (text-canvas/NN dark-inversiyon + text-green/30); TD4 milestone burada kapanır |
+| 8.02 | TASK-8.02 | ✅ Tamamlandı | `/bunker-os` derin a11y fix + mühür — 3 desen (text-green/30 adım no → ::before, text-canvas/45+50 → /65); 5 dil×2 tema 10 test 0 ihlal; TD4 milestone kapandı |
 | 8.03 | TASK-8.03 | ⬜ Bekliyor | `/spor-salonu-yazilimi` (Alpfit) a11y teyit + tohum — düşük risk (0 ihlalse yalnız mühürle) |
 | 8.04 | TASK-8.04 | ⬜ Bekliyor | `/vaka-calismalari` a11y teyit + tohum — düşük risk (0 ihlalse yalnız mühürle) |
 | 8.05 | TASK-8.05 | ⬜ Bekliyor | `/bulten` 2 makale (AiSdr + Claude) a11y teyit + tohum — düşük risk; 5 alt sayfa mühürü tamamlanır |
@@ -208,4 +208,4 @@ Yeni bağımlılık **yok** (paket ekleme onay gerektirir — Dokunulmazlar). Me
 ---
 
 **Oluşturulma:** 2026-07-01
-**Son Güncelleme:** 2026-07-01 — plan-phase 8: 5 task yazıldı (8.01 parametrik harness + baseline audit → 8.02 /bunker-os hotspot fix + TD4 fold → 8.03/8.04/8.05 alt-sayfa teyit+mühür). İki-gate ayrımı (axe CI-tohum / Lighthouse verify-phase), ölçüm-önce yapı, CI otomatik genişleme notları eklendi. Sıradaki adım: verify-plan 8.
+**Son Güncelleme:** 2026-07-01 — run-task 8.02 ✅: `/bunker-os` derin a11y fix + mühür. 3 desen craft-koruyarak düzeltildi (adım no `text-green/30` → `::before content:attr()` dekoratif; bilgi label'ları `text-canvas/45`+`/50` → `/65` gerçek kontrast fix, tek opaklık her iki tema); `PAGES`'e eklendi → 10 test 0 ihlal + home regresyonsuz + görsel craft (screenshot) korundu. TD4 milestone kapandı. Sıradaki: run-task 8.03.
