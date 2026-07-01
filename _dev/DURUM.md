@@ -1,6 +1,6 @@
 # DURUM — Proje Dashboard
 
-**Son Güncelleme:** 2026-07-01 — discuss-phase 7 ✅: Faz 7 (Umami analytics E1) kapsam tartışması tamam. Kararlar: pageview-only + `afterInteractive` + hafif render testi + merge-sonrası canlı doğrulama (data-domains preview'ı saymaz, main=canlı). Faz 6 perf tabanı guardrail. PHASES/MODULE-MAP promosyonu yapıldı. Sıradaki adım: research-phase 7.
+**Son Güncelleme:** 2026-07-01 — research-phase 7 ✅: Faz 7 (Umami E1) teknik araştırma tamam. Kararlar: ayrı bileşen `umami-script.tsx` + izole render testi (`vi.mock("next/script")`); preconnect ölç-önce (eklenmez); before/after Lighthouse Faz 6 tabanına karşı. `afterInteractive` sürdürülür. Bulgular PHASE-7 + DECISIONS'a yazıldı. Sıradaki adım: plan-phase 7.
 
 <!-- KURAL: Bu satır her oturum sonunda ÜZERİNE YAZILIR — tek satır, tek cümle. "Önceki:" / "Eski:" prefix ile kümülatif yığma YASAK; HTML comment'e sarma da yasak (CLAUDE.md → Doküman Disiplini). Tarih + kısa özet yeterli; detay için git log + ilgili PHASE/TASK dokümanları. -->
 
@@ -9,9 +9,9 @@
 ## Aktif Faz
 
 **Faz:** 7 — Umami analytics (E1) (v0.2 son içerik fazı; discuss-phase 7 ✅ ile kapsam damgalandı). Faz 6 (mobil perf/LCP) ✅; Faz 5 (test altyapısı D1) ✅; Faz 4 (v0.2 a11y 89→100) ✅.
-**Adım:** research → `/devflow:research-phase 7` (yeni oturum): Umami entegrasyonunun teknik araştırması. Kapsam netleşti (pageview-only, afterInteractive, `[locale]/layout.tsx` head, render testi, merge-sonrası canlı doğrulama). Spec: `docs/UMAMI-ANALYTICS.md`. Disiplin: canlıda gerçekten saydığı gözle doğrulanır (MEMORY Süreç Disiplinleri).
-**İlerleme:** **discuss-phase 7 ✅** (2026-07-01) — kapsam tartışması tamam; 4 karar (pageview-only / afterInteractive / hafif render testi / merge-sonrası canlı doğrulama). Çapraz konu: Faz 6 mobil perf tabanı (perf 90/LCP 3164ms; masaüstü 100) regresyonsuz kalmalı — before/after perf kontrolü taşınacak. PHASES + MODULE-MAP promosyonu yapıldı (E1 → Faz 7 🔄). Versiyon Sonu Durumu içerik_fazları (değişmez); Umami bitince versiyon-sonu sabit fazları gelir. Devralınan sahipli borç (sonraki a11y/alt-sayfa fazına): alt-sayfa derin a11y + `text-pulse` süpürmesi; brief mobil açığın nihai doğrulaması gerçek-cihaz/Vercel field gerektirir (metodolojik duvar).
-**Son Faz Dokümanı:** `phases/PHASE-7.md` (🔄 — Kapsam Tartışması yazıldı; research bekliyor)
+**Adım:** plan → `/devflow:plan-phase 7` (yeni oturum): task yazımı. Araştırma netleşti (ayrı bileşen `src/components/analytics/umami-script.tsx` + `<UmamiScript/>` layout head'inde; izole render testi `vi.mock("next/script")`; preconnect eklenmez, ölç-önce; before/after Lighthouse). Spec: `docs/UMAMI-ANALYTICS.md`; bulgular PHASE-7 + DECISIONS. Disiplin: canlıda gerçekten saydığı gözle doğrulanır (MEMORY Süreç Disiplinleri).
+**İlerleme:** **research-phase 7 ✅** (2026-07-01) — teknik araştırma tamam; 5 teknik karar (ayrı bileşen / izole render testi + next-script mock / afterInteractive sürdürülür / preconnect ölç-önce / before-after Lighthouse Faz 6 tabanına karşı). Çapraz konu: Faz 6 mobil perf tabanı (perf 90/LCP 3164ms; masaüstü 100) regresyonsuz kalmalı — before/after perf kontrolü taşınacak. Versiyon Sonu Durumu içerik_fazları (değişmez); Umami bitince versiyon-sonu sabit fazları gelir. Devralınan sahipli borç (sonraki a11y/alt-sayfa fazına): alt-sayfa derin a11y + `text-pulse` süpürmesi; brief mobil açığın nihai doğrulaması gerçek-cihaz/Vercel field gerektirir (metodolojik duvar).
+**Son Faz Dokümanı:** `phases/PHASE-7.md` (🔄 — Kapsam Tartışması + Araştırma Bulguları yazıldı; plan bekliyor)
 
 ---
 
@@ -28,9 +28,9 @@
 
 ## Aktif Task
 
-**Task:** Aktif task yok — Faz 7 (Umami E1) discuss-phase'den geçti, henüz plan-phase yok. Task'lar research→plan sonrası üretilecek.
-**Durum:** Faz 7 aktif, adım=research. discuss-phase 7 ✅ (2026-07-01). Sıradaki: research-phase 7.
-**İlerleme:** Faz 7 kapsam damgalandı (PHASE-7.md Kapsam Tartışması ✅; PHASES + MODULE-MAP promosyonu yapıldı). Task listesi plan-phase 7'de dolacak.
+**Task:** Aktif task yok — Faz 7 (Umami E1) research-phase'den geçti, henüz plan-phase yok. Task'lar plan-phase 7'de üretilecek.
+**Durum:** Faz 7 aktif, adım=plan. research-phase 7 ✅ (2026-07-01). Sıradaki: plan-phase 7.
+**İlerleme:** Faz 7 araştırma tamam (PHASE-7.md Araştırma Bulguları ✅; DECISIONS'a karar girdisi eklendi). Task listesi plan-phase 7'de dolacak.
 
 ---
 
@@ -40,7 +40,7 @@
 
 | # | Task | Durum | Açıklama |
 |---|------|-------|----------|
-| — | — | — | Aktif faz task'ı yok — `/devflow:research-phase 7` → `plan-phase 7` sonrası planlanır (Umami E1). |
+| — | — | — | Aktif faz task'ı yok — `/devflow:plan-phase 7` sonrası planlanır (Umami E1). |
 
 ---
 
@@ -62,12 +62,12 @@
 
 ## Hızlı Erişim
 
-**Aktif Task:** Yok — Faz 7 discuss ✅. Sıradaki adım: `/devflow:research-phase 7` (Umami E1 teknik araştırma).
-**Aktif Faz:** 7 — Umami analytics (E1) · adım=research; Faz 6 ✅; Faz 5 ✅; Faz 4 ✅; Aktif Versiyon v0.2, Versiyon Sonu Durumu: içerik_fazları
+**Aktif Task:** Yok — Faz 7 research ✅. Sıradaki adım: `/devflow:plan-phase 7` (Umami E1 task yazımı).
+**Aktif Faz:** 7 — Umami analytics (E1) · adım=plan; Faz 6 ✅; Faz 5 ✅; Faz 4 ✅; Aktif Versiyon v0.2, Versiyon Sonu Durumu: içerik_fazları
 **Task Sistemi:** `tasks/TASKS-README.md`
 **PRD (karar kaynağı):** `PRD/VIZYON.md` · `PRD/VERSIONS.md` · `PRD/features/`
 **Revize Backlog (bilinen sorunlar):** `docs/REVIZE-BACKLOG.md`
 
 ---
 
-**Son Güncelleme:** 2026-06-30 — review-phase 6 ✅: Faz 6 (mobil perf/LCP) donduruldu; retrospektif + kalite kontrol (8 eksen ✅) + sonuç yazıldı; milestone karşılandı (ölçülebilir iyileşme, sürücü L3), brief mobil açık dürüstçe kaydedildi, P2 craft-gate iptal; guardrail'ler regresyonsuz. Sıradaki içerik fazı Umami (E1) → `/devflow:discuss-phase 7`.
+**Son Güncelleme:** 2026-07-01 — research-phase 7 ✅: Faz 7 (Umami E1) teknik araştırma tamam. Ayrı bileşen + izole render testi (next-script mock) + preconnect ölç-önce kararlaştırıldı; bulgular PHASE-7'ye, karar DECISIONS'a yazıldı. Sıradaki adım: `/devflow:plan-phase 7`.

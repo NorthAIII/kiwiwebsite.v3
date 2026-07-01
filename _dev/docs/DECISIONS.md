@@ -9,6 +9,18 @@
 
 <!-- Her yeni karar aşağıdaki formatta en üste eklenir (en yeni en üstte) -->
 
+### 2026-07-01 — Umami (ve genel 3rd-party script) entegrasyonu: ayrı bileşen + next/script mock render testi; preconnect ölç-önce (Faz 7)
+
+**Bağlam:** research-phase 7 (Umami E1). Spec (`docs/UMAMI-ANALYTICS.md`) `<Script>`'i doğrudan `[locale]/layout.tsx` `<head>`'ine koymayı gösteriyor. Ama discuss-phase "hafif render testi" kararı test biriminin ne olacağını açık bırakmıştı. `LocaleLayout` bir `async` server component; `next/font/google` + `next-intl/server`(`setRequestLocale`) + `notFound()` + `<html>/<head>/<body>` sürükler → Vitest/jsdom'da tam-layout render'ı kırılgan (tam da `smoke.test.tsx`'in kaçındığı tuzak). Ayrıca `<Script strategy="afterInteractive">` DOM'a effect ile enjekte eder → bare render'da senkron `<script>` düğümü çıkmayabilir.
+
+**Karar:** (1) Umami küçük bir sunum bileşenine ayrılır: `src/components/analytics/umami-script.tsx`; layout `<head>`'inde `<UmamiScript />`. (2) Render testi bu izole bileşeni `vi.mock("next/script")` passthrough ile test eder (`tests/umami-script.test.tsx`, jsdom): `src`/`data-website-id`/`data-domains`/`strategy=afterInteractive` assert edilir — next/script'in gerçek enjeksiyonu test edilmez (Next'in işi, canlıda doğrulanır). (3) Yeni origin `umami.kiwiailab.com` için preconnect/dns-prefetch **eklenmez** — deferred analytics için kazanç marjinal, ilk-yükte LCP'yi hafif kötüleştirebilir; before/after Lighthouse regresyon gösterirse veri-güdümlü yeniden değerlendirilir.
+
+**Gerekçe:** Ayrı bileşen QUALITY §5 (modülerlik/tek-sorumluluk) ile hizalı ve testi deterministik kılar; "bizim kontrol ettiğimiz değerler doğru mu"yu test eder (anlamlı birim), 3rd-party iç davranışını değil. preconnect "ölç-önce" ILKELER craft/minimalizm + Faz 6 tabanı regresyon-yasağıyla uyumlu (YAGNI). `data-website-id`/URL/`data-domains` sır değil (yayınlanan HTML'de görünür) → public repo'da tutulur.
+
+**İlgili Task/Faz:** research-phase 7 (Umami E1); detay → `phases/PHASE-7.md` Araştırma Bulguları. Test konvansiyonu → `docs/TESTING.md`. Canlı doğrulama disiplini → `_dev/MEMORY.md` Süreç Disiplinleri.
+
+---
+
 ### 2026-06-30 — Faz 6 sonucu: lever'lar mobil perf/LCP'yi ölçülebilir iyileştirdi (sürücü L3); brief mobil bütçe hâlâ açık (TASK-6.07)
 
 **Bağlam:** run-task TASK-6.07 (Faz 6 faz-sonu otoriter ölçüm + kanonik artefakt + guardrail regresyon). 6.04, ağır-SwiftShader devcontainer'ında (perf 62 / TBT 1842ms) L1+L2'nin ölçülebilir Lantern delta üretmediğini ve "lab lever ilerlemesini LCP ekseninde güvenilir ölçemez; tek kalan lab-görünür lever = WebGL iş yükünü azaltmak (P2)" sonucuna varmıştı. 6.07 ölçümü **temsilî ortamda** (node 20.20.2 + Chrome 150, flags birebir) yapıldı; bu ortamın lever-öncesi baseline'ı (aynı ortamda `git checkout e5a4ef1 -- src` ile yeniden build edilip ölçüldü) **perf 84 / LCP 3604ms / TBT 261ms** verdi — Faz-4 ortamıyla birebir. Yani 6.01/6.04'ün şişkinliği o devcontainer'a özgü bir anomaliymiş; 6.07'de perf/TBT de Faz-4 ile karşılaştırılabilir oldu, faz-içi before/after tek tutarlı ortamda apples-to-apples yapılabildi.

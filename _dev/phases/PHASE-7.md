@@ -64,7 +64,50 @@ Bu faz alışılmadık derecede iyi tanımlı: `docs/UMAMI-ANALYTICS.md` spec'i 
 
 ## Araştırma Bulguları
 
-> Bu bölüm `/devflow:research-phase` oturumunda doldurulur.
+> `/devflow:research-phase 7` oturumunda dolduruldu (2026-07-01).
+
+Faz olağandışı iyi tanımlı: `docs/UMAMI-ANALYTICS.md` uygulanacak kodu/değerleri/yerleşimi birebir veriyor. Araştırma "hangi kütüphane" değil, **entegrasyonun projeye özgü teknik riskleri ve test edilebilirliği** üzerine yürüdü. Kod zemini incelendi: `next/script` repoda hiç kullanılmıyor (ilk kullanım); `[locale]/layout.tsx` `<head>`'inde zaten bir tema-FOUC `<script>` var.
+
+### Değerlendirilen Yaklaşımlar
+
+**A. Yerleşim mekanizması — `next/script` `<Script>` (spec) vs düz `<script defer>`**
+- `next/script <Script strategy="afterInteractive">`: App Router idiomatik yolu; SPA geçişlerini Umami otomatik sayar. `<Script>` client component'tir ama server olan layout'un `<head>`'ine child olarak konabilir; `afterInteractive` yerleşim kısıtı taşımaz (yalnız `beforeInteractive` root layout'a zorlar — bizi bağlamıyor).
+- Düz `<script defer>`: spec'in "çatıdan bağımsız alternatifi"; işlevsel olarak eşdeğer ama Next'in script yaşam-döngüsü/optimizasyonu dışında kalır.
+- **Seçilen: `next/script <Script>`** — mevcut stack ile idiomatik, App Router entegrasyonu (route değişiminde otomatik pageview) hazır gelir.
+
+**B. Umami'nin kod yerleşimi — ayrı bileşen vs inline `<Script>`** (kullanıcı kararı 2026-07-01)
+- Ayrı bileşen (`src/components/analytics/umami-script.tsx`): tek-sorumluluk, layout `<head>`'inde `<UmamiScript />`. Render testi bu küçük bileşeni **izole** eder → next-intl/font/async sürüklemez.
+- Inline `<Script>`: daha az dosya; ama test birimi ya kırılgan tam-layout render'ı ya da assert edilecek izole birim yokluğu sorunu doğurur.
+- **Seçilen: ayrı bileşen** — QUALITY §5 (modülerlik) ile hizalı; test edilebilirliği robust kılar (aşağıda C).
+
+**C. Render testi stratejisi — tam layout render vs izole bileşen + mock**
+- Tam `LocaleLayout` render'ı Vitest/jsdom'da kırılgan: (a) `async` server component, (b) `next/font/google` SWC font-loader ister, (c) `next-intl/server`+`setRequestLocale` request context ister, (d) `notFound()`, (e) `<html>/<head>/<body>` jsdom document'ine nest edilir. Tam da `smoke.test.tsx`'in kaçındığı tuzak (`docs/TESTING.md` §3). Ayrıca `<Script afterInteractive>` DOM'a effect ile enjekte eder → bare render'da senkron `<script>` düğümü çıkmayabilir (flaky).
+- İzole bileşen + `vi.mock("next/script")` passthrough: `<UmamiScript />` render edilir, mock `<script {...props}>` döndürür, test `src`/`data-website-id`/`data-domains`/`strategy` değerlerini assert eder. **Bizim kontrol ettiğimizi** (doğru değerler geçiliyor mu) test eder; next/script enjeksiyonu Next'in sorumluluğu → canlıda doğrulanır.
+- **Seçilen: izole bileşen + next/script mock** — Faz 5 kümülatif konvansiyonuyla (jsdom katmanı, `// @vitest-environment jsdom`) uyumlu, deterministik.
+
+**D. Yeni origin için preconnect/dns-prefetch — eklensin mi?**
+- `umami.kiwiailab.com` yeni bir origin (DNS+TLS). preconnect bağlantıyı erkene çekebilir ama deferred bir analytics script için kazanç marjinal; ilk-yükte bağlantı yarışına girip LCP'yi hafif **kötüleştirebilir**.
+- **Seçilen: ölç-önce, ekleme (YAGNI)** — before/after Lighthouse regresyon gösterirse veri-güdümlü yeniden değerlendir. ILKELER craft/minimalizm + "korunan taban regresyon yasağı" ile hizalı.
+
+### Kullanılacak Araçlar/Kütüphaneler
+- `next/script` (`next@^15.3`, zaten kurulu) — `<Script strategy="afterInteractive">`; repoda ilk kullanım.
+- Vitest + `@testing-library/react` + jsdom (Faz 5 harness) — render testi; `vi.mock` ile next/script izolasyonu.
+- Lighthouse 13.3.0 (npx-cache, devcontainer kurulumu → MEMORY) — before/after perf; Faz 6 tabanına karşı.
+
+### Dikkat Edilecekler
+- **`<Script afterInteractive>` senkron DOM düğümü garantisi yok** → render testi next/script'i **mock**'lamalı; gerçek enjeksiyonu test etme (Next'in işi, canlıda doğrula). (Kaynak: yeni bileşen `src/components/analytics/umami-script.tsx` + test `tests/umami-script.test.tsx` — ikisi de bu fazda yaratılacak.)
+- **Değerler dış kaynaklı, kodda henüz yok:** `data-website-id=c7031c49-5ccd-4b93-a82d-bba895ee4f2e`, `src=https://umami.kiwiailab.com/script.js`, `data-domains=kiwiailab.com` → **dış** (self-hosted Umami sunucusu/dashboard'da tanımlı; `docs/UMAMI-ANALYTICS.md` + bu faz dokümanında kayıtlı; grep ile `src/` altında **yok** olduğu teyit edildi). Sır değil (yayınlanan HTML'de görünür), public repo'da tutulabilir. Slot değil, config sabiti.
+- **`data-domains=kiwiailab.com` → preview'lar sayılmaz:** canlı doğrulama yapısal olarak **merge-sonrası** (main=canlı). Preview'da yalnız script'in **yüklendiği** (network sekmesi) görülür; +1 sayım main deploy sonrası kiwiailab.com'da doğrulanır.
+- **Perf ölçüm disiplini (MEMORY):** TR `/` için `NEXT_LOCALE=tr` cookie şart (yoksa `/en` ölçülür); her koşu öncesi `cat /proc/loadavg` (host yükü perf/TBT'yi bozar, a11y/CLS'yi değil); software-GL ortamı perf/TBT'yi şişirir → baseline'ı **aynı ortamda** sabitle. Faz 6 tabanı: mobil perf 90/LCP 3164ms, masaüstü 100/LCP 0.69s, CLS≈0.
+- **404 sayımı yok:** global `not-found.tsx` `[locale]/layout.tsx`'ten geçmez → 404 sayılmaz (spec kabul ediyor, ihmal edilebilir; kapsam dışı).
+- **Adblocker kaçağı:** uBlock/Brave `script.js`'i eler → %100 hassasiyet beklenmez (kabul; kapsam dışı).
+
+### Teknik Kararlar
+- **Ayrı bileşen `src/components/analytics/umami-script.tsx`** — layout `<head>`'inde `<UmamiScript />` (kullanıcı kararı; modülerlik + test edilebilirlik).
+- **Render testi = izole bileşen + `vi.mock("next/script")`** — `tests/umami-script.test.tsx`, `// @vitest-environment jsdom`; `src`/`data-website-id`/`data-domains`/`strategy` assert edilir.
+- **`strategy="afterInteractive"`** — discuss-phase kararı sürdürülür (ölçüm doğruluğu; perf regresyonsuz doğrulanacak).
+- **preconnect/dns-prefetch eklenmez (şimdilik)** — ölç-önce; before/after regresyon gösterirse yeniden değerlendir.
+- **before/after Lighthouse** — mobil+masaüstü, TR `/` cookie'li, Faz 6 tabanına karşı; guardrail regresyon yasağı.
 
 ---
 
@@ -107,6 +150,4 @@ Bu faz alışılmadık derecede iyi tanımlı: `docs/UMAMI-ANALYTICS.md` spec'i 
 ---
 
 **Oluşturulma:** 2026-07-01
-**Son Güncelleme:** 2026-07-01 — discuss-phase 7: kapsam tartışması tamamlandı (Umami E1; pageview-only, afterInteractive, render testi, merge-sonrası canlı doğrulama).
-</content>
-</invoke>
+**Son Güncelleme:** 2026-07-01 — research-phase 7: araştırma bulguları yazıldı (ayrı bileşen `umami-script.tsx` + izole render testi/next-script mock; preconnect ölç-önce; before/after Lighthouse Faz 6 tabanına karşı).
