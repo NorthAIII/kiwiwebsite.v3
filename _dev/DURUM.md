@@ -1,6 +1,6 @@
 # DURUM — Proje Dashboard
 
-**Son Güncelleme:** 2026-07-01 — plan-phase 7 ✅: Faz 7 (Umami E1) 2 task'a bölündü. 7.01 = bileşen (`umami-script.tsx`) + `[locale]/layout.tsx` head entegrasyonu + izole render testi; 7.02 = before/after Lighthouse perf regresyon doğrulaması (Faz 6 tabanına karşı). Canlı +1 doğrulaması kod task'ı değil → verify-phase (merge-sonrası). Sıradaki adım: verify-plan 7.
+**Son Güncelleme:** 2026-07-01 — verify-plan 7 ✅: 2 task fresh context ile doğrulandı (referans gerçeklik-kontrolü + milestone/gereksinim/kalite/tutarlılık). Mekanik düzeltme 0, yapısal değişiklik 0 — plan temiz. Adım=task; aktif task TASK-7.01. Sıradaki adım: run-task 7.01 (yeni oturum).
 
 <!-- KURAL: Bu satır her oturum sonunda ÜZERİNE YAZILIR — tek satır, tek cümle. "Önceki:" / "Eski:" prefix ile kümülatif yığma YASAK; HTML comment'e sarma da yasak (CLAUDE.md → Doküman Disiplini). Tarih + kısa özet yeterli; detay için git log + ilgili PHASE/TASK dokümanları. -->
 
@@ -9,7 +9,7 @@
 ## Aktif Faz
 
 **Faz:** 7 — Umami analytics (E1) (v0.2 son içerik fazı; discuss-phase 7 ✅ ile kapsam damgalandı). Faz 6 (mobil perf/LCP) ✅; Faz 5 (test altyapısı D1) ✅; Faz 4 (v0.2 a11y 89→100) ✅.
-**Adım:** verify-plan → `/devflow:verify-plan 7` (yeni oturum): plan review/doğrulama. plan-phase 7 ✅ ile 2 task yazıldı (7.01 bileşen+layout+izole render testi; 7.02 before/after perf regresyon). Spec: `docs/UMAMI-ANALYTICS.md`; kararlar PHASE-7 + DECISIONS. Disiplin: canlıda gerçekten saydığı gözle doğrulanır (MEMORY Süreç Disiplinleri) → milestone çekirdeği, verify-phase (merge-sonrası).
+**Adım:** task → `/devflow:run-task` (yeni oturum): ilk task TASK-7.01. verify-plan 7 ✅ (2026-07-01) — 2 task fresh context ile doğrulandı, sorun yok (mekanik 0 / yapısal 0). Spec: `docs/UMAMI-ANALYTICS.md`; kararlar PHASE-7 + DECISIONS. Disiplin: canlıda gerçekten saydığı gözle doğrulanır (MEMORY Süreç Disiplinleri) → milestone çekirdeği, verify-phase (merge-sonrası).
 **İlerleme:** **plan-phase 7 ✅** (2026-07-01) — 2 task üretildi. 7.01 (bileşen `umami-script.tsx` + `[locale]/layout.tsx` head + izole render testi/next-script mock) · 7.02 (before/after Lighthouse perf regresyon doğrulaması, Faz 6 tabanına karşı; preconnect ölç-önce). Canlı +1 doğrulaması kod task'ı değil (data-domains=kiwiailab.com preview saymaz) → verify-phase. Çapraz konu: Faz 6 mobil perf tabanı (perf 90/LCP 3164ms; masaüstü 100) regresyonsuz kalmalı (7.02 guardrail). Versiyon Sonu Durumu içerik_fazları (değişmez); Umami bitince versiyon-sonu sabit fazları gelir. Devralınan sahipli borç (sonraki a11y/alt-sayfa fazına): alt-sayfa derin a11y + `text-pulse` süpürmesi; brief mobil açığın nihai doğrulaması gerçek-cihaz/Vercel field gerektirir (metodolojik duvar).
 **Son Faz Dokümanı:** `phases/PHASE-7.md` (🔄 — Kapsam + Araştırma + Task Listesi yazıldı; verify-plan bekliyor)
 
@@ -28,9 +28,9 @@
 
 ## Aktif Task
 
-**Task:** Aktif task yok — Faz 7 (Umami E1) plan-phase'den geçti, task'lar yazıldı ama henüz çalıştırılmadı (verify-plan bekliyor). İlk task: TASK-7.01.
-**Durum:** Faz 7 aktif, adım=verify-plan. plan-phase 7 ✅ (2026-07-01). Sıradaki: verify-plan 7 → sonra run-task 7.01.
-**İlerleme:** 2 task yazıldı (`tasks/TASK-7.01.md`, `tasks/TASK-7.02.md`). Planlama oturumu; task çalıştırılmadı.
+**Task:** TASK-7.01 (aktif — bekliyor) — Umami bileşeni (`umami-script.tsx` YENİ) + `[locale]/layout.tsx` head entegrasyonu + izole render testi (`vi.mock("next/script")`). verify-plan'den geçti, çalıştırılmayı bekliyor.
+**Durum:** Faz 7 aktif, adım=task. verify-plan 7 ✅ (2026-07-01) — plan temiz. Sıradaki: run-task 7.01 (yeni oturum).
+**İlerleme:** 2 task yazıldı + doğrulandı (`tasks/TASK-7.01.md`, `tasks/TASK-7.02.md`). Task çalıştırılmadı.
 
 ---
 
@@ -63,12 +63,12 @@
 
 ## Hızlı Erişim
 
-**Aktif Task:** Yok — Faz 7 plan ✅ (2 task yazıldı). Sıradaki adım: `/devflow:verify-plan 7` (plan review).
-**Aktif Faz:** 7 — Umami analytics (E1) · adım=verify-plan; Faz 6 ✅; Faz 5 ✅; Faz 4 ✅; Aktif Versiyon v0.2, Versiyon Sonu Durumu: içerik_fazları
+**Aktif Task:** TASK-7.01 (bekliyor) — verify-plan ✅. Sıradaki adım: `/devflow:run-task` (yeni oturum).
+**Aktif Faz:** 7 — Umami analytics (E1) · adım=task; Faz 6 ✅; Faz 5 ✅; Faz 4 ✅; Aktif Versiyon v0.2, Versiyon Sonu Durumu: içerik_fazları
 **Task Sistemi:** `tasks/TASKS-README.md`
 **PRD (karar kaynağı):** `PRD/VIZYON.md` · `PRD/VERSIONS.md` · `PRD/features/`
 **Revize Backlog (bilinen sorunlar):** `docs/REVIZE-BACKLOG.md`
 
 ---
 
-**Son Güncelleme:** 2026-07-01 — plan-phase 7 ✅: Faz 7 (Umami E1) 2 task'a bölündü (7.01 bileşen+layout+izole render testi; 7.02 before/after perf regresyon doğrulaması). Task dokümanları yazıldı; task çalıştırılmadı. Sıradaki adım: `/devflow:verify-plan 7`.
+**Son Güncelleme:** 2026-07-01 — verify-plan 7 ✅: 2 task fresh context ile doğrulandı (sorun yok, mekanik 0 / yapısal 0). Adım=task; aktif task TASK-7.01. Sıradaki adım: `/devflow:run-task` (TASK-7.01).
