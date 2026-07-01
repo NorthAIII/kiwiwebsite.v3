@@ -1,6 +1,6 @@
 # DURUM — Proje Dashboard
 
-**Son Güncelleme:** 2026-07-01 — run-task 8.05 ✅: `/bulten` 2 makale a11y teyit + mühür → **5 alt sayfanın tamamı mühürlü**. Baseline (0 ihlal) doğrulandı, kontrast fix yok; ArticleClaude'da RTL craft fix (physical→logical: `ml-2`→`ms-2`, `text-right`→`text-end`, LTR birebir aynı). **52 test** (home 2 + bunker-os 10 + gym 10 + vaka 10 + bülten 20) 0 ihlal + AR `dir=rtl` + MISSING_MESSAGE 0 + screenshot craft onayı. **Faz 8 tüm tasklar bitti → adım=verify.**
+**Son Güncelleme:** 2026-07-01 — **verify-phase 8:** UAT 12 senaryo → **11 geçti / 1 kaldı**. Otomatik: CI (HEAD) `fast`+`a11y` success · security-review temiz · e2e 52 test 0 ihlal · Lighthouse home + 3 alt sayfa a11y=100. **Bulgu (UAT #3):** 2 bülten makalesi Lighthouse a11y=**98** — sayfa `<main>` landmark'ı yok (`landmark-one-main`, axe WCAG-tag suite `best-practice` kuralını görmez → 8.05 mührü kaçırdı). → **TASK-8.06** (her iki bülten sayfasına `<main>`, a11y 98→100, sıfır görsel değişim). **Adım=verify→task** (düzeltme sonrası verify-phase 8 baştan koşulur).
 
 <!-- KURAL: Bu satır her oturum sonunda ÜZERİNE YAZILIR — tek satır, tek cümle. "Önceki:" / "Eski:" prefix ile kümülatif yığma YASAK; HTML comment'e sarma da yasak (CLAUDE.md → Doküman Disiplini). Tarih + kısa özet yeterli; detay için git log + ilgili PHASE/TASK dokümanları. -->
 
@@ -9,9 +9,9 @@
 ## Aktif Faz
 
 **Faz:** 8 — v0.2 versiyon-sonu **teknik borç kapatma** fazı (kapsam discuss-phase 8'de damgalandı). Faz 7 (Umami E1) ✅; Faz 6 (mobil perf/LCP) ✅; Faz 5 (test altyapısı D1) ✅; Faz 4 (v0.2 a11y 89→100) ✅ — v0.2 içerik fazları (4-7) tamamlandı.
-**Adım:** verify → Faz 8'in tüm taskları tamamlandı (8.01→8.05 ✅); sıradaki adım **verify-phase 8** (UAT: 5 alt sayfa çift-tema Lighthouse a11y=100 manuel sweep + axe 0 mühür teyidi). Faz 8 kapsamı: alt-sayfa derin a11y (5 alt sayfa, 5 dil/AR RTL, ana sayfa çıtası a11y=100 çift-tema + axe WCAG-AA 0 light+dark) + kümülatif a11y tohumu/CI. Task yapısı: 8.01 harness+audit ✅ → 8.02 /bunker-os fix ✅ (TD4 fold kapandı) → 8.03 /spor-salonu-yazilimi ✅ (0 ihlal) → 8.04 /vaka-calismalari ✅ (0 ihlal) → 8.05 /bulten 2 makale ✅ (0 ihlal + ArticleClaude RTL craft fix).
-**İlerleme:** **run-task 8.05** (2026-07-01) — `/bulten/ai-sdr-araclari` + `/bulten/claude-opus-4-8-fable-5` baseline (0 ihlal) doğrulandı → kontrast fix yok, iki sayfa `PAGES`'e mühürlendi → **5 alt sayfanın tamamı harness'te**. İki bileşen temiz: gövde `text-ink-soft`/`text-ink-faint` (Faz 4 global fix mirası, Bulgu 2); `text-green` etiket kontrast geçer; `text-canvas` yalnız `bg-ink` CTA. **RTL craft fix (ArticleClaude):** model tablosunda physical prop (`ml-2` not boşluğu RTL'de yanlış tarafa düşüyordu + `text-right` ×4) proje konvansiyonu gereği logical'a çevrildi (`ms-2`/`text-end`) — LTR birebir aynı (screenshot teyit), RTL doğru aynalanır, sıfır risk. ArticleAiSdr dokunulmadı (grep false-positive; `flex`/`justify-between`/`gap` logical-güvenli). **52 e2e test** (home 2 + bunker-os 10 + gym 10 + vaka 10 + bülten 20) 0 ihlal + vitest 7. AR `/ar/bulten/*` `dir="rtl"` (prerender+runtime) + MISSING_MESSAGE 0 + screenshot (TR light + AR dark) craft/aynalama onayı. **Bekleyen versiyon-sonu aksiyonu:** v0.2 production release (tüm revize `main`'e ilk merge) — Umami canlı +1 (S9-10) o adımda kapanır. **Kapsam dışı:** brief mobil perf (gerçek-cihaz), TB-C npm audit.
-**Son Faz Dokümanı:** `phases/PHASE-8.md` (🔄 Devam ediyor — 5 alt-sayfa mühürlendi; sıradaki verify-phase 8)
+**Adım:** task → verify-phase 8 koşuldu, 1 düzeltme task'ı (8.06) çıktı; sıradaki adım **run-task 8.06** (yeni oturum), sonra **verify-phase 8 yeniden koşulur** (tüm kontroller baştan). Faz 8 kapsamı: alt-sayfa derin a11y (5 alt sayfa, 5 dil/AR RTL, ana sayfa çıtası a11y=100 çift-tema + axe WCAG-AA 0 light+dark) + kümülatif a11y tohumu/CI. Task yapısı: 8.01 harness+audit ✅ → 8.02 /bunker-os fix ✅ (TD4 fold kapandı) → 8.03 /spor-salonu-yazilimi ✅ → 8.04 /vaka-calismalari ✅ → 8.05 /bulten 2 makale ✅ → **8.06 bülten `<main>` landmark ⬜** (verify bulgusu).
+**İlerleme:** **verify-phase 8** (2026-07-01) — UAT 12 senaryo, **11 geçti / 1 kaldı**. Otomatik kontroller: CI (HEAD 39a4abc) `fast`+`a11y` job success (REST API teyit); security-review temiz (sunum/a11y katmanı, yeni yüzey yok); npm audit kapsam dışı (TB-C). Otonom testler: `test:e2e` **52/52 yeşil** (5 alt sayfa×5 dil×2 tema=50 + home 2, 0 ihlal); Vitest 7 yeşil (parite+smoke); build temiz 0 MISSING_MESSAGE; 5 AR prerender `dir="rtl"`; fail-on-regression kanıtlandı (kasıtlı ihlal → test kırıldı → geri alındı); BunkerShowcase + ArticleClaude craft screenshot onayı (marka-yeşili/RTL aynalama korundu). **Lighthouse a11y:** home + `/bunker-os` + `/spor-salonu-yazilimi` + `/vaka-calismalari` = **100**; **2 bülten makalesi = 98** (`landmark-one-main` — sayfa `<main>` yok, tema-bağımsız yapısal). Milestone #1 "a11y=100 çift-tema" 2 sayfada karşılanmıyor → **TASK-8.06**. **Bekleyen versiyon-sonu aksiyonu:** v0.2 production release (tüm revize `main`'e ilk merge) — Umami canlı +1 (S9-10) o adımda kapanır. **Kapsam dışı:** brief mobil perf (gerçek-cihaz), TB-C npm audit.
+**Son Faz Dokümanı:** `phases/PHASE-8.md` (🔄 Devam ediyor — UAT tamam, 8.06 düzeltme task'ı bekliyor)
 
 ---
 
@@ -28,9 +28,9 @@
 
 ## Aktif Task
 
-**Task:** — Faz 8'de aktif task yok; tüm tasklar (8.01→8.05) ✅. Sıradaki adım **verify-phase 8** (yeni oturum). 8.05 ✅ archive'da.
-**Durum:** Faz 8 aktif, adım=verify. 8.05 tamamlandı (`/bulten` 2 makale teyit + mühür, 0 ihlal + ArticleClaude RTL craft fix); fazın tüm iş birimleri bitti.
-**İlerleme:** 8.05 ile son iki alt sayfa (`/bulten/*`) mühürlendi → **5 alt sayfanın tamamı harness'te** (2 sayfa × 5 dil × 2 tema = 20 test; toplam 52 e2e). Bülten sayfaları 0 ihlal (Bulgu 2 mirası); ArticleClaude tablosunda physical→logical prop fix (RTL craft, LTR birebir aynı). Enforce edilen gate = axe 0 (CI-tohum aktif, 5 sayfa mühürlü); Lighthouse a11y=100 çift-tema = **verify-phase 8 manuel sweep**. Bekleyen versiyon-sonu aksiyonu: v0.2 production release (Umami canlı +1 orada kapanır).
+**Task:** TASK-8.06 (⬜ Bekliyor, aktif) — verify-phase 8 UAT #3 bulgusu: 2 bülten makale sayfasına `<main>` landmark ekle (Lighthouse a11y 98→100 çift-tema; sıfır görsel değişim). Sıradaki adım **run-task 8.06** (yeni oturum).
+**Durum:** Faz 8 aktif, adım=task. verify-phase 8 koşuldu (11/12 geçti); tek bulgu 8.06 düzeltme task'ına dönüştü. 8.06 sonrası verify-phase 8 baştan koşulur.
+**İlerleme:** verify-phase 8 UAT: e2e 52 test + Lighthouse (4 sayfa 100, 2 bülten 98) + AR RTL + fail-on-regression + craft. Bulgu: bülten makale sayfaları `<main>` landmark içermiyor (`ArticleAiSdr`/`ArticleClaude` kök `<article>` render eder; diğer alt sayfalar `<main>` sarar) → Lighthouse `landmark-one-main` audit'i düşüyor, a11y=98. Enforce edilen axe gate 0 (CI-tohum, 5 sayfa mühürlü) etkilenmedi — bu `best-practice` kuralı WCAG alt-kümesinde değil. 8.06 fix'i axe suite'i regresyona sokmaz (yalnız landmark ekler). Bekleyen versiyon-sonu aksiyonu: v0.2 production release (Umami canlı +1 orada kapanır).
 
 ---
 
@@ -45,6 +45,7 @@
 | 8.03 | TASK-8.03 | ✅ Tamamlandı | `/spor-salonu-yazilimi` (Alpfit) a11y teyit + mühür — 0 ihlal, kod fix yok; 10 test 0 ihlal + AR RTL teyit |
 | 8.04 | TASK-8.04 | ✅ Tamamlandı | `/vaka-calismalari` a11y teyit + mühür — 0 ihlal, kod fix yok; 10 test 0 ihlal + AR RTL teyit (32 test regresyonsuz) |
 | 8.05 | TASK-8.05 | ✅ Tamamlandı | `/bulten` 2 makale a11y teyit + mühür — 0 ihlal + ArticleClaude RTL craft fix (physical→logical); 5 alt sayfanın tamamı mühürlü (52 e2e test) |
+| 8.06 | TASK-8.06 | ⬜ Bekliyor | verify-phase 8 UAT #3 bulgusu: 2 bülten makale sayfasına `<main>` landmark (Lighthouse `landmark-one-main` → a11y 98→100 çift-tema); sıfır görsel değişim, 52 e2e regresyonsuz |
 
 ---
 
@@ -74,12 +75,12 @@
 
 ## Hızlı Erişim
 
-**Aktif Task:** — yok; Faz 8'in tüm taskları ✅ (8.01→8.05). Sıradaki: verify-phase 8. Bekleyen: v0.2 production release (Umami canlı +1 orada kapanır).
-**Aktif Faz:** 8 — v0.2 versiyon-sonu teknik borç · adım=verify (8.01→8.05 ✅, 5 alt sayfa mühürlü); Faz 7 ✅; Faz 6 ✅; Faz 5 ✅; Faz 4 ✅; Aktif Versiyon v0.2, Versiyon Sonu Durumu: teknik_borç
+**Aktif Task:** TASK-8.06 (⬜ bülten `<main>` landmark — verify bulgusu). Sıradaki: run-task 8.06 → sonra verify-phase 8 yeniden. Bekleyen: v0.2 production release (Umami canlı +1 orada kapanır).
+**Aktif Faz:** 8 — v0.2 versiyon-sonu teknik borç · adım=task (8.01→8.05 ✅; verify-phase 8 → 8.06 düzeltme task'ı); Faz 7 ✅; Faz 6 ✅; Faz 5 ✅; Faz 4 ✅; Aktif Versiyon v0.2, Versiyon Sonu Durumu: teknik_borç
 **Task Sistemi:** `tasks/TASKS-README.md`
 **PRD (karar kaynağı):** `PRD/VIZYON.md` · `PRD/VERSIONS.md` · `PRD/features/`
 **Revize Backlog (bilinen sorunlar):** `docs/REVIZE-BACKLOG.md`
 
 ---
 
-**Son Güncelleme:** 2026-07-01 — run-task 8.05 ✅: `/bulten` 2 makale a11y teyit + mühür → 5 alt sayfanın tamamı mühürlü. 0 ihlal + ArticleClaude RTL craft fix (physical→logical). 52 e2e test 0 ihlal + AR dir=rtl + MISSING_MESSAGE 0 + screenshot craft onayı. Faz 8 tüm tasklar bitti → adım=verify. Sıradaki: verify-phase 8.
+**Son Güncelleme:** 2026-07-01 — verify-phase 8: UAT 12 senaryo, 11 geçti / 1 kaldı. e2e 52 test 0 ihlal + Lighthouse (home+3 alt sayfa=100, 2 bülten=98) + AR RTL + fail-on-regression kanıtı + craft onayı; CI success + security-review temiz. Bulgu: bülten makaleleri `<main>` landmark yok → a11y=98 → TASK-8.06. Adım=task. Sıradaki: run-task 8.06, sonra verify-phase 8 yeniden.

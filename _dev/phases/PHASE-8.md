@@ -143,6 +143,7 @@ Yeni bağımlılık **yok** (paket ekleme onay gerektirir — Dokunulmazlar). Me
 | 8.03 | TASK-8.03 | ✅ Tamamlandı | `/spor-salonu-yazilimi` (Alpfit) a11y teyit + mühür — baseline 0 ihlal doğrulandı, kod fix yok; 10 test 0 ihlal + AR RTL teyit |
 | 8.04 | TASK-8.04 | ✅ Tamamlandı | `/vaka-calismalari` a11y teyit + mühür — baseline 0 ihlal doğrulandı, kod fix yok; 10 test 0 ihlal + AR RTL teyit (32 test regresyonsuz) |
 | 8.05 | TASK-8.05 | ✅ Tamamlandı | `/bulten` 2 makale (AiSdr + Claude) a11y teyit + mühür — baseline 0 ihlal, kontrast fix yok; ArticleClaude tablosunda RTL craft fix (physical→logical: `ml-2`→`ms-2`, `text-right`→`text-end`); 5 alt sayfa mühürü tamam (52 e2e test) |
+| 8.06 | TASK-8.06 | ⬜ Bekliyor | **verify-phase 8 UAT #3 bulgusu:** 2 bülten makale sayfasına `<main>` landmark ekle (Lighthouse `landmark-one-main` → a11y 98→100 çift-tema, milestone #1 tamamlama); sıfır görsel değişim, 52 e2e regresyonsuz |
 
 **Durum simgeleri:** ⬜ Bekliyor | 🔄 Devam ediyor | ⏸️ Duraklatıldı | ✅ Tamamlandı | 🔴 Bloke | ❌ İptal
 
@@ -156,14 +157,29 @@ Yeni bağımlılık **yok** (paket ekleme onay gerektirir — Dokunulmazlar). Me
 
 ## UAT Sonuçları
 
-> Bu bölüm `/devflow:verify-phase` oturumunda doldurulur.
+> Bu bölüm `/devflow:verify-phase 8` oturumunda dolduruldu (2026-07-01).
 
-**Tarih:** [tarih]
-**Toplam Senaryo:** X | **Geçen:** Y | **Kalan:** Z
+**Tarih:** 2026-07-01
+**Toplam Senaryo:** 12 | **Geçen:** 11 | **Kalan:** 1
+
+**Otomatik kontroller (Adım 1):** CI (HEAD 39a4abc) `fast`+`a11y` job'ları **success** ✅ · security-review **temiz** (bulgu yok — değişiklikler sunum/a11y katmanı, yeni yüzey yok) ✅ · npm audit bilinçle kapsam dışı (TB-C).
 
 | # | Senaryo | Sonuç | Not |
 |---|---------|-------|-----|
-| 1 | [Senaryo 1] | ✅/❌ | [not] |
+| 1 | CI otomatik doğrulama — HEAD commit CI `fast`+`a11y` job success | ✅ Geçti | HEAD 39a4abc: iki job da `success` (REST API job-seviyesi teyit) |
+| 2 | axe WCAG-AA 0 ihlal tam matris — `test:e2e` 52 test (5 alt sayfa×5 dil×2 tema=50 + home 2) yeşil | ✅ Geçti | 52/52 yeşil (1.9m); tüm mühürlü sayfalar 0 ihlal |
+| 3 | Lighthouse a11y=100 çift-tema — 5 alt sayfa (manuel verify skor gate, milestone #1) | ❌ Kaldı | **2 bülten makalesi a11y=98** (`landmark-one-main` — sayfa `<main>` landmark'ı yok, tema-bağımsız yapısal); bunker-os/spor-salonu/vaka=100. axe WCAG-tag suite `best-practice` kuralını görmez → seal'da kaçtı. → **TASK-8.06** |
+| 4 | Ana sayfa a11y=100 guardrail regresyonsuz — home light+dark axe 0 + Lighthouse a11y=100 | ✅ Geçti | home Lighthouse a11y=100 + e2e home 2 test 0 ihlal |
+| 5 | AR RTL derinliği — `/ar/<5 sayfa>` `dir="rtl"` (prerender+runtime) + 0 MISSING_MESSAGE | ✅ Geçti | 5 AR prerender HTML `dir="rtl"` ✅ + build 0 MISSING_MESSAGE |
+| 6 | i18n 5-dil parite — Vitest parite yeşil (eksik anahtar=fail); yeni anahtar eklenmedi | ✅ Geçti | Vitest 7 test yeşil (parite + smoke) |
+| 7 | text-pulse/dark-inversion süpürmesi (TD4) — BunkerShowcase dark panel okunur (dark axe 0) | ✅ Geçti | bunker-os dark 5 test 0 ihlal + screenshot: panel/status okunur, marka-yeşili korundu |
+| 8 | Kümülatif tohum + CI fail-on-regression — kasıtlı ihlal enjekte edilince `subpages-a11y` kırılır (adversarial kanıt) | ✅ Geçti | `text-canvas/65`→`/20` enjekte → bunker-os tr-dark testi `color-contrast` (wcag143) ile kırıldı → geri alındı |
+| 9 | Marka & Craft — sıfır görsel regresyon (BunkerShowcase panel/adım no + imza; screenshot) | ✅ Geçti | light+dark screenshot: imza/marka-yeşili düzleşmedi, adım no `::before` faint-yeşil |
+| 10 | RTL craft fix (ArticleClaude) — physical→logical; LTR birebir aynı, AR doğru aynalanır (screenshot) | ✅ Geçti | TR-light (MODEL solda) ↔ AR-dark (aynalı) screenshot: logical prop her iki yönde doğru |
+| 11 | Build temiz + guardrail — `next build` temiz; smoke test yeşil | ✅ Geçti | build temiz · smoke (Vitest) yeşil |
+| 12 | Adversarial: dekoratif öğe ≠ axe muafiyeti — aria-hidden adım-no `::before` görünür ama axe taramaz; `text-pulse` SVG flag'lenmez | ✅ Geçti | e2e 0 ihlal + görsel: adım no görünür; `text-pulse` SVG (text-node değil) flag'lenmedi |
+
+**Bulgu (Adım 6):** UAT #3 → 2 bülten makale sayfası (`/bulten/ai-sdr-araclari`, `/bulten/claude-opus-4-8-fable-5`) `<main>` landmark içermiyor (Article bileşenleri kök `<article>` render ediyor; page.tsx `<SmoothScroll><PageHeader/><Article/><Footer/></SmoothScroll>` — diğer alt sayfalar `<main>` sarar). Lighthouse `landmark-one-main` audit'i düşüyor → a11y=98 (iki temada da; yapısal). Milestone #1 "a11y=100 çift-tema" 2 sayfada karşılanmıyor. Kök neden: 8.05 mühürü yalnız axe WCAG-tag koşusuna dayandı (Lighthouse skor gate'i plan gereği verify'e ertelenmişti); `landmark-one-main` axe'ta `best-practice` etiketli, WCAG alt-kümesinde değil → suite görmedi. → düzeltme **TASK-8.06** (her iki bülten sayfasına `<main>` landmark; sıfır görsel değişim).
 
 ---
 
@@ -208,4 +224,4 @@ Yeni bağımlılık **yok** (paket ekleme onay gerektirir — Dokunulmazlar). Me
 ---
 
 **Oluşturulma:** 2026-07-01
-**Son Güncelleme:** 2026-07-01 — run-task 8.05 ✅: `/bulten` 2 makale a11y teyit + mühür → 5 alt sayfanın tamamı harness'te. Baseline (0 ihlal) doğrulandı, kontrast fix yok; ArticleClaude model tablosunda RTL craft fix (physical→logical: `ml-2`→`ms-2`, `text-right`→`text-end`, LTR birebir aynı — screenshot teyit); ArticleAiSdr dokunulmadı (grep false-positive). 52 e2e test (home 2 + bunker-os 10 + gym 10 + vaka 10 + bülten 20) 0 ihlal + AR `dir=rtl` + MISSING_MESSAGE 0 + screenshot craft onayı. **Faz 8 tüm tasklar bitti → sıradaki verify-phase 8.**
+**Son Güncelleme:** 2026-07-01 — verify-phase 8: UAT 12 senaryo, **11 geçti / 1 kaldı**. Otomatik: CI (HEAD) `fast`+`a11y` success · security-review temiz · npm audit kapsam dışı. Otonom: e2e 52/52 yeşil · Vitest 7 · build 0 MISSING_MESSAGE · 5 AR prerender `dir=rtl` · fail-on-regression kanıtı · craft screenshot onayı · Lighthouse home+3 alt sayfa a11y=100. **Bulgu (UAT #3):** 2 bülten makalesi a11y=98 (`landmark-one-main` — sayfa `<main>` yok) → **TASK-8.06** (bülten `<main>` landmark, a11y 98→100, sıfır görsel değişim). **Adım=task → düzeltme sonrası verify-phase 8 baştan koşulur.**
