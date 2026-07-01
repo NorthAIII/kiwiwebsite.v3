@@ -23,8 +23,8 @@ const PAGES: { label: string; path: string }[] = [
   { label: "bunker-os", path: "/bunker-os" },
   { label: "spor-salonu-yazilimi", path: "/spor-salonu-yazilimi" },
   { label: "vaka-calismalari", path: "/vaka-calismalari" },
-  // 8.05: { label: "bulten/ai-sdr-araclari", path: "/bulten/ai-sdr-araclari" },
-  // 8.05: { label: "bulten/claude-opus-4-8-fable-5", path: "/bulten/claude-opus-4-8-fable-5" },
+  { label: "bulten/ai-sdr-araclari", path: "/bulten/ai-sdr-araclari" },
+  { label: "bulten/claude-opus-4-8-fable-5", path: "/bulten/claude-opus-4-8-fable-5" },
 ];
 
 for (const { label, path } of PAGES) {

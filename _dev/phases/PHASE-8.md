@@ -142,7 +142,7 @@ Yeni bağımlılık **yok** (paket ekleme onay gerektirir — Dokunulmazlar). Me
 | 8.02 | TASK-8.02 | ✅ Tamamlandı | `/bunker-os` derin a11y fix + mühür — 3 desen (text-green/30 adım no → ::before, text-canvas/45+50 → /65); 5 dil×2 tema 10 test 0 ihlal; TD4 milestone kapandı |
 | 8.03 | TASK-8.03 | ✅ Tamamlandı | `/spor-salonu-yazilimi` (Alpfit) a11y teyit + mühür — baseline 0 ihlal doğrulandı, kod fix yok; 10 test 0 ihlal + AR RTL teyit |
 | 8.04 | TASK-8.04 | ✅ Tamamlandı | `/vaka-calismalari` a11y teyit + mühür — baseline 0 ihlal doğrulandı, kod fix yok; 10 test 0 ihlal + AR RTL teyit (32 test regresyonsuz) |
-| 8.05 | TASK-8.05 | ⬜ Bekliyor | `/bulten` 2 makale (AiSdr + Claude) a11y teyit + tohum — düşük risk; 5 alt sayfa mühürü tamamlanır |
+| 8.05 | TASK-8.05 | ✅ Tamamlandı | `/bulten` 2 makale (AiSdr + Claude) a11y teyit + mühür — baseline 0 ihlal, kontrast fix yok; ArticleClaude tablosunda RTL craft fix (physical→logical: `ml-2`→`ms-2`, `text-right`→`text-end`); 5 alt sayfa mühürü tamam (52 e2e test) |
 
 **Durum simgeleri:** ⬜ Bekliyor | 🔄 Devam ediyor | ⏸️ Duraklatıldı | ✅ Tamamlandı | 🔴 Bloke | ❌ İptal
 
@@ -208,4 +208,4 @@ Yeni bağımlılık **yok** (paket ekleme onay gerektirir — Dokunulmazlar). Me
 ---
 
 **Oluşturulma:** 2026-07-01
-**Son Güncelleme:** 2026-07-01 — run-task 8.04 ✅: `/vaka-calismalari` a11y teyit + mühür. Baseline (0 ihlal) doğrulandı, kod fix yok (`CaseStudies.tsx` temiz — Bulgu 2 mirası); sayfa `PAGES`'e mühürlendi → 10 test (5 dil×2 tema) 0 ihlal + home+bunker-os+gym regresyonsuz (32 test) + AR `dir=rtl` + MISSING_MESSAGE 0 + physical prop grep temiz + screenshot craft onayı. Sıradaki: run-task 8.05 (fazın son alt-sayfası).
+**Son Güncelleme:** 2026-07-01 — run-task 8.05 ✅: `/bulten` 2 makale a11y teyit + mühür → 5 alt sayfanın tamamı harness'te. Baseline (0 ihlal) doğrulandı, kontrast fix yok; ArticleClaude model tablosunda RTL craft fix (physical→logical: `ml-2`→`ms-2`, `text-right`→`text-end`, LTR birebir aynı — screenshot teyit); ArticleAiSdr dokunulmadı (grep false-positive). 52 e2e test (home 2 + bunker-os 10 + gym 10 + vaka 10 + bülten 20) 0 ihlal + AR `dir=rtl` + MISSING_MESSAGE 0 + screenshot craft onayı. **Faz 8 tüm tasklar bitti → sıradaki verify-phase 8.**

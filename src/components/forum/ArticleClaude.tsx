@@ -46,8 +46,8 @@ export default function ArticleClaude() {
         <div className="overflow-hidden rounded-2xl border border-line">
           <div className="grid grid-cols-[1fr_auto_auto] gap-x-4 bg-canvas-deep/60 px-5 py-3 text-xs font-medium uppercase tracking-[0.12em] text-ink-faint">
             <span>{tr ? "Model" : "Model"}</span>
-            <span className="text-right">{tr ? "Bağlam" : "Context"}</span>
-            <span className="text-right">{tr ? "G/Ç ·1M$" : "I/O ·1M$"}</span>
+            <span className="text-end">{tr ? "Bağlam" : "Context"}</span>
+            <span className="text-end">{tr ? "G/Ç ·1M$" : "I/O ·1M$"}</span>
           </div>
           {(tr ? MODELS : MODELS_EN).map((m) => (
             <div
@@ -56,10 +56,10 @@ export default function ArticleClaude() {
             >
               <span>
                 <span className="font-medium text-ink">{m.name}</span>
-                <span className="ml-2 text-sm text-ink-faint">· {m.note}</span>
+                <span className="ms-2 text-sm text-ink-faint">· {m.note}</span>
               </span>
-              <span className="text-right text-sm tabular-nums text-ink-soft">{m.ctx}</span>
-              <span className="text-right text-sm tabular-nums text-ink-faint">{m.io}</span>
+              <span className="text-end text-sm tabular-nums text-ink-soft">{m.ctx}</span>
+              <span className="text-end text-sm tabular-nums text-ink-faint">{m.io}</span>
             </div>
           ))}
         </div>
