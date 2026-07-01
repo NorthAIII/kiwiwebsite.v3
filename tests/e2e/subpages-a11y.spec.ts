@@ -21,7 +21,7 @@ const LOCALES = ["tr", "en", "ar", "de", "es"] as const;
 // Fix task'ları buraya sayfa ekler: { label, path }.
 const PAGES: { label: string; path: string }[] = [
   { label: "bunker-os", path: "/bunker-os" },
-  // 8.03: { label: "spor-salonu-yazilimi", path: "/spor-salonu-yazilimi" },
+  { label: "spor-salonu-yazilimi", path: "/spor-salonu-yazilimi" },
   // 8.04: { label: "vaka-calismalari", path: "/vaka-calismalari" },
   // 8.05: { label: "bulten/ai-sdr-araclari", path: "/bulten/ai-sdr-araclari" },
   // 8.05: { label: "bulten/claude-opus-4-8-fable-5", path: "/bulten/claude-opus-4-8-fable-5" },
