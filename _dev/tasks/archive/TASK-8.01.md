@@ -1,6 +1,6 @@
 # TASK-8.01: Parametrik alt-sayfa a11y harness'i + baseline ölçüm envanteri
 
-**Durum:** ⬜ Bekliyor
+**Durum:** ✅ Tamamlandı
 **Modül:** M6 (test altyapısı, çapraz) + M1–M3 (a11y ölçüm yüzeyi)
 **Feature:** TD6 temeli (kümülatif harness genişletme) + TD5 audit (ölçüm-önce)
 **Faz:** Phase 8 (phases/PHASE-8.md)
@@ -39,19 +39,19 @@ Araştırma "Yaklaşım A" seçti: mevcut `home-a11y.spec.ts` disiplinini (light
 
 ## Alt Görevler
 
-- [ ] **1. Paylaşımlı a11y helper modülünü çıkar**
+- [x] **1. Paylaşımlı a11y helper modülünü çıkar**
   - `tests/e2e/a11y-helpers.ts` (YENİ): `WCAG_TAGS`, `scrollThrough(page)`, ve `gotoLocalized(page, context, locale, path)` — locale=`tr` ise prefixsiz path + `NEXT_LOCALE=tr` cookie (localhost); diğer locale'lerde `/${locale}${path}` (cookie yok, açık prefix).
   - `tests/e2e/home-a11y.spec.ts`'i bu helper'ları import edecek şekilde refactor et (davranış birebir korunur, yeşil kalır) — kopya kod önlenir (Modülerlik ekseni).
 
-- [ ] **2. Parametrik alt-sayfa spec iskeletini oluştur**
+- [x] **2. Parametrik alt-sayfa spec iskeletini oluştur**
   - `tests/e2e/subpages-a11y.spec.ts` (YENİ): `PAGES` (başlangıçta **boş**) × `LOCALES=["tr","en","ar","de","es"]` × `["light","dark"]` matrisi. Her kombinasyon: `gotoLocalized` → `emulateMedia({colorScheme, reducedMotion:"reduce"})` → `scrollThrough` → `AxeBuilder().withTags(WCAG_TAGS).analyze()` → `expect(violations).toEqual([])`.
   - `PAGES` boş olduğu için bu spec **hiçbir alt-sayfa iddiası enforce etmez** (CI yeşil kalır); fix task'ları (8.02–8.05) sayfayı `PAGES`'e ekleyerek mühürler. Sayfa tanımı: `{ label, path }` (path = TR prefixsiz yol).
 
-- [ ] **3. 5 alt sayfanın baseline'ını ölç (ham axe)**
+- [x] **3. 5 alt sayfanın baseline'ını ölç (ham axe)**
   - Harness'i ölçüm modunda koş (geçici olarak 5 sayfayı denetle; TR light+dark kontrast envanteri + AR RTL/`MISSING_MESSAGE` teyidi yeterli — kontrast dil-bağımsız, research). 5 sayfa: `/bunker-os`, `/spor-salonu-yazilimi`, `/vaka-calismalari`, `/bulten/ai-sdr-araclari`, `/bulten/claude-opus-4-8-fable-5`.
   - Her sayfa için axe ihlal listesini (kural id + selector + tema) kaydet. Ölçüm bittikten sonra `PAGES` boş bırakılır (mühürleme fix task'larında).
 
-- [ ] **4. Envanteri task oturum kaydına yaz**
+- [x] **4. Envanteri task oturum kaydına yaz**
   - Hangi sayfada hangi selector'ün light/dark'ta ihlal verdiği (özellikle `BunkerShowcase` `text-canvas/45,50,60,85` + `text-green/30`); hangi sayfaların baseline'da **0 ihlal** verdiği (muhtemelen gym/case/bülten — `text-ink-faint` global fix mirası). AR'de `dir=rtl` + 0 `MISSING_MESSAGE` (build/console) notu. Bu envanter 8.02–8.05'in girdisidir.
 
 ---
@@ -81,32 +81,69 @@ _dev/tasks/TASK-8.01.md    # oturum kaydına baseline envanteri
 
 ## Test Kriterleri
 
-- [ ] `npm run test:e2e` yeşil — `home-a11y` refactor sonrası davranış aynı (light+dark 0 ihlal), `subpages-a11y` (PAGES boş) hata vermeden geçer.
-- [ ] `a11y-helpers.ts` export'ları (`WCAG_TAGS`, `scrollThrough`, `gotoLocalized`) hem home hem subpages spec'inde kullanılıyor (kopya kod yok).
-- [ ] 5 alt sayfanın baseline axe envanteri (selector + tema başına ihlal / 0-ihlal) task oturum kaydına yazıldı.
-- [ ] AR alt sayfalarda `dir="rtl"` + 0 `MISSING_MESSAGE` teyidi kaydedildi.
-- [ ] `next build` temiz geçer.
+- [x] `npm run test:e2e` yeşil — `home-a11y` refactor sonrası davranış aynı (light+dark 0 ihlal), `subpages-a11y` (PAGES boş) hata vermeden geçer.
+- [x] `a11y-helpers.ts` export'ları (`WCAG_TAGS`, `scrollThrough`, `gotoLocalized`) hem home hem subpages spec'inde kullanılıyor (kopya kod yok).
+- [x] 5 alt sayfanın baseline axe envanteri (selector + tema başına ihlal / 0-ihlal) task oturum kaydına yazıldı.
+- [x] AR alt sayfalarda `dir="rtl"` + 0 `MISSING_MESSAGE` teyidi kaydedildi.
+- [x] `next build` temiz geçer.
 
 ---
 
 ## Tamamlanma Kriterleri
 
-- [ ] Tüm alt görevler tamamlandı
-- [ ] Tüm test kriterleri karşılandı
-- [ ] Git commit & push yapıldı (conventional commits)
-- [ ] Bu doküman güncellendi (oturum kaydı + baseline envanteri)
-- [ ] DURUM.md güncellendi
+- [x] Tüm alt görevler tamamlandı
+- [x] Tüm test kriterleri karşılandı
+- [x] Git commit & push yapıldı (conventional commits)
+- [x] Bu doküman güncellendi (oturum kaydı + baseline envanteri)
+- [x] DURUM.md güncellendi
 
 ---
 
 ## Oturum Kayıtları
 
-### Oturum — [TARİH]
+### Oturum — 2026-07-01
 
-**Durum:** [durum]
+**Durum:** ✅ Tamamlandı
+
+**Ne yapıldı:**
+- **Helper çıkarımı:** `tests/e2e/a11y-helpers.ts` (YENİ) — `WCAG_TAGS`, `scrollThrough(page)`, `gotoLocalized(page, context, locale, path)` tek kaynağa taşındı. `gotoLocalized` locale-farkındalıklı: `tr` → prefixsiz yol + `NEXT_LOCALE=tr` cookie; diğer diller → açık prefix (`/${locale}${path}`), cookie yok.
+- **Refactor:** `home-a11y.spec.ts` helper'ları import edecek şekilde yeniden yazıldı (davranış birebir — light+dark 0 ihlal korunuyor); inline `WCAG_TAGS`/`scrollThrough`/cookie kodu silindi (kopya kod yok, Modülerlik ekseni).
+- **Parametrik spec:** `tests/e2e/subpages-a11y.spec.ts` (YENİ) — `PAGES` (boş) × `LOCALES=[tr,en,ar,de,es]` × `[light,dark]` matrisi. `PAGES` boş → hiçbir alt-sayfa iddiası enforce etmez (CI yeşil). Fix task'ları (8.02–8.05) sayfayı `PAGES`'e ekleyerek mühürler. Tam matris hedefi: 5 sayfa × 5 dil × 2 tema = 50 test.
+- **Baseline ölçüm:** geçici `_measure.spec.ts` ile 5 sayfa × {tr,ar} × {light,dark} = 20 koşu ham axe ile ölçüldü (assert etmeden, selector + ratio + tema loglandı), sonra silindi. Prod-serve + fresh-PID + düşük host-yük (loadavg ~0.4) disiplini uygulandı.
+
+**Test sonuçları:**
+- `npm run build` temiz.
+- `npm run test:e2e` yeşil — `home-a11y` refactor sonrası 2 test (light+dark) geçti; `subpages-a11y` (PAGES boş) 0 test üretti, hata vermedi.
+- `npm run test` (Vitest) yeşil — 7 test (i18n parite + smoke) korundu.
+
+---
 
 **Baseline Envanteri (8.02–8.05 girdisi):**
-- [Sayfa → tema → ihlal/0-ihlal listesi buraya]
+
+Kural: **`color-contrast`** (WCAG 2 AA 1.4.3). Kontrast **dil-bağımsız** teyit edildi (TR ≡ AR birebir aynı ihlal seti). AR'de tüm sayfalarda `dir="rtl"` ✅ · `MISSING_MESSAGE: 0` (tüm sayfa/dil/tema) ✅.
+
+**`/bunker-os` (`components/bunker-os/BunkerShowcase.tsx`) — TEK ihlalli sayfa:**
+
+| Selector (kaynak) | Light | Dark | Not |
+|---|---|---|---|
+| `text-green/30` adım no (satır 136) ×4 | ❌ 1.51 (`#b6d1bb`/`#f7f6f1`) | ❌ 1.67 (`#25432b`/`#131510`) | **Her iki tema** — dinlenmede dekoratif, hover'da `text-green`. v0.1 `#8af28a`=1.22 analogu |
+| `text-canvas/45` `.w-14 tabular-nums` (satır 203) ×4 | ❌ 4.1 (`#81817c`/`#20221d`) | ❌ 2.83 (`#878780`/`#e5e4db`) | **Her iki tema** (text-xs → 4.5 eşiği). En yaygın hotspot |
+| `text-canvas/50` `.right-4` badge (satır 78) ×1 | ✅ geçer | ❌ 3.36 (`#83837c`/`#f2f1e8`) | **Yalnız dark** (panel krem'e döner) |
+| `text-canvas/50 text-xs` (satır 177) ×1 | ✅ geçer | ❌ 3.36 (`#83837c`/`#f2f1e8`) | **Yalnız dark** |
+
+Toplam: light 8 node, dark 10 node.
+
+**Geçen (flag'lenMEDİ — fix gerekmez):** `text-canvas/60` (satır 96 coreNote), `text-canvas/85` (satır 194 flow label), `text-canvas/15` (satır 195 ayraç barı — text değil), ham `text-pulse` SVG (satır 85 `aria-hidden` ikon — **Bulgu 0 teyit: text-node değil, flag'lenmez**).
+
+**0-ihlal sayfalar (light+dark, TR+AR) — 8.03/8.04/8.05 "yalnız mühürle":**
+- `/spor-salonu-yazilimi` ✅ 0 ihlal
+- `/vaka-calismalari` ✅ 0 ihlal
+- `/bulten/ai-sdr-araclari` ✅ 0 ihlal
+- `/bulten/claude-opus-4-8-fable-5` ✅ 0 ihlal
+
+→ **Bulgu 2 teyit:** `--color-ink-faint` global fix'i (Faz 4) miras alınmış; bu 4 sayfada ek fix gerekmez, yalnız mühür + AR RTL teyidi.
+
+**8.02 için özet girdi:** BunkerShowcase'de 3 desen düzeltilecek — (1) `text-green/30` adım no (her iki tema), (2) `text-canvas/45` tabular-nums (her iki tema), (3) `text-canvas/50` badge + text-xs (yalnız dark). `text-canvas/60,85` ve `text-pulse` SVG dokunulmaz. Craft-koruyan fix: adaptif token / kontrast-geçen opaklık; `aria-hidden ≠ muafiyet` (memory) geçerli.
 
 ---
 

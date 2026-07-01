@@ -138,7 +138,7 @@ Yeni bağımlılık **yok** (paket ekleme onay gerektirir — Dokunulmazlar). Me
 
 | # | Task | Durum | Açıklama |
 |---|------|-------|----------|
-| 8.01 | TASK-8.01 | ⬜ Bekliyor | Parametrik alt-sayfa a11y harness'i (helper çıkarımı + subpages spec) + 5 sayfa baseline axe envanteri (ölçüm-önce, fix yok, mühür yok) |
+| 8.01 | TASK-8.01 | ✅ Tamamlandı | Parametrik alt-sayfa a11y harness'i (helper çıkarımı + subpages spec) + 5 sayfa baseline axe envanteri (ölçüm-önce, fix yok, mühür yok) |
 | 8.02 | TASK-8.02 | ⬜ Bekliyor | `/bunker-os` derin a11y fix + tohum — hotspot (text-canvas/NN dark-inversiyon + text-green/30); TD4 milestone burada kapanır |
 | 8.03 | TASK-8.03 | ⬜ Bekliyor | `/spor-salonu-yazilimi` (Alpfit) a11y teyit + tohum — düşük risk (0 ihlalse yalnız mühürle) |
 | 8.04 | TASK-8.04 | ⬜ Bekliyor | `/vaka-calismalari` a11y teyit + tohum — düşük risk (0 ihlalse yalnız mühürle) |
