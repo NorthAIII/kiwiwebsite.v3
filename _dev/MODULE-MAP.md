@@ -139,6 +139,10 @@ M6 (SEO/Deploy) ─────────────────────>
 | P2: Living Flow mobil degradasyon ayarı (DPR cap/particle/erken static; craft korunur) | M1 | v0.2 | 6 | ❌ İptal |
 | **— v0.2 analytics iş birimi (Faz 7 — site-geneli ölçüm) —** | | | | |
 | E1: Umami self-hosted analytics (`next/script`, `[locale]/layout.tsx` head, afterInteractive; pageview-only, canlıda gözle doğrulanır) | M6 | v0.2 | 7 | 🟡 |
+| **— v0.2 versiyon-sonu teknik borç iş birimleri (Faz 8) —** | | | | |
+| TD4: `text-pulse` ink-panel dark-inversion süpürmesi (alt sayfalar; `--color-pulse-ink` swap yay) | M1 (+M2/M3) | v0.2 | 8 | 🔄 |
+| TD5: Alt-sayfa derin a11y denetimi (5 alt sayfa, 5 dil/AR RTL derin; ana sayfa çıtası a11y=100 çift-tema + axe WCAG-AA 0) | M2 (+M1/M3/M4) | v0.2 | 8 | 🔄 |
+| TD6: Alt-sayfa a11y kümülatif regresyon tohumu + CI (Faz 5 harness genişletme) | M6 (+M1-M3) | v0.2 | 8 | 🔄 |
 
 **Durum simgeleri:**
 - ⬜ **Bekliyor** — Fazı henüz başlamadı
@@ -157,4 +161,4 @@ M6 (SEO/Deploy) ─────────────────────>
 
 ---
 
-**Son Güncelleme:** 2026-07-01 — review-phase 7: E1 (Umami) 🔄→🟡 (kod-tarafı+perf tam, UAT 1-8 ✅; canlı çekirdek S9-10 v0.2 production release'e ertelendi). v0.2 içerik fazları (4-7) tamam; sırada versiyon-sonu fazları.
+**Son Güncelleme:** 2026-07-01 — discuss-phase 8: v0.2 versiyon-sonu teknik borç iş birimleri eklendi (TD4 text-pulse süpürmesi + TD5 alt-sayfa derin a11y 5 dil/AR RTL + TD6 kümülatif a11y tohumu, hepsi Faz 8 🔄). Versiyon Sonu Durumu içerik_fazları → teknik_borç.

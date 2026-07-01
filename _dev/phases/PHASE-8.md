@@ -1,0 +1,160 @@
+# Phase 8: v0.2 Versiyon-Sonu Teknik Borç Kapatma (alt-sayfa a11y + text-pulse süpürmesi)
+
+**Durum:** 🔄 Devam ediyor
+
+<!-- Bu doküman faza girince (discuss-phase) oluşur; durum 🔄 ile başlar. Henüz girilmemiş fazların dokümanı/numarası olmaz — PHASES.md → Sıradaki Fazlar'da numarasız konu olarak durur. -->
+<!-- KURAL: Bu doküman tek-okunabilir kalmalı (CLAUDE.md → Boyut ve Bölünme). Bir bölüm büyüyüp kırmızı çizgiye (~20k token) yaklaşırsa faz HÂLÂ AKTİFKEN `PHASE-8-<slug>.md`'ye bölünür — parent'ta self-yeten özet + pointer kalır, içerik taşınıp silinir, parent o fazın mini-index'i olur. Tamamlandıktan (✅) sonra bölme yasaktır; verify-phase ve review-phase fazı dondurmadan önce boyutu kontrol eder. -->
+
+---
+
+## Genel Bilgiler
+
+**Amaç:** v0.2'nin **versiyon-sonu teknik borç kapatma fazı** (içerik fazları 4-7 tamamlandı → `içerik_fazları` → `teknik_borç` geçişi). Birikmiş sahipli borcun çekirdeği: **alt-sayfa erişilebilirliği** hiç derin denetlenmedi (Faz 4→5→6→7 boyunca ana sayfa a11y=100 kilitlenirken alt sayfalar "sonraki faza" bırakıldı). Bu faz o borcu kapatır: 5 alt sayfayı ana sayfayla **aynı a11y çıtasına** çeker (5 dil, AR RTL dahil derin), ana sayfada yapılan `--color-pulse-ink` token swap'ini alt sayfalardaki `text-pulse` ink-panel kullanımlarına yayar (dark-inversion süpürmesi), ve düzeltilen her alt sayfayı Faz 5 harness'ine **kümülatif a11y regresyon tohumu + CI** ile bağlar. Marka & Craft üst ekseni (Faz 4 disiplini) korunur; perf/i18n/ana-sayfa-a11y guardrail'leri regresyonsuz.
+
+**Milestone:** *(Faz 4-7 dersi: teknik borç fazı da "ölç + doğrula + kümülatif kilitle" çerçevesinde yazılır — yeşil sayılmadan önce fail-on-regression gösterilir.)*
+1. **5 alt sayfada a11y çıtası karşılandı** (`/bunker-os`, `/spor-salonu-yazilimi`, `/vaka-calismalari`, `/bulten/ai-sdr-araclari`, `/bulten/claude-opus-4-8-fable-5`): her sayfa Lighthouse a11y=**100 çift-tema** + `@axe-core/playwright` **WCAG-AA 0 ihlal** (light+dark), yerleşik ölçüm metodolojisiyle (`docs/perf/README.md`) kaydedildi.
+2. **5 dil derin doğrulandı** — TR (kaynak) + AR (RTL, asıl fark) her sayfada zorunlu derin; EN/DE/ES kapsandı (yapısal olarak TR ile aynı, kontrast/markup dil-bağımsız). AR'de `dir=rtl` + 0 `MISSING_MESSAGE` + logical prop bütünlüğü teyit.
+3. **`text-pulse` ink-panel dark-inversion süpürüldü** — alt sayfalardaki `text-pulse` ink-panel kullanımları `--color-pulse-ink` adaptif token'a geçti (light birebir / dark okunur); a11y çıtasının parçası, craft korunur.
+4. **Kümülatif harness genişledi** — düzeltilen her alt sayfa için Playwright/axe a11y regresyon tohumu eklendi + CI'da otomatik korunuyor (fail-on-regression kanıtlı). Faz 4 a11y=100 gibi elle-korunur değil, artık otomatik.
+5. **Guardrail'ler regresyonsuz** — ana sayfa a11y=100 çift-tema · perf korunan taban (mobil 90/LCP 3164ms, masaüstü 100, CLS≈0) · i18n 5-dil parite (yeni anahtar eklenirse 5 dil eşzamanlı) · CLS=0.
+6. **Marka & Craft korundu** — alt-sayfa fix'leri de imza/craft'ı bozmadan (bağlam-özel, token tek-kaynak, gözle onay); sıfır görsel regresyon.
+
+### Feature Listesi
+
+(MODULE-MAP `— v0.2 versiyon-sonu teknik borç iş birimleri (Faz 8) —` + `modules/M1-M4, M6` referansı. Sahipli borç kaynağı: Faz 4→5→6→7 retrospektifleri "Sonraki Faz İçin Öneriler".)
+
+| Feature | Modül | Açıklama |
+|---------|-------|----------|
+| TD4: `text-pulse` ink-panel dark-inversion süpürmesi | M1 (+M2/M3) | Ana sayfadaki `--color-pulse-ink` token swap'ini alt sayfalardaki `text-pulse` ink-panel kullanımlarına yay (dark 1.22 → okunur); dar/mekanik, bilinen fix |
+| TD5: Alt-sayfa derin a11y denetimi | M2 (+M1/M3/M4) | 5 alt sayfa, 5 dil (AR RTL derin), ana sayfa çıtası (Lighthouse a11y=100 çift-tema + axe WCAG-AA 0 light+dark); sayfa-özel bileşenler (bunker-os/gym/forum) |
+| TD6: Alt-sayfa a11y kümülatif regresyon tohumu + CI | M6 (+M1-M3) | Düzeltilen her alt sayfa için Playwright/axe tohumu (Faz 5 harness genişletme) → CI otomatik korur |
+
+---
+
+## Kapsam Tartışması
+
+> Bu bölüm `/devflow:discuss-phase 8` oturumunda dolduruldu (2026-07-01).
+
+### Alınan Kararlar
+
+- **Faz tipi = v0.2 versiyon-sonu teknik borç kapatma.** Versiyon Sonu Durumu: `içerik_fazları` → **`teknik_borç`** (bu fazın birincil geçiş sorumluluğu). v0.2 içerik fazları (4 a11y, 5 test altyapısı, 6 mobil perf, 7 Umami) tamamlandı; E1 🟡 (canlı +1 v0.2 production release'e ertelendi — içerik açığı değil), P2 ❌ (craft-gate iptal). Teknik borç, dört fazın retrospektiflerinden **sistematik** toplandı.
+- **Kapsam = TB-A (text-pulse süpürmesi) + TB-B (alt-sayfa derin a11y), geniş tutuldu** (kullanıcı kararı 2026-07-01). Kullanıcı "geniş tut (alt-sayfa a11y dahil)" seçti — v0.2'yi alt sayfalar da temizlenmiş halde kapatmak için. En çok tekrarlanan sahipli borç (Faz 4→5→6→7 devri: "alt-sayfa derin a11y + `text-pulse` süpürmesi") bu fazda kapatılır.
+- **Denetim çıtası = ana sayfayla aynı** (kullanıcı kararı). Her alt sayfa: Lighthouse a11y=100 çift-tema + axe WCAG-AA 0 ihlal (light+dark). Gerekçe: v0.2 a11y'yi tutarlı kapatmak — ana sayfa çıtası (Faz 4) alt sayfalara aynı sertlikte taşınır; "yalnız axe sweep" (daha gevşek) reddedildi.
+- **Diller = 5'i de derin denetle, AR RTL dahil** (kullanıcı kararı). Kullanıcı önce "EN+TR'ye daralt, AR zorluyor" diye sordu; masaya konan gerçekler (5 dil zaten bitmiş+canlı; mevcut dil stratejisi non-TR yükünü zaten minimize ediyor; AR'nin asıl maliyeti RTL) sonrası **5 dili korumayı ve derin denetlemeyi** seçti. Vizyon değişmedi. Pratik matris: TR (kaynak) + AR (RTL, asıl fark) her sayfada zorunlu derin; EN/DE/ES kapsanır (kontrast/markup dil-bağımsız). **Strateji notu:** "AR'yi üründen çıkaralım mı" vizyon/PRD kararıdır — AR yükü sürerse `prd-review`'da (versiyon-sonu, canlı/SEO etkisiyle) yeniden değerlendirilir; bu faz karara bağlamaz.
+- **Kümülatif tohum + CI = evet** (kullanıcı kararı). Düzeltilen her alt sayfa için Playwright/axe a11y regresyon tohumu → CI otomatik korur. Gerekçe: ILKELER "kümülatif test altyapısı" + Faz 5 harness'i tam bunun için; Faz 4 a11y=100'ün elle-korunur olması bu fazda otomatike bağlanır. Kazanım kalıcılaşır (rot önlenir).
+- **TB-C (npm audit) dışarıda** (kullanıcı kararı). 2 moderate uyarı yalnız dev-tooling zinciri (vite→transitive postcss), production runtime'a gitmez; `--force` breaking riski. Bilinçli açık, ayrı ele alınır.
+
+### Kullanıcı Tercihleri
+
+- **Geniş tut** (2026-07-01): alt-sayfa a11y dahil; v0.2 alt sayfalar da temizlenmiş kapanır.
+- **5 dili de derin denetle** (2026-07-01): AR RTL dahil; dil setini üründen çıkarma reddedildi (vizyon korunur), strateji sorusu prd-review'a bırakıldı.
+- **Ana sayfayla aynı çıta** (2026-07-01): her alt sayfa a11y=100 çift-tema + axe WCAG-AA 0.
+- **Kümülatif tohum + CI ekle** (2026-07-01): düzeltilen alt sayfalar CI'da otomatik korunur.
+- **npm audit dışarıda** (2026-07-01): TB-C ayrı/bilinçli açık.
+
+### Sahipsiz Alan & Çapraz Konular
+
+- **Sayfa-özel bileşenler asıl bilinmeyen.** Global bileşenler (Nav/Footer/dil-switcher) Faz 4'te düzeldi ve tüm sayfalara yayıldı → alt sayfalarda **sayfa-özel** bileşenler (`components/bunker-os/`, `gym/`, `forum/`) derin denetlenir. `text-pulse` ink-panel deseni (TB-A) muhtemelen bu bileşenlerde; TB-A denetimin bir bulgusu ama bilinen/kesin olduğu için ayrı iş birimi.
+- **Craft koruması (Faz 4 disiplini, üst eksen):** alt-sayfa a11y fix'leri de imza/marka-yeşilini global düzleştirmez; bağlam-özel + token tek-kaynak (`--color-ink-faint`/`--color-pulse-ink` zaten global) + gözle onay. `aria-hidden ≠ color-contrast muafiyeti` (memory) ve `::before content:attr()` deseni geçerli.
+- **Ölçüm disiplini (memory):** a11y ölçümünde tema tuzağı (light+dark iki koşu; `bg-ink` panelleri dark'ta krem'e döner) + locale tuzağı (`NEXT_LOCALE` cookie; alt sayfalar prefixli olduğu için ana sayfadan farklı — `/en/...` vs `/spor-salonu-yazilimi`) + reveal `opacity:0` (reducedMotion + scroll) + Lighthouse-altküme vs ham axe (WCAG etiketleri) — hepsi research/plan'de teyit.
+- **Guardrail:** global token değişirse ana sayfa a11y=100'ü de etkiler → CI a11y job otomatik yakalar; perf tabanı korunur (alt-sayfa perf **optimize edilmez**, yalnız regresyonsuz).
+
+### Kapsam Dışı
+
+- **TB-C: npm audit uyarıları** (2 moderate dev-only) — bilinçli açık, ayrı ele alınır.
+- **Brief mobil perf açığı** (perf 90/LCP 3164ms vs ≥95/<2.5s) — kök neden CPU-bound WebGL, P2 craft-gate'te iptal; nihai doğrulama gerçek-cihaz/Vercel field gerektirir (metodolojik duvar). Lab teknik-borç fazında kapatılamaz — bilinçli/kayıtlı açık (DECISIONS 2026-06-30).
+- **Umami canlı +1 (S9-10)** — v0.2 production release aksiyonu (tüm revizeyi ilk kez `main`'e almak), teknik borç değil.
+- **Alt-sayfa PERF optimizasyonu** — bu faz yalnız a11y; alt-sayfa perf yalnız **regresyonsuz** tutulur, optimize edilmez (perf tabanı ana sayfa-birincil).
+- **Dil setini değiştirme / AR'yi üründen çıkarma** — vizyon/PRD kararı; prd-review'a bırakıldı (vizyon korunur).
+- **Alakasız ertelenmiş kalemler** — `/bunker-os`→`/crew-os` redirect (M6, görsel/SEO versiyonu), `/forum`→404, A1 logo hizalama, A3 CTA affordance/scroll göstergesi (v0.1 backlog görsel/içerik) — bu fazda açılmaz.
+
+---
+
+## Araştırma Bulguları
+
+> Bu bölüm `/devflow:research-phase 8` oturumunda doldurulur.
+
+### Değerlendirilen Yaklaşımlar
+- [Yaklaşım 1]: [Açıklama, artılar, eksiler]
+- **Seçilen:** [Hangisi ve neden]
+
+### Kullanılacak Araçlar/Kütüphaneler
+- [Araç 1]: [Versiyon, ne için]
+
+### Dikkat Edilecekler
+- [Tuzak/Risk 1]: [Nasıl kaçınılacak]
+
+### Teknik Kararlar
+- [Karar 1]: [Gerekçe]
+
+---
+
+## Task Listesi
+
+> Bu bölüm `/devflow:plan-phase 8` oturumunda doldurulur.
+
+<!-- KURAL: Task Listesi yalnızca özet tablodur (#, Task, Durum, kısa açıklama). Task'ın icra detayı / oturum kaydı / çalışma notu buraya değil `tasks/TASK-N.md`'ye yazılır — bu bölüme sızan detay şişmedir, temizlenir (bölme değil). -->
+
+| # | Task | Durum | Açıklama |
+|---|------|-------|----------|
+| 8.01 | TASK-8.01 | ⬜ Bekliyor | (plan-phase'de yazılır) |
+
+**Durum simgeleri:** ⬜ Bekliyor | 🔄 Devam ediyor | ⏸️ Duraklatıldı | ✅ Tamamlandı | 🔴 Bloke | ❌ İptal
+
+---
+
+## UAT Sonuçları
+
+> Bu bölüm `/devflow:verify-phase` oturumunda doldurulur.
+
+**Tarih:** [tarih]
+**Toplam Senaryo:** X | **Geçen:** Y | **Kalan:** Z
+
+| # | Senaryo | Sonuç | Not |
+|---|---------|-------|-----|
+| 1 | [Senaryo 1] | ✅/❌ | [not] |
+
+---
+
+## Retrospektif
+
+> Bu bölüm `/devflow:review-phase` oturumunda doldurulur.
+
+### Ne İyi Gitti?
+- [Tekrarlanması gereken pratikler]
+
+### Ne Kötü Gitti?
+- [Sorunlar ve darboğazlar]
+
+### Sonraki Faz İçin Öneriler
+- [Alınan dersler, tavsiyeler]
+
+---
+
+## Kalite Kontrol Sonuçları
+
+> Bu bölüm `/devflow:review-phase` oturumunda doldurulur.
+
+| Eksen | Durum | Not |
+|-------|-------|-----|
+| Marka & Craft (imza) | ✅ / ⚠️ / ❌ | ... |
+| Erişilebilirlik | ✅ / ⚠️ / ❌ | ... |
+| Güvenlik | ✅ / ⚠️ / ❌ | ... |
+| Bakım Maliyeti | ✅ / ⚠️ / ❌ | ... |
+| Performans | ✅ / ⚠️ / ❌ | ... |
+| Hata Yönetimi | ✅ / ⚠️ / ❌ | ... |
+| Test Kapsamı | ✅ / ⚠️ / ❌ | ... |
+| Yerelleştirme & RTL | ✅ / ⚠️ / ❌ | ... |
+
+---
+
+## Sonuç
+
+- **Tamamlanma Tarihi:** [Tarih]
+- **Toplam Task:** [Sayı]
+- **Notlar:** [Önemli kararlar, sonraki faza aktarılanlar]
+
+---
+
+**Oluşturulma:** 2026-07-01
+**Son Güncelleme:** 2026-07-01 — discuss-phase 8: kapsam tartışması tamamlandı (TB-A text-pulse süpürmesi + TB-B alt-sayfa derin a11y, 5 dil/AR RTL, ana sayfa çıtası, kümülatif tohum+CI; TB-C dışarıda). Versiyon Sonu Durumu içerik_fazları → teknik_borç. Sıradaki adım: research-phase 8.
