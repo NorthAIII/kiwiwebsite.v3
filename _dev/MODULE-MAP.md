@@ -137,6 +137,8 @@ M6 (SEO/Deploy) ─────────────────────>
 | **— v0.2 mobil perf iş birimleri (Faz 6 — ana sayfa TR `/` mobil perf/LCP, brief hedef / craft tavan) —** | | | | |
 | P1: WebGL-dışı mobil perf kazanımları (font/JS bundle/asset/render-path; imza dokunulmaz) | M6 (+M1) | v0.2 | 6 | ✅ |
 | P2: Living Flow mobil degradasyon ayarı (DPR cap/particle/erken static; craft korunur) | M1 | v0.2 | 6 | ❌ İptal |
+| **— v0.2 analytics iş birimi (Faz 7 — site-geneli ölçüm) —** | | | | |
+| E1: Umami self-hosted analytics (`next/script`, `[locale]/layout.tsx` head, afterInteractive; pageview-only, canlıda gözle doğrulanır) | M6 | v0.2 | 7 | 🔄 |
 
 **Durum simgeleri:**
 - ⬜ **Bekliyor** — Fazı henüz başlamadı
@@ -153,4 +155,4 @@ M6 (SEO/Deploy) ─────────────────────>
 
 ---
 
-**Son Güncelleme:** 2026-06-30 — review-phase 6: Faz 6 ✅. P1 (WebGL-dışı kazanımlar: L1+L2+L3) → ✅ (ölçülebilir mobil perf/LCP iyileşmesi, sürücü L3); P2 (Living Flow degradasyon) → ❌ İptal (craft-gate, kod değişmedi). Faz 5 D1.x ve Faz 4 a11y iş birimleri ✅ korundu.
+**Son Güncelleme:** 2026-07-01 — discuss-phase 7: E1 (Umami self-hosted analytics) feature satırı eklendi, Faz 7'ye atandı (🔄). v0.2'nin son içerik fazı; pageview-only + afterInteractive, `[locale]/layout.tsx` head. Faz 6/5/4 iş birimleri ✅ korundu.

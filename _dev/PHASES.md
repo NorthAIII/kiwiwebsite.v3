@@ -25,6 +25,7 @@ Faz numaraları **global, sürekli ve append-only**'dir — versiyon değişse b
 | 4 | v0.2 erişilebilirlik (a11y 89→100) | a11y A11Y1 renk kontrastı (marka yeşili imza korunur, bağlam-özel) + A11Y2 hero `<dl>` markup + A11Y3 dil-switcher aria; ana sayfa-birincil, perf/CLS regresyonsuz | ✅ |
 | 5 | v0.2 test altyapısı (D1) | Kümülatif test harness (Vitest+RTL / Playwright+axe-core) + ilk GitHub Actions CI + tohum testler (i18n 5-dil parite + a11y regresyon `/` light+dark) | ✅ |
 | 6 | v0.2 mobil perf / LCP | Ana sayfa TR `/` mobil perf/LCP brief bütçesine (≥95 / <2.5s) yaklaştırma — brief hedef / craft tavan; önce WebGL-dışı kazanımlar (P1) sonra Living Flow degradasyon ayarı (P2); a11y=100/CLS=0/masaüstü regresyonsuz | ✅ |
+| 7 | v0.2 Umami analytics (E1) | Self-hosted Umami script'i (`next/script`, `[locale]/layout.tsx` head, afterInteractive) tüm locale'lerde pageview ölçümü; canlıda gözle doğrulanır; Faz 6 perf tabanı regresyonsuz | 🔄 |
 
 **Durum simgeleri:**
 - 🔄 **Devam ediyor** — discuss-phase başladı (aktif faz)
@@ -39,8 +40,8 @@ Faz numaraları **global, sürekli ve append-only**'dir — versiyon değişse b
 
 > Yaklaşan faz konuları — **numarasız**. Faza girildiğinde (discuss-phase) buradan çıkar, numara (mevcut en büyük faz no + 1) alıp Faz Durumu tablosuna 🔄 olarak geçer. Aşağıdakiler güçlü revize için aday konulardır; kesin kapsam ve sıra PRD/discuss-phase'de netleşir.
 
-**v0.2 kalan fazları** (sıra discuss-phase 4'te sabitlendi: a11y → teknik temel → perf → Umami; Faz 4 = a11y, Faz 5 = test altyapısı, Faz 6 = mobil perf/LCP girildi):
-- **Umami analytics (E1)** — `docs/UMAMI-ANALYTICS.md` spec'i; canlıda saydığı gözle doğrulanır.
+**v0.2 kalan fazları** (sıra discuss-phase 4'te sabitlendi: a11y → teknik temel → perf → Umami; Faz 4 = a11y, Faz 5 = test altyapısı, Faz 6 = mobil perf/LCP, Faz 7 = Umami girildi):
+- _(v0.2 içerik fazları tamamlandı — Umami = Faz 7 girildi; sıradaki versiyon-sonu sabit fazları)_
 
 > v0.2 içerik fazları bitince versiyon-sonu sabit fazları gelir: teknik borç → senaryo testi → prd-review (dinamik, faza girince doğrudan tabloya eklenir). Faz ayrımı (kaç faz) her discuss-phase'de netleşir.
 
@@ -75,11 +76,12 @@ Faz numaraları **global, sürekli ve append-only**'dir — versiyon değişse b
 | Faz 5 ✅ (v0.2 test altyapısı D1) → sonraki içerik fazı | 2026-06-30 | İlk test altyapısı (UAT 13/13, kalite 8 eksen ✅): 3 katman (Vitest node/jsdom + Playwright/axe) + ilk GitHub Actions CI + 2 tohum (i18n parite + a11y regresyon); src/+messages/ 0 değişiklik; Versiyon Sonu Durumu içerik_fazları (değişmez); sıradaki = mobil perf/LCP (discuss-phase 6 promote eder) |
 | Faz 6 girildi (v0.2 mobil perf/LCP) | 2026-06-30 | discuss-phase 6: kapsam tartışması tamam; ana sayfa TR `/` mobil-birincil, brief hedef / craft tavan, önce WebGL-dışı → degradasyon ayarı; Sıradaki Fazlar'dan mezun, tabloya 🔄; sıradaki adım research-phase 6 |
 | Faz 6 ✅ (v0.2 mobil perf/LCP) → sonraki içerik fazı | 2026-06-30 | Milestone ✓ (ölçülebilir iyileşme: perf 84→90, LCP −440ms/−12%, sürücü L3); brief mobil açık dürüstçe kaydedildi; P2 craft-gate iptal (imza korundu); UAT 12/12, kalite 8 eksen ✅; guardrail'ler (a11y=100 çift-tema/CLS≈0/masaüstü 100/i18n parite) regresyonsuz; Versiyon Sonu Durumu içerik_fazları (değişmez); sıradaki = Umami (E1) (discuss-phase 7 promote eder) |
+| Faz 7 girildi (v0.2 Umami analytics E1) | 2026-07-01 | discuss-phase 7: kapsam tartışması tamam; pageview-only + afterInteractive + hafif render testi + merge-sonrası canlı doğrulama; `[locale]/layout.tsx` head'e `next/script`; Faz 6 perf tabanı guardrail; Sıradaki Fazlar'dan mezun, tabloya 🔄; sıradaki adım research-phase 7 |
 
 <!-- KURAL: Her geçiş için TEK satır + kısa not. Geçiş gerekçesi/detayı PHASE-N.md retrospektifindedir, burada tekrar edilmez. "Önceki:" prefix veya HTML comment ile detay yığma YASAK (CLAUDE.md → Doküman Disiplini). -->
 
 ---
 
-**Son Güncelleme:** 2026-06-30 — review-phase 6: Faz 6 (v0.2 mobil perf/LCP) ✅ dondu; geçiş notu eklendi. Milestone ✓ (ölçülebilir iyileşme, sürücü L3), brief mobil açık, P2 craft-gate iptal; guardrail'ler regresyonsuz. Sıradaki = Umami (E1); Versiyon Sonu Durumu içerik_fazları.
+**Son Güncelleme:** 2026-07-01 — discuss-phase 7: Faz 7 (v0.2 Umami analytics E1) girildi (🔄); kapsam tartışması tamam (pageview-only, afterInteractive, render testi, merge-sonrası canlı doğrulama). Umami Sıradaki Fazlar'dan mezun; v0.2 içerik fazları tamamlanıyor. Sıradaki adım research-phase 7.
 
 <!-- KURAL: Bu satır her güncellemede ÜZERİNE YAZILIR. "Önceki:" prefix ile kümülatif yığma YASAK (CLAUDE.md → Doküman Disiplini). -->
