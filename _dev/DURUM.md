@@ -1,6 +1,6 @@
 # DURUM — Proje Dashboard
 
-**Son Güncelleme:** 2026-07-01 — verify-phase 7: otomatik kontroller (CI fast+a11y success · dependabot/bot PR yok · security-review temiz) + otonom UAT **Senaryo 1-8 ✅ geçti** (5 locale head render, dört spec değeri, guardrail'ler yeşil, build temiz, tema-FOUC çakışmasız, perf regresyon yok, degradasyon, data-domains). Başarısız senaryo yok → düzeltme task'ı gerekmedi. Kalan tek kapı: **Senaryo 9-10 canlı +1 (milestone çekirdeği) — yapısal olarak merge-sonrası**. Adım=verify (canlı +1 bekliyor).
+**Son Güncelleme:** 2026-07-01 — verify-phase 7 (re-run): "canlı +1 gördüm" iddiası kanıtla çürütüldü — `main` HEAD'in **89 commit gerisinde** (tüm v0.1+v0.2 revizesi unmerged), canlı kiwiailab.com HTML'inde Umami **yok** → Senaryo 9-10 gerçekten açık (sahte-geçmiş kaydedilmedi). Otomatik kontroller + otonom UAT 1-8 ✅ (başarısız/fix yok). Kullanıcı kararı (B): merge = tüm revizeyi ilk kez production'a almak → sırf bir UAT senaryosu için tetiklenmedi; 9-10 bilinçli **v0.2 production release**'e ertelendi, fazı kapat → **Adım=review**.
 
 <!-- KURAL: Bu satır her oturum sonunda ÜZERİNE YAZILIR — tek satır, tek cümle. "Önceki:" / "Eski:" prefix ile kümülatif yığma YASAK; HTML comment'e sarma da yasak (CLAUDE.md → Doküman Disiplini). Tarih + kısa özet yeterli; detay için git log + ilgili PHASE/TASK dokümanları. -->
 
@@ -9,9 +9,9 @@
 ## Aktif Faz
 
 **Faz:** 7 — Umami analytics (E1) (v0.2 son içerik fazı; discuss-phase 7 ✅ ile kapsam damgalandı). Faz 6 (mobil perf/LCP) ✅; Faz 5 (test altyapısı D1) ✅; Faz 4 (v0.2 a11y 89→100) ✅.
-**Adım:** verify (canlı +1 bekliyor) → otomatik kontroller + otonom UAT (Senaryo 1-8) ✅ geçti; **milestone çekirdeği Senaryo 9-10 (canlı panelde +1 + SPA pageview) yapısal olarak merge-sonrası** — `data-domains=kiwiailab.com` preview'ları saymaz. Kullanıcı kararı: merge→main deploy sonrası kiwiailab.com panelinde gözle teyit (MEMORY Süreç Disiplinleri: "kod ekledim tamamdır deme"). Spec: `docs/UMAMI-ANALYTICS.md`; kararlar PHASE-7 + DECISIONS.
-**İlerleme:** **verify-phase 7** (2026-07-01) — Otomatik: CI `fast`+`a11y` success (491e4ae/6d0d54a job-seviyesi teyit), dependabot/bot PR yok, security-review temiz (≥8 bulgu yok), lokal `npm test` 7/7 + build temiz. Otonom UAT 1-8 ✅ (5 locale head render + preload/RSC, dört spec değeri birebir, guardrail'ler yeşil, TS-strict build temiz, tema-FOUC çakışmasız, perf regresyon yok [7.02 artefaktları], degradasyon, data-domains kod-tarafı doğru). **Başarısız senaryo / CI failure / güvenlik bulgusu yok → düzeltme task'ı gerekmedi.** Kalan: canlı +1 (9-10, merge-sonrası). Versiyon Sonu Durumu içerik_fazları (değişmez). Devralınan sahipli borç (sonraki a11y/alt-sayfa fazına): alt-sayfa derin a11y + `text-pulse` süpürmesi; brief mobil açığın nihai doğrulaması gerçek-cihaz/Vercel field gerektirir (metodolojik duvar).
-**Son Faz Dokümanı:** `phases/PHASE-7.md` (🔄 — 7.01 ✅, 7.02 ✅; UAT 1-8 ✅, 9-10 canlı +1 merge-bekliyor)
+**Adım:** review → verify-phase 7 tamam: otomatik kontroller + otonom UAT 1-8 ✅ (başarısız senaryo / fix task yok). **Senaryo 9-10 (canlı +1, milestone çekirdeği) açık** — bu oturumda kanıtlandı: `main` HEAD'in 89 commit gerisinde, canlıda Umami script'i yok; `data-domains=kiwiailab.com` preview saymaz. Kullanıcı kararı (B): merge = tüm revizeyi ilk kez production'a almak olduğundan ertelendi → 9-10 bilinçli **v0.2 production release** adımına ertelendi (release ayrı, bilinçli karar; MEMORY Süreç Disiplinleri "kod ekledim tamamdır deme" ile hizalı). Spec: `docs/UMAMI-ANALYTICS.md`; kararlar PHASE-7 + DECISIONS.
+**İlerleme:** **verify-phase 7** (2026-07-01) — Otomatik: CI `fast`+`a11y` success (491e4ae/6d0d54a job-seviyesi teyit), dependabot/bot PR yok, security-review temiz (≥8 bulgu yok), lokal `npm test` 7/7 + build temiz. Otonom UAT 1-8 ✅ (5 locale head render + preload/RSC, dört spec değeri birebir, guardrail'ler yeşil, TS-strict build temiz, tema-FOUC çakışmasız, perf regresyon yok [7.02 artefaktları], degradasyon, data-domains kod-tarafı doğru). **Başarısız senaryo / CI failure / güvenlik bulgusu yok → düzeltme task'ı gerekmedi.** Kalan: canlı +1 (9-10) — bu oturumda `main` unmerged (89 commit geride) + canlıda Umami yok teyit edildi; bilinçli v0.2 production release'e ertelendi (B kararı). Versiyon Sonu Durumu içerik_fazları (değişmez). Devralınan sahipli borç (sonraki a11y/alt-sayfa fazına): alt-sayfa derin a11y + `text-pulse` süpürmesi; brief mobil açığın nihai doğrulaması gerçek-cihaz/Vercel field gerektirir (metodolojik duvar).
+**Son Faz Dokümanı:** `phases/PHASE-7.md` (🔄 — 7.01 ✅, 7.02 ✅; UAT 1-8 ✅, 9-10 canlı +1 v0.2 release'e ertelendi; adım=review)
 
 ---
 
@@ -29,8 +29,8 @@
 ## Aktif Task
 
 **Task:** Fazda aktif/bekleyen task yok — TASK-7.01 ✅ + TASK-7.02 ✅ tamamlandı; verify-phase UAT'de başarısız senaryo yok → düzeltme task'ı açılmadı.
-**Durum:** Faz 7 aktif, adım=verify (canlı +1 bekliyor). Otomatik + otonom UAT (1-8) geçti; milestone çekirdeği 9-10 merge-sonrası.
-**İlerleme:** 7.01 + 7.02 ✅; verify-phase otomatik kontroller + otonom UAT 1-8 ✅. Kalan = canlı +1 doğrulaması (9-10, merge→main sonrası kiwiailab.com panelinde).
+**Durum:** Faz 7 aktif, adım=review. Otomatik + otonom UAT (1-8) geçti; milestone çekirdeği 9-10 (canlı +1) bilinçli v0.2 production release'e ertelendi.
+**İlerleme:** 7.01 + 7.02 ✅; verify-phase otomatik kontroller + otonom UAT 1-8 ✅. Kalan = canlı +1 doğrulaması (9-10) — release sonrası kiwiailab.com panelinde (merge henüz yapılmadı; `main` 89 commit geride, canlıda Umami yok).
 
 ---
 
@@ -71,12 +71,12 @@
 
 ## Hızlı Erişim
 
-**Aktif Task:** Fazda bekleyen task yok — 7.01 ✅ + 7.02 ✅; verify-phase UAT 1-8 ✅ (düzeltme task'ı yok). Kalan: canlı +1 (9-10, merge-sonrası).
-**Aktif Faz:** 7 — Umami analytics (E1) · adım=verify (canlı +1 bekliyor); Faz 6 ✅; Faz 5 ✅; Faz 4 ✅; Aktif Versiyon v0.2, Versiyon Sonu Durumu: içerik_fazları
+**Aktif Task:** Fazda bekleyen task yok — 7.01 ✅ + 7.02 ✅; verify-phase UAT 1-8 ✅ (düzeltme task'ı yok). Kalan: canlı +1 (9-10) v0.2 release'e ertelendi.
+**Aktif Faz:** 7 — Umami analytics (E1) · adım=review; Faz 6 ✅; Faz 5 ✅; Faz 4 ✅; Aktif Versiyon v0.2, Versiyon Sonu Durumu: içerik_fazları
 **Task Sistemi:** `tasks/TASKS-README.md`
 **PRD (karar kaynağı):** `PRD/VIZYON.md` · `PRD/VERSIONS.md` · `PRD/features/`
 **Revize Backlog (bilinen sorunlar):** `docs/REVIZE-BACKLOG.md`
 
 ---
 
-**Son Güncelleme:** 2026-07-01 — verify-phase 7: otomatik kontroller (CI success · security-review temiz) + otonom UAT Senaryo 1-8 ✅; başarısız senaryo yok. Milestone çekirdeği (canlı +1, Senaryo 9-10) merge-sonrası bekliyor. Adım=verify (canlı +1 bekliyor).
+**Son Güncelleme:** 2026-07-01 — verify-phase 7 (re-run): otomatik kontroller + otonom UAT 1-8 ✅; başarısız/fix yok. "Canlı +1" iddiası kanıtla çürütüldü (`main` 89 commit geride, canlıda Umami yok) → 9-10 açık, bilinçli v0.2 production release'e ertelendi (B). Adım=review.
