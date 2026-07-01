@@ -1,6 +1,6 @@
 # DURUM — Proje Dashboard
 
-**Son Güncelleme:** 2026-07-01 — run-task 7.02 ✅: Umami sonrası before/after Lighthouse regresyon doğrulaması — **regresyon YOK** (same-env mobil TR `/`: before 90/LCP 3009ms → after 88/2714ms; masaüstü 100/660ms; CLS 0). `afterInteractive` LCP sonrası yükler → LCP'ye zarar yok; preconnect eklenmedi. Fazdaki tüm task'lar bitti. Sıradaki adım: verify-phase 7 (yeni oturum).
+**Son Güncelleme:** 2026-07-01 — verify-phase 7: otomatik kontroller (CI fast+a11y success · dependabot/bot PR yok · security-review temiz) + otonom UAT **Senaryo 1-8 ✅ geçti** (5 locale head render, dört spec değeri, guardrail'ler yeşil, build temiz, tema-FOUC çakışmasız, perf regresyon yok, degradasyon, data-domains). Başarısız senaryo yok → düzeltme task'ı gerekmedi. Kalan tek kapı: **Senaryo 9-10 canlı +1 (milestone çekirdeği) — yapısal olarak merge-sonrası**. Adım=verify (canlı +1 bekliyor).
 
 <!-- KURAL: Bu satır her oturum sonunda ÜZERİNE YAZILIR — tek satır, tek cümle. "Önceki:" / "Eski:" prefix ile kümülatif yığma YASAK; HTML comment'e sarma da yasak (CLAUDE.md → Doküman Disiplini). Tarih + kısa özet yeterli; detay için git log + ilgili PHASE/TASK dokümanları. -->
 
@@ -9,9 +9,9 @@
 ## Aktif Faz
 
 **Faz:** 7 — Umami analytics (E1) (v0.2 son içerik fazı; discuss-phase 7 ✅ ile kapsam damgalandı). Faz 6 (mobil perf/LCP) ✅; Faz 5 (test altyapısı D1) ✅; Faz 4 (v0.2 a11y 89→100) ✅.
-**Adım:** verify → `/devflow:verify-phase 7` (yeni oturum): fazdaki tüm task'lar (7.01 ✅, 7.02 ✅) tamamlandı. UAT + **canlı +1 doğrulaması** (merge sonrası kiwiailab.com panelinde — milestone çekirdeği, MEMORY Süreç Disiplinleri: "kod ekledim tamamdır deme"). Spec: `docs/UMAMI-ANALYTICS.md`; kararlar PHASE-7 + DECISIONS.
-**İlerleme:** **run-task 7.02 ✅** (2026-07-01) — Umami sonrası before/after Lighthouse: **regresyon YOK** (same-env mobil TR `/` before 90/LCP 3009ms → after 88/2714ms, bantlar örtüşük; masaüstü 100/660ms; CLS 0; LCP/FCP/CLS Faz 6 tabanının altında). `afterInteractive` LCP penceresinden sonra yükler → yeni origin (`umami.kiwiailab.com`) LCP'ye zarar vermiyor (network-requests audit'i isteğin fiilen alındığını doğruladı). preconnect eklenmedi (YAGNI); DECISIONS'a girdi gerekmedi. Fazın iki kod-task'ı bitti; kalan = verify-phase (canlı +1). Versiyon Sonu Durumu içerik_fazları (değişmez); Umami verify'ı bitince versiyon-sonu sabit fazları gelir. Devralınan sahipli borç (sonraki a11y/alt-sayfa fazına): alt-sayfa derin a11y + `text-pulse` süpürmesi; brief mobil açığın nihai doğrulaması gerçek-cihaz/Vercel field gerektirir (metodolojik duvar).
-**Son Faz Dokümanı:** `phases/PHASE-7.md` (🔄 — 7.01 ✅, 7.02 ✅; verify bekliyor)
+**Adım:** verify (canlı +1 bekliyor) → otomatik kontroller + otonom UAT (Senaryo 1-8) ✅ geçti; **milestone çekirdeği Senaryo 9-10 (canlı panelde +1 + SPA pageview) yapısal olarak merge-sonrası** — `data-domains=kiwiailab.com` preview'ları saymaz. Kullanıcı kararı: merge→main deploy sonrası kiwiailab.com panelinde gözle teyit (MEMORY Süreç Disiplinleri: "kod ekledim tamamdır deme"). Spec: `docs/UMAMI-ANALYTICS.md`; kararlar PHASE-7 + DECISIONS.
+**İlerleme:** **verify-phase 7** (2026-07-01) — Otomatik: CI `fast`+`a11y` success (491e4ae/6d0d54a job-seviyesi teyit), dependabot/bot PR yok, security-review temiz (≥8 bulgu yok), lokal `npm test` 7/7 + build temiz. Otonom UAT 1-8 ✅ (5 locale head render + preload/RSC, dört spec değeri birebir, guardrail'ler yeşil, TS-strict build temiz, tema-FOUC çakışmasız, perf regresyon yok [7.02 artefaktları], degradasyon, data-domains kod-tarafı doğru). **Başarısız senaryo / CI failure / güvenlik bulgusu yok → düzeltme task'ı gerekmedi.** Kalan: canlı +1 (9-10, merge-sonrası). Versiyon Sonu Durumu içerik_fazları (değişmez). Devralınan sahipli borç (sonraki a11y/alt-sayfa fazına): alt-sayfa derin a11y + `text-pulse` süpürmesi; brief mobil açığın nihai doğrulaması gerçek-cihaz/Vercel field gerektirir (metodolojik duvar).
+**Son Faz Dokümanı:** `phases/PHASE-7.md` (🔄 — 7.01 ✅, 7.02 ✅; UAT 1-8 ✅, 9-10 canlı +1 merge-bekliyor)
 
 ---
 
@@ -28,9 +28,9 @@
 
 ## Aktif Task
 
-**Task:** Fazda aktif/bekleyen task yok — TASK-7.01 ✅ + TASK-7.02 ✅ tamamlandı.
-**Durum:** Faz 7 aktif, adım=verify. Tüm kod-task'lar bitti. Sıradaki: verify-phase 7 (yeni oturum).
-**İlerleme:** 7.01 (Umami entegrasyonu) + 7.02 (before/after perf, regresyon yok) tamamlandı. Kalan = UAT + canlı +1 doğrulaması (verify-phase, merge sonrası).
+**Task:** Fazda aktif/bekleyen task yok — TASK-7.01 ✅ + TASK-7.02 ✅ tamamlandı; verify-phase UAT'de başarısız senaryo yok → düzeltme task'ı açılmadı.
+**Durum:** Faz 7 aktif, adım=verify (canlı +1 bekliyor). Otomatik + otonom UAT (1-8) geçti; milestone çekirdeği 9-10 merge-sonrası.
+**İlerleme:** 7.01 + 7.02 ✅; verify-phase otomatik kontroller + otonom UAT 1-8 ✅. Kalan = canlı +1 doğrulaması (9-10, merge→main sonrası kiwiailab.com panelinde).
 
 ---
 
@@ -71,12 +71,12 @@
 
 ## Hızlı Erişim
 
-**Aktif Task:** Fazda bekleyen task yok — 7.01 ✅ + 7.02 ✅. Sıradaki adım: `/devflow:verify-phase 7` (yeni oturum).
-**Aktif Faz:** 7 — Umami analytics (E1) · adım=verify; Faz 6 ✅; Faz 5 ✅; Faz 4 ✅; Aktif Versiyon v0.2, Versiyon Sonu Durumu: içerik_fazları
+**Aktif Task:** Fazda bekleyen task yok — 7.01 ✅ + 7.02 ✅; verify-phase UAT 1-8 ✅ (düzeltme task'ı yok). Kalan: canlı +1 (9-10, merge-sonrası).
+**Aktif Faz:** 7 — Umami analytics (E1) · adım=verify (canlı +1 bekliyor); Faz 6 ✅; Faz 5 ✅; Faz 4 ✅; Aktif Versiyon v0.2, Versiyon Sonu Durumu: içerik_fazları
 **Task Sistemi:** `tasks/TASKS-README.md`
 **PRD (karar kaynağı):** `PRD/VIZYON.md` · `PRD/VERSIONS.md` · `PRD/features/`
 **Revize Backlog (bilinen sorunlar):** `docs/REVIZE-BACKLOG.md`
 
 ---
 
-**Son Güncelleme:** 2026-07-01 — run-task 7.02 ✅: Umami sonrası before/after Lighthouse — regresyon YOK (same-env mobil TR `/` before 90/3009ms → after 88/2714ms; masaüstü 100/660ms; CLS 0). preconnect eklenmedi. Fazdaki tüm task'lar bitti. Sıradaki adım: `/devflow:verify-phase 7`.
+**Son Güncelleme:** 2026-07-01 — verify-phase 7: otomatik kontroller (CI success · security-review temiz) + otonom UAT Senaryo 1-8 ✅; başarısız senaryo yok. Milestone çekirdeği (canlı +1, Senaryo 9-10) merge-sonrası bekliyor. Adım=verify (canlı +1 bekliyor).
