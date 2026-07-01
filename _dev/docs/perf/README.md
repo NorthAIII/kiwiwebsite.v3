@@ -1,6 +1,6 @@
 # Perf Taban Kayıtları — Ana Sayfa Lighthouse
 
-Ana sayfa Lighthouse perf/a11y tabanları. Ölçüm **yerel production build** üzerinde (`next build && next start`); revize branch canlıya deploy olmuyor (kiwiailab.com eski kodu yansıtır) → bu "yerel taban". İlk taban: **v0.1, 2026-06-28** (TASK-2.03 / Phase 2). En güncel ölçüm: **v0.2 / Faz 6 final, 2026-06-30** (TASK-6.07; temsilî ortamda aynı-ortam before/after — Faz 6 lever'ları mobil perf 84→90 / LCP 3604→3164ms **ölçülebilir iyileştirdi**, sürücü = L3 font budama; brief mobil bütçe hâlâ açık; aşağıda **Faz 6 / TASK-6.07 final** bölümü).
+Ana sayfa Lighthouse perf/a11y tabanları. Ölçüm **yerel production build** üzerinde (`next build && next start`); revize branch canlıya deploy olmuyor (kiwiailab.com eski kodu yansıtır) → bu "yerel taban". İlk taban: **v0.1, 2026-06-28** (TASK-2.03 / Phase 2). En güncel ölçüm: **v0.2 / Faz 7, 2026-07-01** (TASK-7.02; Umami analytics entegrasyonu sonrası aynı-ortam before/after — `afterInteractive` script LCP penceresinden sonra yüklendiği için **regresyon yok**, preconnect eklenmedi; aşağıda **Faz 7 / TASK-7.02** bölümü). Bir önceki: v0.2 / Faz 6 final (TASK-6.07).
 
 > ⚠️ **İki kanonik-koşu tuzağı (Faz 4 TASK-4.01/4.08 düzeltmeleri — okumadan ölçme):**
 > 1. **Ölçülen-locale:** Cookie'siz kanonik koşu Chrome `Accept-Language` ile `/` → **`/en`**'e redirect olur (next-intl `localeDetection`). v0.1 tabanı bu yüzden "TR `/`" değil, aslında **`/en`**'i ölçtü (artifact `finalUrl=/en` ile kanıtlı). **TR varsayılan** sayfasını ölçmek için `NEXT_LOCALE=tr` cookie şart (Lighthouse `--extra-headers='{"Cookie":"NEXT_LOCALE=tr"}'`). TR `/` sayfası `/en`'den **ağırdır** (hero metni daha uzun) — perf/LCP/FCP farkı buradan gelir, regresyon değil.
@@ -11,6 +11,7 @@ Kanonik artefaktlar:
 - **v0.2/Faz 4 (2026-06-30)** — `home-{mobile,desktop}-20260630.{html,json}` (TR `/`, a11y=100); regresyon-repro `home-{mobile,desktop}-en-baseline-repro-20260630.json` (`/en`, baseline ile aynı sayfa)
 - **v0.2/Faz 6 TASK-6.01 (2026-06-30)** — `home-mobile-20260630-lcp.json` (TR `/`, **element-denetimli**: LCP elementi `lcp-breakdown-insight`'tan okunabilir). Ölçüm ortamı Chrome 150 + **ağır** SwiftShader → perf/TBT şişkin (perf 62 / TBT 1842ms), LCP/FCP/CLS yine deterministik. **Bu ortam anomaliydi** (TASK-6.07 temsilî ortamı baseline'ı perf 84 / TBT 261ms ile ölçtü, Faz-4 ile birebir — 6.01/6.04 SwiftShader yükü 6.07'de tekrarlanmadı).
 - **v0.2/Faz 6 final TASK-6.07 (2026-06-30)** — **kanonik:** `home-{mobile,desktop}-20260630-faz6.{html,json}` (TR `/`, L1+L2+L3, element-denetimli, median-LCP koşu). Attribution kanıtı (json): `home-mobile-20260630-faz6-baseline.json` (aynı-ortam lever-öncesi baseline = Faz-4 birebir) + `home-mobile-20260630-faz6-l1l2only.json` (L1+L2 tek başına = delta yok). Bu artefaktlar Faz-4 kanonik `home-*-20260630.{html,json}` dosyalarını **korur** (üzerine yazmaz).
+- **v0.2/Faz 7 TASK-7.02 (2026-07-01)** — **kanonik (after=Umami'li):** `home-{mobile,desktop}-20260701-faz7.{html,json}` (TR `/`, Umami entegrasyonu HEAD, temsilî-median koşu; network-requests audit'inde `umami.kiwiailab.com` isteği **var** = script fiilen yüklendi). Attribution kanıtı (json, aynı-ortam before=Umami'siz): `home-{mobile,desktop}-20260701-faz7-before.json` (`layout.tsx` f065700'e döndürülüp yeniden build; umami isteği **yok**). Faz-6 kanonik dosyalarını korur.
 
 ---
 
@@ -237,6 +238,41 @@ Dağılımlar örtüşmüyor (baseline min LCP 3603 > final max LCP 3231) → de
 
 
 Bulgu kullanıcıya getirildi (TASK-2.03 Karar Noktası). Optimizasyon/a11y düzeltmesi bu fazın (Phase 2 teknik borç) kapsamı dışı (discuss-phase). Disposition → DURUM "Sıradaki Adım" + `docs/DECISIONS.md` (2026-06-28).
+
+---
+
+## v0.2 / Faz 7 — TASK-7.02: Umami sonrası before/after regresyon doğrulaması (2026-07-01)
+
+Umami analytics entegrasyonu (TASK-7.01: `next/script` `<Script afterInteractive>` ile `umami.kiwiailab.com/script.js` `[locale]/layout.tsx` `<head>`'inde) yeni bir 3rd-party script + yeni origin ekliyor. Araştırma (PHASE-7 · D) "Lantern network lever'ları lab'da görünür" gerekçesiyle **before/after ölçüm** şart koştu; preconnect **ölç-önce (YAGNI)** kararına bağlandı. Bu task o ölçümdür.
+
+Ortam: node 20.20.2 + Chrome 150 + LH 13.3.0 (npx-cache), flags `--headless=new --no-sandbox --disable-dev-shm-usage --enable-unsafe-swiftshader`. Fresh-prod-serve (`rm -rf .next && next build` → `next start -p 4173`, listening-PID teyit), düşük yük (load ~1–2.8), TR `/` (`NEXT_LOCALE=tr` cookie, finalUrl `/` teyit). **before = aynı ortamda `layout.tsx` f065700'e (Umami öncesi) döndürülüp yeniden build** (perf/TBT ortamlar arası kıyaslanamaz → same-env before şart).
+
+### Aynı-ortam before/after — TR `/` mobil (5 koşu median)
+
+| Metrik | Before (Umami'siz) | **After (Umami'li)** | Delta | Faz 6 tabanı | Verdi |
+|---|---|---|---|---|---|
+| perf | 90 (87–93) | **88** (81–90) | −2 (gürültü, bantlar örtüşük) | (ortam-bağımlı) | ✓ regresyon yok |
+| LCP | 3009 ms (2704–3228) | **2714 ms** (2707–3160) | −295 ms (↓ daha iyi) | ≤ 3164 ms | ✓ tabanın altında |
+| FCP | 1508 ms | **1364 ms** | −144 ms (↓) | — | ✓ |
+| CLS | 0.000 | **0.000** | = | ≈ 0 | ✓ |
+| TBT | 277 ms | **319 ms** | +42 ms (gürültü) | (ortam-bağımlı) | ✓ |
+
+### TR `/` masaüstü (3 koşu median)
+
+| Metrik | Before | **After** | Faz 6 tabanı | Verdi |
+|---|---|---|---|---|
+| perf | 100 | **100** | 100 | ✓ |
+| LCP | 611 ms | **660 ms** | ≤ 0.69 s | ✓ (+49 ms, gürültü) |
+| CLS | 0.000 | **0.000** | ≈ 0 | ✓ |
+| TBT | 0 ms | **0 ms** | — | ✓ |
+
+> Kanonik AFTER artefakt (mobil `home-mobile-20260701-faz7`, LCP 2856 ms) 8-koşu birleşik median (~2855 ms) civarında temsilî. Masaüstü kanonik LCP 610 ms.
+
+### Sonuç — regresyon YOK, preconnect eklenmedi
+
+- **LCP/FCP/CLS (Lantern-deterministik) Faz 6 tabanının altında/eşit** — mobil LCP after 2714 ms ≤ 3164 ms; masaüstü 660 ms ≤ 0.69 s; CLS≈0 her yerde. Same-env before→after tüm delta'lar koşu-içi gürültü bandında (dağılımlar örtüşüyor); mobil perf 88 vs 90 farkı 2 puan (before 87–93 / after 81–90 bantları örtüşük) → anlamlı regresyon değil.
+- **Neden regresyon yok — `afterInteractive` LCP sonrası yükler:** `network-requests` audit'i `umami.kiwiailab.com` isteğinin ölçümde **fiilen alındığını** gösteriyor (after artefaktlarında var, before'da yok), ama script hydration sonrası (LCP penceresinden sonra) enjekte edildiği için LCP elementiyle (hero metni) yarışmıyor. L3 font budamasının (Faz 6) aksine — o LCP kritik yolundaydı, bu değil. Araştırmanın "Lantern network lever'ı görünür olabilir" tezi doğruydu ama **yalnız LCP kritik yolundaki** asset'ler için; `afterInteractive` script o yolda değil.
+- **Karar: preconnect/dns-prefetch eklenmedi** (araştırma D · YAGNI). Veri regresyon göstermedi → yeni origin için erken bağlantı gerekmedi; 7.01 dosyalarına dokunulmadı, DECISIONS'a yeni girdi gerekmedi (regresyon-tetikli strateji değişikliği olmadı).
 
 ---
 

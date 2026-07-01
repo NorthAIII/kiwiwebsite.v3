@@ -7,7 +7,7 @@
 >
 > Bu yapı şişmeyi önler: index ince kalır (hep yüklü), detay yalnızca gerekince okunur.
 
-**Son Güncelleme:** 2026-06-30 — run-task 6.07: "Lighthouse Lantern render-timing körlüğü" pointer'ı rafine edildi (CPU/render-zamanlama lever'ları lab'da görünmez AMA network/asset-boyutu lever'ları GÖRÜNÜR — L3 font budama mobil LCP 3755→3164ms; "tek lab-lever = WebGL iş yükü" eksikti; + ortam anomalisi notu: 6.01/6.04 SwiftShader perf 62 vs 6.07 temsilî perf 84).
+**Son Güncelleme:** 2026-07-01 — run-task 7.02: "Lighthouse Lantern render-timing körlüğü" pointer'ı yeniden rafine edildi (network lever görünürlüğü yalnız LCP KRİTİK YOLUNDAKİ asset'ler için — Umami `afterInteractive` yeni-origin script'i fiilen yüklendi ama LCP sonrası enjekte edildiği için mobil LCP'ye regresyon getirmedi; "network lever lab-görünür" post-LCP script için geçerli değil).
 
 <!-- KURAL: Bu satır her güncellemede ÜZERİNE YAZILIR. "Önceki:" prefix ile kümülatif yığma YASAK (CLAUDE.md → Doküman Disiplini). -->
 

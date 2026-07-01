@@ -1,6 +1,6 @@
 # TASK-7.02: Umami sonrası before/after Lighthouse perf regresyon doğrulaması
 
-**Durum:** ⬜ Bekliyor
+**Durum:** ✅ Tamamlandı
 **Modül:** M6 — SEO & Deploy (modules/M6-SEO-Deploy.md)
 **Feature:** E1 — Umami self-hosted analytics
 **Faz:** Phase 7 (phases/PHASE-7.md)
@@ -39,23 +39,13 @@ Araştırma (PHASE-7 · D) preconnect/dns-prefetch'i **ölç-önce, ekleme (YAGN
 
 ## Alt Görevler
 
-- [ ] **1. Ölçüm ortamını hazırla (gerekirse, kullanıcı onayıyla)**
-  - node20 + Chrome 150 + LH 13.3.0 (npx-cache) — `perf-olcum-devcontainer-kurulumu` MEMORY reçetesi.
-  - Chrome flags ŞART: `--disable-dev-shm-usage` + `--enable-unsafe-swiftshader` (yoksa Living Flow `TARGET_CRASHED`).
-  - Her koşu öncesi `cat /proc/loadavg` → düşük yük (≤ ~6) doğrula; stray `next-server`/`chrome` process kontrolü.
+- [x] **1. Ölçüm ortamını hazırla** — node 20.20.2 + Chrome 150 + LH 13.3.0 (npx-cache `906bfb1e...`) **zaten kurulu** (bu devcontainer'da mevcuttu; kurulum gerekmedi). Flags birebir kullanıldı (`--headless=new --no-sandbox --disable-dev-shm-usage --enable-unsafe-swiftshader`). Her koşu öncesi `/proc/loadavg` gözlendi (load ~1–2.8, düşük); stray `next-server`/`chrome` yok; listening-PID her serve'te teyit edildi.
 
-- [ ] **2. Same-environment before/after ölç**
-  - **after** = mevcut branch (Umami'li): TR `/`, `NEXT_LOCALE=tr` cookie, mobil + masaüstü, çok-koşu median.
-  - **before** = Umami'siz durum **aynı ortamda/oturumda** (7.01 öncesi commit / geçici stash) — perf skoru/TBT ortamlar arası kıyaslanamaz olduğundan same-env before şart.
-  - LCP/FCP/CLS Faz 6 tabanıyla da doğrudan kıyaslanabilir (Lantern-deterministik).
+- [x] **2. Same-environment before/after ölç** — **after** = HEAD (Umami'li): TR `/` (`NEXT_LOCALE=tr` cookie, finalUrl `/` teyit), mobil ×5 + masaüstü ×3 median. **before** = aynı ortamda `layout.tsx` f065700'e (Umami öncesi) döndürülüp yeniden build, aynı ölçüm. LCP/FCP/CLS Faz 6 tabanıyla da kıyaslandı.
 
-- [ ] **3. Karşılaştır + artefakt kaydet**
-  - LCP/FCP/CLS Faz 6 tabanının altına düşmemeli; same-env perf skoru before→after regresyon göstermemeli.
-  - Artefaktları `docs/perf/`'e yaz (`home-{mobile,desktop}-<tarih>.{html,json}`), README koşu tablosunu güncelle.
+- [x] **3. Karşılaştır + artefakt kaydet** — regresyon yok (aşağıda). Artefaktlar `docs/perf/`'e yazıldı (`home-{mobile,desktop}-20260701-faz7.{html,json}` = after kanonik + `-before.json` = attribution). README'ye Faz 7 before/after bölümü + kanonik-artefakt satırı eklendi.
 
-- [ ] **4. Karar**
-  - Regresyon **yoksa:** "preconnect eklenmedi, regresyon yok" olarak kaydet (README + PHASE-7).
-  - Regresyon **varsa:** preconnect/dns-prefetch dene veya strategy yeniden değerlendir (araştırma D, veri-güdümlü); değişiklik 7.01 dosyalarına dokunur → kararı `docs/DECISIONS.md`'ye yaz.
+- [x] **4. Karar** — Regresyon **YOK** → "preconnect eklenmedi, regresyon yok" kaydedildi (README + PHASE-7). 7.01 dosyalarına dokunulmadı; DECISIONS'a girdi gerekmedi (regresyon-tetikli strateji değişikliği olmadı).
 
 ---
 
@@ -87,32 +77,41 @@ _dev/docs/perf/
 
 ## Test Kriterleri
 
-- [ ] Same-env before/after alındı (mobil + masaüstü, TR `/` cookie, çok-koşu median, düşük host yükü).
-- [ ] **LCP/FCP/CLS Faz 6 tabanının altına düşmedi** (mobil LCP ≤ ~3164ms, masaüstü LCP ≤ ~0.69s, CLS≈0).
-- [ ] Same-env perf skoru before→after regresyon göstermiyor.
-- [ ] Artefaktlar `docs/perf/`'e kaydedildi, README koşu tablosu güncellendi.
-- [ ] Karar kaydedildi: regresyon yoksa "preconnect eklenmedi, regresyon yok"; varsa preconnect/strategy müdahalesi + DECISIONS girdisi.
+- [x] Same-env before/after alındı (mobil ×5 + masaüstü ×3, TR `/` cookie, median, düşük host yükü ~1–2.8).
+- [x] **LCP/FCP/CLS Faz 6 tabanının altına düşmedi** — mobil LCP after 2714 ms ≤ 3164 ms; masaüstü 660 ms ≤ 0.69 s; CLS 0.000 her yerde.
+- [x] Same-env perf skoru before→after regresyon göstermiyor — mobil 90→88 (bantlar örtüşük, 2 puan gürültü); masaüstü 100→100.
+- [x] Artefaktlar `docs/perf/`'e kaydedildi (`*-faz7.{html,json}` + `-before.json`), README Faz 7 bölümü güncellendi.
+- [x] Karar kaydedildi: "preconnect eklenmedi, regresyon yok" (README + PHASE-7); DECISIONS'a girdi gerekmedi.
 
 ---
 
 ## Tamamlanma Kriterleri
 
-- [ ] Tüm alt görevler tamamlandı
-- [ ] Tüm test kriterleri karşılandı
-- [ ] Git commit & push yapıldı (conventional commits)
-- [ ] Bu doküman güncellendi (oturum kaydı)
-- [ ] DURUM.md + PHASE-7.md güncellendi
+- [x] Tüm alt görevler tamamlandı
+- [x] Tüm test kriterleri karşılandı
+- [x] Git commit & push yapıldı (conventional commits)
+- [x] Bu doküman güncellendi (oturum kaydı)
+- [x] DURUM.md + PHASE-7.md güncellendi
 
 ---
 
 ## Oturum Kayıtları
 
-### Oturum — [TARİH]
+### Oturum — 2026-07-01
 
-**Durum:** [doldurulacak]
+**Durum:** ✅ Tamamlandı
+
+**Son Yaklaşım:** Same-env before/after Lighthouse. after = HEAD (Umami'li) fresh build; before = `layout.tsx` f065700'e döndürülüp aynı ortamda yeniden build. Her ikisi TR `/` (`NEXT_LOCALE=tr` cookie), mobil ×5 + masaüstü ×3 median, düşük host yükü. Kod değişikliği yapılmadı (yalnız ölçüm + doküman); before ölçümü sonrası `layout.tsx` HEAD'e geri alındı (working tree temiz).
+
+**Sonraki Adım Detayı:** Task tamamlandı — fazdaki tüm task'lar (7.01 ✅, 7.02 ✅) bitti → sıradaki adım `/devflow:verify-phase 7` (canlı +1 doğrulaması dahil, merge sonrası kiwiailab.com panelinde).
 
 **Yapılanlar:**
-- [doldurulacak]
+- **Ortam:** node 20.20.2 + Chrome 150 + LH 13.3.0 (npx-cache) zaten kuruluydu — kurulum gerekmedi. Flags: `--headless=new --no-sandbox --disable-dev-shm-usage --enable-unsafe-swiftshader`.
+- **Ölçüm:** mobil TR `/` — before perf 90 / LCP 3009ms, after perf 88 / LCP 2714ms (dağılımlar örtüşük, delta gürültü bandı). Masaüstü — before/after perf 100, LCP 611→660ms. CLS 0.000 her yerde.
+- **Regresyon YOK:** LCP/FCP/CLS Faz 6 tabanının (mobil LCP 3164ms, masaüstü 0.69s) altında/eşit. `network-requests` audit'i Umami isteğinin ölçümde fiilen alındığını (after'da var, before'da yok) gösterdi — yani script yüklendiği halde LCP'ye zarar vermedi (`afterInteractive` LCP penceresinden sonra enjekte eder → hero-metni LCP elementiyle yarışmaz).
+- **Karar:** preconnect/dns-prefetch eklenmedi (araştırma D · YAGNI); 7.01 dosyalarına dokunulmadı; DECISIONS'a girdi gerekmedi.
+- **Artefaktlar:** `docs/perf/home-{mobile,desktop}-20260701-faz7.{html,json}` (after kanonik) + `-before.json` (attribution). README'ye Faz 7 bölümü + intro güncellendi.
+- **Test:** npm test yeşil (7/7); build temiz (before + after).
 
 ---
 
