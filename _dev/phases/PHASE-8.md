@@ -138,9 +138,19 @@ Yeni bağımlılık **yok** (paket ekleme onay gerektirir — Dokunulmazlar). Me
 
 | # | Task | Durum | Açıklama |
 |---|------|-------|----------|
-| 8.01 | TASK-8.01 | ⬜ Bekliyor | (plan-phase'de yazılır) |
+| 8.01 | TASK-8.01 | ⬜ Bekliyor | Parametrik alt-sayfa a11y harness'i (helper çıkarımı + subpages spec) + 5 sayfa baseline axe envanteri (ölçüm-önce, fix yok, mühür yok) |
+| 8.02 | TASK-8.02 | ⬜ Bekliyor | `/bunker-os` derin a11y fix + tohum — hotspot (text-canvas/NN dark-inversiyon + text-green/30); TD4 milestone burada kapanır |
+| 8.03 | TASK-8.03 | ⬜ Bekliyor | `/spor-salonu-yazilimi` (Alpfit) a11y teyit + tohum — düşük risk (0 ihlalse yalnız mühürle) |
+| 8.04 | TASK-8.04 | ⬜ Bekliyor | `/vaka-calismalari` a11y teyit + tohum — düşük risk (0 ihlalse yalnız mühürle) |
+| 8.05 | TASK-8.05 | ⬜ Bekliyor | `/bulten` 2 makale (AiSdr + Claude) a11y teyit + tohum — düşük risk; 5 alt sayfa mühürü tamamlanır |
 
 **Durum simgeleri:** ⬜ Bekliyor | 🔄 Devam ediyor | ⏸️ Duraklatıldı | ✅ Tamamlandı | 🔴 Bloke | ❌ İptal
+
+> **Plan notları (plan-phase 8):**
+> - **İki gate, iki yer:** her task'ın enforce ettiği gate = **axe WCAG-AA 0 ihlal** (CI-korunan tohum, `subpages-a11y.spec.ts`). **Lighthouse a11y=100 çift-tema** skor gate'i (milestone #1) research kararı gereği **manuel verify ölçümü** kalır → 5 sayfa çift-tema sweep'i **verify-phase**'de yapılır (task değil). verify-plan/verify-phase bunu milestone'dan alır.
+> - **TD4 ayrı task değil** (Bulgu 0): text-pulse/dark-inversion süpürmesi 8.02'ye (BunkerShowcase — tek ham `text-pulse` SVG + tüm `text-canvas/NN` inversiyonları orada) katlandı.
+> - **Ölçüm-önce yapı:** 8.01 audit+harness (fix yok, mühür yok) → 8.02–8.05 sayfa-başı fix/teyit + mühür. Düşük-risk sayfalar (8.03/8.04/8.05) baseline'da 0 ihlal verirse "yalnız mühürle + AR RTL teyit" olur (kod fix yok) — beklenen, sorun değil.
+> - **CI genişlemesi kod gerektirmez:** `ci.yml` a11y job zaten `npm run test:e2e` koşar → `subpages-a11y.spec.ts`'e sayfa mühürlemek TD6 CI korumasını otomatik verir (yeni workflow dosyası yok). Tam matris: 5 sayfa × 5 dil × 2 tema = 50 alt-sayfa testi.
 
 ---
 
@@ -198,4 +208,4 @@ Yeni bağımlılık **yok** (paket ekleme onay gerektirir — Dokunulmazlar). Me
 ---
 
 **Oluşturulma:** 2026-07-01
-**Son Güncelleme:** 2026-07-01 — discuss-phase 8: kapsam tartışması tamamlandı (TB-A text-pulse süpürmesi + TB-B alt-sayfa derin a11y, 5 dil/AR RTL, ana sayfa çıtası, kümülatif tohum+CI; TB-C dışarıda). Versiyon Sonu Durumu içerik_fazları → teknik_borç. Sıradaki adım: research-phase 8.
+**Son Güncelleme:** 2026-07-01 — plan-phase 8: 5 task yazıldı (8.01 parametrik harness + baseline audit → 8.02 /bunker-os hotspot fix + TD4 fold → 8.03/8.04/8.05 alt-sayfa teyit+mühür). İki-gate ayrımı (axe CI-tohum / Lighthouse verify-phase), ölçüm-önce yapı, CI otomatik genişleme notları eklendi. Sıradaki adım: verify-plan 8.
