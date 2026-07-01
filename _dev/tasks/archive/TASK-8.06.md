@@ -1,6 +1,6 @@
 # TASK-8.06: Bülten makale sayfalarına `<main>` landmark (a11y=100 tamamlama)
 
-**Durum:** ⬜ Bekliyor
+**Durum:** ✅ Tamamlandı
 **Modül:** M2 (forum article bileşenleri) + M2 (bülten route)
 **Feature:** TD5 (alt-sayfa derin a11y — milestone #1 tamamlama)
 **Faz:** Phase 8 (phases/PHASE-8.md)
@@ -97,9 +97,39 @@ src/components/forum/
 
 ## Oturum Kayıtları
 
-### Oturum — [TARİH]
+### Oturum — 2026-07-01
 
-**Durum:** [doldurulacak]
+**Durum:** ✅ Tamamlandı
+
+**Yapılanlar:**
+- `ArticleAiSdr.tsx` + `ArticleClaude.tsx`: kök `<article>` stillendirmesiz `<main>` ile sarıldı (`<main><article …>…</article></main>`). İç içerik yeniden girintilenmedi (minimal diff); `<main>` hiçbir class almadı → box-model etkisi sıfır.
+- Prerender ground-truth teyidi: her iki sayfada (tr + ar) tam **1** `<main>`, `<main><article` yapısı; AR `dir="rtl"` korundu.
+- Lighthouse a11y (dark kanonik, `NEXT_LOCALE=tr` cookie, SwiftShader flag'leri, fresh-PID prod-serve): her iki sayfa **a11y=100**, `landmark-one-main` audit skoru **1** (geçti). Başka failing binary a11y audit yok.
+- Craft teyidi (Playwright): `main > article` kutusu 4 varyantta birebir aynı (x=304, w=672 @1280px); tek `<main>`; dir doğru. Screenshot: TR light + AR dark, iki sayfa — main wrapper görünmez, RTL aynalama korundu.
+
+**Sorunlar:**
+- Lighthouse JSON parse script'inde `landmark-no-duplicate-main` audit'i `undefined` döndü → duplicate olmadığı için "not applicable" (beklenen). Asıl metrikler (a11y=100, landmark-one-main=1) parse'tan önce yazıldı; hata sonuçları etkilemedi.
+
+**Kararlar:**
+- `<main className="contents">` fallback'ine gerek kalmadı (görsel kayma yok, plain `<main>` yeterli).
+- docs/DECISIONS.md'ye eklendi: Hayır (markup wrapper, mimari karar değil)
+
+**Kalan İşler:** Yok.
+
+**Son Yaklaşım:** Task tamamlandı — pause/devam yok.
+
+**Sonraki Adım Detayı:** verify-phase 8 baştan koşulur (tüm kontroller); 8.06 bulgusu kapandı.
+
+**Dosya Değişiklikleri:**
+- `src/components/forum/ArticleAiSdr.tsx` → kök `<article>` `<main>` ile sarıldı
+- `src/components/forum/ArticleClaude.tsx` → aynı desen
+
+**Test Sonuçları:**
+- `next build` temiz (0 MISSING_MESSAGE).
+- Vitest 7/7 yeşil.
+- `test:e2e` 52/52 yeşil (5 alt sayfa × 5 dil × 2 tema + home; 0 axe ihlal — landmark ekleme regresyona sokmadı).
+- Lighthouse a11y: `/bulten/ai-sdr-araclari` = 100, `/bulten/claude-opus-4-8-fable-5` = 100 (`landmark-one-main` geçti).
+- Görsel: TR light + AR dark screenshot birebir (main wrapper görünmez, article box değişmedi).
 
 ---
 

@@ -22,6 +22,7 @@ export default function ArticleClaude() {
   const tr = locale === "tr";
 
   return (
+    <main>
     <article className="mx-auto max-w-2xl px-6 pb-32 pt-32 lg:pt-40">
       <p className="mb-4 text-sm font-medium uppercase tracking-[0.18em] text-green">
         {tr ? "Haber · Modeller" : "News · Models"}
@@ -117,6 +118,7 @@ export default function ArticleClaude() {
           : " — model names, context windows and pricing per Anthropic’s official announcements."}
       </p>
     </article>
+    </main>
   );
 }
 

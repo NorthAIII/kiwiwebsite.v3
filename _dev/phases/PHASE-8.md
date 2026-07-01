@@ -143,7 +143,7 @@ Yeni bağımlılık **yok** (paket ekleme onay gerektirir — Dokunulmazlar). Me
 | 8.03 | TASK-8.03 | ✅ Tamamlandı | `/spor-salonu-yazilimi` (Alpfit) a11y teyit + mühür — baseline 0 ihlal doğrulandı, kod fix yok; 10 test 0 ihlal + AR RTL teyit |
 | 8.04 | TASK-8.04 | ✅ Tamamlandı | `/vaka-calismalari` a11y teyit + mühür — baseline 0 ihlal doğrulandı, kod fix yok; 10 test 0 ihlal + AR RTL teyit (32 test regresyonsuz) |
 | 8.05 | TASK-8.05 | ✅ Tamamlandı | `/bulten` 2 makale (AiSdr + Claude) a11y teyit + mühür — baseline 0 ihlal, kontrast fix yok; ArticleClaude tablosunda RTL craft fix (physical→logical: `ml-2`→`ms-2`, `text-right`→`text-end`); 5 alt sayfa mühürü tamam (52 e2e test) |
-| 8.06 | TASK-8.06 | ⬜ Bekliyor | **verify-phase 8 UAT #3 bulgusu:** 2 bülten makale sayfasına `<main>` landmark ekle (Lighthouse `landmark-one-main` → a11y 98→100 çift-tema, milestone #1 tamamlama); sıfır görsel değişim, 52 e2e regresyonsuz |
+| 8.06 | TASK-8.06 | ✅ Tamamlandı | **verify-phase 8 UAT #3 bulgusu düzeltildi:** 2 bülten makale bileşenine (`ArticleAiSdr`/`ArticleClaude`) stillendirmesiz `<main>` landmark → Lighthouse `landmark-one-main` geçti, a11y 98→100 çift-tema (milestone #1 tamam); sıfır görsel değişim (article box birebir, TR/AR screenshot), 52 e2e regresyonsuz |
 
 **Durum simgeleri:** ⬜ Bekliyor | 🔄 Devam ediyor | ⏸️ Duraklatıldı | ✅ Tamamlandı | 🔴 Bloke | ❌ İptal
 

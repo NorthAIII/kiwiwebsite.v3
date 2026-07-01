@@ -26,6 +26,7 @@ export default function ArticleAiSdr() {
   const tr = locale === "tr";
 
   return (
+    <main>
     <article className="mx-auto max-w-2xl px-6 pb-32 pt-32 lg:pt-40">
       <p className="mb-4 text-sm font-medium uppercase tracking-[0.18em] text-green">
         {tr ? "Rehber · Satış otomasyonu" : "Guide · Sales automation"}
@@ -116,6 +117,7 @@ export default function ArticleAiSdr() {
           : " — platform list, pricing and metric ranges drawn from the source."}
       </p>
     </article>
+    </main>
   );
 }
 
