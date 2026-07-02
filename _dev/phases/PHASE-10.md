@@ -124,7 +124,7 @@
 | 10.01 | TASK-10.01 | ✅ Tamamlandı | A1 — Ortak `<Logo>` bileşeni + Nav & PageHeader benimseme (optik dikey hiza tek yerde) |
 | 10.02 | TASK-10.02 | ✅ Tamamlandı | A1 — Footer'da `<Logo>` benimseme (size 18, non-link, `text-canvas` koyu zemin); 10.01'e bağlı |
 | 10.03 | TASK-10.03 | ✅ Tamamlandı | A3a — Hero iki stat Link'ine site-standart ok idiomu + durağan ipucu |
-| 10.04 | TASK-10.04 | ⬜ Bekliyor | A3b — Hero merkez-alt scroll göstergesi ölçekleme (desktop-only korunur) |
+| 10.04 | TASK-10.04 | ✅ Tamamlandı | A3b — Hero merkez-alt scroll göstergesi ölçekleme (desktop-only korunur) |
 
 **Durum simgeleri:** ⬜ Bekliyor | 🔄 Devam ediyor | ⏸️ Duraklatıldı | ✅ Tamamlandı | 🔴 Bloke | ❌ İptal
 
@@ -157,4 +157,4 @@
 ---
 
 **Oluşturulma:** 2026-07-02 (discuss-phase 10)
-**Son Güncelleme:** 2026-07-02 — run-task TASK-10.03 ✅: Hero iki stat Link'ine site-standart trailing ok idiomu + durağan ipucu (`transition-[translate,color] group-hover:translate-x-1 group-hover:text-green`, dinlenmede `text-ink-faint`). İcra tuzağı: Tailwind v4'te `translate-x` `transform` değil `translate` property'sini set eder → arbitrary `transition-[transform,color]` ok'u zıplattı, `transition-[translate,color]`'a düzeltildi (memory `tailwind-v4-translate-transition-property`). build ✓, home a11y 2/2 (light+dark), hover slide animasyonlu (mid≈2.8px) + CLS Δ=0.00 + reduced-motion durağan-ipucu teyitli. Sıradaki: TASK-10.04 (A3b).
+**Son Güncelleme:** 2026-07-02 — run-task TASK-10.04 ✅: Hero merkez-alt scroll göstergesi anıtsal hero'ya orantılandı (`h-10`→`h-16` çizgi, `/40`→`/60` opaklık DPR-robustness, `text-[11px]`→`text-xs` etiket, `gap-2`→`gap-3`); `w-px` crisp hairline + `bottom-7 left-1/2 hidden md:flex` + `animate-pulse` korundu. Adaptif token (`--color-ink-faint`, `dark:` YOK). build ✓, home a11y 2/2 (light+dark), görsel: çizgi 64px + etiket 12px, mobil `display:none`, token light↔dark flip, cluster gap 28px sabit (CLS yok). **Faz 10 tüm task'ları (10.01–10.04) ✅ → sıradaki `verify-phase 10`.**

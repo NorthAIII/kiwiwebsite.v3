@@ -143,9 +143,9 @@ export default function Hero() {
         </div>
       </div>
 
-      <div className="absolute bottom-7 left-1/2 z-10 hidden -translate-x-1/2 flex-col items-center gap-2 text-ink-faint md:flex">
-        <span className="text-[11px] uppercase tracking-[0.2em]">{t("scroll")}</span>
-        <span className="h-10 w-px animate-pulse bg-ink-faint/40" />
+      <div className="absolute bottom-7 left-1/2 z-10 hidden -translate-x-1/2 flex-col items-center gap-3 text-ink-faint md:flex">
+        <span className="text-xs uppercase tracking-[0.2em]">{t("scroll")}</span>
+        <span className="h-16 w-px animate-pulse bg-ink-faint/60" />
       </div>
     </section>
   );
