@@ -159,7 +159,15 @@ Yeni bağımlılık **yok** (paket ekleme onay ister — Dokunulmazlar). Ortam b
 
 | # | Task | Durum | Açıklama |
 |---|------|-------|----------|
-| 9.01 | TASK-9.01 | ⬜ Bekliyor | [plan-phase'de doldurulur] |
+| 9.01 | TASK-9.01 | ⬜ Bekliyor | S1 — giriş/yönlendirme matrisi (curl): 6 sayfa × 5 dil status + `/forum`→`/bulten` 308 + derin-link/bilinmeyen-locale |
+| 9.02 | TASK-9.02 | ⬜ Bekliyor | S5 + S6-render (curl/grep): taksonomi/dürüstlük ("Crew OS"/no-"Bunker") + non-TR render bütünlüğü (0 MISSING_MESSAGE, stale kopukluk yok) |
+| 9.03 | TASK-9.03 | ⬜ Bekliyor | S8-suite + S6-parite: `test:e2e` 52 (axe WCAG-AA) + `test` 7 (Vitest parite) + CI `fast`+`a11y` yeşil |
+| 9.04 | TASK-9.04 | ⬜ Bekliyor | S8-Lighthouse: a11y=100 çift-tema (6 sayfa × light/dark) + perf korunan taban (home mobil/masaüstü, CLS≈0) |
+| 9.05 | TASK-9.05 | ⬜ Bekliyor | S3 — degradasyon (standalone Playwright): 6 hero light/dark/reduced/no-WebGL/mobil-low + AR-RTL×dark×reduced + 320/768/1440 taşma/CLS |
+| 9.06 | TASK-9.06 | ⬜ Bekliyor | S4 — kontroller/kalıcılık (standalone Playwright): tema toggle+reload, dil-switcher path-koru, klavye-only + focus-visible |
+| 9.07 | TASK-9.07 | ⬜ Bekliyor | S2 — tam TR yolculuğu (curl+Playwright): ana sayfa akış + alt sayfa çıkış/dönüş (client-nav), kopuk link/boş bölüm yok |
+| 9.08 | TASK-9.08 | ⬜ Bekliyor | S7 — chatbot 0-token: sanitizasyon kod-inceleme + dummy-key malformed 400 + key-yok 503 offline UI; toplam API çağrısı=0 |
+| 9.09 | TASK-9.09 | ⬜ Bekliyor | S9 — adversarial/holistik: `next build` temiz + 0 MISSING_MESSAGE + JS-off SSG + dil/tema/scroll race kararlılığı |
 
 **Durum simgeleri:** ⬜ Bekliyor | 🔄 Devam ediyor | ⏸️ Duraklatıldı | ✅ Tamamlandı | 🔴 Bloke | ❌ İptal
 
@@ -219,4 +227,4 @@ Yeni bağımlılık **yok** (paket ekleme onay ister — Dokunulmazlar). Ortam b
 ---
 
 **Oluşturulma:** 2026-07-02
-**Son Güncelleme:** 2026-07-02 — research-phase 9: Araştırma Bulguları yazıldı. Metodoloji = suite-first hibrit (TK1): S6/S8 guardrail commit'li suite (`test:e2e` 52 + `test` 7 + CI + Lighthouse), S1–S5/S7/S9 ad-hoc en-ucuz-araç. Runtime sürücü = standalone Playwright script (MCP bu oturumda yok — kullanıcı kararı TK3). S1–S9 araç eşlemesi + Dikkat Edilecekler (locale/tema/reveal/apiKey-gate/iki-gate tuzakları, kaynak-işaretli) + TK1–TK7 kaydedildi. Boyut 8093 token (tek-okunabilir, bölme yok). Sıradaki adım: plan-phase 9.
+**Son Güncelleme:** 2026-07-02 — plan-phase 9: 9 doğrulama task'ı oluşturuldu (S1–S9 → TASK-9.01…9.09). TK1 dört kümesi oturum-boyutuna bölündü: HTTP/SSG (9.01 S1 · 9.02 S5+S6-render), suite-guardrail (9.03 S8-suite+S6-parite · 9.04 S8-Lighthouse — iki-gate ayrı task), runtime-tarayıcı (9.05 S3 · 9.06 S4), çapraz (9.07 S2 · 9.08 S7 · 9.09 S9). Doğrulama fazı → kaynak kod değişmez; standalone Playwright script'leri scratchpad'de (repo dışı). Sıradaki adım: verify-plan 9.
