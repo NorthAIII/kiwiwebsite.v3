@@ -122,7 +122,7 @@
 | # | Task | Durum | Açıklama |
 |---|------|-------|----------|
 | 10.01 | TASK-10.01 | ✅ Tamamlandı | A1 — Ortak `<Logo>` bileşeni + Nav & PageHeader benimseme (optik dikey hiza tek yerde) |
-| 10.02 | TASK-10.02 | ⬜ Bekliyor | A1 — Footer'da `<Logo>` benimseme (size 18, non-link, `text-canvas` koyu zemin); 10.01'e bağlı |
+| 10.02 | TASK-10.02 | ✅ Tamamlandı | A1 — Footer'da `<Logo>` benimseme (size 18, non-link, `text-canvas` koyu zemin); 10.01'e bağlı |
 | 10.03 | TASK-10.03 | ⬜ Bekliyor | A3a — Hero iki stat Link'ine site-standart ok idiomu + durağan ipucu |
 | 10.04 | TASK-10.04 | ⬜ Bekliyor | A3b — Hero merkez-alt scroll göstergesi ölçekleme (desktop-only korunur) |
 
@@ -157,4 +157,4 @@
 ---
 
 **Oluşturulma:** 2026-07-02 (discuss-phase 10)
-**Son Güncelleme:** 2026-07-02 — run-task TASK-10.01 ✅: ortak `<Logo>` bileşeni (`src/components/Logo.tsx`) + Nav & PageHeader benimseme; optik hiza tek yerde (`leading-none`+`items-center`, nudge gerekmedi); build ✓, a11y 52/52 (light+dark), çift-tema görsel hizalı.
+**Son Güncelleme:** 2026-07-02 — run-task TASK-10.02 ✅: Footer `<Logo>` benimseme (size 18, `wordmarkClassName="font-medium text-canvas"`, non-link); A1 kök nedeni (3 kopya lockup) tamamen kapandı — üç yüzey de `<Logo>` tüketiyor. `<Logo>`'ya değişiklik gerekmedi. build ✓, home a11y 2/2 (light+dark), çift-tema görsel hizalı/okunur, non-link DOM teyitli, CLS≈0. Sıradaki: TASK-10.03 (A3a).

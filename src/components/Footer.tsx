@@ -4,7 +4,7 @@ import { useTranslations } from "next-intl";
 import LanguageSwitcher from "./LanguageSwitcher";
 import Magnetic from "./Magnetic";
 import Reveal from "./Reveal";
-import KiwiMark from "./KiwiMark";
+import Logo from "./Logo";
 
 // Only entries with a real URL are rendered (see filter below) — we never ship
 // dead "#" links. Fill the href as each handle goes live.
@@ -70,8 +70,7 @@ export default function Footer() {
 
         <div className="mt-20 flex flex-col gap-6 border-t border-canvas/15 pt-8 text-sm text-canvas/60 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
-            <KiwiMark size={18} className="text-green" />
-            <span className="font-medium text-canvas">Kiwi AI Lab</span>
+            <Logo size={18} wordmarkClassName="font-medium text-canvas" />
             <span aria-hidden="true" className="text-canvas/30">·</span>
             <a href="mailto:kivanc@kiwiailab.com" className="hover:text-canvas">
               kivanc@kiwiailab.com
