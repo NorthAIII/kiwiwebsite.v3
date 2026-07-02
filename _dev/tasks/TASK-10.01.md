@@ -78,7 +78,7 @@ src/components/
 - [ ] Ana sayfa (`/`) Nav logosu: mark + wordmark **dikey hizalı** görünür (light + dark iki tema gözle).
 - [ ] Bir alt sayfa (örn. `/spor-salonu-yazilimi`) PageHeader logosu: aynı hizalı görünüm (light + dark).
 - [ ] Nav logosuna tıklama `#top`'a, PageHeader logosuna tıklama `/`'a gider (davranış değişmedi); tek tab-stop.
-- [ ] `/` a11y regresyon tohumu (`home-a11y.spec.ts`, axe WCAG-AA) light+dark 0 ihlal — regresyon yok (araç zinciri mevcutsa koş).
+- [ ] a11y regresyon tohumu light+dark 0 ihlal — regresyon yok (araç zinciri mevcutsa koş): `/` için `home-a11y.spec.ts` (Nav) **ve** bir alt sayfa için `subpages-a11y.spec.ts` (PageHeader; `home-a11y` `/`'ı yükler → PageHeader'ı çalıştırmaz).
 - [ ] Görsel olarak lockup boyutu/konumu değişmedi (CLS yok).
 
 ---
