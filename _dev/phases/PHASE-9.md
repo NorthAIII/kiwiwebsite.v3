@@ -159,7 +159,7 @@ Yeni bağımlılık **yok** (paket ekleme onay ister — Dokunulmazlar). Ortam b
 
 | # | Task | Durum | Açıklama |
 |---|------|-------|----------|
-| 9.01 | TASK-9.01 | ⬜ Bekliyor | S1 — giriş/yönlendirme matrisi (curl): 6 sayfa × 5 dil status + `/forum`→`/bulten` 308 + derin-link/bilinmeyen-locale |
+| 9.01 | TASK-9.01 | ✅ Tamamlandı | S1 — giriş/yönlendirme matrisi (curl): **30/30 200** (TR cookie+prefixsiz, EN/AR/DE/ES prefixli; lang doğru, AR rtl) · `/forum`→308→`/bulten`, `/forum/<slug>`→308→`/bulten/<slug>`→200 · çıplak `/bulten`→404 (M6 record-not-fix) · `/tr`→307→`/` (as-needed, beklenen) · bilinmeyen-locale→404 · `/en#sectors`→200. **Kapsam-içi bug yok** |
 | 9.02 | TASK-9.02 | ⬜ Bekliyor | S5 + S6-render (curl/grep): taksonomi/dürüstlük ("Crew OS"/no-"Bunker") + non-TR render bütünlüğü (0 MISSING_MESSAGE, stale kopukluk yok) |
 | 9.03 | TASK-9.03 | ⬜ Bekliyor | S8-suite + S6-parite: `test:e2e` 52 (axe WCAG-AA) + `test` 7 (Vitest parite) + CI `fast`+`a11y` yeşil |
 | 9.04 | TASK-9.04 | ⬜ Bekliyor | S8-Lighthouse: a11y=100 çift-tema (6 sayfa × light/dark) + perf korunan taban (home mobil/masaüstü, CLS≈0) |
@@ -227,4 +227,4 @@ Yeni bağımlılık **yok** (paket ekleme onay ister — Dokunulmazlar). Ortam b
 ---
 
 **Oluşturulma:** 2026-07-02
-**Son Güncelleme:** 2026-07-02 — plan-phase 9: 9 doğrulama task'ı oluşturuldu (S1–S9 → TASK-9.01…9.09). TK1 dört kümesi oturum-boyutuna bölündü: HTTP/SSG (9.01 S1 · 9.02 S5+S6-render), suite-guardrail (9.03 S8-suite+S6-parite · 9.04 S8-Lighthouse — iki-gate ayrı task), runtime-tarayıcı (9.05 S3 · 9.06 S4), çapraz (9.07 S2 · 9.08 S7 · 9.09 S9). Doğrulama fazı → kaynak kod değişmez; standalone Playwright script'leri scratchpad'de (repo dışı). Sıradaki adım: verify-plan 9.
+**Son Güncelleme:** 2026-07-02 — run-task 9.01 (S1): 30/30 route 200, redirect'ler 308, çıplak `/bulten`→404 (record-not-fix), `/tr`→307→`/` + bilinmeyen-locale→404 (beklenen); kapsam-içi bug yok. Kaynak kod değişmedi. · plan-phase 9: 9 doğrulama task'ı oluşturuldu (S1–S9 → TASK-9.01…9.09). TK1 dört kümesi oturum-boyutuna bölündü: HTTP/SSG (9.01 S1 · 9.02 S5+S6-render), suite-guardrail (9.03 S8-suite+S6-parite · 9.04 S8-Lighthouse — iki-gate ayrı task), runtime-tarayıcı (9.05 S3 · 9.06 S4), çapraz (9.07 S2 · 9.08 S7 · 9.09 S9). Doğrulama fazı → kaynak kod değişmez; standalone Playwright script'leri scratchpad'de (repo dışı). Sıradaki adım: verify-plan 9.

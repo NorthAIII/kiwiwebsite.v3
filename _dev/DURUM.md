@@ -1,6 +1,6 @@
 # DURUM — Proje Dashboard
 
-**Son Güncelleme:** 2026-07-02 — **verify-plan 9 tamamlandı:** 9 task dokümanı fresh context ile review edildi; referans gerçeklik-kontrolü temiz (route/redirect/route.ts satır ref'leri birebir, e2e=52 + vitest=7 sayıları teyitli), S1–S9→9.01…9.09 milestone eşleşmesi tam. 1 mekanik düzeltme: 9 task'a eksik template bölümleri eklendi (Tamamlanma Kriterleri + Oturum Kayıtları + Oluşturulma footer). Yapısal değişiklik yok. Adım=task → sıradaki: **run-task TASK-9.01** (yeni oturum).
+**Son Güncelleme:** 2026-07-02 — **run-task 9.01 (S1) tamamlandı:** fresh prod build üzerinde route/yönlendirme matrisi doğrulandı — 30/30 kombinasyon (6 sayfa × 5 locale) 200 (TR cookie+prefixsiz, EN/AR/DE/ES prefixli; lang doğru, AR rtl), `/forum`→308→`/bulten` (+slug), çıplak `/bulten`→404 (M6 record-not-fix), `/tr`→307→`/` + bilinmeyen-locale→404 (beklenen next-intl davranışı). **Kapsam-içi gerçek bug yok**, kaynak kod değişmedi. Adım=task → sıradaki: **run-task TASK-9.02** (yeni oturum).
 
 <!-- KURAL: Bu satır her oturum sonunda ÜZERİNE YAZILIR — tek satır, tek cümle. "Önceki:" / "Eski:" prefix ile kümülatif yığma YASAK; HTML comment'e sarma da yasak (CLAUDE.md → Doküman Disiplini). Tarih + kısa özet yeterli; detay için git log + ilgili PHASE/TASK dokümanları. -->
 
@@ -9,9 +9,9 @@
 ## Aktif Faz
 
 **Faz:** 9 (v0.2 versiyon-sonu **senaryo testi**) — discuss-phase 9 tamamlandı, PHASES tablosunda 🔄. Kapsam = ana sayfa + 5 alt sayfa uçtan-uca çapraz doğrulama (yeni feature üretmez), Faz 3 (v0.1 senaryo testi) deseninde ama alt sayfalar dahil (Faz 8 çıtaya çekti); alt-sayfa harness'i (`subpages-a11y.spec.ts` + `a11y-helpers.ts`) yeniden kullanılır. Faz 8 ✅; Faz 7 (Umami E1) ✅; Faz 6 (mobil perf/LCP) ✅; Faz 5 (test altyapısı D1) ✅; Faz 4 (v0.2 a11y) ✅.
-**Adım:** task — sıradaki adım **run-task TASK-9.01** (ilk doğrulama task'ı, yeni oturum). Kapsam + Araştırma + Plan + verify-plan tamamlandı (`phases/PHASE-9.md`): 9 doğrulama task'ı (S1–S9 → TASK-9.01…9.09), suite-first hibrit metodoloji, TK1–TK7; plan review temiz (1 mekanik template düzeltmesi).
-**İlerleme:** verify-plan 9 (2026-07-02) tamamlandı — 9 task fresh context ile review edildi, referans/sayı doğrulamaları temiz, eksik template bölümleri eklendi (mekanik). Kaynak kod değişmedi, yalnız `_dev/` docs. **Bekleyen versiyon-sonu aksiyonu:** v0.2 production release (tüm revize `main`'e ilk merge) — Umami canlı +1 (S9-10 Faz 7) o adımda kapanır (senaryo testi kod-tarafı varlığı S8'de doğrular, canlı panel değil). **Kapsam dışı (bilinçli açık):** brief mobil perf (gerçek-cihaz duvarı), TB-C npm audit, `/bunker-os`→`/crew-os` redirect + `/forum`→404 (görsel/SEO versiyonu), dil setini değiştirme (prd-review).
-**Son Faz Dokümanı:** `phases/PHASE-9.md` (🔄 Devam ediyor — Kapsam + Araştırma + Plan yazıldı, 9 task hazır). Faz 8 ✅ `phases/PHASE-8.md`.
+**Adım:** task — sıradaki adım **run-task TASK-9.02** (S5+S6-render, yeni oturum). 9.01 (S1) ✅. Kapsam + Araştırma + Plan + verify-plan tamamlandı (`phases/PHASE-9.md`): 9 doğrulama task'ı (S1–S9 → TASK-9.01…9.09), suite-first hibrit metodoloji, TK1–TK7.
+**İlerleme:** run-task 9.01 (S1, 2026-07-02) tamamlandı — 30/30 route 200, redirect'ler 308, çıplak `/bulten`→404 (record-not-fix), `/tr`→307 + bilinmeyen-locale→404 (beklenen); kapsam-içi bug yok, kaynak kod değişmedi. **Bekleyen versiyon-sonu aksiyonu:** v0.2 production release (tüm revize `main`'e ilk merge) — Umami canlı +1 (S9-10 Faz 7) o adımda kapanır (senaryo testi kod-tarafı varlığı S8'de doğrular, canlı panel değil). **Kapsam dışı (bilinçli açık):** brief mobil perf (gerçek-cihaz duvarı), TB-C npm audit, `/bunker-os`→`/crew-os` redirect + `/forum`→404 (görsel/SEO versiyonu), dil setini değiştirme (prd-review).
+**Son Faz Dokümanı:** `phases/PHASE-9.md` (🔄 Devam ediyor — 9 task, 9.01 ✅). Faz 8 ✅ `phases/PHASE-8.md`.
 
 ---
 
@@ -28,9 +28,9 @@
 
 ## Aktif Task
 
-**Task:** Sıradaki aktif task **TASK-9.01** (S1 giriş/yönlendirme matrisi) — Faz 9, adım=task. 9 task dokümanı review'dan geçti; **run-task ile TASK-9.01**'den başlanır (yeni oturum).
-**Durum:** Faz 9 (senaryo testi) 🔄 — adım=task (verify-plan tamam). Faz 8 tüm task'ları ✅ (8.01→8.06) archive'da.
-**İlerleme:** verify-plan 9 tamamlandı (2026-07-02): 9 task review edildi, referans/sayı doğrulamaları temiz, 1 mekanik template düzeltmesi (Tamamlanma Kriterleri + Oturum Kayıtları + footer 9 task'a eklendi). Kaynak kod değişmedi (yalnız `_dev/` docs).
+**Task:** Sıradaki aktif task **TASK-9.02** (S5 taksonomi/dürüstlük + S6-render non-TR bütünlüğü, curl/grep) — Faz 9, adım=task. 9.01 (S1) ✅ archive'da; **run-task ile TASK-9.02**'den devam (yeni oturum).
+**Durum:** Faz 9 (senaryo testi) 🔄 — adım=task. 9.01 ✅ (1/9). Faz 8 tüm task'ları ✅ (8.01→8.06) archive'da.
+**İlerleme:** run-task 9.01 (S1) tamamlandı (2026-07-02): 30/30 route 200, redirect'ler 308, çıplak `/bulten`→404 (record-not-fix), `/tr`→307 + bilinmeyen-locale→404 (beklenen); kapsam-içi bug yok, kaynak kod değişmedi.
 
 ---
 
@@ -40,7 +40,7 @@
 
 | # | Task | Durum | Açıklama |
 |---|------|-------|----------|
-| 9.01 | TASK-9.01 | ⬜ Bekliyor | S1 — giriş/yönlendirme matrisi (curl) |
+| 9.01 | TASK-9.01 | ✅ Tamamlandı | S1 — giriş/yönlendirme matrisi (curl) |
 | 9.02 | TASK-9.02 | ⬜ Bekliyor | S5 + S6-render — taksonomi/dürüstlük + non-TR render bütünlüğü (curl/grep) |
 | 9.03 | TASK-9.03 | ⬜ Bekliyor | S8-suite + S6-parite — `test:e2e` 52 + `test` 7 + CI yeşil |
 | 9.04 | TASK-9.04 | ⬜ Bekliyor | S8-Lighthouse — a11y=100 çift-tema (6 sayfa) + perf korunan taban |
@@ -56,7 +56,10 @@
 
 > **KURAL:** Sadece son 2 task özeti tutulur, daha eskileri **gerçekten silinir** (HTML comment'e sarma, "Önceki:" prefix, üstü çizili etiket yasak — detay için git log + arşivlenmiş task dokümanı). Her özet kısa formatlı: paragraf yasak, **bullet zorunlu**, "Özet" alanı max 3 bullet. **Yeni faza geçildi → Faz 8 task özetleri sıfırlandı** (Faz 8 detayları `phases/PHASE-8.md` + `tasks/archive/`).
 
-_(Faz 9 henüz task üretmedi — ilk task tamamlanınca özet buraya gelir.)_
+**TASK-9.01 (S1 — giriş/yönlendirme matrisi):**
+- Fresh prod build (PID teyitli) üzerinde curl: 30/30 kombinasyon (6 sayfa × 5 locale) 200 — TR cookie+prefixsiz, EN/AR/DE/ES prefixli; `html lang` doğru, AR `dir=rtl`.
+- Redirect'ler: `/forum`→308→`/bulten` (+slug→200); çıplak `/bulten`→404 (M6 record-not-fix). `/tr`→307→`/` + bilinmeyen-locale→404 (beklenen next-intl).
+- Kapsam-içi gerçek bug yok; kaynak kod değişmedi (doğrulama fazı).
 
 <!-- KURAL: Sadece son 2 task özeti tutulur, daha eskileri silinir (gerçek silme — HTML comment yasak). -->
 <!-- KURAL: Sadece aktif fazın task'leri gösterilir. Geçmiş fazların bilgileri phases/ klasöründedir. -->
@@ -70,7 +73,7 @@ _(Faz 9 henüz task üretmedi — ilk task tamamlanınca özet buraya gelir.)_
 
 ## Hızlı Erişim
 
-**Aktif Task:** Sıradaki TASK-9.01 (S1) — Faz 9, adım=task. 9 task review'dan geçti (TASK-9.01…9.09). Sıradaki: run-task TASK-9.01. Bekleyen: v0.2 production release (Umami canlı +1 orada kapanır).
+**Aktif Task:** Sıradaki TASK-9.02 (S5+S6-render) — Faz 9, adım=task. 9.01 (S1) ✅ (1/9). Sıradaki: run-task TASK-9.02. Bekleyen: v0.2 production release (Umami canlı +1 orada kapanır).
 **Aktif Faz:** 9 (v0.2 senaryo testi) · adım=task — Faz 8 ✅ (8.01→8.06; review tamam); Faz 7 ✅; Faz 6 ✅; Faz 5 ✅; Faz 4 ✅; Aktif Versiyon v0.2, Versiyon Sonu Durumu: senaryo_testi
 **Task Sistemi:** `tasks/TASKS-README.md`
 **PRD (karar kaynağı):** `PRD/VIZYON.md` · `PRD/VERSIONS.md` · `PRD/features/`
@@ -78,4 +81,4 @@ _(Faz 9 henüz task üretmedi — ilk task tamamlanınca özet buraya gelir.)_
 
 ---
 
-**Son Güncelleme:** 2026-07-02 — verify-plan 9: 9 task fresh context ile review edildi (referans/sayı doğrulamaları temiz); 1 mekanik düzeltme (eksik template bölümleri 9 task'a eklendi); yapısal değişiklik yok. Adım=task. Sıradaki: run-task TASK-9.01.
+**Son Güncelleme:** 2026-07-02 — run-task 9.01 (S1): 30/30 route 200, redirect'ler 308, çıplak `/bulten`→404 (record-not-fix), `/tr`→307 + bilinmeyen-locale→404 (beklenen); kapsam-içi bug yok, kaynak kod değişmedi. Adım=task. Sıradaki: run-task TASK-9.02.
