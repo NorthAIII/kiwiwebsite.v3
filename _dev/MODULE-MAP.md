@@ -143,6 +143,8 @@ M6 (SEO/Deploy) ─────────────────────>
 | TD4: `text-pulse` ink-panel dark-inversion süpürmesi (alt sayfalar; `--color-pulse-ink` swap yay) | M1 (+M2/M3) | v0.2 | 8 | ✅ |
 | TD5: Alt-sayfa derin a11y denetimi (5 alt sayfa, 5 dil/AR RTL derin; ana sayfa çıtası a11y=100 çift-tema + axe WCAG-AA 0) | M2 (+M1/M3/M4) | v0.2 | 8 | ✅ |
 | TD6: Alt-sayfa a11y kümülatif regresyon tohumu + CI (Faz 5 harness genişletme) | M6 (+M1-M3) | v0.2 | 8 | ✅ |
+| **— v0.2 versiyon-sonu senaryo testi (Faz 9 — çapraz doğrulama, yeni feature üretmez) —** | | | | |
+| S1–S9: v0.2 ana sayfa + 5 alt sayfa uçtan-uca senaryo doğrulaması (giriş/yolculuk/mod/kontrol/taksonomi/5-dil/chatbot/v0.2-guardrail/adversarial) | tümü | v0.2 | 9 | 🔄 |
 
 **Durum simgeleri:**
 - ⬜ **Bekliyor** — Fazı henüz başlamadı
@@ -161,4 +163,4 @@ M6 (SEO/Deploy) ─────────────────────>
 
 ---
 
-**Son Güncelleme:** 2026-07-02 — review-phase 8: TD4/TD5/TD6 ✅ (Faz 8 tamam). 5 alt sayfa a11y=100 çift-tema + axe WCAG-AA 0 (50 CI testi); TD4 premisi grep'le çürütüldü (ham `text-pulse` tek dekoratif SVG) → TD5 axe-bulgusuna katlandı, milestone (bunker-os dark panel okunurluğu `text-canvas/NN`→`/65`) 8.02'de karşılandı. Versiyon Sonu Durumu teknik_borç → senaryo_testi.
+**Son Güncelleme:** 2026-07-02 — discuss-phase 9: v0.2 versiyon-sonu senaryo testi fazı (Faz 9) tabloya eklendi (S1–S9, 🔄); kapsam ana sayfa + 5 alt sayfa uçtan-uca (Faz 3'ten genişletildi — Faz 8 alt sayfaları a11y çıtasına çekti). Yeni feature üretmez (çapraz doğrulama).
