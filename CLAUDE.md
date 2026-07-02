@@ -308,7 +308,7 @@ Bu dosyaları kullanıcı izni olmadan değiştirme:
 **Ürün taksonomisi (içerik hatasının kökü — sıkı tut):**
 - Bayrak katman sitede **her zaman "Crew OS"** (public ad). **"Bunker OS"** iç kod adıdır, hiçbir yüzeyde görünmez. İkisi **aynı şey**, iki ürün değil.
 - **Alpfit** ayrı, bağımsız dikey üründür (`/spor-salonu-yazilimi`). Crew OS'un parçası değildir.
-- Crew OS showcase route'u hâlâ `/bunker-os` (iç ad URL'de sızıyor; public `/crew-os` + redirect kararı görsel/SEO versiyonuna ertelendi — açık konu, M6).
+- Crew OS showcase route'u hâlâ `/bunker-os` (iç ad URL'de sızıyor; public `/crew-os` + kalıcı redirect + i18n namespace `bunker`→`crew` 5-dil rename **v0.3 kapsamına alındı** — M6+M2+M4; iş birimi discuss-phase'de damgalanır).
 
 **Operasyonel:**
 - **Canlıya dokunma:** `main` canlı, revize `revize/...` branch'lerinde (→ Commit Stratejisi).

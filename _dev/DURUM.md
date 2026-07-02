@@ -1,6 +1,6 @@
 # DURUM — Proje Dashboard
 
-**Son Güncelleme:** 2026-07-02 — **re-kickoff (v0.2→v0.3) tamamlandı** (kickoff + kickoff-docs). v0.2 tamamlandı (prd-review PRD değişikliği yok); sıradaki versiyon **v0.3 = Görsel & Etkileşim Cilası + URL taksonomisi/SEO** olarak sabitlendi (A1 logo · A3 CTA affordance · B1 Living Flow nabız [gate'li] · SEO `/crew-os` redirect + `/forum`→404). Aktif Versiyon v0.2→**v0.3** (Versiyon Sonu Durumu `içerik_fazları`); faz döngüsü dışı. **v0.3 içerik fazlarından ÖNCE bekleyen operasyonel adım: v0.2 production release** (revize `main`'e ilk merge → Umami canlı +1 + duman testi orada kapanır). Sıradaki DevFlow adımı: **discuss-phase** (v0.3 ilk fazı). Öneri: fresh oturumda `/devflow:audit-docs` (statik doküman drift mutabakatı).
+**Son Güncelleme:** 2026-07-02 — **kickoff-verify tamamlandı** → re-kickoff (v0.2→v0.3) kapandı: doküman tutarlılığı doğrulandı (25 doküman, eksik/placeholder yok), CLAUDE.md v0.3 taksonomi hizası güncellendi (`/crew-os` redirect v0.3 kapsamı), native memory yönlendirmesi kuruldu. Aktif Faz **10** (Görsel cila — geçici, discuss-phase kesinleştirir), Adım **discuss**. Aktif Versiyon **v0.3** (Versiyon Sonu Durumu `içerik_fazları`). **⚠️ v0.3 içerik fazlarından ÖNCE bekleyen operasyonel adım: v0.2 production release** (revize `main`'e ilk merge → Umami canlı +1 + duman testi orada kapanır). Sıradaki DevFlow komutu: **`discuss-phase 10`**. Öneri: fresh oturumda önce `/devflow:audit-docs` (statik doküman drift mutabakatı).
 
 <!-- KURAL: Bu satır her oturum sonunda ÜZERİNE YAZILIR — tek satır, tek cümle. "Önceki:" / "Eski:" prefix ile kümülatif yığma YASAK; HTML comment'e sarma da yasak (CLAUDE.md → Doküman Disiplini). Tarih + kısa özet yeterli; detay için git log + ilgili PHASE/TASK dokümanları. -->
 
@@ -8,8 +8,8 @@
 
 ## Aktif Faz
 
-**Faz:** — (faz döngüsü dışı — re-kickoff v0.3 tamamlandı, discuss-phase bekliyor). v0.2 tamamen tamamlandı: içerik fazları Faz 4 (a11y) ✅, 5 (test altyapısı) ✅, 6 (mobil perf) ✅, 7 (Umami E1) ✅ + versiyon-sonu Faz 8 (teknik borç) ✅, 9 (senaryo testi) ✅; prd-review (v0.2) ✅ PRD değişikliği yok. Sıradaki DevFlow adımı **discuss-phase** (v0.3 ilk fazı — görsel cila).
-**Adım:** — (faz döngüsü dışı; Versiyon Sonu Durumu = `içerik_fazları`). re-kickoff 2026-07-02 tamamlandı; Aktif Versiyon v0.2→**v0.3**. **v0.3 içerik fazlarından ÖNCE bekleyen operasyonel adım: v0.2 production release** (ayrı oturum).
+**Faz:** 10 — Görsel cila (geçici ad — discuss-phase kesinleştirir; faza resmî giriş/numara orada damgalanır). v0.3'ün ilk fazı. v0.2 tamamen tamamlandı: içerik fazları Faz 4 (a11y) ✅, 5 (test altyapısı) ✅, 6 (mobil perf) ✅, 7 (Umami E1) ✅ + versiyon-sonu Faz 8 (teknik borç) ✅, 9 (senaryo testi) ✅; prd-review (v0.2) ✅ PRD değişikliği yok.
+**Adım:** discuss (kickoff-verify 2026-07-02 tamamlandı → sıradaki DevFlow komutu `discuss-phase 10`; Versiyon Sonu Durumu = `içerik_fazları`). **⚠️ v0.3 içerik fazlarından ÖNCE bekleyen operasyonel adım: v0.2 production release** (revize `main`'e ilk merge → Umami canlı +1 + duman testi orada kapanır; ayrı oturum, faz döngüsü dışı).
 **İlerleme:** re-kickoff (v0.2→v0.3) 2026-07-02 tamamlandı — v0.3 = Görsel & Etkileşim Cilası + URL/SEO sabitlendi (A1/A3/B1 + SEO redirect); VERSIONS/PHASES/MODULE-MAP/SESSION-NOTES/REVIZE-BACKLOG güncellendi. **Bekleyen versiyon-sonu aksiyonu:** v0.2 production release (tüm revize `main`'e ilk merge) — Umami canlı +1 (S9-10 Faz 7) + genel canlı duman testi o adımda kapanır. **Sahipli açıklar (record):** non-TR alt-sayfa stale (4 sayfa ar/de/es, versiyon-sınırı), brief mobil perf (gerçek-cihaz duvarı), `/bunker-os`→`/crew-os` redirect + çıplak `/forum`→404 (**v0.3 kapsamına alındı**), dil-seti/AR stratejisi, TB-C npm audit (3 moderate).
 **Son Faz Dokümanı:** `phases/PHASE-9.md` (✅ Tamamlandı — 9 task 9.01–9.09 ✅ + UAT 14/14 + retrospektif/kalite kontrol). Faz 8 ✅ `phases/PHASE-8.md`.
 
@@ -79,11 +79,11 @@
 ## Hızlı Erişim
 
 **Aktif Task:** Aktif task yok — **re-kickoff (v0.2→v0.3) ✅** tamamlandı. Sıradaki adım **discuss-phase** (v0.3 ilk fazı, yeni oturum). Öncesinde ayrı operasyonel adım: v0.2 production release (Umami canlı +1 orada kapanır).
-**Aktif Faz:** — (faz döngüsü dışı) — v0.2 Faz 4–9 ✅ + prd-review ✅. **Aktif Versiyon v0.3** (Görsel & Etkileşim Cilası + URL/SEO), Versiyon Sonu Durumu: **içerik_fazları** → sıradaki adım discuss-phase.
+**Aktif Faz:** 10 — Görsel cila (geçici ad; discuss-phase kesinleştirir) — v0.3 ilk fazı. v0.2 Faz 4–9 ✅ + prd-review ✅. **Aktif Versiyon v0.3** (Görsel & Etkileşim Cilası + URL/SEO), Versiyon Sonu Durumu: **içerik_fazları** → sıradaki komut `discuss-phase 10`.
 **Task Sistemi:** `tasks/TASKS-README.md`
 **PRD (karar kaynağı):** `PRD/VIZYON.md` · `PRD/VERSIONS.md` · `PRD/features/`
 **Revize Backlog (bilinen sorunlar):** `docs/REVIZE-BACKLOG.md`
 
 ---
 
-**Son Güncelleme:** 2026-07-02 — **re-kickoff (v0.2→v0.3) tamamlandı** (kickoff-docs). Aktif Versiyon v0.2→**v0.3 = Görsel & Etkileşim Cilası + URL taksonomisi/SEO** (A1 logo · A3 CTA affordance · B1 Living Flow nabız [gate'li] · SEO `/crew-os` redirect + `/forum`→404); Versiyon Sonu Durumu `içerik_fazları`; faz döngüsü dışı. VERSIONS/PHASES/MODULE-MAP/SESSION-NOTES/REVIZE-BACKLOG güncellendi, KICKOFF-NOTES mezun edildi. **v0.3 içerik fazlarından ÖNCE bekleyen: v0.2 production release** (main merge + Umami canlı +1). Sıradaki DevFlow adımı: **discuss-phase** (v0.3); öneri: fresh oturumda `/devflow:audit-docs`.
+**Son Güncelleme:** 2026-07-02 — **kickoff-verify tamamlandı** (re-kickoff v0.2→v0.3 kapandı): doküman tutarlılığı doğrulandı, CLAUDE.md v0.3 taksonomi hizası güncellendi, native memory yönlendirmesi kuruldu, INDEX güncel. Aktif Faz **10** (Görsel cila — geçici), Adım **discuss**; Aktif Versiyon **v0.3** (Versiyon Sonu Durumu `içerik_fazları`). **v0.3 içerik fazlarından ÖNCE bekleyen: v0.2 production release** (main merge + Umami canlı +1). Sıradaki DevFlow komutu: **`discuss-phase 10`**; öneri: önce fresh oturumda `/devflow:audit-docs`.
