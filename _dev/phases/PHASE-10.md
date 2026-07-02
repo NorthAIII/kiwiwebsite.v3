@@ -64,19 +64,54 @@
 
 ## Araştırma Bulguları
 
-> Bu bölüm `/devflow:research-phase 10` oturumunda doldurulacak.
+> Bu bölüm `/devflow:research-phase 10` oturumunda dolduruldu (2026-07-02). Faz saf CSS/görsel craft; yeni kütüphane/i18n anahtarı yok. Üç kusur kod düzeyinde teyit edildi, üç karar kullanıcıyla damgalandı.
+
+### Kod-Teyidi (kaynak durumu)
+
+- **A1 yüzeyleri:** `KiwiMark` üç yerde render ediliyor ve her üçünde `mark + "Kiwi AI Lab"` lockup'ı **kopya-kod** olarak tekrar ediyor → `Nav.tsx:36-39` (size 22, wordmark ink miras), `PageHeader.tsx:13-16` (size 22, ink miras), `Footer.tsx:72-74` (size 18, `bg-ink` üstünde wordmark `text-canvas`). Tekrar = A1 tutarsızlığının kök nedeni. `KiwiMark` SVG'si `viewBox 0 0 48 48` içinde **simetrik** (dış çember `cx24 cy24 r21`) — yani ikon kutusu dengeli; hizalama sorunu SVG'de değil, **ikon-kutusu ↔ metin satır-kutusu** optik farkında (line-box ≠ cap-height).
+- **A3a idiomu:** `→ group-hover:translate-x-1` ok deseni sitede **standart** (`Hero.tsx:82` ikincil CTA, `Bunker.tsx:46`, `SectorSolutions.tsx` ×4, `Forum.tsx` ×2, `Footer.tsx:65`, `BunkerShowcase.tsx:51`, `BulletinSubscribe.tsx:44`). "Tıklanabilir" dilinin kurulu imzası bu.
+- **A3b:** Merkez-alt gösterge `Hero.tsx:140-143` — `absolute bottom-7 left-1/2 -translate-x-1/2 hidden md:flex`, `text-[11px]` etiket + `h-10 w-px animate-pulse bg-ink-faint/40` çizgi. Ayrı bir "sağ" öğe **yok** (tüm bileşenler tarandı) → REVIZE-BACKLOG'daki "sağdaki" perception artefaktı; discuss teyidi doğru.
+- **i18n:** `hero.scroll` + `hero.stats.{liveProduct,liveLabel,crewOs,crewOsLabel}` **5 dilde tam** (tr/en/ar/de/es teyitli) → yeni anahtar gerekmez.
+- **Favicon `src/app/icon.svg`** ayrı asset (arka planlı, farklı renk/bağlam), `KiwiMark` bileşeninden bağımsız → **A1 lockup kapsamı dışı** (favicon farklı yüzey türü).
 
 ### Değerlendirilen Yaklaşımlar
-- [research-phase]
+
+**A1 — Logo hizalama/tutarlılık**
+- **Ortak `<Logo>` bileşeni (SEÇİLEN, kullanıcı kararı):** mark+wordmark lockup'ını tek bileşene çıkar; Nav/PageHeader/Footer onu tüketir. Optik dikey hizalama **tek yerde** çözülür, tutarlılık inşa gereği garanti, drift bir daha olmaz. Artı: ILKELER kalıcılık + QUALITY §5 modülerlik. Eksi: küçük refactor (3 dosya), `size` prop (22/18) + Footer'ın farklı renk kompozisyonu (mark `text-green`, wordmark bağlamdan miras — Footer'da `text-canvas`) bileşende ele alınmalı.
+- **Yerinde düzeltme (elendi):** her yüzeyde ayrı flex/optik nudge. Daha minimal ama 3 kopya tekrar drift'e açık — A1'in kök nedenini bırakır.
+- **SVG-içi düzeltme (elendi):** `viewBox` sıkıştırma/kaydırma. İkon zaten simetrik; sorun CSS-hizalama, SVG değil — viewBox değişimi tüm boyutları etkiler, yanlış kaldıraç.
+
+**A3a — Hero CTA kartı affordance**
+- **Ok idiomu + durağan ipucu (SEÇİLEN, kullanıcı kararı):** site-standart `→ group-hover:translate-x-1` okunu iki stat Link'ine ekle; **hover-only tuzağına düşmemek için** dinlenme halinde de hafif kalıcı ipucu (soluk ok/chevron, hover'da belirginleşir). Artı: kurulu imza → zero template smell, dokunmatikte de okunur. Eksi: yok denecek kadar az (mevcut desenle birebir).
+- **İnce kart sınırı (elendi):** border+radius+hover-bg. Generic SaaS özellik-kartı ızgarası template-smell riski (QUALITY §1 / ILKELER pazarlık-dışı) + padding CLS riski.
+- **Hover-altı underline (elendi):** iki-satırlı etikette (başlık+label) belirsiz; dinlenme halinde "tıklanabilir" okunmaz.
+
+**A3b — Scroll göstergesi ölçekleme**
+- **Ölçek büyütme/orantılama (SEÇİLEN, kullanıcı kararı = "çok küçük"):** 40px hairline + 11px etiket anıtsal hero'ya (clamp 6rem başlık) göre orantısız/kayıp. Çizgiyi/etiketi orantıla (daha uzun çizgi ve/veya biraz daha okunur ağırlık/opaklık); merkez-alt konum + `hidden md:flex` (desktop-only) korunur, yeni mobil öğe eklenmez (discuss kapsam-dışı). `w-px` + `/40` opaklık ayrıca DPR'de kırılgan (hairline) — ölçek işiyle birlikte biraz daha sağlam bir çizgi değerlendirilebilir.
 
 ### Kullanılacak Araçlar/Kütüphaneler
-- [research-phase]
+
+- **Yeni bağımlılık YOK.** Sadece mevcut Tailwind v4 utility'leri + `globals.css @theme` tasarım token'ları. `package.json` dokunulmaz.
+- **Yeni i18n anahtarı YOK** — `hero.scroll` + `hero.stats.*` 5 dilde mevcut (teyitli). Parite otomatik korunur.
+- GSAP zaten mevcut ve Hero timeline'ında (`[data-hero='stats']`, `Hero.tsx:25`); A3 değişiklikleri Link içeriğine/gösterge stiline dokunur, timeline hedeflerine değil. `<Logo>` çıkarımı yalnız Nav/PageHeader/Footer'ı etkiler, Hero GSAP'ıyla kesişmez.
 
 ### Dikkat Edilecekler
-- [research-phase]
+
+- **Çift-tema adaptif token disiplini:** Eklenen her renk (ok/ipucu, gösterge çizgisi) **adaptif token**dan gelmeli — kullanılabilir mevcut token'lar `--color-line`, `--color-ink-faint`, `--color-ink-soft`, `--color-green` (repoda-tanımlı → `src/app/globals.css:6-24` light + `:32-44` dark flip). Tailwind `dark:` variant **YOK** (proje `html.dark` class flip'i kullanır; `dark:` `prefers-color-scheme`'e bağlı, desync olur — memory: `tema-fix-html-dark-token-flip`).
+- **a11y=100 çift-tema:** Yeni görsel öğe **her iki temada** color-contrast geçmeli; `aria-hidden` kontrast denetiminden muaf tutmaz (memory: `aria-hidden-color-contrast-muafiyeti-degil`). Ölçüm **light+dark iki koşu** (memory: `a11y-olcum-tema-tuzagi`) + axe WCAG tohumu (memory/QUALITY §8: axe yeşil ≠ Lighthouse 100).
+- **CLS≈0 (korunan taban):** Ok/ipucu ve gösterge ölçek değişimi **layout shift yaratmamalı** — ok için yer rezerve et (opacity/transform ile göster, akışa genişlik ekleme) veya sabit-genişlik; gösterge büyütmesi hero flex'ini kaydırmasın (mutlak-konumlu, akış-dışı — güvenli).
+- **Focus-visible:** 2px yeşil outline (`globals.css:122-126`) korunur. `<Logo>` çıkarımında lockup **tek focusable** kalmalı (mark+wordmark tek `<a>`/`<Link>` içinde — iki tab-stop'a bölme). Stat Link'lerine ok eklemek focus davranışını değiştirmez.
+- **Reduced-motion:** Global catch-all (`globals.css:107-119`) tüm `animation`/`transition`'ı ~0ms'e indirir → mevcut `animate-ping`/`animate-pulse` ve yeni ok `transition`'ı otomatik susar. Yeni öğe reduced-motion'da **dinlenme halinde** okunur/tıklanabilir görünmeli (hover'a bağlı kalmamalı — bu aynı zamanda dokunmatik gereği).
+- **RTL (AR):** Site-geneli ok idiomu **fiziksel** (`→` glyph + `translate-x`) ve AR'de de öyle sevk edilmiş (v0.2, `dir="rtl"` `layout.tsx:69`). Hero'daki iki oku **tek başına** logical yapmak onları diğer 10+ oktan ayırır (tutarsızlık) → **mevcut idiomla tutarlı kal.** Site-geneli logical-ok mantığı ayrı/sonraki iş (bu dar fazın kapsamı değil) — kayıt: bilinçli tercih.
+- **Kaynak tanımlayıcılar (precondition):** A3 metinleri `hero.stats.*` + `hero.scroll` — **repoda-tanımlı → `messages/{tr,en,ar,de,es}.json` `hero` namespace** (5-dil tam). A1 yüzey siteleri: `Nav.tsx:36-39`, `PageHeader.tsx:13-16`, `Footer.tsx:72-74`; `KiwiMark` → `src/components/KiwiMark.tsx`. Yeni yaratılan: `<Logo>` bileşeni (örn. `src/components/Logo.tsx` — plan-phase kesinleştirir). Dış tanımlayıcı yok.
 
 ### Teknik Kararlar
-- [research-phase]
+
+- **A1 → ortak `<Logo>` bileşeni** (kullanıcı kararı). Gerekçe: kalıcılık (ILKELER) + modülerlik (QUALITY §5); kopya-kod drift'i (A1'in kök nedeni) inşa gereği giderilir. Optik dikey hiza tek yerde çözülür (line-box ↔ cap-height; wordmark `leading-none` + `items-center` başlangıç, kalan optik nudge gerekirse tek yerde ve görsel doğrulamayla).
+- **A3a → site-standart ok idiomu + durağan ipucu** (kullanıcı kararı). Gerekçe: Craft en üst eksen — kurulu imza korunur (zero template smell), hover-only/dokunmatik tuzağı dinlenme-hali ipucuyla kapanır.
+- **A3b → ölçek büyütme/orantılama** (kullanıcı: "çok küçük"). Merkez-alt + desktop-only korunur; hairline'ın DPR-kırılganlığı ölçek işiyle birlikte gözden geçirilir.
+- **Yeni npm bağımlılığı ve yeni i18n anahtarı YOK.**
+- **RTL:** mevcut fiziksel ok idiomuyla tutarlılık korunur (lone-flip yok); site-geneli logical-ok ayrı iş olarak kayıtta.
 
 ---
 
