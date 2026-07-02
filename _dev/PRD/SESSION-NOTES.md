@@ -6,10 +6,12 @@
 
 ## Mevcut Durum Analizi (sonraki oturum için bağlam)
 
-- **v0.1 tamamlandı** (3 faz: içerik + teknik borç + senaryo testi). prd-review (2026-06-29) yapıldı: **PRD'de değişiklik yok** — bilinçli karar. Premise zaten v0.1 başında (prd-refine 2026-06-28) deneyimle düzeltilmişti (kopya zayıf değil → cerrahi); üç faz bu reframe'i doğruladı, bozmadı → PRD sağlam.
-- **prd-review çıktıları (PRD değil ama yön/öncelik):** (1) ILKELER #2'ye perf/a11y "korunan taban ≠ brief hedefi" nüansı eklendi; (2) sıradaki versiyon **v0.2 = a11y & Performans + teknik temel** olarak sabitlendi (VERSIONS.md).
+- **v0.2 tamamlandı** (içerik fazları 4–7: a11y / test altyapısı / mobil perf / Umami + versiyon-sonu fazları 8–9: teknik borç / senaryo testi). prd-review (2026-07-02): **perf satırı hizalandı, başka PRD değişikliği yok** — vizyon/taksonomi/feature'lar v0.2 boyunca doğrulandı, gerilim doğmadı → PRD sağlam (v0.1 gibi).
+- **prd-review çıktısı (PRD değil ama yön/öncelik):** ILKELER #2(b) gerçekliğe hizalandı — a11y ≥100 v0.2'de ulaşıldı (yeni taban); perf/LCP brief bütçesi lab'da açık kaldı, nihai doğrulama gerçek-cihaz/Vercel field'a bağlandı (hedef düşmedi).
+- **v0.2'nin en önemli keşfi:** brief mobil perf hedefi (≥95/<2.5s) lab'da adanmış perf işi sonrası bile **ulaşılamıyor** — Lighthouse mobil skoru Lantern-simüle, CPU/render-zamanlama kazanımları lab skorunda görünmez → nihai doğrulama gerçek-cihaz gerektirir (a11y ise ≥100 tam kapandı).
 - Site **canlı ve mimari olarak sağlam**; revize v3'te yerinde + `revize/...` branch'le yürür (`main` canlı kalır).
-- **v0.1'in en önemli keşfi:** brief perf/a11y hedefleri mevcut sitede *zaten* karşılanmıyor (mobil perf 87 / LCP 3.1s; a11y 89 — regresyon değil, keşfedilen mevcut durum). → v0.2'nin gerekçesi.
+- **Bekleyen versiyon-sonu aksiyonu:** v0.2 production release (tüm revize `main`'e ilk merge) — Umami canlı +1 doğrulaması + genel canlı duman testi orada kapanır.
+- **Sıradaki versiyon:** re-kickoff'ta belirlenir; adaylar VERSIONS.md'de (görsel & etkileşim cilası + SEO redirect'ler `/crew-os`·`/forum`, çeviri senkronu, bekleyen veri/entegrasyon).
 
 ---
 
@@ -25,4 +27,4 @@
 
 ---
 
-**Son Güncelleme:** 2026-06-29 — prd-review (v0.1): PRD değişiklik yok kararı kaydedildi; ILKELER perf/a11y nüansı + v0.2 önceliği (a11y/perf+teknik) sabitlendi; mezun olan bölümler (v0.1 prd-refine "Çözülenler" + hizalanmış "Doküman Uyumsuzlukları") silindi.
+**Son Güncelleme:** 2026-07-02 — prd-review (v0.2): perf satırı hizalama kararı kaydedildi (ILKELER #2(b) gerçekliğe hizalandı; a11y ≥100 ulaşıldı, perf/LCP lab'da açık → gerçek-cihaz'a bağlandı); vizyon/feature değişmez; mezun olan v0.1 bağlamı v0.2 ile değiştirildi.
