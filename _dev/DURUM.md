@@ -1,6 +1,6 @@
 # DURUM — Proje Dashboard
 
-**Son Güncelleme:** 2026-07-02 — **run-task 9.01 (S1) tamamlandı:** fresh prod build üzerinde route/yönlendirme matrisi doğrulandı — 30/30 kombinasyon (6 sayfa × 5 locale) 200 (TR cookie+prefixsiz, EN/AR/DE/ES prefixli; lang doğru, AR rtl), `/forum`→308→`/bulten` (+slug), çıplak `/bulten`→404 (M6 record-not-fix), `/tr`→307→`/` + bilinmeyen-locale→404 (beklenen next-intl davranışı). **Kapsam-içi gerçek bug yok**, kaynak kod değişmedi. Adım=task → sıradaki: **run-task TASK-9.02** (yeni oturum).
+**Son Güncelleme:** 2026-07-02 — **run-task 9.02 (S5 + S6-render) tamamlandı:** 30 sayfa (6×5) render görünür-metin taraması. **S5** taksonomi/dürüstlük: "Crew OS" home 7×·showcase 5×·bülten 1× (5 dil), "Bunker" 30/30 görünür metinde yok, yasak metafor/sahte-online/uydurma-sayı temiz ("canlı/live" meşru — niyet-bazlı). **S6-render**: 0 MISSING_MESSAGE (30/30), TR-leak yok (=TR%0), AR `dir=rtl`+Arapça glif teyit. **Kapsam-içi bug yok**, kaynak kod değişmedi. Sahipli (record-not-fix): 4 alt sayfa (alpfit/vaka/bulten1/bulten2) non-TR ar/de/es İngilizce-stale (=EN%87–93) → versiyon-sınırı çevirisi (12 sayfa-locale; home+Crew OS 5 dilde tam). Adım=task → sıradaki: **run-task TASK-9.03** (yeni oturum).
 
 <!-- KURAL: Bu satır her oturum sonunda ÜZERİNE YAZILIR — tek satır, tek cümle. "Önceki:" / "Eski:" prefix ile kümülatif yığma YASAK; HTML comment'e sarma da yasak (CLAUDE.md → Doküman Disiplini). Tarih + kısa özet yeterli; detay için git log + ilgili PHASE/TASK dokümanları. -->
 
@@ -9,9 +9,9 @@
 ## Aktif Faz
 
 **Faz:** 9 (v0.2 versiyon-sonu **senaryo testi**) — discuss-phase 9 tamamlandı, PHASES tablosunda 🔄. Kapsam = ana sayfa + 5 alt sayfa uçtan-uca çapraz doğrulama (yeni feature üretmez), Faz 3 (v0.1 senaryo testi) deseninde ama alt sayfalar dahil (Faz 8 çıtaya çekti); alt-sayfa harness'i (`subpages-a11y.spec.ts` + `a11y-helpers.ts`) yeniden kullanılır. Faz 8 ✅; Faz 7 (Umami E1) ✅; Faz 6 (mobil perf/LCP) ✅; Faz 5 (test altyapısı D1) ✅; Faz 4 (v0.2 a11y) ✅.
-**Adım:** task — sıradaki adım **run-task TASK-9.02** (S5+S6-render, yeni oturum). 9.01 (S1) ✅. Kapsam + Araştırma + Plan + verify-plan tamamlandı (`phases/PHASE-9.md`): 9 doğrulama task'ı (S1–S9 → TASK-9.01…9.09), suite-first hibrit metodoloji, TK1–TK7.
-**İlerleme:** run-task 9.01 (S1, 2026-07-02) tamamlandı — 30/30 route 200, redirect'ler 308, çıplak `/bulten`→404 (record-not-fix), `/tr`→307 + bilinmeyen-locale→404 (beklenen); kapsam-içi bug yok, kaynak kod değişmedi. **Bekleyen versiyon-sonu aksiyonu:** v0.2 production release (tüm revize `main`'e ilk merge) — Umami canlı +1 (S9-10 Faz 7) o adımda kapanır (senaryo testi kod-tarafı varlığı S8'de doğrular, canlı panel değil). **Kapsam dışı (bilinçli açık):** brief mobil perf (gerçek-cihaz duvarı), TB-C npm audit, `/bunker-os`→`/crew-os` redirect + `/forum`→404 (görsel/SEO versiyonu), dil setini değiştirme (prd-review).
-**Son Faz Dokümanı:** `phases/PHASE-9.md` (🔄 Devam ediyor — 9 task, 9.01 ✅). Faz 8 ✅ `phases/PHASE-8.md`.
+**Adım:** task — sıradaki adım **run-task TASK-9.03** (S8-suite+S6-parite, yeni oturum). 9.01 (S1) ✅, 9.02 (S5+S6-render) ✅. Kapsam + Araştırma + Plan + verify-plan tamamlandı (`phases/PHASE-9.md`): 9 doğrulama task'ı (S1–S9 → TASK-9.01…9.09), suite-first hibrit metodoloji, TK1–TK7.
+**İlerleme:** run-task 9.02 (S5+S6-render, 2026-07-02) tamamlandı — 30 sayfa render-metin: "Crew OS" beklenen yüzeylerde/"Bunker" yok, 0 MISSING_MESSAGE, =TR%0 (TR-leak yok); kapsam-içi bug yok, kaynak kod değişmedi. Sahipli: 4 alt sayfa non-TR ar/de/es İngilizce-stale → versiyon-sınırı çevirisi. **Bekleyen versiyon-sonu aksiyonu:** v0.2 production release (tüm revize `main`'e ilk merge) — Umami canlı +1 (S9-10 Faz 7) o adımda kapanır (senaryo testi kod-tarafı varlığı S8'de doğrular, canlı panel değil). **Kapsam dışı (bilinçli açık):** brief mobil perf (gerçek-cihaz duvarı), TB-C npm audit, `/bunker-os`→`/crew-os` redirect + `/forum`→404 (görsel/SEO versiyonu), dil setini değiştirme (prd-review).
+**Son Faz Dokümanı:** `phases/PHASE-9.md` (🔄 Devam ediyor — 9 task, 9.01–9.02 ✅). Faz 8 ✅ `phases/PHASE-8.md`.
 
 ---
 
@@ -28,20 +28,20 @@
 
 ## Aktif Task
 
-**Task:** Sıradaki aktif task **TASK-9.02** (S5 taksonomi/dürüstlük + S6-render non-TR bütünlüğü, curl/grep) — Faz 9, adım=task. 9.01 (S1) ✅ archive'da; **run-task ile TASK-9.02**'den devam (yeni oturum).
-**Durum:** Faz 9 (senaryo testi) 🔄 — adım=task. 9.01 ✅ (1/9). Faz 8 tüm task'ları ✅ (8.01→8.06) archive'da.
-**İlerleme:** run-task 9.01 (S1) tamamlandı (2026-07-02): 30/30 route 200, redirect'ler 308, çıplak `/bulten`→404 (record-not-fix), `/tr`→307 + bilinmeyen-locale→404 (beklenen); kapsam-içi bug yok, kaynak kod değişmedi.
+**Task:** Sıradaki aktif task **TASK-9.03** (S8-suite + S6-parite: `test:e2e` 52 + `test` 7 + CI yeşil) — Faz 9, adım=task. 9.02 (S5+S6-render) ✅ archive'da; **run-task ile TASK-9.03**'ten devam (yeni oturum).
+**Durum:** Faz 9 (senaryo testi) 🔄 — adım=task. 9.01–9.02 ✅ (2/9). Faz 8 tüm task'ları ✅ (8.01→8.06) archive'da.
+**İlerleme:** run-task 9.02 (S5+S6-render) tamamlandı (2026-07-02): 30 sayfa render-metin — "Crew OS"/"Bunker-yok"/0 MISSING_MESSAGE/=TR%0; kapsam-içi bug yok, kaynak kod değişmedi. Sahipli: 4 alt sayfa non-TR ar/de/es İngilizce-stale (versiyon-sınırı).
 
 ---
 
 ## Task Durumu (Aktif Faz)
 
-> Faz 9 (senaryo testi) 🔄 — 9 task hazır (verify-plan 9 sonrası çalıştırılır). Faz 8 ✅ (8.01-8.06 archive'da, detay `phases/PHASE-8.md`); Faz 7 (Umami E1) ✅; Faz 6 ✅ (6.06 ❌ iptal); Faz 5 ✅; Faz 4 ✅ — hepsi archive'da.
+> Faz 9 (senaryo testi) 🔄 — 9 task hazır, 9.01–9.02 ✅ (2/9). Faz 8 ✅ (8.01-8.06 archive'da, detay `phases/PHASE-8.md`); Faz 7 (Umami E1) ✅; Faz 6 ✅ (6.06 ❌ iptal); Faz 5 ✅; Faz 4 ✅ — hepsi archive'da.
 
 | # | Task | Durum | Açıklama |
 |---|------|-------|----------|
 | 9.01 | TASK-9.01 | ✅ Tamamlandı | S1 — giriş/yönlendirme matrisi (curl) |
-| 9.02 | TASK-9.02 | ⬜ Bekliyor | S5 + S6-render — taksonomi/dürüstlük + non-TR render bütünlüğü (curl/grep) |
+| 9.02 | TASK-9.02 | ✅ Tamamlandı | S5 + S6-render — taksonomi/dürüstlük + non-TR render bütünlüğü (curl/script-strip) |
 | 9.03 | TASK-9.03 | ⬜ Bekliyor | S8-suite + S6-parite — `test:e2e` 52 + `test` 7 + CI yeşil |
 | 9.04 | TASK-9.04 | ⬜ Bekliyor | S8-Lighthouse — a11y=100 çift-tema (6 sayfa) + perf korunan taban |
 | 9.05 | TASK-9.05 | ⬜ Bekliyor | S3 — degradasyon / mod kombinasyonları (standalone Playwright, 6 hero) |
@@ -55,6 +55,11 @@
 ## Son Task Özetleri
 
 > **KURAL:** Sadece son 2 task özeti tutulur, daha eskileri **gerçekten silinir** (HTML comment'e sarma, "Önceki:" prefix, üstü çizili etiket yasak — detay için git log + arşivlenmiş task dokümanı). Her özet kısa formatlı: paragraf yasak, **bullet zorunlu**, "Özet" alanı max 3 bullet. **Yeni faza geçildi → Faz 8 task özetleri sıfırlandı** (Faz 8 detayları `phases/PHASE-8.md` + `tasks/archive/`).
+
+**TASK-9.02 (S5 + S6-render — taksonomi/dürüstlük & non-TR render bütünlüğü):**
+- 30 sayfa render görünür-metin (script/style-strip): "Crew OS" home 7×·showcase 5×·bülten 1× (5 dil), "Bunker" 30/30 görünür metinde yok; yasak metafor/sahte-online/uydurma-sayı temiz ("canlı/live" meşru — gerçekten-canlı Alpfit + Crew OS paneli, niyet-bazlı).
+- S6-render: 0 MISSING_MESSAGE (30/30), leak metriği =TR%0 (TR-leak yok), AR `dir=rtl`+Arapça glif teyit; home+crewos gerçekten çevrilmiş.
+- Kapsam-içi bug yok; kaynak kod değişmedi. Sahipli (record-not-fix): 4 alt sayfa (alpfit/vaka/bulten1/bulten2) non-TR ar/de/es İngilizce-stale (=EN%87–93) → versiyon-sınırı çevirisi (12 sayfa-locale).
 
 **TASK-9.01 (S1 — giriş/yönlendirme matrisi):**
 - Fresh prod build (PID teyitli) üzerinde curl: 30/30 kombinasyon (6 sayfa × 5 locale) 200 — TR cookie+prefixsiz, EN/AR/DE/ES prefixli; `html lang` doğru, AR `dir=rtl`.
@@ -73,7 +78,7 @@
 
 ## Hızlı Erişim
 
-**Aktif Task:** Sıradaki TASK-9.02 (S5+S6-render) — Faz 9, adım=task. 9.01 (S1) ✅ (1/9). Sıradaki: run-task TASK-9.02. Bekleyen: v0.2 production release (Umami canlı +1 orada kapanır).
+**Aktif Task:** Sıradaki TASK-9.03 (S8-suite+S6-parite) — Faz 9, adım=task. 9.01–9.02 ✅ (2/9). Sıradaki: run-task TASK-9.03. Bekleyen: v0.2 production release (Umami canlı +1 orada kapanır).
 **Aktif Faz:** 9 (v0.2 senaryo testi) · adım=task — Faz 8 ✅ (8.01→8.06; review tamam); Faz 7 ✅; Faz 6 ✅; Faz 5 ✅; Faz 4 ✅; Aktif Versiyon v0.2, Versiyon Sonu Durumu: senaryo_testi
 **Task Sistemi:** `tasks/TASKS-README.md`
 **PRD (karar kaynağı):** `PRD/VIZYON.md` · `PRD/VERSIONS.md` · `PRD/features/`
@@ -81,4 +86,4 @@
 
 ---
 
-**Son Güncelleme:** 2026-07-02 — run-task 9.01 (S1): 30/30 route 200, redirect'ler 308, çıplak `/bulten`→404 (record-not-fix), `/tr`→307 + bilinmeyen-locale→404 (beklenen); kapsam-içi bug yok, kaynak kod değişmedi. Adım=task. Sıradaki: run-task TASK-9.02.
+**Son Güncelleme:** 2026-07-02 — run-task 9.02 (S5+S6-render): 30 sayfa render-metin — "Crew OS" beklenen yüzeylerde/"Bunker" yok, 0 MISSING_MESSAGE, =TR%0 (TR-leak yok), AR rtl+glif; kapsam-içi bug yok, kaynak kod değişmedi. Sahipli: 4 alt sayfa non-TR ar/de/es İngilizce-stale (versiyon-sınırı). Adım=task. Sıradaki: run-task TASK-9.03.
