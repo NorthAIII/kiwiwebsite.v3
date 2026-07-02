@@ -117,11 +117,14 @@
 
 ## Task Listesi
 
-> Bu bölüm `/devflow:plan-phase 10` oturumunda doldurulacak.
+> Bu bölüm `/devflow:plan-phase 10` oturumunda dolduruldu (2026-07-02). 4 task; lineer sıra. A1 = 10.01+10.02 (ortak `<Logo>`), A3a = 10.03, A3b = 10.04.
 
 | # | Task | Durum | Açıklama |
 |---|------|-------|----------|
-| — | — | ⬜ Bekliyor | plan-phase'de doldurulacak |
+| 10.01 | TASK-10.01 | ⬜ Bekliyor | A1 — Ortak `<Logo>` bileşeni + Nav & PageHeader benimseme (optik dikey hiza tek yerde) |
+| 10.02 | TASK-10.02 | ⬜ Bekliyor | A1 — Footer'da `<Logo>` benimseme (size 18, non-link, `text-canvas` koyu zemin); 10.01'e bağlı |
+| 10.03 | TASK-10.03 | ⬜ Bekliyor | A3a — Hero iki stat Link'ine site-standart ok idiomu + durağan ipucu |
+| 10.04 | TASK-10.04 | ⬜ Bekliyor | A3b — Hero merkez-alt scroll göstergesi ölçekleme (desktop-only korunur) |
 
 **Durum simgeleri:** ⬜ Bekliyor | 🔄 Devam ediyor | ⏸️ Duraklatıldı | ✅ Tamamlandı | 🔴 Bloke | ❌ İptal
 
@@ -154,4 +157,4 @@
 ---
 
 **Oluşturulma:** 2026-07-02 (discuss-phase 10)
-**Son Güncelleme:** 2026-07-02
+**Son Güncelleme:** 2026-07-02 — plan-phase 10: 4 task yazıldı (10.01–10.04, Task Listesi tablosu dolduruldu).
