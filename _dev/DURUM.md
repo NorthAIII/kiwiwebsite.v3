@@ -1,6 +1,6 @@
 # DURUM — Proje Dashboard
 
-**Son Güncelleme:** 2026-07-02 — **review-phase 10 tamamlandı — Faz 10 ✅:** v0.3 görsel cila kapandı (A1 kök nedeni ortak `<Logo>` ile kalıcı çözüldü + A3a ok affordance + A3b scroll göstergesi orantı; UAT 17/17, milestone 5/5, 8 kalite ekseni 7 ✅ + 1 N/A güvenlik, guardrail'ler regresyonsuz). Retrospektif + kalite kontrol PHASE-10'a yazıldı; DECISIONS'a `<Logo>` + RTL ok idiomu kararı eklendi. Versiyon Sonu Durumu `içerik_fazları` (değişmez) → sıradaki v0.3 içerik fazı. Sıradaki DevFlow komutu: **`discuss-phase 11`** (yeni oturum).
+**Son Güncelleme:** 2026-07-02 — **discuss-phase 11 tamamlandı:** Faz 11 = **v0.3 URL taksonomisi/SEO** (`/bunker-os`→`/crew-os` route rename + kalıcı redirect 5 locale + i18n namespace `bunkerOs`/`bunker`→crew 5-dil rename + sitemap/canonical/alternates + iç linkler). `/forum`→404 **reddedildi** (mevcut `/forum`→`/bulten` 301 çalışıyor, bozmak için gerekçe yok — korunur); kod dosya adları iç-ad kalır (taksonomi izin veriyor). Kapsam PHASE-11'e yazıldı, MODULE-MAP'e SEO1-3 (🔄), PHASES tabloya 🔄 + mezuniyet. Sıradaki DevFlow komutu: **`research-phase 11`** (yeni oturum).
 
 <!-- KURAL: Bu satır her oturum sonunda ÜZERİNE YAZILIR — tek satır, tek cümle. "Önceki:" / "Eski:" prefix ile kümülatif yığma YASAK; HTML comment'e sarma da yasak (CLAUDE.md → Doküman Disiplini). Tarih + kısa özet yeterli; detay için git log + ilgili PHASE/TASK dokümanları. -->
 
@@ -8,10 +8,10 @@
 
 ## Aktif Faz
 
-**Faz:** 11 (geçici ad — v0.3 sonraki içerik fazı; discuss-phase 11 damgalar) — Sıradaki Fazlar'ın ilk adayı **Living Flow nabız kapsamı (B1, karar-gate'li)**; alternatif **URL taksonomisi/SEO redirect** (`/bunker-os`→`/crew-os` + `/forum`→404). Kesin konu/kapsam/sıra discuss-phase 11'de netleşir. **Faz 10 ✅ Tamamlandı** (v0.3 görsel cila — A1 logo + A3a/A3b). v0.2 tamamen ✅ (Faz 4–9 + prd-review).
-**Adım:** discuss (Faz 10 review ✅ → sıradaki `discuss-phase 11`; Versiyon Sonu Durumu = `içerik_fazları`, değişmez). ✅ **v0.2 production release tamamlandı (2026-07-02)** — revize `main`'de, canlı deploy `a71adbc`, Umami canlı +1 doğrulandı (`docs/RELEASE-v0.2.md`). Açık takip: chatbot canlı `ANTHROPIC_API_KEY` env (release engeli değil).
-**İlerleme:** review-phase 10 (2026-07-02) ✅ — Faz 10 tamamlandı: milestone 5/5, UAT 17/17, 8 kalite ekseni (7 ✅ + 1 N/A güvenlik), guardrail'ler regresyonsuz (a11y=100 çift-tema, perf tabanı, CLS=0, i18n 5-dil parite). A1 kök nedeni (3 kopya-kod lockup) ortak `<Logo>` ile kalıcı kapandı. 0 imza/davranış/içerik değişimi. Retrospektif + kalite kontrol PHASE-10'a, `<Logo>`+RTL ok kararı DECISIONS'a yazıldı. **Sahipli açıklar (record, faz-dışı):** non-TR alt-sayfa stale (4 sayfa ar/de/es, versiyon-sınırı), brief mobil perf (gerçek-cihaz duvarı), `/bunker-os`→`/crew-os` redirect + `/forum`→404 (v0.3, ayrı faz — Faz 10'un doğal devamı), site-geneli logical-ok (RTL, ayrı iş), dil-seti/AR stratejisi, TB-C npm audit (3 moderate).
-**Son Faz Dokümanı:** `phases/PHASE-10.md` (✅ Tamamlandı — kapsam + araştırma + task listesi + verify-plan + UAT 17/17 + retrospektif + kalite kontrol). Faz 9 ✅ `phases/PHASE-9.md`.
+**Faz:** 11 — **v0.3 URL taksonomisi / SEO** (`/bunker-os`→`/crew-os`). Kapsam: route rename + kalıcı redirect (5 locale) + i18n namespace `bunkerOs`/`bunker`→crew 5-dil rename + sitemap/canonical/alternates + iç linkler temiz. `/forum`→404 reddedildi (mevcut 301 korunur); kod dosya adları iç-ad kalır. **Faz 10 ✅ Tamamlandı** (v0.3 görsel cila — A1 logo + A3a/A3b). v0.2 tamamen ✅ (Faz 4–9 + prd-review + production release).
+**Adım:** research (discuss-phase 11 ✅ → sıradaki `research-phase 11`; Versiyon Sonu Durumu = `içerik_fazları`, değişmez). ✅ **v0.2 production release tamamlandı (2026-07-02)** — revize `main`'de, canlı deploy `a71adbc`, Umami canlı +1 doğrulandı (`docs/RELEASE-v0.2.md`). Açık takip: chatbot canlı `ANTHROPIC_API_KEY` env (release engeli değil).
+**İlerleme:** discuss-phase 11 (2026-07-02) ✅ — Faz 11 kapsamı damgalandı: SEO1 route rename+redirect · SEO2 namespace rename · SEO3 iç link (MODULE-MAP 🔄, PHASES tabloya 🔄). Üç karar: /forum→404 reddedildi (redirect korunur), rename kapsamı=route+namespace (kod adı değil), tek faz. **Sahipli açıklar (record, faz-dışı):** non-TR alt-sayfa stale (4 sayfa ar/de/es, versiyon-sınırı), brief mobil perf (gerçek-cihaz duvarı), B1 Living Flow nabız (v0.3, ayrı gate'li faz), site-geneli logical-ok (RTL, ayrı iş), dil-seti/AR stratejisi, TB-C npm audit (3 moderate).
+**Son Faz Dokümanı:** `phases/PHASE-11.md` (🔄 Kapsam Tartışması yazıldı; araştırma/plan/UAT bekliyor). Faz 10 ✅ `phases/PHASE-10.md`.
 
 ---
 
@@ -28,19 +28,19 @@
 
 ## Aktif Task
 
-**Task:** Aktif task **yok** — Faz 10 tamamlandı, Faz 11 henüz planlanmadı. Sıradaki adım kapsam tartışması (`discuss-phase 11`), ayrı oturumda.
-**Durum:** Faz 10 ✅ Tamamlandı → Adım **discuss** (Faz 11). Versiyon Sonu Durumu = `içerik_fazları`; Aktif Versiyon v0.3.
-**İlerleme:** review-phase 10 (2026-07-02) ✅ — Faz 10 kapandı (retrospektif + kalite kontrol yazıldı, MODULE-MAP A1/A3 ✅, PHASES geçiş notu). Sıradaki = `discuss-phase 11`.
+**Task:** Aktif task **yok** — Faz 11 kapsamı damgalandı, henüz planlanmadı (task yazımı plan-phase'de). Sıradaki adım teknik araştırma (`research-phase 11`), ayrı oturumda.
+**Durum:** Faz 11 🔄 → Adım **research**. Versiyon Sonu Durumu = `içerik_fazları`; Aktif Versiyon v0.3.
+**İlerleme:** discuss-phase 11 (2026-07-02) ✅ — kapsam tartışması tamam (SEO1-3, üç karar damgalandı). Sıradaki = `research-phase 11`.
 
 ---
 
 ## Task Durumu (Aktif Faz)
 
-> Faz 11 (v0.3 sonraki içerik fazı) **henüz planlanmadı** — kapsam tartışması bekliyor (`discuss-phase 11`). Task tablosu discuss/plan sonrası dolar. Faz 10 ✅ (10.01–10.04, detay `phases/PHASE-10.md`); Faz 4–9 ✅ — hepsi archive'da.
+> Faz 11 (v0.3 URL taksonomisi/SEO) kapsamı damgalandı, **task'ları henüz yazılmadı** — plan-phase 11 bekliyor. Task tablosu plan sonrası dolar. Faz 10 ✅ (10.01–10.04, detay `phases/PHASE-10.md`); Faz 4–9 ✅ — hepsi archive'da.
 
 | # | Task | Durum | Açıklama |
 |---|------|-------|----------|
-| — | _(Faz 11 planlanmadı)_ | — | discuss-phase 11 kapsamı damgalar, plan-phase task'ları yazar |
+| — | _(Faz 11 task'ları planlanmadı)_ | — | discuss ✅; research-phase 11 → plan-phase 11 task'ları yazar (SEO1-3) |
 
 ---
 
@@ -62,8 +62,8 @@ _(Faz 11 henüz başlamadı — task özeti yok. İlk task tamamlanınca buraya 
 
 ## Hızlı Erişim
 
-**Aktif Task:** Aktif task **yok** — Faz 10 ✅ Tamamlandı, Faz 11 henüz planlanmadı. Sıradaki adım **discuss-phase 11** (kapsam tartışması, yeni oturum). Açık takip: chatbot canlı env key.
-**Aktif Faz:** 10 ✅ Tamamlandı (v0.3 görsel cila — A1 logo + A3a/A3b). Sıradaki Faz 11 = v0.3 sonraki içerik fazı (B1 Living Flow nabız / SEO redirect — discuss-phase 11 damgalar). v0.2 Faz 4–9 ✅ + prd-review ✅ + production release ✅. **Aktif Versiyon v0.3**, Versiyon Sonu Durumu: **içerik_fazları** → sıradaki komut `discuss-phase 11`.
+**Aktif Task:** Aktif task **yok** — Faz 11 kapsamı damgalandı, task'ları henüz yazılmadı. Sıradaki adım **research-phase 11** (teknik araştırma, yeni oturum). Açık takip: chatbot canlı env key.
+**Aktif Faz:** 11 🔄 — v0.3 URL taksonomisi/SEO (`/bunker-os`→`/crew-os` rename + redirect + namespace 5-dil + SEO metadata + iç link). Faz 10 ✅ (görsel cila). v0.2 Faz 4–9 ✅ + prd-review ✅ + production release ✅. **Aktif Versiyon v0.3**, Versiyon Sonu Durumu: **içerik_fazları** → sıradaki komut `research-phase 11`.
 **Task Sistemi:** `tasks/TASKS-README.md`
 **PRD (karar kaynağı):** `PRD/VIZYON.md` · `PRD/VERSIONS.md` · `PRD/features/`
 **Revize Backlog (bilinen sorunlar):** `docs/REVIZE-BACKLOG.md`
@@ -71,4 +71,4 @@ _(Faz 11 henüz başlamadı — task özeti yok. İlk task tamamlanınca buraya 
 
 ---
 
-**Son Güncelleme:** 2026-07-02 — **review-phase 10 ✅ — Faz 10 Tamamlandı:** v0.3 görsel cila kapandı (A1 ortak `<Logo>` kök-neden çözümü + A3a ok affordance + A3b scroll göstergesi orantı; milestone 5/5, UAT 17/17, 8 kalite ekseni 7 ✅ + 1 N/A, guardrail'ler regresyonsuz). Retrospektif + kalite kontrol PHASE-10'a, `<Logo>`+RTL ok kararı DECISIONS'a, MODULE-MAP A1/A3 ✅, PHASES geçiş notu yazıldı. Versiyon Sonu Durumu `içerik_fazları` (değişmez) → sıradaki DevFlow komutu: **`discuss-phase 11`** (v0.3 sonraki içerik fazı).
+**Son Güncelleme:** 2026-07-02 — **discuss-phase 11 ✅:** Faz 11 = v0.3 URL taksonomisi/SEO (`/bunker-os`→`/crew-os` route rename + kalıcı redirect 5 locale + i18n namespace `bunkerOs`/`bunker`→crew 5-dil rename + sitemap/canonical/alternates + iç linkler). Üç karar: `/forum`→404 reddedildi (301 korunur), rename kapsamı=route+namespace (kod adı değil), tek faz. Kapsam PHASE-11'e, SEO1-3 MODULE-MAP'e 🔄, PHASES tabloya 🔄 + mezuniyet. Versiyon Sonu Durumu `içerik_fazları` (değişmez) → sıradaki DevFlow komutu: **`research-phase 11`**.

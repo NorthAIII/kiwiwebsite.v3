@@ -149,6 +149,10 @@ M6 (SEO/Deploy) ─────────────────────>
 | A1: Logo/marka işareti hizalama (KiwiMark her yüzeyde: Nav + varsa PageHeader/Footer, tutarlı) | M3 (+M1) | v0.3 | 10 | ✅ |
 | A3a: Hero CTA kartı affordance (Alpfit/Crew OS `<Link>` ince/zarif tıklanabilir; kart zaten Link) | M2 (+M3) | v0.3 | 10 | ✅ |
 | A3b: Hero scroll göstergesi ölçekleme (merkez-alt "Kaydır" doğru ölçek/konum; desktop-only korunur) | M2 (+M1) | v0.3 | 10 | ✅ |
+| **— v0.3 URL taksonomisi / SEO iş birimleri (Faz 11 — iç-ad URL sızıntısı kapatma; içerik/davranış/tasarım değişmez) —** | | | | |
+| SEO1: `/bunker-os` → `/crew-os` route rename + kalıcı redirect (5 locale) + sitemap/canonical/alternates | M6 (+M2) | v0.3 | 11 | 🔄 |
+| SEO2: i18n namespace `bunkerOs`/`bunker` → crew rename (5-dil eşzamanlı; değer stale kalabilir) | M4 (+M2) | v0.3 | 11 | 🔄 |
+| SEO3: İç link temizliği (`/bunker-os` → `/crew-os`; kırık link/çift-redirect yok) | M2 (Hero/Bunker + tüketiciler) | v0.3 | 11 | 🔄 |
 
 **Durum simgeleri:**
 - ⬜ **Bekliyor** — Fazı henüz başlamadı
@@ -167,4 +171,4 @@ M6 (SEO/Deploy) ─────────────────────>
 
 ---
 
-**Son Güncelleme:** 2026-07-02 — review-phase 10: v0.3 görsel cila iş birimleri (A1 logo · A3a CTA affordance · A3b scroll göstergesi) ✅ (ortak `<Logo>` + ok idiomu + gösterge orantı; UAT 17/17, guardrail regresyonsuz). B1 Living Flow nabız (gate'li) + SEO `/crew-os`/`/forum`→404 ayrı fazlara bırakıldı (henüz atanmadı).
+**Son Güncelleme:** 2026-07-02 — discuss-phase 11: v0.3 URL taksonomisi/SEO iş birimleri (SEO1 route rename+redirect · SEO2 i18n namespace rename · SEO3 iç link) Faz 11'e atandı (🔄). `/forum`→404 reddedildi (mevcut `/forum`→`/bulten` 301 korunur); kod dosya adları iç-ad kalır (taksonomi izin veriyor). B1 Living Flow nabız (gate'li) ayrı faza bırakıldı (henüz atanmadı).
