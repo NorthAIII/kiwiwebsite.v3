@@ -10,7 +10,7 @@
 - **v0.2'nin en önemli keşfi:** brief mobil perf hedefi (≥95/<2.5s) lab'da adanmış perf işi sonrası bile **ulaşılamıyor** — Lighthouse mobil skoru Lantern-simüle, CPU/render-zamanlama kazanımları lab skorunda görünmez → nihai doğrulama gerçek-cihaz gerektirir (a11y ise ≥100 tam kapandı).
 - **re-kickoff (2026-07-02) → sıradaki versiyon v0.3 = Görsel & Etkileşim Cilası (+ URL taksonomisi/SEO)** sabitlendi (kullanıcı onayı). Kapsam: A1 logo hizalama · A3 CTA kartı affordance & scroll göstergesi · B1 Living Flow nabız kapsamı (karar-gate'li, imza riski) · SEO `/bunker-os`→`/crew-os` redirect + `/forum`→404. Kesin faz ayrımı/sırası discuss-phase'de.
 - Site **canlı ve mimari olarak sağlam**; revize v3'te yerinde + `revize/...` branch'le yürür (`main` canlı kalır).
-- **v0.3 içerik fazlarından ÖNCE bekleyen operasyonel aksiyon:** v0.2 production release (tüm revize `main`'e ilk merge) — Umami canlı +1 doğrulaması + genel canlı duman testi orada kapanır (ayrı operasyonel oturum).
+- ✅ **v0.2 production release tamamlandı (2026-07-02):** tüm revize `main`'e merge + canlı deploy (`a71adbc`); Umami canlı +1 panel görüntüsüyle doğrulandı + §3 duman testi ✓ (`docs/RELEASE-v0.2.md`). v0.3 run-task serbest. Açık takip: chatbot canlı `ANTHROPIC_API_KEY` env (release engeli değil).
 
 ---
 

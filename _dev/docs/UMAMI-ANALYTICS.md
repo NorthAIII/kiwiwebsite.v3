@@ -1,6 +1,6 @@
-# UMAMI ANALYTICS — Entegrasyon Spec'i (bekliyor)
+# UMAMI ANALYTICS — Entegrasyon Spec'i
 
-**Durum:** ⬜ Henüz eklenmedi — kullanıcı "sonra ekle" dedi (2026-06-27). Bu doküman uygulanacak değerleri ve dikkat noktalarını birebir korur.
+**Durum:** ✅ Uygulandı & canlıda doğrulandı — kod Faz 7'de eklendi (`src/components/analytics/umami-script.tsx`, `[locale]/layout.tsx` head'inde); canlı +1 **v0.2 production release**'te (2026-07-02) panel ekran görüntüsüyle doğrulandı: `umami.kiwiailab.com` "1 Online" (realtime) + son-24s Visitors/Visits/Views = 1, canlı HTML'de `c7031c49` mevcut. Detay → `docs/RELEASE-v0.2.md` §4. Bu doküman uygulanan değerleri ve dikkat noktalarını korur.
 **Modül:** M6 (SEO & Deploy Altyapısı) — site geneli analytics.
 **Amaç:** Site web trafiğini kontrol etmek için kendi Umami sunucumuzla (self-hosted) sayfa görüntüleme/ziyaret ölçümü.
 
@@ -65,4 +65,4 @@ import Script from "next/script";
 
 ---
 
-**Son Güncelleme:** 2026-06-27 — map-codebase sonrası kullanıcı talebiyle Umami entegrasyon spec'i kaydedildi (henüz uygulanmadı).
+**Son Güncelleme:** 2026-07-02 — v0.2 production release: canlı +1 panel ekran görüntüsüyle doğrulandı (⬜→✅). Kabul kriterleri karşılandı (script tüm locale'lerde yükleniyor, canlı ziyaret panelde göründü, `data-domains` preview'ı dışladı, `afterInteractive` perf regresyonsuz).

@@ -28,13 +28,13 @@
 - **a11y 89 → ≥100** ✅ — ana sayfa + 5 alt sayfa çift-tema (Faz 4 + Faz 8). *Yeni korunan taban.*
 - **mobil perf 87 → 90 / LCP −12%** — adanmış perf işi yapıldı (Faz 6); brief bütçesi (≥95 / <2.5s) lab'da **açık kaldı** (Lantern render-timing körlüğü) → nihai doğrulama gerçek-cihaz/Vercel field'a bağlandı, hedef düşmedi (ILKELER #2b).
 - **Test altyapısı (D1)** ✅ — 3 katman (Vitest + Playwright/axe) + ilk CI (Faz 5).
-- **Umami analytics (E1)** 🟡 — kod-tarafı tam (Faz 7); canlı +1 doğrulaması **v0.2 production release**'e ertelendi (yapısal kısıt, dürüst kayıt).
+- **Umami analytics (E1)** ✅ — kod Faz 7'de; canlı +1 **v0.2 production release**'te (2026-07-02) panel ekran görüntüsüyle doğrulandı (`umami.kiwiailab.com` realtime "1 Online" + Views 1). Detay → `docs/UMAMI-ANALYTICS.md`, `docs/RELEASE-v0.2.md`.
 
 ## Sıradaki Versiyon: v0.3 — Görsel & Etkileşim Cilası (+ URL taksonomisi/SEO)
 
 > Re-kickoff (2026-07-02) ile sabitlendi (kullanıcı onayı). Gerekçe: Craft en üst eksen (ILKELER); adaylar arasında en çok işaretlenen; v0.1 (içerik) → v0.2 (a11y/perf/teknik) → v0.3 (görsel cila) doğal ilerleme. Kesin faz kapsamı/sırası discuss-phase'de netleşir.
 
-> ⚠️ **v0.3'ten ÖNCE bekleyen operasyonel adım:** v0.2 production release (tüm revize `main`'e ilk merge) — Umami canlı +1 + genel canlı duman testi orada kapanır. Ayrı operasyonel oturum, faz döngüsü dışı (bkz. DURUM.md).
+> ✅ **v0.2 production release tamamlandı (2026-07-02):** tüm revize `main`'e merge edildi + canlı deploy (`a71adbc`); Umami canlı +1 + §3 duman testi kapandı (`docs/RELEASE-v0.2.md`). v0.3 run-task artık serbest. (Açık takip: chatbot canlı `ANTHROPIC_API_KEY` env — release engeli değil.)
 
 **v0.3 çekirdeği:**
 - **A1 — Logo hizalama** (sol-üst düzgün oturmuyor; saf görsel/CSS). M3.
@@ -53,4 +53,4 @@
 
 ---
 
-**Son Güncelleme:** 2026-07-02 — re-kickoff: v0.2 tamamlandı (prd-review PRD değişikliği yok); sıradaki versiyon **v0.3 = Görsel & Etkileşim Cilası + URL taksonomisi/SEO** olarak sabitlendi (A1/A3/B1 + SEO redirect adaylardan mezun edildi); kalan adaylar (çeviri senkronu, bekleyen veri/entegrasyon) yeniden sıralandı. v0.3 öncesi v0.2 production release bekliyor.
+**Son Güncelleme:** 2026-07-02 — v0.2 production release tamamlandı: revize `main`'e merge + canlı deploy (`a71adbc`), Umami canlı +1 ✅ (panel doğrulandı), §3 duman testi ✓. v0.3 run-task serbest. (Açık takip: chatbot canlı env key.)

@@ -47,7 +47,7 @@ Faz numaraları **global, sürekli ve append-only**'dir — versiyon değişse b
 - **Living Flow nabız kapsamı** — B1 (**karar-gate'li**; craft-duyarlı imza riski). Milestone: nabız kapsamı kararı verildi (uygula VEYA iptal-kaydet); imza + reduced-motion + perf tabanı korundu.
 - **URL taksonomisi / SEO redirect** — `/bunker-os`→`/crew-os` + `/forum`→404. Milestone: public `/crew-os` yayında + `/bunker-os` kalıcı redirect + i18n namespace `bunker`→`crew` 5-dil senkron + sitemap/canonical/alternates güncel + iç linkler temiz; SSG/build temiz.
 
-> ⚠️ **v0.3 içerik fazlarından ÖNCE (sabit kural: `run-task 10`'dan önce):** v0.2 production release — revize `main`'e ilk merge; Umami canlı +1 + genel duman testi orada kapanır. **Ayrı operasyonel adım, faz döngüsü dışı** (numaralı faz değil — kullanıcı kararı 2026-07-02: hafif oturum + checklist). Runbook: `docs/RELEASE-v0.2.md`. Zamanlama: hemen/sonraki oturum (temiz v0.2 penceresi açık — Faz 10 henüz src'ye dokunmadı).
+> ✅ **v0.2 production release tamamlandı (2026-07-02):** revize `main`'e merge (PR #6 `4847431`) + canlı deploy `a71adbc`; Umami canlı +1 + §3 duman testi kapandı. Runbook/Sonuç: `docs/RELEASE-v0.2.md`. v0.3 run-task artık serbest. (Açık takip: chatbot canlı `ANTHROPIC_API_KEY` env — release engeli değil.)
 
 > v0.3 içerik fazları bitince versiyon-sonu sabit fazları gelir: teknik borç → senaryo testi → prd-review (dinamik, faza girince doğrudan tabloya eklenir). Faz ayrımı (kaç faz) discuss-phase'de netleşir.
 

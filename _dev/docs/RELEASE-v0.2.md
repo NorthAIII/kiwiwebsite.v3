@@ -1,5 +1,7 @@
 # RELEASE — v0.2 Production Release (Runbook & Checklist)
 
+> **Durum: ✅ Yayınlandı — 2026-07-02.** Canlı sürüm = `a71adbc` (release kodu PR #6 `4847431`; üstüne 2 boş tetikleyici commit `6cd1576`/`a71adbc`). Canlı §3 duman testi curl-doğrulanabilir maddeler ✓; Umami canlı +1 panel ekran görüntüsüyle doğrulandı (§4). **Açık kalan:** chatbot canlıda `ANTHROPIC_API_KEY` Vercel prod env'de tanımlı olmadığı için 503/offline (zarif düşüş — release engeli değil, key eklenince çözülür). Detay → aşağıda "Sonuç" ve `phases/`/git log.
+
 **Tür:** Hafif operasyonel oturum (faz döngüsü değil — kullanıcı kararı 2026-07-02). Numaralı faz **değil**; içerik "merge + canlı doğrulama", geliştirme değil.
 **Amaç:** Tüm revize işini (v0.1 + v0.2, `revize/devflow-kurulum` branch'i) ilk kez `main`'e (= canlı/production) alıp Vercel deploy'unu tetiklemek; **Faz 7'den beri bekleyen Umami canlı +1** doğrulamasını ve genel canlı duman testini burada kapatmak.
 **Ne zaman:** **Hemen / sonraki oturum** — `run-task 10`'dan **ÖNCE** (kritik pencere, aşağıda). verify-plan 10 (kod yok) release'in iki yanında da olabilir; öneri: önce release.
@@ -78,5 +80,13 @@ Kod hazır: `src/components/analytics/umami-script.tsx` (`data-website-id=c7031c
 
 ---
 
-**Durum:** ⬜ Bekliyor — kullanıcı onayıyla yürütülecek (hemen/sonraki oturum, run-task 10'dan önce).
+## Sonuç (2026-07-02)
+
+- **Merge:** Kivanç PR #6'yı (`revize/devflow-kurulum` → `main`, normal merge commit) merge etti → `main` = `4847431`.
+- **Deploy tuzağı:** Merge Vercel'de **hiç deploy tetiklemedi** — Vercel↔GitHub Git entegrasyonu merge anında **kopuktu** (Deployments'ta yeni satır oluşmadı; iki push da sessiz kaldı). Kök neden Settings → Git'te "Connected 5m ago" ile görüldü (yeniden bağlandı). **Çözüm:** entegrasyon yeniden bağlandıktan sonra `main`'e boş tetikleyici commit (`a71adbc`) → deploy aktı → production "Ready". (Operasyonel öğrenim → MEMORY Ortam & Araç Notları.)
+- **§3 canlı duman testi** (gerçek yeni deploy, curl): 5 dil 200 · AR RTL ✓ · alt sayfalar + 2 makale 200 · `/forum/:slug`→makale ✓ · FOUC/Living Flow markup ✓ · umami HTML'de ✓. **Chatbot 503** (key yok, aşağıda). Görsel-only maddeler (tema flip, dil-switch path, konsol, tam WebGL render) kullanıcı gözüne bırakıldı.
+- **§4 Umami canlı +1:** ✅ Panel (`umami.kiwiailab.com`) ekran görüntüsüyle doğrulandı — "1 Online" (realtime) + Visitors/Visits/Views = 1. Kod canlıda (`c7031c49` HTML'de) + panel sayıyor. Faz 7'den beri bekleyen kalem kapandı.
+- **Açık takip (release engeli değil):** Chatbot canlıda offline — Vercel Production env'e `ANTHROPIC_API_KEY` eklenmeli; eklenip redeploy olunca `/api/chat` 503→200 doğrulanacak. `/forum` (çıplak)→404 zaten v0.3 kapsamında sahipli gap.
+
+**Durum:** ✅ Yayınlandı — 2026-07-02, canlı = `a71adbc`. (Açık takip: chatbot env key.)
 **Oluşturulma:** 2026-07-02 (kullanıcı talebi: "canlıya almayı yakın bir faz olarak planla" → hafif operasyonel oturum + checklist).
