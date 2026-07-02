@@ -123,7 +123,7 @@
 |---|------|-------|----------|
 | 10.01 | TASK-10.01 | ✅ Tamamlandı | A1 — Ortak `<Logo>` bileşeni + Nav & PageHeader benimseme (optik dikey hiza tek yerde) |
 | 10.02 | TASK-10.02 | ✅ Tamamlandı | A1 — Footer'da `<Logo>` benimseme (size 18, non-link, `text-canvas` koyu zemin); 10.01'e bağlı |
-| 10.03 | TASK-10.03 | ⬜ Bekliyor | A3a — Hero iki stat Link'ine site-standart ok idiomu + durağan ipucu |
+| 10.03 | TASK-10.03 | ✅ Tamamlandı | A3a — Hero iki stat Link'ine site-standart ok idiomu + durağan ipucu |
 | 10.04 | TASK-10.04 | ⬜ Bekliyor | A3b — Hero merkez-alt scroll göstergesi ölçekleme (desktop-only korunur) |
 
 **Durum simgeleri:** ⬜ Bekliyor | 🔄 Devam ediyor | ⏸️ Duraklatıldı | ✅ Tamamlandı | 🔴 Bloke | ❌ İptal
@@ -157,4 +157,4 @@
 ---
 
 **Oluşturulma:** 2026-07-02 (discuss-phase 10)
-**Son Güncelleme:** 2026-07-02 — run-task TASK-10.02 ✅: Footer `<Logo>` benimseme (size 18, `wordmarkClassName="font-medium text-canvas"`, non-link); A1 kök nedeni (3 kopya lockup) tamamen kapandı — üç yüzey de `<Logo>` tüketiyor. `<Logo>`'ya değişiklik gerekmedi. build ✓, home a11y 2/2 (light+dark), çift-tema görsel hizalı/okunur, non-link DOM teyitli, CLS≈0. Sıradaki: TASK-10.03 (A3a).
+**Son Güncelleme:** 2026-07-02 — run-task TASK-10.03 ✅: Hero iki stat Link'ine site-standart trailing ok idiomu + durağan ipucu (`transition-[translate,color] group-hover:translate-x-1 group-hover:text-green`, dinlenmede `text-ink-faint`). İcra tuzağı: Tailwind v4'te `translate-x` `transform` değil `translate` property'sini set eder → arbitrary `transition-[transform,color]` ok'u zıplattı, `transition-[translate,color]`'a düzeltildi (memory `tailwind-v4-translate-transition-property`). build ✓, home a11y 2/2 (light+dark), hover slide animasyonlu (mid≈2.8px) + CLS Δ=0.00 + reduced-motion durağan-ipucu teyitli. Sıradaki: TASK-10.04 (A3b).

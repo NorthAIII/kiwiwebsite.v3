@@ -104,6 +104,9 @@ export default function Hero() {
                   {t("stats.liveLabel")}
                 </span>
               </span>
+              <span className="text-ink-faint transition-[translate,color] duration-300 group-hover:translate-x-1 group-hover:text-green">
+                →
+              </span>
             </Link>
 
             <span className="h-8 w-px bg-line" />
@@ -131,6 +134,9 @@ export default function Hero() {
                 <span className="block text-xs uppercase tracking-[0.12em] text-ink-faint">
                   {t("stats.crewOsLabel")}
                 </span>
+              </span>
+              <span className="text-ink-faint transition-[translate,color] duration-300 group-hover:translate-x-1 group-hover:text-green">
+                →
               </span>
             </Link>
           </div>
