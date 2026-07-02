@@ -38,7 +38,7 @@ export default function Bunker() {
           </ul>
           <Link
             data-reveal
-            href="/bunker-os"
+            href="/crew-os"
             data-cursor="hover"
             className="group mt-8 inline-flex items-center gap-2 text-[15px] font-medium text-green"
           >

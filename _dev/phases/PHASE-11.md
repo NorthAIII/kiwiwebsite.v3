@@ -117,7 +117,7 @@
 |---|------|-------|----------|
 | 11.01 | TASK-11.01 | ✅ Tamamlandı | SEO1: route `bunker-os/`→`crew-os/` + kalıcı 308 redirect (çıplak + 5-locale pattern) + sitemap PATHS + route-path test |
 | 11.02 | TASK-11.02 | ✅ Tamamlandı | SEO2: i18n namespace `bunkerOs`→`crewOs` (7 tüketici) + `bunker`→`crew` (2 tüketici), 5-dil atomik (0 MISSING_MESSAGE) |
-| 11.03 | TASK-11.03 | ⬜ Bekliyor | SEO3: iç link `/bunker-os`→`/crew-os` (Hero + Bunker; çift-redirect kaldır) |
+| 11.03 | TASK-11.03 | ✅ Tamamlandı | SEO3: iç link `/bunker-os`→`/crew-os` (Hero + Bunker; çift-redirect kaldırıldı — doğrudan hedef) |
 
 **Durum simgeleri:** ⬜ Bekliyor | 🔄 Devam ediyor | ⏸️ Duraklatıldı | ✅ Tamamlandı | 🔴 Bloke | ❌ İptal
 
@@ -177,4 +177,4 @@
 ---
 
 **Oluşturulma:** 2026-07-02 (discuss-phase 11)
-**Son Güncelleme:** 2026-07-02 — run-task TASK-11.02 ✅: i18n namespace `bunkerOs`→`crewOs` (7 tüketici) + `bunker`→`crew` (2 tüketici) 5-dil atomik rename; Task Listesi'nde 11.02 ✅. Doğrulama ampirik (grep 0 kalan · i18n-parite 5/5 · build 0 MISSING_MESSAGE · a11y 10/10). Kalan: TASK-11.03 (iç link). Sıradaki adım: run-task 11.03.
+**Son Güncelleme:** 2026-07-02 — run-task TASK-11.03 ✅: iç link `/bunker-os`→`/crew-os` (Hero:115 + Bunker:41); Task Listesi'nde 11.03 ✅. Doğrulama ampirik (grep 0 iç link · build temiz 0 MISSING_MESSAGE · prerender TR 2× `/crew-os` + EN 2× `/en/crew-os`, çift-redirect yok). **Fazın tüm task'ları (11.01/11.02/11.03) ✅ — sıradaki adım: verify-phase 11 (UAT).**

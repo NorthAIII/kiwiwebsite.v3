@@ -1,6 +1,6 @@
 # TASK-11.03: İç link temizliği (`/bunker-os` → `/crew-os`)
 
-**Durum:** ⬜ Bekliyor
+**Durum:** ✅ Tamamlandı
 **Modül:** M2 (Sayfalar & Bölümler — Hero/Bunker) — `modules/M2-Sayfalar-Bolumler.md`
 **Feature:** SEO3 — İç link temizliği (`/bunker-os` → `/crew-os`; kırık link/çift-redirect yok)
 **Faz:** Phase 11 (phases/PHASE-11.md)
@@ -77,9 +77,24 @@ src/components/Bunker.tsx   # href="/bunker-os" → "/crew-os" (l.41)
 
 ## Oturum Kayıtları
 
-### Oturum — [TARİH]
+### Oturum — 2026-07-02
 
-**Durum:** [doldurulacak]
+**Durum:** ✅ Tamamlandı
+
+**Yapılanlar:**
+- `src/components/Hero.tsx:115` — `href="/bunker-os"` → `href="/crew-os"` (hero ikincil CTA linki).
+- `src/components/Bunker.tsx:41` — `href="/bunker-os"` → `href="/crew-os"` (teaser "keşfet" linki).
+- `page.tsx:7` import path (`@/components/bunker-os/BunkerShowcase`) dokunulmadı — link değil, component dizini (iç kod adı).
+
+**Doğrulama (ampirik):**
+- Grep: `grep -rn '/bunker-os' src/ --include=*.tsx` → yalnız `page.tsx:7` import path'i kaldı; iç link 0. `href="/crew-os"` 2× (Hero + Bunker).
+- `next build` **temiz** — 0 error / 0 `MISSING_MESSAGE` / 0 warn; `/[locale]/crew-os` 5 locale SSG.
+- Prerender ground-truth (diskteki `.next/server/app/*.html`): TR `tr.html` → 2× `href="/crew-os"` (prefixsiz), 0 `/bunker-os`; EN `en.html` → 2× `href="/en/crew-os"` (next-intl locale prefix otomatik eklendi). Link doğrudan hedefe gidiyor → çift-redirect (`/bunker-os`→308) yok.
+- a11y korunan taban: değişiklik yalnız href attribute değeri; DOM/görsel/ARIA aynı → strüktürel olarak regresyon imkânsız (ek koşu gereksiz; task kriteri "yalnız href değişti").
+
+**Son Yaklaşım:** Tamamlandı — 2 link `git mv`'siz basit href değişimi. İç `/bunker-os` link referansı repoda kalmadı.
+
+**Sonraki Adım Detayı:** Faz 11'in son task'ı — tüm tasklar (11.01/11.02/11.03) ✅. Sıradaki adım `verify-phase 11` (UAT).
 
 ---
 

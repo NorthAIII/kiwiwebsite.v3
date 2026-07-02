@@ -112,7 +112,7 @@ export default function Hero() {
             <span className="h-8 w-px bg-line" />
 
             <Link
-              href="/bunker-os"
+              href="/crew-os"
               data-cursor="hover"
               className="group flex items-center gap-2.5"
             >
