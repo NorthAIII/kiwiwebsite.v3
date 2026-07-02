@@ -1,6 +1,6 @@
 # Phase 9: v0.2 Versiyon-Sonu Senaryo Testi (ana sayfa + 5 alt sayfa uçtan-uca)
 
-**Durum:** 🔄 Devam ediyor
+**Durum:** ✅ Tamamlandı
 
 <!-- Bu doküman faza girince (discuss-phase) oluşur; durum 🔄 ile başlar. Henüz girilmemiş fazların dokümanı/numarası olmaz — PHASES.md → Sıradaki Fazlar'da numarasız konu olarak durur. -->
 <!-- KURAL: Bu doküman tek-okunabilir kalmalı (CLAUDE.md → Boyut ve Bölünme). Bir bölüm büyüyüp kırmızı çizgiye (~20k token) yaklaşırsa faz HÂLÂ AKTİFKEN `PHASE-9-<slug>.md`'ye bölünür — parent'ta self-yeten özet + pointer kalır, içerik taşınıp silinir, parent o fazın mini-index'i olur. Tamamlandıktan (✅) sonra bölme yasaktır; verify-phase ve review-phase fazı dondurmadan önce boyutu kontrol eder. -->
@@ -209,43 +209,65 @@ Yeni bağımlılık **yok** (paket ekleme onay ister — Dokunulmazlar). Ortam b
 
 ## Retrospektif
 
-> Bu bölüm `/devflow:review-phase 9` oturumunda doldurulur.
+> Bu bölüm `/devflow:review-phase 9` oturumunda dolduruldu (2026-07-02).
 
 ### Ne İyi Gitti?
-- [Tekrarlanması gereken pratikler]
+- **Suite-first hibrit (TK1) minimum yük + maksimum güvence verdi.** Kümülatif altyapı (Faz 5/8: `test:e2e` 52 + Vitest 7 + CI) doğrudan işe yaradı — S8/S6 için "senaryoyu koşmak = suite'i koşmak" oldu, Faz 3'ün ad-hoc replay'i tekrar edilmedi. Ad-hoc araç yalnız suite'in görmediği dikiş/yolculuk/race'e harcandı (S1–S5/S7/S9). ILKELER "kümülatif test altyapısı" + "az araç = yüksek kalite" birebir.
+- **Bağımsız yeniden-doğrulama disiplini kör onayı önledi.** UAT, task kayıtlarını onaylamadı — fresh prod build (`:3100/:3101`, listening-PID teyitli), curl + standalone Playwright ile bağımsız koştu. Runtime ilk-koşu 3 "FAIL" → hepsi harness-selector/assertion artefaktı olarak *teşhis edildi* (kör red de yok), doğru selector'la 8/8 PASS. Gerçek davranış doğrulandı.
+- **İki-gate a11y (Faz 8 dersi) uygulandı.** 9.03 axe WCAG-AA (CI-korunan, fail-on-regression) + 9.04 Lighthouse structural a11y=100 çift-tema ayrık koşuldu — "axe yeşil = 100" varsayılmadı.
+- **Chatbot 0-token üç-katman (TK4) sıfır API çağrısıyla kapandı.** Sanitizasyon kod-inceleme + dummy-key ile 400 yollarını Anthropic'e ulaşmadan çalıştırma + key-yok offline UI ayrık → toplam gerçek-token = 0 (Faz 3 deseni birebir).
+- **Memory disiplinleri doğrudan kullanıldı, keşif tekrar edilmedi.** Locale tuzağı (`NEXT_LOCALE` cookie), tema tuzağı (light+dark iki koşu), stray-server (listening-PID), Playwright WebGL (`channel:'chrome'`+swiftshader), host yükü (`/proc/loadavg`), reveal tuzağı (`reducedMotion:'reduce'`) — hepsi hazır alındı.
 
 ### Ne Kötü Gitti?
-- [Sorunlar ve darboğazlar]
+- **Runtime harness ilk-koşu 3 yanlış-FAIL üretti (selector artefaktı).** Kök neden: hedef komponentlerin etkileşim mekanizması varsayıldı — LanguageSwitcher `<a href>` sanıldı ama `router.replace` butonu; Chatbot floating buton sanıldı ama inline `#chat` section; next-intl cookie-hop hesaba katılmadı. Gerçek bug değil ama harness yazımında tur kaybı. Ders → süreç disiplini (aşağıda + memory).
+- **Bilinen ölçüm artefaktları tekrar karşıya çıktı.** 9.07 `#forum` ilk-FAIL Lenis lerp settle (reload+poll ile çözüldü); 9.06 focus-visible outline `transition-colors` ara-değeri (`reducedMotion` ile çözüldü). İkisi de memory'de kayıtlıydı — tekrar teşhis maliyeti düşüktü ama sıfır değildi.
+- **MCP plan-sapması.** discuss-phase 9 runtime için "Playwright MCP" demişti; oturumda MCP yoktu (yalnız Google Drive) → research-phase standalone `chromium.launch()` script'ine pivot etti. Erken yakalandı (research), icrayı bozmadı; yine de kapsam kararının araç-varsayımı gerçeklikle çelişti.
 
 ### Sonraki Faz İçin Öneriler
-- [Alınan dersler, tavsiyeler]
+- **Sıradaki = zorunlu `prd-review`** (v0.2 versiyon-sonu senaryo testi tamam → `senaryo_testi` → `prd_review_bekliyor`). Versiyon değerlendirmesi + v0.2 production release kararı orada.
+- **v0.2 production release bekleyen tek canlı-doğrulama aksiyonu.** Tüm revizeyi ilk kez `main`'e merge → Umami canlı +1 (S9-10, Faz 7) + genel canlı duman testi o adımda kapanır (DECISIONS 2026-07-01). Senaryo testi kod-tarafını mühürledi; canlı taraf release-bağımlı.
+- **prd-review'a taşınacak sahipli açık kayıtlar:** (a) non-TR alt-sayfa içerik-tazeliği — 4 sayfa (alpfit/vaka/2 bülten) ar/de/es İngilizce-stale (versiyon-sınırı, dil stratejisi); (b) `/bunker-os`→public `/crew-os` + redirect ve çıplak `/forum`→404 (M6 görsel/SEO versiyonu); (c) brief mobil perf açığı (perf 90/LCP ~3164ms vs ≥95/<2.5s, gerçek-cihaz duvarı); (d) dil-seti/AR stratejisi (vizyon korunur); (e) TB-C npm audit (3 moderate, statik-site istismar-edilemez).
+- **Runtime harness yazarken selector varsayma** (→ memory Süreç Disiplinleri): hedef komponentin etkileşim mekanizmasını (`router.replace` buton mu / `<a href>` mi, inline mi / floating mi) kaynaktan teyit et; bu projede LanguageSwitcher = router-buton, Chatbot = inline `#chat`.
+
+### Task-Spesifik Teknik Öğrenimler
+<!-- Bu fazdaki task'larda öğrenilen ama proje genelinde geçerli olmayan teknik nüanslar. -->
+- **3 alt sayfa (vaka + 2 bülten) LivingFlow yerine statik `PageHeader` kullanır** → WebGL degradasyon o sayfalarda N/A (bug değil, yalın hero tasarımı; S3 9 kontrolü N/A). LivingFlow yalnız home + `/bunker-os` + `/spor-salonu-yazilimi` hero'larında.
+- **`/tr`→307→`/`** (next-intl as-needed prefix; TR prefixsiz kanonik) ve **`/forum`→308→`/bulten`** (`next.config.ts permanent:true` → method-koruyan 308, 301 değil); çıplak `/bulten` index'i yok → 404 (M6 record-not-fix).
+- **Served HTML == disk prerender teyidi** (`.next/server/app/*.html` ground-truth) stray/stale server yanlış-negatifini kesti — fresh-build `/ar` h1 == disk `ar.html`.
 
 ---
 
 ## Kalite Kontrol Sonuçları
 
-> Bu bölüm `/devflow:review-phase 9` oturumunda doldurulur.
+> Bu bölüm `/devflow:review-phase 9` oturumunda dolduruldu (2026-07-02). Doğrulama fazı (**0 kaynak değişimi** — git teyitli) → eksenler "yeni kod kalitesi" değil **v0.2 birikiminin uçtan-uca regresyonsuz teyidi**. Çekirdek eksenler: Test Kapsamı + Erişilebilirlik + Hata Yönetimi/Degradasyon + Güvenlik.
 
 | Eksen | Durum | Not |
 |-------|-------|-----|
-| Marka & Craft (imza) | ✅ / ⚠️ / ❌ | ... |
-| Erişilebilirlik | ✅ / ⚠️ / ❌ | ... |
-| Güvenlik | ✅ / ⚠️ / ❌ | ... |
-| Bakım Maliyeti | ✅ / ⚠️ / ❌ | ... |
-| Performans | ✅ / ⚠️ / ❌ | ... |
-| Hata Yönetimi & Degradasyon | ✅ / ⚠️ / ❌ | ... |
-| Test Kapsamı | ✅ / ⚠️ / ❌ | ... |
-| Yerelleştirme & RTL | ✅ / ⚠️ / ❌ | ... |
+| Marka & Craft (imza) | ✅ | 0 kaynak değişimi → imza dokunulmadı. S5 sahte "● online"/yasak-metafor/uydurma-sayı = 0 (5 dil, home+alt sayfa); S9 race'te craft tutarlı (pin/scrub kilidi yok, 0 ScrollTrigger hatası). "canlı/live" meşru (niyet-bazlı, DECISIONS 2026-06-28). |
+| Erişilebilirlik | ✅ | S8 iki-gate mühürlü: 9.04 Lighthouse a11y=100 çift-tema (home + 5 alt sayfa, 6/6 dark + 12/12 light/dark axe 0 ihlal) + 9.03 `test:e2e` 52 axe WCAG-AA 0 (CI-korunan). Klavye-only 14 öğe yeşil focus-visible (9.06). Kod değişmedi → skor sabit. |
+| Güvenlik | ✅ | S7 chatbot sanitizasyon doğru (apiKey-gate ilk `:21-24` → whitelist/`slice(-12)`/sonda-user → `new Anthropic()` `:48` tüm red öncesinde); 0-token. `/security-review` 0 yüksek-güven bulgu. **Not:** npm audit 3 moderate (postcss build-time XSS transitif) = **TB-C bilinçli-ertelenmiş** — statik-site istismar-edilemez, "fix"=anlamsız major downgrade; record-not-fix (TK7). |
+| Bakım Maliyeti | ✅ | Doğrulama fazı — kod eklenmedi. Harness `a11y-helpers.ts` (WCAG_TAGS/gotoLocalized/scrollThrough tek kaynak) yeniden kullanıldı; ad-hoc runtime script'ler scratchpad'de kaldı, repo'ya yazılmadı (temiz kaldı — doğrulama fazı kaynağa dokunmaz). |
+| Performans | ✅ | Korunan taban regresyonsuz (9.04, kod değişmedi): masaüstü perf 100/LCP 629ms/CLS 0 · mobil LCP 3171ms(≈3164)/CLS 0 — Lantern-deterministik metrikler sabit. Brief mobil perf açığı (kök neden CPU-bound WebGL, gerçek-cihaz duvarı) record-not-fix (TK7, DECISIONS 2026-06-30). SwiftShader env perf/TBT şişmesi = ortam anomalisi, regresyon değil. |
+| Hata Yönetimi & Degradasyon | ✅ | S3 degradasyon 57 kontrol 48✓·9 N/A·0✗ (reduced/no-WebGL→StaticFlow, mobil-low→FlowCanvas, AR-RTL×dark×reduced, FOUC yok, CLS<0.1). S7 chatbot key-yok→503 offline UI (dürüst metin, sahte-dot yok, UI takılmadı). |
+| Test Kapsamı | ✅ | Kümülatif suite re-teyit: `test:e2e` 52 (CI `a11y` job success, fail-on-regression, retries:0) + Vitest 7/7 (parite eksik-anahtar=fail + smoke + umami) + CI `fast`+`a11y` yeşil (run 28591574725). Yeni davranış yok → yeni test gerekmez; suite regresyonsuz. |
+| Yerelleştirme & RTL | ✅ | Vitest parite yeşil (eksik anahtar = fail); render 0 MISSING_MESSAGE (30 sayfa-locale); AR `dir=rtl` + Arapça glif (home+showcase). **Not:** 4 alt sayfa (alpfit/vaka/2 bülten) ar/de/es İngilizce-stale = bilinçli versiyon-sınırı (görünür kopukluk yok, TR tek kaynak); dil stratejisi → prd-review. |
+
+### Kullanıcı Yolculuğu & Boşluk Tespiti
+
+- **TR yolculuğu uçtan-uca tutarlı** (S2): Hero→ikincil CTA→sektörler(gym+Alpfit)→4-adım→Crew OS→Forum→Footer bölüm sırası tam; ana sayfa→4 alt sayfa client-nav çıkış (SPA-marker korundu, full-reload yok) + history-back dönüş ana sayfayı bozmadan (6/6 bölüm). Kopuk link/boş bölüm/dead-`#`/`/tr/`-sızıntı = 0.
+- **Boşluk (sahipli, yeni değil):** non-TR alt sayfa içerik-tazeliği — kullanıcı `/de/spor-salonu-yazilimi`'ne giderse İngilizce-stale değer görür (eksik anahtar DEĞİL → runtime kopukluk yok, sadece ideal-altı). Bilinçli versiyon-sınırı; prd-review dil stratejisinde ele alınacak.
+- **Boşluk (sahipli, M6):** çıplak `/forum`→404 ve `/bunker-os` iç-ad URL sızıntısı — görsel/SEO versiyonuna ertelendi.
+- **Bekleyen release-bağımlı doğrulama:** Umami canlı +1 + genel canlı duman testi (v0.2 production release'de kapanır) — senaryo testi kod-tarafını mühürledi, canlı taraf release-gated.
 
 ---
 
 ## Sonuç
 
-- **Tamamlanma Tarihi:** [Tarih]
-- **Toplam Task:** [Sayı]
-- **Notlar:** [Önemli kararlar, sonraki faza aktarılanlar]
+- **Tamamlanma Tarihi:** 2026-07-02
+- **Toplam Task:** 9 doğrulama task'ı (S1–S9 → TASK-9.01…9.09), tümü ✅ archive'da; **0 düzeltme task'ı** (14/14 UAT, 0 kapsam-içi bug)
+- **Notlar:** v0.2 versiyon-sonu senaryo testi tamamlandı — **0 kaynak değişimi** (doğrulama fazı), suite-first hibrit metodoloji, bağımsız yeniden-doğrulama (kör onay yok). 8 kalite ekseni ✅ (v0.2 birikimi regresyonsuz). Milestone 5/5 karşılandı. Versiyon Sonu Durumu `senaryo_testi`→`prd_review_bekliyor`; sıradaki zorunlu adım **prd-review**. v0.2 production release (Umami canlı +1 + canlı duman testi) + prd-review'a taşınan sahipli açıklar (non-TR stale, `/bunker-os`→`/crew-os`, `/forum`→404, brief mobil perf, dil-seti, TB-C) bekleyen aksiyonlar.
 
 ---
 
 **Oluşturulma:** 2026-07-02
-**Son Güncelleme:** 2026-07-02 — verify-phase 9 (UAT) tamamlandı: **14/14 senaryo ✅ · kapsam-içi bug yok · 0 düzeltme task'ı**. Otomatik kontroller: CI `fast`+`a11y` yeşil (HEAD `1863f29`), security-review 0 yüksek-güven bulgu, npm audit 3 moderate = TB-C (out-of-scope, record). Bağımsız yeniden-doğrulama (fresh prod build :3100/:3101, PID-teyitli): S1 route 30/30 · S5 taksonomi Crew OS 10/10 & Bunker leak 0 · S6 Vitest 7/7 + 0 MISSING (30 sayfa-locale) · S7 malformed 10/10→400 + no-key 503 offline + 0 token · S8 Umami 30/30 kod-tarafı + a11y çift-tema (9.04) + CI · S3/S4/S9 runtime Playwright (tema race coherent, dil path-koru, reduced→StaticFlow, anchor storm 0 hata). Adversarial not: runtime ilk-koşu 3 "FAIL" harness-selector artefaktı → doğru selector'la 8/8. Adım=review → sıradaki: **review-phase 9**. (Task-icra detayları: Task Listesi 9.01–9.09 + arşiv.)
+**Son Güncelleme:** 2026-07-02 — review-phase 9 tamamlandı: **retrospektif + 8 kalite ekseni ✅ + kullanıcı yolculuğu/boşluk tespiti** yazıldı. Faz **✅ Tamamlandı** (0 kaynak değişimi, 9/9 task + UAT 14/14, 0 düzeltme task'ı, milestone 5/5). PHASE-8'in 3 önerisi uygulandı (harness reuse + iki-gate a11y + Umami canlı-+1 kayıtlı ertelendi). Versiyon Sonu Durumu `senaryo_testi`→`prd_review_bekliyor`; sıradaki zorunlu adım **prd-review**. Sahipli açıklar prd-review/release'e taşındı (non-TR stale, `/bunker-os`→`/crew-os`, `/forum`→404, brief mobil perf, dil-seti, TB-C). (Task-icra detayları: Task Listesi 9.01–9.09 + arşiv.)

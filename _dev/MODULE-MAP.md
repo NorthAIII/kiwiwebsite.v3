@@ -144,7 +144,7 @@ M6 (SEO/Deploy) ─────────────────────>
 | TD5: Alt-sayfa derin a11y denetimi (5 alt sayfa, 5 dil/AR RTL derin; ana sayfa çıtası a11y=100 çift-tema + axe WCAG-AA 0) | M2 (+M1/M3/M4) | v0.2 | 8 | ✅ |
 | TD6: Alt-sayfa a11y kümülatif regresyon tohumu + CI (Faz 5 harness genişletme) | M6 (+M1-M3) | v0.2 | 8 | ✅ |
 | **— v0.2 versiyon-sonu senaryo testi (Faz 9 — çapraz doğrulama, yeni feature üretmez) —** | | | | |
-| S1–S9: v0.2 ana sayfa + 5 alt sayfa uçtan-uca senaryo doğrulaması (giriş/yolculuk/mod/kontrol/taksonomi/5-dil/chatbot/v0.2-guardrail/adversarial) | tümü | v0.2 | 9 | 🔄 |
+| S1–S9: v0.2 ana sayfa + 5 alt sayfa uçtan-uca senaryo doğrulaması (giriş/yolculuk/mod/kontrol/taksonomi/5-dil/chatbot/v0.2-guardrail/adversarial) | tümü | v0.2 | 9 | ✅ |
 
 **Durum simgeleri:**
 - ⬜ **Bekliyor** — Fazı henüz başlamadı
@@ -163,4 +163,4 @@ M6 (SEO/Deploy) ─────────────────────>
 
 ---
 
-**Son Güncelleme:** 2026-07-02 — discuss-phase 9: v0.2 versiyon-sonu senaryo testi fazı (Faz 9) tabloya eklendi (S1–S9, 🔄); kapsam ana sayfa + 5 alt sayfa uçtan-uca (Faz 3'ten genişletildi — Faz 8 alt sayfaları a11y çıtasına çekti). Yeni feature üretmez (çapraz doğrulama).
+**Son Güncelleme:** 2026-07-02 — review-phase 9: Faz 9 (v0.2 versiyon-sonu senaryo testi, S1–S9) ✅ Tamamlandı — UAT 14/14, 0 kaynak değişimi, 0 düzeltme task'ı. Yeni feature üretmedi (çapraz doğrulama); v0.2 birikimi uçtan-uca regresyonsuz teyit. Sıradaki: prd-review.

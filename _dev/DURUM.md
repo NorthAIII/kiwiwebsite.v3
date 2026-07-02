@@ -1,6 +1,6 @@
 # DURUM — Proje Dashboard
 
-**Son Güncelleme:** 2026-07-02 — **verify-phase 9 (UAT) tamamlandı — 14/14 senaryo ✅, kapsam-içi bug yok, 0 düzeltme task'ı.** Otomatik: CI `fast`+`a11y` yeşil (HEAD `1863f29`) · security-review **0 yüksek-güven bulgu** (faz 0 kaynak değişimi; umami/FOUC/i18n güvenli) · npm audit 3 moderate = TB-C out-of-scope (record). Bağımsız yeniden-doğrulama (fresh prod :3100/:3101, PID-teyitli): S1 route 30/30 · S5 Crew OS 10/10 & Bunker-leak 0 · S6 Vitest 7/7 + 0 MISSING (30 sayfa-locale) · S7 malformed 10/10→400 + no-key 503 offline + 0 token · S8 Umami 30/30 kod-tarafı + a11y çift-tema (9.04) + CI · S3/S4/S9 runtime Playwright (tema race coherent, dil path-koru, reduced→StaticFlow, anchor storm 0 hata). Adım=review → sıradaki: **review-phase 9** (yeni oturum).
+**Son Güncelleme:** 2026-07-02 — **review-phase 9 tamamlandı — Faz 9 (v0.2 versiyon-sonu senaryo testi) ✅.** Retrospektif + 8 kalite ekseni ✅ + kullanıcı yolculuğu/boşluk tespiti PHASE-9'a yazıldı; milestone 5/5, 0 kaynak değişimi, UAT 14/14, 0 düzeltme task'ı. PHASE-8'in 3 önerisi uygulandı (harness reuse + iki-gate a11y + Umami canlı-+1 kayıtlı ertelendi). **v0.2 versiyon-sonu fazları (8,9) tamam → Versiyon Sonu Durumu `senaryo_testi`→`prd_review_bekliyor`; faz döngüsü dışına çıkıldı.** Sıradaki zorunlu adım: **prd-review** (yeni oturum). Sahipli açıklar prd-review/v0.2 production release'e taşındı (non-TR stale, `/bunker-os`→`/crew-os`, `/forum`→404, brief mobil perf, dil-seti, TB-C; Umami canlı +1 release'de).
 
 <!-- KURAL: Bu satır her oturum sonunda ÜZERİNE YAZILIR — tek satır, tek cümle. "Önceki:" / "Eski:" prefix ile kümülatif yığma YASAK; HTML comment'e sarma da yasak (CLAUDE.md → Doküman Disiplini). Tarih + kısa özet yeterli; detay için git log + ilgili PHASE/TASK dokümanları. -->
 
@@ -8,10 +8,10 @@
 
 ## Aktif Faz
 
-**Faz:** 9 (v0.2 versiyon-sonu **senaryo testi**) — discuss-phase 9 tamamlandı, PHASES tablosunda 🔄. Kapsam = ana sayfa + 5 alt sayfa uçtan-uca çapraz doğrulama (yeni feature üretmez), Faz 3 (v0.1 senaryo testi) deseninde ama alt sayfalar dahil (Faz 8 çıtaya çekti); alt-sayfa harness'i (`subpages-a11y.spec.ts` + `a11y-helpers.ts`) yeniden kullanılır. Faz 8 ✅; Faz 7 (Umami E1) ✅; Faz 6 (mobil perf/LCP) ✅; Faz 5 (test altyapısı D1) ✅; Faz 4 (v0.2 a11y) ✅.
-**Adım:** review — **fazdaki tüm task'lar (9/9 ✅) + verify-phase 9 (UAT) tamamlandı** → sıradaki adım **review-phase 9** (yeni oturum). UAT **14/14 senaryo ✅, kapsam-içi bug yok, 0 düzeltme task'ı**. 9.01 (S1) ✅, 9.02 (S5+S6-render) ✅, 9.03 (S8-suite+S6-parite) ✅, 9.04 (S8-Lighthouse) ✅, 9.05 (S3-degradasyon) ✅, 9.06 (S4-kontroller) ✅, 9.07 (S2-TR-yolculuk) ✅, 9.08 (S7-chatbot-0token) ✅, 9.09 (S9-adversarial) ✅. Kapsam + Araştırma + Plan + verify-plan + UAT tamamlandı (`phases/PHASE-9.md`): 9 doğrulama task'ı (S1–S9 → TASK-9.01…9.09), suite-first hibrit metodoloji, TK1–TK7.
-**İlerleme:** verify-phase 9 (UAT, 2026-07-02) tamamlandı — **14/14 senaryo ✅**. **Otomatik kontroller:** CI `fast (build+vitest)`+`a11y (playwright+axe)` iki job **success** (HEAD `1863f29`, auth'suz REST run 28591574725) · `/security-review` **0 yüksek-güven bulgu** (faz 0 kaynak değişimi = docs-only; umami `next/script` statik, FOUC `dangerouslySetInnerHTML` %100 statik-literal, messages JSON enjeksiyon yok, secret yok) · npm audit **3 moderate** (postcss build-time XSS transitif; statik-site istismar edilemez; "fix"=anlamsız major downgrade) = **TB-C** out-of-scope, record-not-fix. **Bağımsız yeniden-doğrulama (fresh prod build `next start` :3100/:3101, listening-PID teyitli, loadavg ~1):** S1 route 30/30 200 + redirect/edge · S2 bölüm sırası + çıkış href'leri + client-nav · S5 Crew OS 10/10 & Bunker-leak 0 & sahte-online/metafor 0 · S6 Vitest 7/7 + **0 MISSING** (30 sayfa-locale) + AR rtl · S7 sanitizasyon kod-inceleme + dummy-key malformed **10/10→400** + no-key **503** offline UI (dürüst metin, Thinking kalmadı, sahte-dot yok, 200-stream HİÇ) + **0 gerçek-token** · S8 Umami **30/30** kod-tarafı + a11y=100 çift-tema (9.04) + CI · S3/S4/S9 runtime Playwright `channel:'chrome'`+swiftshader (tema 11-tık race coherent, dil path-koru sub→EN/home→DE, reduced→StaticFlow, anchor/scroll storm 5/5 bölüm + 0 JS/ScrollTrigger hatası). **Adversarial not:** runtime ilk-koşu 3 "FAIL" harness-selector/assertion artefaktı olarak teşhis (LanguageSwitcher router-buton, Chatbot inline `#chat`, next-intl cookie-hop) → doğru selector'la 8/8 PASS (kör onay yok). **Bekleyen versiyon-sonu aksiyonu:** v0.2 production release (tüm revize `main`'e ilk merge) — Umami canlı +1 (S9-10 Faz 7) o adımda kapanır. **Kapsam dışı (bilinçli açık, record):** brief mobil perf (gerçek-cihaz duvarı), TB-C npm audit (2→3), `/bunker-os`→`/crew-os` redirect + `/forum`→404 (görsel/SEO versiyonu), dil setini değiştirme (prd-review).
-**Son Faz Dokümanı:** `phases/PHASE-9.md` (🔄 Devam ediyor — 9 task, 9.01–9.09 ✅; sıradaki verify-phase). Faz 8 ✅ `phases/PHASE-8.md`.
+**Faz:** — (faz döngüsü dışı) — v0.2 versiyon-sonu fazları tamamlandı: Faz 9 (senaryo testi) ✅, Faz 8 (teknik borç) ✅; içerik fazları Faz 4 (a11y) ✅, 5 (test altyapısı) ✅, 6 (mobil perf) ✅, 7 (Umami E1) ✅. Sıradaki zorunlu adım **prd-review** (versiyon değerlendirmesi + v0.2 production release kararı) — faza girmez, versiyon-sonu kapısıdır.
+**Adım:** — (faz döngüsü dışı; Versiyon Sonu Durumu = `prd_review_bekliyor`). Faz 9 review-phase tamamlandı: retrospektif + 8 kalite ekseni ✅ + milestone 5/5; 0 kaynak değişimi, UAT 14/14, 0 düzeltme task'ı.
+**İlerleme:** review-phase 9 (2026-07-02) tamamlandı — Faz 9 ✅ **Tamamlandı**. Suite-first hibrit metodoloji + bağımsız yeniden-doğrulama (kör onay yok); v0.2 birikimi (a11y=100 çift-tema + `test:e2e` 52 + Umami kod-tarafı + perf taban + CI) uçtan-uca regresyonsuz. 8 kalite ekseni ✅ (Güvenlik/Yerelleştirme'de bilinçli-ertelenmiş kayıtlar: TB-C, non-TR stale). **Bekleyen versiyon-sonu aksiyonu:** v0.2 production release (tüm revize `main`'e ilk merge) — Umami canlı +1 (S9-10 Faz 7) + genel canlı duman testi o adımda kapanır. **Sahipli açıklar (prd-review'a taşındı, record):** non-TR alt-sayfa stale (4 sayfa ar/de/es, versiyon-sınırı), brief mobil perf (gerçek-cihaz duvarı), `/bunker-os`→`/crew-os` redirect + çıplak `/forum`→404 (M6 görsel/SEO versiyonu), dil-seti/AR stratejisi, TB-C npm audit (3 moderate).
+**Son Faz Dokümanı:** `phases/PHASE-9.md` (✅ Tamamlandı — 9 task 9.01–9.09 ✅ + UAT 14/14 + retrospektif/kalite kontrol). Faz 8 ✅ `phases/PHASE-8.md`.
 
 ---
 
@@ -19,7 +19,7 @@
 
 **Versiyon:** v0.2 — a11y & Performans + teknik temel (v0.1 versiyon-sonu ölçümünün keşfettiği brief-bütçe açığını kapatma + teknik temel; prd-review 2026-06-29'da önceliklendirildi)
 **Hedef:** a11y 89→≥100 (marka-yeşili kontrast + hero `<dl>` + dil-switcher aria) + mobil perf 87/LCP 3.1s → brief bütçesi + test altyapısı (D1) + Umami (E1); kesin faz kapsamı discuss-phase'de
-**Versiyon Sonu Durumu:** senaryo_testi
+**Versiyon Sonu Durumu:** prd_review_bekliyor
 
 <!-- Versiyon geçişlerinde güncellenir. discuss-phase versiyon sonu tespitinde bu alanı okur. -->
 <!-- Değerler: içerik_fazları | teknik_borç | senaryo_testi | prd_review_bekliyor -->
@@ -28,15 +28,15 @@
 
 ## Aktif Task
 
-**Task:** Fazdaki tüm task'lar + UAT tamamlandı — **aktif task yok** (Faz 9, adım=review → **review-phase 9**). Düzeltme task'ı yok (14/14 UAT ✅, 0 kapsam-içi bug); sıradaki adım review (yeni oturum).
-**Durum:** Faz 9 (senaryo testi) 🔄 — adım=review. **9.01–9.09 ✅ (9/9)** + verify-phase UAT ✅. Faz 8 tüm task'ları ✅ (8.01→8.06) archive'da.
-**İlerleme:** verify-phase 9 (UAT, 2026-07-02) tamamlandı — **14/14 senaryo ✅, kapsam-içi bug yok, 0 düzeltme task'ı**. CI `fast`+`a11y` yeşil · security-review 0 bulgu · npm audit 3 moderate=TB-C (record). Bağımsız yeniden-doğrulama (fresh prod, PID-teyitli): route 30/30 · taksonomi Crew OS 10/10 & Bunker-leak 0 · Vitest 7/7 + 0 MISSING (30 sayfa-locale) · chatbot malformed 10/10→400 + no-key 503 offline + 0 token · Umami 30/30 kod-tarafı · runtime tema-race/dil-path/degradasyon/anchor-storm 0 hata. Runtime ilk-koşu 3 "FAIL" harness-selector artefaktı→doğru selector 8/8.
+**Task:** **Aktif task yok** — Faz 9 (v0.2 senaryo testi) ✅ Tamamlandı (review-phase dahil), faz döngüsü dışına çıkıldı. Sıradaki zorunlu adım **prd-review** (task değil, versiyon-sonu kapısı). Düzeltme task'ı yok (14/14 UAT ✅, 0 kapsam-içi bug).
+**Durum:** Faz 9 ✅ — 9.01–9.09 ✅ (9/9) + UAT 14/14 + review tamam. Faz 8 tüm task'ları ✅ (8.01→8.06) archive'da. Versiyon Sonu Durumu = `prd_review_bekliyor`.
+**İlerleme:** review-phase 9 (2026-07-02) tamamlandı — retrospektif + 8 kalite ekseni ✅ + milestone 5/5; 0 kaynak değişimi. v0.2 versiyon-sonu fazları (8,9) tamam → zorunlu prd-review bekliyor.
 
 ---
 
 ## Task Durumu (Aktif Faz)
 
-> Faz 9 (senaryo testi) 🔄 — 9 task, **9.01–9.09 ✅ (9/9)**; sıradaki adım verify-phase. Faz 8 ✅ (8.01-8.06 archive'da, detay `phases/PHASE-8.md`); Faz 7 (Umami E1) ✅; Faz 6 ✅ (6.06 ❌ iptal); Faz 5 ✅; Faz 4 ✅ — hepsi archive'da.
+> Faz 9 (senaryo testi) ✅ Tamamlandı — 9 task, **9.01–9.09 ✅ (9/9)** + UAT 14/14 + review; hepsi archive'da. Faz 8 ✅ (8.01-8.06, detay `phases/PHASE-8.md`); Faz 7 (Umami E1) ✅; Faz 6 ✅ (6.06 ❌ iptal); Faz 5 ✅; Faz 4 ✅ — hepsi archive'da. **Faz döngüsü dışı: sıradaki zorunlu adım prd-review.**
 
 | # | Task | Durum | Açıklama |
 |---|------|-------|----------|
@@ -78,12 +78,12 @@
 
 ## Hızlı Erişim
 
-**Aktif Task:** Aktif task yok — **fazdaki 9/9 task ✅ + UAT 14/14 ✅**; sıradaki adım **review-phase 9**. Bekleyen: v0.2 production release (Umami canlı +1 orada kapanır).
-**Aktif Faz:** 9 (v0.2 senaryo testi) · adım=review — 9.01–9.09 ✅ (9/9) + verify-phase UAT ✅; Faz 8 ✅ (8.01→8.06; review tamam); Faz 7 ✅; Faz 6 ✅; Faz 5 ✅; Faz 4 ✅; Aktif Versiyon v0.2, Versiyon Sonu Durumu: senaryo_testi
+**Aktif Task:** Aktif task yok — **Faz 9 ✅ Tamamlandı** (9/9 task + UAT 14/14 + review). Sıradaki zorunlu adım **prd-review** (yeni oturum). Bekleyen: v0.2 production release (Umami canlı +1 orada kapanır).
+**Aktif Faz:** — (faz döngüsü dışı) — Faz 9 (v0.2 senaryo testi) ✅; Faz 8 ✅; Faz 7 ✅; Faz 6 ✅; Faz 5 ✅; Faz 4 ✅. Aktif Versiyon v0.2, Versiyon Sonu Durumu: **prd_review_bekliyor** → sıradaki zorunlu adım prd-review.
 **Task Sistemi:** `tasks/TASKS-README.md`
 **PRD (karar kaynağı):** `PRD/VIZYON.md` · `PRD/VERSIONS.md` · `PRD/features/`
 **Revize Backlog (bilinen sorunlar):** `docs/REVIZE-BACKLOG.md`
 
 ---
 
-**Son Güncelleme:** 2026-07-02 — verify-phase 9 (UAT) tamamlandı — **14/14 senaryo ✅, kapsam-içi bug yok, 0 düzeltme task'ı**. Otomatik: CI `fast`+`a11y` yeşil (HEAD `1863f29`) · security-review 0 yüksek-güven bulgu · npm audit 3 moderate=TB-C (record). Bağımsız yeniden-doğrulama (fresh prod :3100/:3101, PID-teyitli): route 30/30 · Crew OS 10/10 & Bunker-leak 0 · Vitest 7/7 + 0 MISSING (30 sayfa-locale) · chatbot malformed 10/10→400 + no-key 503 offline + 0 token · Umami 30/30 · runtime tema-race/dil-path/degradasyon/anchor-storm 0 hata. Adım=review → sıradaki: review-phase 9.
+**Son Güncelleme:** 2026-07-02 — review-phase 9 tamamlandı — **Faz 9 (v0.2 versiyon-sonu senaryo testi) ✅**. Retrospektif + 8 kalite ekseni ✅ + kullanıcı yolculuğu/boşluk tespiti PHASE-9'a yazıldı; milestone 5/5, 0 kaynak değişimi, UAT 14/14, 0 düzeltme task'ı. v0.2 versiyon-sonu fazları (8,9) tamam → Versiyon Sonu Durumu `senaryo_testi`→`prd_review_bekliyor`, faz döngüsü dışına çıkıldı. Sıradaki zorunlu adım: **prd-review** (yeni oturum). Sahipli açıklar prd-review/release'e taşındı (non-TR stale, `/bunker-os`→`/crew-os`, `/forum`→404, brief mobil perf, dil-seti, TB-C; Umami canlı +1 release'de).
