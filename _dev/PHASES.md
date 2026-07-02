@@ -26,7 +26,7 @@ Faz numaraları **global, sürekli ve append-only**'dir — versiyon değişse b
 | 5 | v0.2 test altyapısı (D1) | Kümülatif test harness (Vitest+RTL / Playwright+axe-core) + ilk GitHub Actions CI + tohum testler (i18n 5-dil parite + a11y regresyon `/` light+dark) | ✅ |
 | 6 | v0.2 mobil perf / LCP | Ana sayfa TR `/` mobil perf/LCP brief bütçesine (≥95 / <2.5s) yaklaştırma — brief hedef / craft tavan; önce WebGL-dışı kazanımlar (P1) sonra Living Flow degradasyon ayarı (P2); a11y=100/CLS=0/masaüstü regresyonsuz | ✅ |
 | 7 | v0.2 Umami analytics (E1) | Self-hosted Umami script'i (`next/script`, `[locale]/layout.tsx` head, afterInteractive) tüm locale'lerde pageview ölçümü; canlıda gözle doğrulanır; Faz 6 perf tabanı regresyonsuz | ✅ |
-| 8 | v0.2 versiyon-sonu teknik borç kapatma | Alt-sayfa derin a11y (5 alt sayfa, 5 dil/AR RTL, ana sayfa çıtası a11y=100 çift-tema + axe WCAG-AA 0) + `text-pulse` ink-panel süpürmesi + kümülatif a11y regresyon tohumu/CI; guardrail'ler regresyonsuz | 🔄 |
+| 8 | v0.2 versiyon-sonu teknik borç kapatma | Alt-sayfa derin a11y (5 alt sayfa, 5 dil/AR RTL, ana sayfa çıtası a11y=100 çift-tema + axe WCAG-AA 0) + `text-pulse` ink-panel süpürmesi + kümülatif a11y regresyon tohumu/CI; guardrail'ler regresyonsuz | ✅ |
 
 **Durum simgeleri:**
 - 🔄 **Devam ediyor** — discuss-phase başladı (aktif faz)
@@ -80,11 +80,12 @@ Faz numaraları **global, sürekli ve append-only**'dir — versiyon değişse b
 | Faz 7 girildi (v0.2 Umami analytics E1) | 2026-07-01 | discuss-phase 7: kapsam tartışması tamam; pageview-only + afterInteractive + hafif render testi + merge-sonrası canlı doğrulama; `[locale]/layout.tsx` head'e `next/script`; Faz 6 perf tabanı guardrail; Sıradaki Fazlar'dan mezun, tabloya 🔄; sıradaki adım research-phase 7 |
 | Faz 7 ✅ (v0.2 Umami analytics E1) → versiyon-sonu | 2026-07-01 | Milestone kod-tarafı + perf tabanı tam (UAT 1-8 ✅, 8 kalite ekseni ✅); canlı +1 (S9-10) yapısal kısıt gereği v0.2 production release'e ertelendi (dürüst kayıt, sahte-geçmiş engellendi); Faz 6 perf/i18n/a11y guardrail regresyonsuz; v0.2 içerik fazları (4-7) tamam; Versiyon Sonu Durumu içerik_fazları (değişmez); sıradaki = teknik borç fazı (discuss-phase 8 promote eder) |
 | Faz 8 girildi (v0.2 versiyon-sonu teknik borç) | 2026-07-01 | discuss-phase 8: versiyon-sonu tespiti içerik_fazları → teknik_borç; kapsam TB-A (`text-pulse` süpürmesi) + TB-B (alt-sayfa derin a11y, 5 dil/AR RTL, ana sayfa çıtası) + kümülatif tohum/CI, TB-C (npm audit) dışarıda; 5 dil korunur (vizyon değişmez, strateji prd-review'a); dinamik faz doğrudan tabloya 🔄; sıradaki adım research-phase 8 |
+| Faz 8 ✅ (Teknik Borç) → senaryo testi | 2026-07-02 | 5 alt sayfa a11y=100 çift-tema + axe WCAG-AA 0 (50 test); UAT 12/12, kalite 8 eksen ✅; TD4 premisi grep'le çürütüldü (TD5'e katlandı); iki-gate mühür `landmark-one-main`'i yakaladı (8.06); guardrail (home a11y=100/perf tabanı/i18n parite) regresyonsuz; Versiyon Sonu Durumu → senaryo_testi (discuss-phase 9 promote eder) |
 
 <!-- KURAL: Her geçiş için TEK satır + kısa not. Geçiş gerekçesi/detayı PHASE-N.md retrospektifindedir, burada tekrar edilmez. "Önceki:" prefix veya HTML comment ile detay yığma YASAK (CLAUDE.md → Doküman Disiplini). -->
 
 ---
 
-**Son Güncelleme:** 2026-07-01 — discuss-phase 8: Faz 8 (v0.2 versiyon-sonu teknik borç) tabloya 🔄 eklendi; kapsam alt-sayfa derin a11y (5 dil/AR RTL) + text-pulse süpürmesi + kümülatif tohum/CI. Versiyon Sonu Durumu içerik_fazları → teknik_borç. Sıradaki = research-phase 8.
+**Son Güncelleme:** 2026-07-02 — review-phase 8: Faz 8 ✅ Tamamlandı (5 alt sayfa a11y=100 çift-tema + axe 0, UAT 12/12, 8 eksen ✅). Versiyon Sonu Durumu teknik_borç → senaryo_testi; sıradaki = senaryo testi fazı (discuss-phase 9 promote eder).
 
 <!-- KURAL: Bu satır her güncellemede ÜZERİNE YAZILIR. "Önceki:" prefix ile kümülatif yığma YASAK (CLAUDE.md → Doküman Disiplini). -->

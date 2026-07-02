@@ -185,43 +185,56 @@ Yeni bağımlılık **yok** (paket ekleme onay gerektirir — Dokunulmazlar). Me
 
 ## Retrospektif
 
-> Bu bölüm `/devflow:review-phase` oturumunda doldurulur.
+> Bu bölüm `/devflow:review-phase 8` oturumunda dolduruldu (2026-07-02).
 
 ### Ne İyi Gitti?
-- [Tekrarlanması gereken pratikler]
+- **Ölç-önce yapı işe yaradı.** 8.01 baseline envanteri (fix yok, mühür yok) → 8.02-8.05 sayfa-başı fix/teyit. 3 alt sayfa (spor-salonu/vaka/bülten) baseline'da 0 ihlal verdi → Faz 4 global kazanımları (`--color-ink-faint` tune, paylaşımlı PageHeader) miras alındı, gereksiz fix yapılmadı.
+- **Research Bulgu 0 boşa fix'i önledi.** Grep, TD4 premisini ("alt sayfalarda `text-pulse` süpürülecek") çürüttü — ham `text-pulse` tek yerde ve dekoratif `aria-hidden` SVG. Kod yazmadan gerçek axe koşusuna bağlandı (memory disiplini: gerçek axe olmadan pre-fix yok), TD5 bulgusuna katlandı.
+- **Memory disiplinleri doğrudan kullanıldı, keşif tekrar edilmedi.** aria-hidden ≠ contrast muafiyeti → adım no `::before content:attr()` deseniyle; tema tuzağı → light+dark iki koşu; locale tuzağı → `NEXT_LOCALE` cookie helper.
+- **Kümülatif mühür deseni CI'yı yeşil tuttu.** `PAGES` boş başladı → fix task'ları sayfa ekledikçe mühürledi; rollout boyunca CI hiç kırılmadı. Harness modüler (`a11y-helpers.ts` tek kaynak, home+subpages paylaşır, kopya kod yok — Modülerlik ekseni).
+- **Fail-on-regression kanıtlandı** (UAT #8): kasıtlı ihlal enjekte → tohum kırıldı → geri alındı. Güvence gerçek, elle-korunur değil.
 
 ### Ne Kötü Gitti?
-- [Sorunlar ve darboğazlar]
+- **İlk verify `landmark-one-main`'i kaçırdı → TASK-8.06 + re-run gerekti.** Kök neden: CI tohumu axe **WCAG-AA alt-kümesini** enforce eder; `landmark-one-main` bir Lighthouse yapısal/best-practice audit'idir, WCAG-AA'da **yok** → axe tohumu 0 ihlal (yeşil) verirken Lighthouse a11y 98'di (2 bülten sayfası `<main>`'siz). İki-gate tasarımı (CI axe + manuel Lighthouse) tam bunu yakaladı, ama bir sayfayı "bitti" saymadan önce iki gate'i de koşmak daha ucuzdu.
+- **Env-yük timeout'u** bir axe koşusunda (`vaka en-light`, load avg 53) false-negative verdi; düşük yükte re-run geçti. Bilinen memory disiplini (host yükünü `/proc/loadavg` ile gözle) yine geçerli — gerçek regresyon değil.
 
 ### Sonraki Faz İçin Öneriler
-- [Alınan dersler, tavsiyeler]
+- **Sıradaki = senaryo testi fazı** (versiyon-sonu; `teknik_borç` → `senaryo_testi`). Alt-sayfa uçtan-uca senaryo doğrulaması bu harness'i yeniden kullanmalı (`subpages-a11y.spec.ts` + `a11y-helpers.ts`).
+- **Bir sayfayı a11y-mühürlerken iki gate'i de koş.** axe WCAG-AA 0 ihlal ≠ Lighthouse a11y=100 — landmark/region/heading-order WCAG-AA alt-kümesinde değil. "axe yeşil = bitti" varsayma; manuel Lighthouse yapısal koşusunu da al (→ memory Süreç Disiplinleri).
+- **Umami canlı +1 + genel canlı duman testi hâlâ v0.2 production release'e bağlı** — senaryo testi fazı bunu tetiklemez; bilinçli/kayıtlı açık (DECISIONS 2026-07-01).
 
----
+### Task-Spesifik Teknik Öğrenimler
+<!-- Bu fazdaki task'larda öğrenilen ama proje genelinde geçerli olmayan teknik nüanslar. -->
+- **`landmark-one-main` axe WCAG-AA alt-kümesinde yok.** `@axe-core/playwright` `withTags(['wcag2a','wcag2aa','wcag21a','wcag21aa'])` bu structural/best-practice audit'i taramaz → axe tohumu yeşilken Lighthouse a11y=98 mümkün. İki sinyal ayrık ve tamamlayıcı (skorların birbirini ima etmediği "iki-gate" tam bu yüzden var).
+- **Alt-sayfa `<main>` bileşenden gelir, layout'tan değil.** `[locale]/layout.tsx` sayfayı `<main>` ile sarmaz; her sayfa kendi `<main>`'ini verir (BunkerShowcase/Gym/CaseStudies `<main className="pt-16">`). Article bileşenleri bunu atlamıştı → 8.06 stilsiz `<main>` sarımıyla eşitledi (article kendi `pt-32` box'ını korur, `pt-16` gerekmez → sıfır görsel değişim).
+- **`::before content:attr(data-n)` dekoratif metni axe'tan çıkarır, görünümü korur.** Adım no `text-green/30` text-node'du → `aria-hidden` span + `data-n` + `before:content-[attr(data-n)]`; group-hover renk geçişi `group-hover:before:text-green` ile korundu. Text-node olmadığından axe color-contrast taramaz.
 
 ## Kalite Kontrol Sonuçları
 
-> Bu bölüm `/devflow:review-phase` oturumunda doldurulur.
+> QUALITY.md 8 ekseni sistematik kontrol edildi. Faz yüzeyi dar: 3 kaynak dosyası (`BunkerShowcase.tsx` 3 kontrast + 1 `::before` deseni, `ArticleClaude.tsx` RTL logical + `<main>`, `ArticleAiSdr.tsx` `<main>`) + test harness (`a11y-helpers.ts` çıkarımı, `subpages-a11y.spec.ts` 50 test, `home-a11y.spec.ts` helper'a taşındı). Çekirdek eksenler: **Erişilebilirlik** + **Test Kapsamı** + **Marka & Craft**.
 
 | Eksen | Durum | Not |
 |-------|-------|-----|
-| Marka & Craft (imza) | ✅ / ⚠️ / ❌ | ... |
-| Erişilebilirlik | ✅ / ⚠️ / ❌ | ... |
-| Güvenlik | ✅ / ⚠️ / ❌ | ... |
-| Bakım Maliyeti | ✅ / ⚠️ / ❌ | ... |
-| Performans | ✅ / ⚠️ / ❌ | ... |
-| Hata Yönetimi | ✅ / ⚠️ / ❌ | ... |
-| Test Kapsamı | ✅ / ⚠️ / ❌ | ... |
-| Yerelleştirme & RTL | ✅ / ⚠️ / ❌ | ... |
+| Marka & Craft (imza) | ✅ | Fix'ler bağlam-özel: dark panel `text-canvas/50`→`/65` (imza yeşili/düzen dokunulmadı), step-no `::before` görünüm+hover birebir korundu, `<main>` tamamen stilsiz (globals.css'te `main` selektörü yok — grep teyit). Sıfır görsel regresyon (UAT #9/#10, TR/AR screenshot). |
+| Erişilebilirlik | ✅ | Fazın çekirdeği: 5 alt sayfa Lighthouse a11y=100 çift-tema + axe WCAG-AA 0 (light+dark, 50 test); `landmark-one-main` düzeldi (her sayfa tam 1 `<main>`); ana sayfa a11y=100 guardrail regresyonsuz. |
+| Güvenlik | ✅ | security-review temiz (0 bulgu); değişiklikler sunum/a11y katmanı — `dangerouslySetInnerHTML`/`eval`/`innerHTML` yok, dinamik değerler build-time i18n `t()` (React auto-escape). Yeni saldırı yüzeyi yok. |
+| Bakım Maliyeti | ✅ | Paylaşımlı `a11y-helpers.ts` (WCAG_TAGS/scrollThrough/gotoLocalized tek kaynak) — home+subpages kopya kod yok; kümülatif mühür deseni (`PAGES` append) belgeli; token-güdümlü fix (hardcode renk yok). |
+| Performans | ✅ | Kod fix'leri CSS opaklık/markup — perf'e değmez. Alt-sayfa perf **optimize edilmez, yalnız regresyonsuz** (scope kararı); ana sayfa perf tabanı (mobil 90/LCP 3164ms, masaüstü 100, CLS≈0) dokunulmadı. |
+| Hata Yönetimi & Degradasyon | ✅ | Yeni failure yüzeyi yok (saf CSS/markup); LivingFlow fallback/chatbot degradasyonu etkilenmedi; reveal/reduced-motion yolu korundu (harness `reducedMotion:'reduce'` ile tarar). |
+| Test Kapsamı | ✅ | 50 yeni alt-sayfa testi (5 sayfa×5 dil×2 tema) CI'a bağlı; fail-on-regression kanıtlı (UAT #8); yeni workflow dosyası gerekmedi (`ci.yml` a11y job zaten `test:e2e` koşar); Vitest 7/7. |
+| Yerelleştirme & RTL | ✅ | Yeni i18n anahtarı yok (parite testi yeşil); ArticleClaude RTL craft fix (physical→logical: `text-right`→`text-end`, `ml-2`→`ms-2`); 5 AR prerender `dir="rtl"` + 0 MISSING_MESSAGE. |
 
----
+### Kullanıcı Yolculuğu & Boşluk Tespiti
+
+Faz alt sayfaları ana sayfayla **aynı a11y çıtasına** çekti → uçtan uca kullanıcı deneyimi tutarlı; klavye/ekran-okuyucu kullanıcısı için 5 alt sayfa artık ana sayfayla eş. Yeni görünür yüzey/akış eklenmedi (fix'ler kontrast/markup/semantik). Sahipsiz boşluk yok; taşınan bilinçli açıklar sahipli ve kayıtlı: brief mobil perf (gerçek-cihaz duvarı, DECISIONS 2026-06-30), TB-C npm audit (dev-only), Umami canlı +1 (v0.2 production release), `/bunker-os`→`/crew-os` redirect (görsel/SEO versiyonu). Hiçbiri bu fazın kapsamı değil.
 
 ## Sonuç
 
-- **Tamamlanma Tarihi:** [Tarih]
-- **Toplam Task:** [Sayı]
-- **Notlar:** [Önemli kararlar, sonraki faza aktarılanlar]
+- **Tamamlanma Tarihi:** 2026-07-02
+- **Toplam Task:** 6 (8.01 harness+baseline · 8.02 bunker-os fix+mühür · 8.03 spor-salonu teyit+mühür · 8.04 vaka teyit+mühür · 8.05 bülten teyit+mühür+RTL craft · 8.06 bülten `<main>` landmark)
+- **Notlar:** Milestone 6 kriterin tümü karşılandı; UAT 12/12; 8 kalite ekseni ✅; düzeltme task'ı yok. TD4 premisi grep'le çürütüldü → TD5 axe-bulgusuna katlandı (ölç-önce). İki-gate mühür (CI axe-WCAG tohumu + manuel Lighthouse) `landmark-one-main`'i yakaladı → TASK-8.06. v0.2 versiyon-sonu teknik borç fazı tamam → sırada **senaryo testi fazı** (Versiyon Sonu Durumu `teknik_borç` → `senaryo_testi`).
 
 ---
 
 **Oluşturulma:** 2026-07-01
-**Son Güncelleme:** 2026-07-02 — verify-phase 8 **yeniden koşum** (TASK-8.06 sonrası): UAT 12 senaryo **12/12 geçti**. Otomatik: CI (HEAD `d3adcb9`) `fast`+`a11y` success · security-review temiz (0 bulgu) · npm audit kapsam dışı. Otonom: e2e 52/52 (bir env-yükü timeout'u düşük yükte re-run'da geçti) · Vitest 7/7 · build 0 MISSING_MESSAGE · 5 AR prerender `dir=rtl` · fail-on-regression kanıtı (enjekte→kırıldı→geri alındı) · **Lighthouse 5 alt sayfa + home a11y=100** (2 bülten 98→100, `landmark-one-main` düzeldi). Milestone #1 tüm 5 alt sayfada karşılandı. **Düzeltme task'ı yok → adım=review.**
+**Son Güncelleme:** 2026-07-02 — review-phase 8: retrospektif + 8-eksen kalite kontrolü (hepsi ✅) + kullanıcı yolculuğu/boşluk yazıldı; faz ✅ Tamamlandı (PHASES.md). Milestone 6/6 karşılandı, UAT 12/12, düzeltme task'ı yok. Ders: axe WCAG-AA alt-kümesi `landmark-one-main`'i taramaz → iki-gate mühür (memory Süreç Disiplinleri). Versiyon Sonu Durumu `teknik_borç` → `senaryo_testi`; sırada senaryo testi fazı (discuss-phase 9 promote eder).

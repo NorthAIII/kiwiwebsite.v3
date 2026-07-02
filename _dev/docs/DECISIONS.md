@@ -9,6 +9,22 @@
 
 <!-- Her yeni karar aşağıdaki formatta en üste eklenir (en yeni en üstte) -->
 
+### 2026-07-02 — Alt-sayfa a11y iki ayrı gate ile mühürlenir (CI axe-WCAG tohumu + manuel Lighthouse); biri diğerini ima etmez (Faz 8)
+
+**Bağlam:** review-phase 8. Faz 8 çıtası "her alt sayfa Lighthouse a11y=100 çift-tema **+** axe WCAG-AA 0 ihlal". İlk verify koşumunda `subpages-a11y.spec.ts` (axe `withTags(['wcag2a','wcag2aa','wcag21a','wcag21aa'])`) 5 sayfa × 5 dil × 2 tema = 50 test **yeşildi**, ama 2 bülten makale sayfası Lighthouse a11y=**98** verdi (`landmark-one-main` — sayfada `<main>` yok). Kök neden: `landmark-one-main` bir Lighthouse best-practice/structural audit'idir, **WCAG-AA alt-kümesinde değil** → axe tohumu onu hiç taramaz. İki sinyal aynı şeyi ölçmez.
+
+**Seçenekler:**
+1. Tek gate (axe WCAG-AA tohumu) yeterli say — CI otomatik, hızlı.
+2. İki gate'i de zorunlu tut: CI axe-WCAG tohumu (regresyon koruması) **+** manuel Lighthouse çift-tema (skor gate, structural audit'leri de kapsar).
+
+**Karar:** Seçenek 2 (research-phase 8 kararının teyidi). axe WCAG-AA tohumu **CI-korunan regresyon güvencesi**dir (fail-on-regression kanıtlı); Lighthouse a11y=100 çift-tema **manuel verify skor gate**'idir (landmark/region/heading-order gibi structural audit'leri kapsar, axe-WCAG kapsamaz). Bir sayfa ancak **ikisi de** yeşilse mühürlenir. `landmark-one-main` boşluğu bu şekilde yakalandı → TASK-8.06 (2 makale bileşenine stilsiz `<main>`).
+
+**Gerekçe:** "axe yeşil = a11y=100" varsayımı yanlış (kanıtlandı: 50 axe testi yeşilken Lighthouse 98). İki gate farklı ruleset/kapsam ölçer; kalıcılık ilkesi (ILKELER) CI regresyon güvencesini, milestone ise tam skoru ister → ikisi ayrık ama tamamlayıcı tutulur. Alt-sayfa `<main>` deseni bileşenden gelir (layout sarmaz) — her sayfa kendi `<main>`'ini verir.
+
+**İlgili Task/Faz:** review-phase 8 + TASK-8.06; detay → `phases/PHASE-8.md` Retrospektif + UAT. Süreç disiplini → `_dev/MEMORY.md` Süreç Disiplinleri (iki-gate mühür).
+
+---
+
 ### 2026-07-01 — v0.2 canlı-doğrulama işleri (Umami +1 dahil) tek bir bilinçli "v0.2 production release" adımına ertelenir (Faz 7)
 
 **Bağlam:** verify-phase 7. Faz 7 milestone'unun çekirdeği "Umami canlıda (kiwiailab.com) gerçek ziyaret panelinde gözle doğrulandı". Ama `data-domains=kiwiailab.com` preview deploy'larını saymaz → doğrulama yapısal olarak yalnız `main`=canlı'da yapılabilir. Kritik gerçek: `main` HEAD, çalışma branch'inin (`revize/devflow-kurulum`) **89 commit gerisinde** — tüm v0.1+v0.2 revizesi hâlâ unmerged. Yani `main`'e merge, sırf Umami'yi değil **tüm revizeyi ilk kez production'a almak** demek. (verify re-run'da "canlı +1 gördüm" iddiası kanıtla çürütüldü: `git merge-base --is-ancestor` → Umami commit'i origin/main'de değil; canlı HTML'de "umami" 0 kez.)
