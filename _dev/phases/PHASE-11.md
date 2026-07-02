@@ -116,7 +116,7 @@
 | # | Task | Durum | Açıklama |
 |---|------|-------|----------|
 | 11.01 | TASK-11.01 | ✅ Tamamlandı | SEO1: route `bunker-os/`→`crew-os/` + kalıcı 308 redirect (çıplak + 5-locale pattern) + sitemap PATHS + route-path test |
-| 11.02 | TASK-11.02 | ⬜ Bekliyor | SEO2: i18n namespace `bunkerOs`→`crewOs` (7 tüketici) + `bunker`→`crew` (2 tüketici), 5-dil atomik (0 MISSING_MESSAGE) |
+| 11.02 | TASK-11.02 | ✅ Tamamlandı | SEO2: i18n namespace `bunkerOs`→`crewOs` (7 tüketici) + `bunker`→`crew` (2 tüketici), 5-dil atomik (0 MISSING_MESSAGE) |
 | 11.03 | TASK-11.03 | ⬜ Bekliyor | SEO3: iç link `/bunker-os`→`/crew-os` (Hero + Bunker; çift-redirect kaldır) |
 
 **Durum simgeleri:** ⬜ Bekliyor | 🔄 Devam ediyor | ⏸️ Duraklatıldı | ✅ Tamamlandı | 🔴 Bloke | ❌ İptal
@@ -177,4 +177,4 @@
 ---
 
 **Oluşturulma:** 2026-07-02 (discuss-phase 11)
-**Son Güncelleme:** 2026-07-02 — plan-phase 11: 3 task dokümanı oluşturuldu (11.01 route rename+redirect+sitemap · 11.02 i18n namespace rename 5-dil atomik · 11.03 iç link temizliği). Task Listesi tablosu dolduruldu; dependency: 11.02+11.03 → 11.01. Sıradaki adım: verify-plan 11.
+**Son Güncelleme:** 2026-07-02 — run-task TASK-11.02 ✅: i18n namespace `bunkerOs`→`crewOs` (7 tüketici) + `bunker`→`crew` (2 tüketici) 5-dil atomik rename; Task Listesi'nde 11.02 ✅. Doğrulama ampirik (grep 0 kalan · i18n-parite 5/5 · build 0 MISSING_MESSAGE · a11y 10/10). Kalan: TASK-11.03 (iç link). Sıradaki adım: run-task 11.03.

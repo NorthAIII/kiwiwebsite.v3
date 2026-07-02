@@ -6,8 +6,8 @@ import FlowScrim from "@/components/living-flow/FlowScrim";
 import Reveal from "@/components/Reveal";
 
 export default function BunkerShowcase() {
-  const t = useTranslations("bunkerOs");
-  const tb = useTranslations("bunker");
+  const t = useTranslations("crewOs");
+  const tb = useTranslations("crew");
 
   const steps = ["connect", "build", "run", "measure"] as const;
   const sources = ["one", "two", "three", "four"] as const;

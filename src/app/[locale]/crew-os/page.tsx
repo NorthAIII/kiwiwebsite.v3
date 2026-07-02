@@ -12,7 +12,7 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
   const { locale } = await params;
-  const t = await getTranslations({ locale, namespace: "bunkerOs" });
+  const t = await getTranslations({ locale, namespace: "crewOs" });
   return { title: `${t("title")} — Kiwi AI Lab`, description: t("lead") };
 }
 
@@ -23,7 +23,7 @@ export default async function BunkerOsPage({
 }) {
   const { locale } = await params;
   setRequestLocale(locale);
-  const t = await getTranslations({ locale, namespace: "bunkerOs" });
+  const t = await getTranslations({ locale, namespace: "crewOs" });
 
   return (
     <SmoothScroll>

@@ -5,7 +5,7 @@ import { Link } from "@/i18n/navigation";
 import Reveal from "./Reveal";
 
 export default function Bunker() {
-  const t = useTranslations("bunker");
+  const t = useTranslations("crew");
   const points = ["one", "two", "three"] as const;
 
   const running = [

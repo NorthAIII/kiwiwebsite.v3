@@ -1,6 +1,6 @@
 # TASK-11.02: i18n namespace rename `bunkerOs`→`crewOs` + `bunker`→`crew` (5-dil, atomik)
 
-**Durum:** ⬜ Bekliyor
+**Durum:** ✅ Tamamlandı
 **Modül:** M4 (i18n & Yerelleştirme) + M2 (tüketiciler) — `modules/M4-i18n.md`
 **Feature:** SEO2 — i18n namespace `bunkerOs`/`bunker` → crew-tabanlı adlara rename (5-dil eşzamanlı)
 **Faz:** Phase 11 (phases/PHASE-11.md)
@@ -35,7 +35,7 @@ Namespace rename = **yapısal anahtar değişimi** → DECISIONS 2026-06-28 i18n
 
 ## Alt Görevler
 
-- [ ] **1. `bunkerOs` → `crewOs` rename (showcase namespace, 7 tüketici)**
+- [x] **1. `bunkerOs` → `crewOs` rename (showcase namespace, 7 tüketici)**
   - **JSON (5 dosya):** `messages/{tr,en,ar,de,es}.json` — top-level `"bunkerOs":` anahtarı (≈satır 152) → `"crewOs":`. İçerik/değerler **değişmez**, yalnız anahtar adı.
   - **Tüketiciler (7):**
     - `src/app/[locale]/crew-os/page.tsx` — `namespace: "bunkerOs"` ×2 (metadata + page) → `"crewOs"`
@@ -45,13 +45,13 @@ Namespace rename = **yapısal anahtar değişimi** → DECISIONS 2026-06-28 i18n
     - `src/app/[locale]/bulten/ai-sdr-araclari/page.tsx:26` — `namespace: "bunkerOs"` → `"crewOs"`
     - `src/app/[locale]/bulten/claude-opus-4-8-fable-5/page.tsx:32` — `namespace: "bunkerOs"` → `"crewOs"`
 
-- [ ] **2. `bunker` → `crew` rename (ana sayfa teaser namespace, 2 tüketici)**
+- [x] **2. `bunker` → `crew` rename (ana sayfa teaser namespace, 2 tüketici)**
   - **JSON (5 dosya):** `messages/{tr,en,ar,de,es}.json` — top-level `"bunker":` anahtarı (≈satır 131) → `"crew":`. **DİKKAT:** satır ~10'daki `nav.bunker` (nav namespace içindeki `"bunker": "Crew OS"` **label**'ı) **DEĞİL** — o dokunulmaz (bkz. Dikkat Noktaları).
   - **Tüketiciler (2):**
     - `src/components/Bunker.tsx:8` — `useTranslations("bunker")` → `"crew"`
     - `src/components/bunker-os/BunkerShowcase.tsx:10` — `useTranslations("bunker")` (`tb`) → `"crew"`
 
-- [ ] **3. Doğrulama**
+- [x] **3. Doğrulama**
   - Grep: repoda kalan `"bunkerOs"` / `namespace: "bunker"` / `useTranslations("bunker")` referansı **kalmadığını** teyit et (nav/section-id/keyframe hariç — aşağıda).
   - `next build` → 0 `MISSING_MESSAGE`.
 
@@ -90,11 +90,11 @@ src/components/Bunker.tsx                                 # "bunker"→"crew" (l
 
 ## Test Kriterleri
 
-- [ ] `next build` **temiz** + **0 `MISSING_MESSAGE`** (tüm alt sayfalar 5 locale SSG prerender — showcase, spor-salonu, vaka, 2 bülten).
-- [ ] i18n-parite testi (`tests/i18n-parity.test.ts`, Vitest) **yeşil** — 5 dilde anahtar seti eşit (`crewOs`+`crew` her dilde var, `bunkerOs`+`bunker` [top-level] hiçbir dilde kalmadı).
-- [ ] Grep teyidi: `grep -rn '"bunkerOs"\|namespace: "bunker"\|useTranslations("bunker")' src/ messages/` → **0 sonuç** (nav.bunker/#bunker/keyframe hariç, onlar zaten farklı desen).
-- [ ] Showcase (`/crew-os`) + spor-salonu + vaka + 2 bülten sayfası 5 locale'de metin **boşluksuz** render (görsel/curl gözle: başlık, back/cta şeridi, showcase içerik).
-- [ ] a11y **korunan taban** regresyonsuz (namespace rename görsel/DOM değiştirmez; `subpages-a11y.spec.ts` yeşil).
+- [x] `next build` **temiz** + **0 `MISSING_MESSAGE`** (tüm alt sayfalar 5 locale SSG prerender — showcase, spor-salonu, vaka, 2 bülten). ✓ `✓ Compiled successfully`, grep MISSING_MESSAGE/error/warn = 0.
+- [x] i18n-parite testi (`tests/i18n-parity.test.ts`, Vitest) **yeşil** — 5 dilde anahtar seti eşit (`crewOs`+`crew` her dilde var, `bunkerOs`+`bunker` [top-level] hiçbir dilde kalmadı). ✓ 5/5.
+- [x] Grep teyidi: `grep -rn '"bunkerOs"\|namespace: "bunker"\|useTranslations("bunker")' src/ messages/` → **0 sonuç** (nav.bunker/#bunker/keyframe hariç, onlar zaten farklı desen). ✓ 0 sonuç.
+- [x] Showcase (`/crew-os`) + spor-salonu + vaka + 2 bülten sayfası 5 locale'de metin **boşluksuz** render. ✓ prerender HTML (build ground-truth): crew-os 5 locale "Crew OS" başlık + eyebrow; home teaser TR "keşfet"/"yaşadığı ve çalıştığı", EN "Explore" — placeholder yok.
+- [x] a11y **korunan taban** regresyonsuz (namespace rename görsel/DOM değiştirmez; `subpages-a11y.spec.ts` yeşil). ✓ `--grep crew-os` **10/10** (5 locale × 2 tema).
 
 ---
 
@@ -108,19 +108,36 @@ src/components/Bunker.tsx                                 # "bunker"→"crew" (l
 
 ## Tamamlanma Kriterleri
 
-- [ ] Tüm alt görevler tamamlandı
-- [ ] Tüm test kriterleri karşılandı
-- [ ] Git commit & push yapıldı (`refactor(TASK-11.02): ...`)
-- [ ] Bu doküman güncellendi (oturum kaydı)
-- [ ] DURUM.md + PHASE-11.md güncellendi
+- [x] Tüm alt görevler tamamlandı
+- [x] Tüm test kriterleri karşılandı
+- [x] Git commit & push yapıldı (`refactor(TASK-11.02): ...`)
+- [x] Bu doküman güncellendi (oturum kaydı)
+- [x] DURUM.md + PHASE-11.md güncellendi
 
 ---
 
 ## Oturum Kayıtları
 
-### Oturum — [TARİH]
+### Oturum — 2026-07-02 (run-task)
 
-**Durum:** [doldurulacak]
+**Durum:** ✅ Tamamlandı
+
+**Yapılanlar:**
+- **Alt görev 1 (`bunkerOs`→`crewOs`, 7 tüketici):** 5 JSON top-level `"bunkerOs"`@152 → `"crewOs"` (satır-başı 2-boşluk ankraj → `nav.bunker` [4-boşluk] etkilenmez); 7 kod tüketicisi (`crew-os/page.tsx` ×2, `BunkerShowcase.tsx:9`, `spor-salonu`/`vaka`/2 bülten) `namespace/useTranslations` → `crewOs`.
+- **Alt görev 2 (`bunker`→`crew`, 2 tüketici):** 5 JSON top-level `"bunker"`@131 → `"crew"`; `Bunker.tsx:8` + `BunkerShowcase.tsx:10` (`tb`) `useTranslations("bunker")` → `"crew"`.
+- **Değerler dokunulmadı** (TR tek kaynak; zaten "Crew OS" markalı). **Dokunulmayanlar teyitli:** `nav.bunker` label ("Crew OS" 5 dil), `id="bunker"`, `href="#bunker"`, `@keyframes bunkerback`, component dosya/dizin adları.
+
+**Son Yaklaşım:** Atomik mekanik rename `sed` ile (5 JSON + 7 kod dosyası tek geçişte), ardından çok-katmanlı ampirik doğrulama. `bunker")` exact-string ankrajı `bunkerOs")`'u etkilemedi.
+
+**Doğrulama (ampirik):**
+- Grep: kalan `"bunkerOs"`/`namespace: "bunker"`/`useTranslations("bunker")` = **0**; yeni tüketiciler 7 crewOs + 2 crew.
+- JSON sözdizimi 5 dil `JSON.parse` OK; 5 dilde 2 top-level anahtar (`crew`+`crewOs`).
+- i18n-parite (Vitest) **5/5** yeşil.
+- `next build` **temiz** (`✓ Compiled successfully`), 0 `MISSING_MESSAGE`/error/warn; crew-os + tüketiciler 5 locale SSG prerender.
+- Prerender HTML (ground-truth): crew-os 5 locale + home teaser boşluksuz render.
+- `subpages-a11y --grep crew-os` **10/10** (5 locale × 2 tema) — korunan taban regresyonsuz.
+
+**Sonraki Adım Detayı:** Faz 11'de TASK-11.03 (SEO3: iç link `/bunker-os`→`/crew-os`, Hero+Bunker; çift-redirect kaldır) kaldı. Ayrı oturum `run-task`.
 
 ---
 

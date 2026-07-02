@@ -24,7 +24,7 @@ export default async function GymSoftwarePage({
 }) {
   const { locale } = await params;
   setRequestLocale(locale);
-  const t = await getTranslations({ locale, namespace: "bunkerOs" });
+  const t = await getTranslations({ locale, namespace: "crewOs" });
 
   return (
     <SmoothScroll>

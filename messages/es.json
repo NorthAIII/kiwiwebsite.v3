@@ -128,7 +128,7 @@
     "flowLabel": "El flujo",
     "seeLive": "Ver el producto en vivo"
   },
-  "bunker": {
+  "crew": {
     "label": "Crew OS",
     "title": "Donde tus automatizaciones viven y corren.",
     "body": "Cada flujo que entregamos corre dentro de una sola capa operativa — observable, medible, siempre activa. Ves qué corrió, qué ahorró y qué sigue.",
@@ -149,7 +149,7 @@
     },
     "explore": "Explora Crew OS"
   },
-  "bunkerOs": {
+  "crewOs": {
     "back": "Inicio",
     "eyebrow": "Capa operativa",
     "title": "Crew OS",
