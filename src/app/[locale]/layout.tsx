@@ -4,13 +4,14 @@ import { NextIntlClientProvider, hasLocale } from "next-intl";
 import { setRequestLocale, getTranslations } from "next-intl/server";
 import { Fraunces, Geist } from "next/font/google";
 import { routing, rtlLocales, type Locale } from "@/i18n/routing";
+import { UmamiScript } from "@/components/analytics/umami-script";
 import "../globals.css";
 
 const fraunces = Fraunces({
   subsets: ["latin"],
   variable: "--font-fraunces",
   display: "swap",
-  axes: ["opsz", "SOFT", "WONK"],
+  axes: ["opsz"],
 });
 
 const geist = Geist({
@@ -76,6 +77,7 @@ export default async function LocaleLayout({
             __html: `(function(){try{var t=localStorage.getItem('theme');var d=t?t==='dark':window.matchMedia('(prefers-color-scheme: dark)').matches;if(d)document.documentElement.classList.add('dark');}catch(e){}})();`,
           }}
         />
+        <UmamiScript />
       </head>
       <body className="grain">
         <NextIntlClientProvider>{children}</NextIntlClientProvider>

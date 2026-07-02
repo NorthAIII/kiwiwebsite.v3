@@ -128,7 +128,7 @@ export default function SectorSolutions() {
             <ol className="space-y-5">
               {(["trigger", "action", "result"] as const).map((step, i) => (
                 <li key={step} className="flex gap-4">
-                  <span className="font-display text-sm leading-6 text-pulse">{`0${i + 1}`}</span>
+                  <span className="font-display text-sm leading-6 text-pulse-ink">{`0${i + 1}`}</span>
                   <span className="text-[15px] leading-snug text-canvas/85">
                     {t(`items.${active}.flow.${step}`)}
                   </span>
@@ -140,7 +140,7 @@ export default function SectorSolutions() {
               <Link
                 href={PAGES.gyms!}
                 data-cursor="hover"
-                className="group inline-flex items-center gap-2 text-sm font-medium text-pulse"
+                className="group inline-flex items-center gap-2 text-sm font-medium text-pulse-ink"
               >
                 {t("seeLive")}
                 <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>

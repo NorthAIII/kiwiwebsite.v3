@@ -8,10 +8,13 @@
   --color-canvas-deep: #efede4;
   --color-ink: #12140f;
   --color-ink-soft: #4a4d44;
-  --color-ink-faint: #8b8d83;
+  --color-ink-faint: #67695f;
   --color-green: #1f7a3d;
   --color-green-deep: #155a2c;
   --color-pulse: #6fe36f;
+  /* Pulse green tuned for ink-bg panels: matches --color-pulse on dark panels;
+     in dark theme the panel inverts to cream, so this darkens to stay legible (WCAG AA). */
+  --color-pulse-ink: #6fe36f;
   --color-line: rgba(18, 20, 15, 0.1);
 
   --font-display: var(--font-fraunces), ui-serif, Georgia, serif;
@@ -32,10 +35,11 @@ html.dark {
   --color-canvas-deep: #1c1e17;
   --color-ink: #f2f1e8;
   --color-ink-soft: #b7b9ac;
-  --color-ink-faint: #7d8073;
+  --color-ink-faint: #8a8c80;
   --color-green: #4fb06a;
   --color-green-deep: #2f7d45;
   --color-pulse: #8af28a;
+  --color-pulse-ink: #1f7a3d;
   --color-line: rgba(242, 241, 232, 0.12);
 }
 

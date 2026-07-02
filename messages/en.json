@@ -18,7 +18,7 @@
     "lineTwo": "Then we automate it.",
     "sub": "We find where repetitive work drains your team — recurring tasks, messages, approval chains — and wire it to automation you can measure.",
     "ctaPrimary": "Book a free discovery call",
-    "ctaSecondary": "See it live",
+    "ctaSecondary": "See working examples",
     "scroll": "Scroll",
     "stats": {
       "liveLabel": "Live now",
@@ -27,28 +27,29 @@
       "crewOsLabel": "Operating layer"
     }
   },
-  "proof": {
-    "label": "Outcomes we're wiring up",
-    "note": "Honest placeholders until client data lands."
-  },
   "how": {
     "label": "How it works",
-    "title": "Three moves, one running system.",
+    "title": "Four moves, one running system.",
     "steps": {
-      "listen": {
+      "analyze": {
         "n": "01",
         "title": "Analyze",
-        "body": "We map how your operation actually runs — every recurring task, message, and approval — not how an org chart says it does."
+        "body": "We map how your operation actually runs — not the way an org chart says, but how it really is — and we find where work leaks: steps repeated by hand, follow-ups that slip, hours spent moving data between tools."
       },
-      "find": {
+      "design": {
         "n": "02",
-        "title": "Identify",
-        "body": "We locate where work leaks: the steps repeated by hand, the follow-ups that slip, the hours spent moving data between tools."
+        "title": "Design",
+        "body": "We decide together what's worth automating, then design the solution step by step: which flow, which channel, which approval chain."
       },
       "automate": {
         "n": "03",
         "title": "Automate",
-        "body": "We wire those steps to automation that runs 7/24 inside Crew OS — and hand you the numbers so you can measure the gain."
+        "body": "We wire the flow we designed into automation that runs 7/24 inside Crew OS."
+      },
+      "report": {
+        "n": "04",
+        "title": "Report",
+        "body": "You see what each flow earns you, in numbers — the gain isn't assumed, it's measured."
       }
     }
   },
@@ -66,8 +67,8 @@
     "items": {
       "gyms": {
         "name": "Gyms",
-        "automation": "Gym Management Software",
-        "body": "Memberships, payments, check-ins, class & PT scheduling, automated reminders and member win-back — all in one panel. A comprehensive, sector-specific management platform.",
+        "automation": "Winning back the member who's slipping away",
+        "body": "When a member quietly begins to drift away, it gets noticed; a personal offer that fits their situation and a PT slot go out on WhatsApp — the win-back isn't left to chance, it's tracked one by one.",
         "flow": {
           "trigger": "A member hasn't checked in for 30 days",
           "action": "A tailored offer and a PT slot go out on WhatsApp",
@@ -237,28 +238,6 @@
       "excerpt": "A human SDR runs $110,000+/year; AI SDR tools promise similar work 7/24 at a fraction of the cost. We rounded up the leading platforms, their pricing models, and realistic results.",
       "cta": "Read the article",
       "readingTime": "8 min read"
-    },
-    "articles": {
-      "one": {
-        "title": "Cut our WhatsApp approval chain from 2 days to 10 minutes",
-        "tag": "E-commerce",
-        "readingTime": "5 min read"
-      },
-      "two": {
-        "title": "How we halved no-shows at the clinic",
-        "tag": "Clinic",
-        "readingTime": "4 min read"
-      },
-      "three": {
-        "title": "Building your first flow in Crew OS",
-        "tag": "Getting started",
-        "readingTime": "6 min read"
-      },
-      "four": {
-        "title": "Which work is worth automating — and which isn’t?",
-        "tag": "Strategy",
-        "readingTime": "7 min read"
-      }
     },
     "featured2": {
       "kicker": "New · News",

@@ -18,7 +18,7 @@
     "lineTwo": "Sonra otomatikleştiririz.",
     "sub": "Ekibinizin zamanını çalan tekrarlayan işi buluruz — rutin görevler, mesajlar, onay zincirleri — ve bunu ölçebileceğiniz bir otomasyona bağlarız.",
     "ctaPrimary": "Ücretsiz keşif görüşmesi al",
-    "ctaSecondary": "Canlı gör",
+    "ctaSecondary": "İşleyen örnekleri gör",
     "scroll": "Kaydır",
     "stats": {
       "liveLabel": "Şu an canlı",
@@ -27,28 +27,29 @@
       "crewOsLabel": "İşletim katmanı"
     }
   },
-  "proof": {
-    "label": "Kurduğumuz sonuçlar",
-    "note": "Gerçek müşteri verisi gelene dek dürüst öngörüler."
-  },
   "how": {
     "label": "Nasıl çalışır",
-    "title": "Üç adım, çalışan tek bir sistem.",
+    "title": "Dört adım, çalışan tek bir sistem.",
     "steps": {
-      "listen": {
+      "analyze": {
         "n": "01",
         "title": "Analiz",
-        "body": "Operasyonunuzun gerçekte nasıl yürüdüğünü çıkarırız — her tekrarlayan görev, mesaj ve onay — organizasyon şemasının dediği gibi değil, gerçekte nasılsa öyle."
+        "body": "Operasyonunuzun gerçekte nasıl yürüdüğünü çıkarırız — organizasyon şemasının dediği gibi değil, gerçekte nasılsa öyle — ve işin nerede sızdığını buluruz: elle tekrarlanan adımlar, kaçan takipler, araçlar arasında veri taşımaya giden saatler."
       },
-      "find": {
+      "design": {
         "n": "02",
-        "title": "Tespit",
-        "body": "İşin nerede sızdığını buluruz: elle tekrarlanan adımlar, kaçan takipler, araçlar arasında veri taşımaya giden saatler."
+        "title": "Çözüm",
+        "body": "Neyin otomasyona değdiğine birlikte karar verir, çözümü adım adım tasarlarız: hangi akış, hangi kanal, hangi onay zinciri."
       },
       "automate": {
         "n": "03",
         "title": "Otomasyon",
-        "body": "Bu adımları Crew OS içinde 7/24 çalışan otomasyona bağlarız — ve kazancı ölçebilmeniz için sayıları size veririz."
+        "body": "Tasarladığımız akışı Crew OS içinde 7/24 çalışan otomasyona bağlarız."
+      },
+      "report": {
+        "n": "04",
+        "title": "Raporlama",
+        "body": "Her akışın ne kazandırdığını sayılarla görürsünüz — kazanç varsayılmaz, ölçülür."
       }
     }
   },
@@ -66,8 +67,8 @@
     "items": {
       "gyms": {
         "name": "Spor salonları",
-        "automation": "Spor Salonu Yönetim Yazılımı",
-        "body": "Üyelik, ödeme, yoklama, ders ve PT takvimi, otomatik hatırlatma ve kaçan üye geri kazanımı — hepsi tek panelde. Kapsamlı, sektöre özel yönetim yazılımı.",
+        "automation": "Kaçan üyeyi geri kazanma",
+        "body": "Bir üye sessizce uzaklaşmaya başladığında fark edilir; durumuna uygun kişisel bir teklif ve PT randevusu WhatsApp’tan iletilir — geri kazanım şansa bırakılmaz, tek tek takip edilir.",
         "flow": {
           "trigger": "Bir üye 30 gündür giriş yapmadı",
           "action": "Kişisel bir teklif ve PT randevusu WhatsApp’tan gider",
@@ -237,28 +238,6 @@
       "excerpt": "İnsan bir SDR yılda 110.000$+ tutarken, AI SDR araçları 7/24 çalışıp maliyetin küçük bir kısmına benzer işi vaat ediyor. Öne çıkan platformları, fiyat modellerini ve gerçekçi sonuçları derledik.",
       "cta": "Yazıyı oku",
       "readingTime": "8 dk okuma"
-    },
-    "articles": {
-      "one": {
-        "title": "WhatsApp onay zincirini 2 günden 10 dakikaya indirdik",
-        "tag": "E-ticaret",
-        "readingTime": "5 dk okuma"
-      },
-      "two": {
-        "title": "Klinikte no-show’u nasıl yarıya düşürdük",
-        "tag": "Klinik",
-        "readingTime": "4 dk okuma"
-      },
-      "three": {
-        "title": "Crew OS’ta ilk akışınızı kurmak",
-        "tag": "Başlangıç",
-        "readingTime": "6 dk okuma"
-      },
-      "four": {
-        "title": "Hangi işler otomasyona değer, hangileri değmez?",
-        "tag": "Strateji",
-        "readingTime": "7 dk okuma"
-      }
     },
     "featured2": {
       "kicker": "Yeni · Haber",

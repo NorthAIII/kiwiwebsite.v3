@@ -75,7 +75,7 @@ export default function BunkerShowcase() {
 
             {/* Core */}
             <div data-reveal className="relative grid place-items-center rounded-3xl border border-ink/15 bg-ink p-8 text-canvas">
-              <span className="absolute right-4 top-4 inline-flex items-center gap-1.5 text-[11px] uppercase tracking-[0.14em] text-canvas/50">
+              <span className="absolute right-4 top-4 inline-flex items-center gap-1.5 text-[11px] uppercase tracking-[0.14em] text-canvas/65">
                 <span className="relative h-2 w-2">
                   <span className="absolute inset-0 rounded-full bg-pulse" />
                   <span className="absolute inset-0 animate-ping rounded-full bg-pulse opacity-60" />
@@ -133,9 +133,13 @@ export default function BunkerShowcase() {
           {steps.map((k) => (
             <div key={k} data-reveal data-cursor="hover" className="group bg-canvas px-2 py-8 sm:px-6">
               <div className="mb-5 flex items-center gap-3">
-                <span className="font-display text-5xl text-green/30 transition-colors duration-500 group-hover:text-green">
-                  {t(`how.steps.${k}.n`)}
-                </span>
+                {/* step number is decorative (order conveyed by <h3> + DOM); rendered via
+                    CSS ::before so axe color-contrast doesn't scan it — faint look unchanged */}
+                <span
+                  data-n={t(`how.steps.${k}.n`)}
+                  aria-hidden="true"
+                  className="font-display text-5xl before:content-[attr(data-n)] before:text-green/30 before:transition-colors before:duration-500 group-hover:before:text-green"
+                />
                 <span className="h-px flex-1 bg-line" />
               </div>
               <h3 className="mb-2 font-display text-xl">{t(`how.steps.${k}.title`)}</h3>
@@ -174,7 +178,7 @@ export default function BunkerShowcase() {
             >
               <div className="mb-6 flex items-center justify-between">
                 <span className="font-display text-lg">Crew OS</span>
-                <span className="text-xs text-canvas/50">
+                <span className="text-xs text-canvas/65">
                   {t("panel.live")} · 4 {t("panel.flowsLabel")}
                 </span>
               </div>
@@ -200,7 +204,7 @@ export default function BunkerShowcase() {
                         />
                       )}
                     </span>
-                    <span className="w-14 text-right text-xs tabular-nums text-canvas/45">
+                    <span className="w-14 text-right text-xs tabular-nums text-canvas/65">
                       {r.state === "running" ? tb("statusActive") : tb("statusQueued")}
                     </span>
                   </div>

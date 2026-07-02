@@ -19,9 +19,12 @@ function supportsWebGL() {
 
 /**
  * The Living Flow (§4). Full-bleed WebGL field of translucent ink lines with
- * green automation pulses. Lazy-inits after first paint so it never blocks LCP,
- * degrades to a lighter particle count on low-power devices, and falls back to
- * a static gradient field under reduced-motion / no-WebGL.
+ * green automation pulses. Inits after first paint so it never blocks LCP — one
+ * frame past paint on desktop, deferred to idle/post-load on low-power/mobile
+ * (where the Three.js + GLSL compile is CPU-heavy and would block the LCP
+ * window). Degrades to a lighter particle count on low-power devices, and falls
+ * back to a static gradient field under reduced-motion / no-WebGL. The static
+ * base wash is always present, so the hero is never blank during the defer.
  */
 export default function LivingFlow({ className = "" }: { className?: string }) {
   const [mode, setMode] = useState<"idle" | "high" | "low" | "static">("idle");
@@ -36,9 +39,39 @@ export default function LivingFlow({ className = "" }: { className?: string }) {
       (navigator.hardwareConcurrency ?? 8) <= 4 ||
       window.matchMedia("(max-width: 768px)").matches;
 
-    // defer one frame past first paint
-    const id = requestAnimationFrame(() => setMode(lowPower ? "low" : "high"));
-    return () => cancelAnimationFrame(id);
+    // Desktop / high-power: defer one frame past first paint (already in budget,
+    // no regression — keep the existing rAF behaviour).
+    if (!lowPower) {
+      const id = requestAnimationFrame(() => setMode("high"));
+      return () => cancelAnimationFrame(id);
+    }
+
+    // Mobile / low-power: the WebGL init blocks the main thread during the LCP
+    // window under CPU throttle, so push it out to idle (with a 2s timeout cap
+    // so it still runs on a busy thread). Flow appears ~0.5-1s late but the
+    // static base wash covers the hero meanwhile.
+    const start = () => setMode("low");
+
+    if (typeof window.requestIdleCallback === "function") {
+      const idleId = window.requestIdleCallback(start, { timeout: 2000 });
+      return () => window.cancelIdleCallback(idleId);
+    }
+
+    // Safari has no requestIdleCallback → fall back to post-load (or a short
+    // timeout if `load` already fired). Without this, the flow would never init.
+    let timeoutId: ReturnType<typeof setTimeout> | undefined;
+    if (document.readyState === "complete") {
+      timeoutId = setTimeout(start, 200);
+      return () => clearTimeout(timeoutId);
+    }
+    const onLoad = () => {
+      timeoutId = setTimeout(start, 200);
+    };
+    window.addEventListener("load", onLoad, { once: true });
+    return () => {
+      window.removeEventListener("load", onLoad);
+      clearTimeout(timeoutId);
+    };
   }, []);
 
   return (

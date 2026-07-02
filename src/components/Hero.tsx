@@ -15,14 +15,14 @@ export default function Hero() {
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const ctx = gsap.context(() => {
-      gsap.set("[data-hero]", { opacity: 0, y: 36 });
+      gsap.set("[data-hero]", { y: 36 });
       gsap
         .timeline({ defaults: { ease: "power3.out", duration: 1.1 } })
-        .to("[data-hero='l1']", { opacity: 1, y: 0 }, 0.15)
-        .to("[data-hero='l2']", { opacity: 1, y: 0 }, 0.32)
-        .to("[data-hero='sub']", { opacity: 1, y: 0, duration: 0.9 }, 0.55)
-        .to("[data-hero='cta']", { opacity: 1, y: 0, duration: 0.9 }, 0.7)
-        .to("[data-hero='stats']", { opacity: 1, y: 0, duration: 0.9 }, 0.85);
+        .to("[data-hero='l1']", { y: 0 }, 0.15)
+        .to("[data-hero='l2']", { y: 0 }, 0.32)
+        .to("[data-hero='sub']", { y: 0, duration: 0.9 }, 0.55)
+        .to("[data-hero='cta']", { y: 0, duration: 0.9 }, 0.7)
+        .to("[data-hero='stats']", { y: 0, duration: 0.9 }, 0.85);
     }, root);
     return () => ctx.revert();
   }, []);
@@ -83,7 +83,7 @@ export default function Hero() {
             </a>
           </div>
 
-          <dl
+          <div
             data-hero="stats"
             className="mt-16 flex max-w-2xl flex-wrap items-center gap-x-8 gap-y-5 border-t border-line pt-6"
           >
@@ -97,12 +97,12 @@ export default function Hero() {
                 <span className="absolute inset-0 animate-ping rounded-full bg-green opacity-60" />
               </span>
               <span className="leading-tight">
-                <dd className="text-sm font-medium text-ink transition-colors group-hover:text-green">
+                <span className="block text-sm font-medium text-ink transition-colors group-hover:text-green">
                   {t("stats.liveProduct")}
-                </dd>
-                <dt className="text-xs uppercase tracking-[0.12em] text-ink-faint">
+                </span>
+                <span className="block text-xs uppercase tracking-[0.12em] text-ink-faint">
                   {t("stats.liveLabel")}
-                </dt>
+                </span>
               </span>
             </Link>
 
@@ -125,15 +125,15 @@ export default function Hero() {
                 <circle cx="11" cy="11" r="2.1" fill="currentColor" />
               </svg>
               <span className="leading-tight">
-                <dd className="text-sm font-medium text-ink transition-colors group-hover:text-green">
+                <span className="block text-sm font-medium text-ink transition-colors group-hover:text-green">
                   {t("stats.crewOs")}
-                </dd>
-                <dt className="text-xs uppercase tracking-[0.12em] text-ink-faint">
+                </span>
+                <span className="block text-xs uppercase tracking-[0.12em] text-ink-faint">
                   {t("stats.crewOsLabel")}
-                </dt>
+                </span>
               </span>
             </Link>
-          </dl>
+          </div>
         </div>
       </div>
 

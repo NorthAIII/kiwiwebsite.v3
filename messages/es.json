@@ -18,7 +18,7 @@
     "lineTwo": "Luego lo automatizamos.",
     "sub": "Encontramos dónde el trabajo repetitivo agota a tu equipo —tareas recurrentes, mensajes, cadenas de aprobación— y lo conectamos a una automatización que puedes medir.",
     "ctaPrimary": "Agenda una llamada de descubrimiento gratuita",
-    "ctaSecondary": "Míralo en vivo",
+    "ctaSecondary": "Ver ejemplos que funcionan",
     "scroll": "Desplázate",
     "stats": {
       "liveLabel": "En vivo ahora",
@@ -27,28 +27,29 @@
       "crewOsLabel": "Capa operativa"
     }
   },
-  "proof": {
-    "label": "Resultados que estamos conectando",
-    "note": "Estimaciones honestas hasta que lleguen los datos de clientes."
-  },
   "how": {
     "label": "Cómo funciona",
-    "title": "Tres pasos, un solo sistema en marcha.",
+    "title": "Cuatro pasos, un solo sistema en marcha.",
     "steps": {
-      "listen": {
+      "analyze": {
         "n": "01",
         "title": "Analizar",
-        "body": "Mapeamos cómo funciona realmente tu operación —cada tarea recurrente, mensaje y aprobación— no como dice el organigrama."
+        "body": "Mapeamos cómo funciona realmente tu operación —no como dice el organigrama, sino como es de verdad— y encontramos dónde se escapa el trabajo: pasos repetidos a mano, seguimientos que se pierden, horas que se van en mover datos entre herramientas."
       },
-      "find": {
+      "design": {
         "n": "02",
-        "title": "Identificar",
-        "body": "Localizamos dónde se fuga el trabajo: los pasos que se repiten a mano, los seguimientos que se escapan, las horas que se van en mover datos entre herramientas."
+        "title": "Diseñar",
+        "body": "Decidimos juntos qué vale la pena automatizar y diseñamos la solución paso a paso: qué flujo, qué canal, qué cadena de aprobación."
       },
       "automate": {
         "n": "03",
         "title": "Automatizar",
-        "body": "Conectamos esos pasos a una automatización que corre 7/24 dentro de Crew OS — y te entregamos los números para que midas la ganancia."
+        "body": "Conectamos el flujo que diseñamos a una automatización que corre 7/24 dentro de Crew OS."
+      },
+      "report": {
+        "n": "04",
+        "title": "Informar",
+        "body": "Ves en números lo que aporta cada flujo —la ganancia no se supone, se mide."
       }
     }
   },
@@ -63,8 +64,8 @@
     "items": {
       "gyms": {
         "name": "Gimnasios",
-        "automation": "Software de Gestión de Gimnasios",
-        "body": "Membresías, pagos, registros de entrada, agenda de clases y entrenamiento personal, recordatorios automáticos y recuperación de socios — todo en un solo panel. Una plataforma de gestión completa y específica del sector.",
+        "automation": "Recuperar al socio que se aleja",
+        "body": "Cuando un socio empieza a alejarse en silencio, se nota; una oferta personal acorde a su situación y una cita con el entrenador salen por WhatsApp —la recuperación no se deja al azar, se hace seguimiento uno por uno.",
         "flow": {
           "trigger": "Un socio lleva 30 días sin venir",
           "action": "Una oferta personalizada y una cita con el entrenador salen por WhatsApp",
@@ -237,28 +238,6 @@
       "excerpt": "Un SDR humano cuesta $110,000+/año; las herramientas AI SDR prometen un trabajo similar 7/24 a una fracción del costo. Reunimos las plataformas líderes, sus modelos de precios y resultados realistas.",
       "cta": "Lee el artículo",
       "readingTime": "8 min de lectura"
-    },
-    "articles": {
-      "one": {
-        "title": "Redujimos nuestra cadena de aprobación de WhatsApp de 2 días a 10 minutos",
-        "tag": "E-commerce",
-        "readingTime": "5 min de lectura"
-      },
-      "two": {
-        "title": "Cómo redujimos a la mitad las inasistencias en la clínica",
-        "tag": "Clínica",
-        "readingTime": "4 min de lectura"
-      },
-      "three": {
-        "title": "Cómo construir tu primer flujo en Crew OS",
-        "tag": "Primeros pasos",
-        "readingTime": "6 min de lectura"
-      },
-      "four": {
-        "title": "¿Qué trabajo vale la pena automatizar — y cuál no?",
-        "tag": "Estrategia",
-        "readingTime": "7 min de lectura"
-      }
     },
     "featured2": {
       "kicker": "Nuevo · Noticia",

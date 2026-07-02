@@ -1,0 +1,59 @@
+# REVIZE BACKLOG — Bilinen Sorunlar & Bekleyen İşler
+
+**Amaç:** Güçlü revize için ham girdi — kullanıcı tespitleri ve brief'ten gelen bekleyen işler. Bu liste **PRD'ye tohum**dur; fazlara/feature'lara dönüşümü `/devflow:prd` ve `discuss-phase`'de yapılır. Burası kararların evi değil (o `DECISIONS.md`), aktif durumun evi de değil (o `DURUM.md`); burası "neyi ele alacağız" ham listesidir.
+
+**Not:** Bağlandıkça ilgili satır PRD/MODULE-MAP'e taşınır ve burada işaretlenir/silinir.
+
+**PRD'ye bağlananlar (v0.1):** A2 (kopya) → `PRD/features/kopya-revizesi.md`; A4 (nasıl çalışır 3→4) → `PRD/features/nasil-calisir-4-adim.md`; A5 (sektörler) → `PRD/features/sektorler-derinlestirme.md`; A6 (Crew OS içerik) → `PRD/features/crew-os-bolumu.md`. (Satırlar execution detayı için duruyor; faza girince silinir.) Ürün taksonomisi (Bunker/Crew OS/Alpfit) ve dil stratejisi → `docs/DECISIONS.md` + `PRD/VIZYON.md`.
+
+**v0.3'e bağlananlar (re-kickoff 2026-07-02):** **A1** (logo hizalama) + **A3** (CTA kartı affordance + scroll göstergesi ölçekleme) + **B1** (Living Flow nabız kapsamı, karar-gate'li) + **SEO** `/bunker-os`→`/crew-os` redirect (i18n namespace 5-dil rename) & çıplak `/forum`→404 → **v0.3 = Görsel & Etkileşim Cilası + URL taksonomisi/SEO** (VERSIONS.md). **Faza girenler (MODULE-MAP'e damgalandı):** A1 + A3 → **Faz 10** görsel cila (discuss-phase 10, 2026-07-02). **Henüz atanmadı:** B1 (Living Flow nabız, ayrı gate'li faz) + SEO redirect (ayrı çapraz-modül faz). Satırlar execution detayı için duruyor.
+
+**prd-refine doğrulaması (2026-06-28, kodla teyit edildi):** A2 premise *"genel kopya zayıf"* abartılı — canlı TR kopya büyük ölçüde güçlü; v0.1 cerrahi (ana sayfa, F1–F6). **A5** *"hepsi sığ"* abartılı — 5 sektör güçlü, asıl sorun gym paneli desen-dışı. **A6** büyük ölçüde **çözülmüş** — Crew OS ana metni doğru; kalan tek kalem panel akış adları (bırakıldı). **A3** kopya değil **görsel** (kartlar zaten `<Link>`) → görsel cila versiyonu.
+
+---
+
+## A. Kullanıcı Tespitleri (2026-06-27)
+
+| # | Konu | Detay | Tahmini modül |
+|---|------|-------|----------------|
+| A1 | Logo hizalama | Logo sol-en-üstte düzgün oturmamış (konumlama/hizalama). | M3 (Nav/PageHeader) |
+| A2 | Kopya/wording zayıf | Genel metin kalitesi düşük — ciddi yeniden yazım gerek (TR öncelikli, 5 dil senkron). | M2 + M4 |
+| A3 | CTA kartı affordance + ölçekleme | "Ücretsiz keşif görüşmesi" altındaki Alpfit / Crew OS kartları tıklanabilir görünmüyor; sağdaki scroll/"kaydır" göstergesinde ölçekleme bozuk. | M2 (Hero/istatistik şeridi) + M3 |
+| A4 | "Nasıl çalışır" 3→4 adım | Analiz ile Tespit içerikçe örtüşüyor (aynı şey gibi). 4 ayrı kaleme çıkar (ör. **Analiz · Çözüm · Otomasyon · Raporlama**); altlarındaki ~15 kelimelik açıklamaları zenginleştir. | M2 (HowItWorks) + M4 |
+| A5 | Sektörler çok sığ | Spor Salonları'nda siyah zemine 3 madde; tekrara düşüyor ve yetersiz. Her sektör için doyurucu, özgün içerik gerek. | M2 (SectorSolutions) + M4 |
+| A6 | Crew OS bölümü yanlış içerik | Bunker (Crew OS) bölümünde siyah zemindeki 4 madde **Bunker OS ile alakasız** — Alpfit özellikleri yazılmış. Doğru Crew OS içeriğiyle değiştir. | M2 (Bunker) + M4 |
+
+## B. Açık Tasarım Soruları (karar bekliyor)
+
+| # | Soru | Notlar |
+|---|------|--------|
+| B1 | Living Flow yeşil nabızlarının kapsamı | Ana sayfada aşağı kayan yeşil nabızlar beğenildi. Sayfanın daha aşağısına da taşınsın mı? Göz yorgunluğu/okunabilirlik riski değerlendirilmeli (yoğunluk/opaklık ayarı, scrim, reduced-motion). |
+
+## C. MASTER_PROMPT v2 §8 — Bekleyen İşler
+
+| # | Konu | Durum |
+|---|------|-------|
+| C1 | Sosyal medya gerçek profil linkleri (Instagram/X/LinkedIn) | Şu an `#` placeholder — gerçek linkler bekleniyor. |
+| C2 | Weekend demo ("no 36") | Kullanıcı veri verince ilgili yere konacak. |
+| C3 | AR/DE/ES gerçek çevirileri | ✅ Tamamlandı (son commit'ler) — doğrulanması faydalı. |
+| C4 | Gerçek metrikler / vaka verileri | Sektör + vaka metrikleri "öngörü/örnek" placeholder — gerçek müşteri verisi bekleniyor. |
+| C5 | Foruma ikinci+ içerikler / gerçek backend | Şu an statik; istenirse backend. |
+| C6 | Bunker OS üretilmiş görseller (fal.ai/Gemini) | Şu an stilize SVG/kod görseller. |
+| C7 | Chatbot'u "book a call" formuna/akışına bağlama | Henüz bağlı değil. |
+
+## D. Teknik
+
+| # | Konu | Notlar |
+|---|------|--------|
+| D1 | Test altyapısı yok | Projede hiç test yok; kümülatif test ilkesi (ILKELER) için sıfırdan kurulum gerek. |
+| D2 | Performans bütçesi doğrulaması | Lighthouse ≥95 perf / ≥100 a11y, LCP < 2.5s hedefleri ölçülmeli (revize sonrası regresyon kontrolü). |
+
+## E. Yeni Entegrasyonlar
+
+| # | Konu | Notlar |
+|---|------|--------|
+| E1 | Umami analytics (self-hosted) | Site trafiğini ölçmek için `umami.kiwiailab.com` script'i html/head layout'una eklenecek. Kullanıcı onayladı, "sonra ekle" dedi. Tam spec (kod + değerler + uyarılar + uygulama notu): `docs/UMAMI-ANALYTICS.md`. **Kritik:** canlıda gerçekten saydığını gözle doğrula. Modül: M6. |
+
+---
+
+**Son Güncelleme:** 2026-07-02 — discuss-phase 10: A1 + A3 Faz 10'a (v0.3 görsel cila) damgalandı; B1 + SEO redirect henüz atanmadı (ayrı fazlar).

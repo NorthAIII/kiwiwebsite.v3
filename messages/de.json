@@ -18,7 +18,7 @@
     "lineTwo": "Dann automatisieren wir es.",
     "sub": "Wir finden, wo wiederkehrende Arbeit Ihr Team ausbremst — Routineaufgaben, Nachrichten, Freigabeketten — und verbinden sie mit Automatisierung, die Sie messen können.",
     "ctaPrimary": "Kostenloses Erstgespräch buchen",
-    "ctaSecondary": "Live ansehen",
+    "ctaSecondary": "Funktionierende Beispiele ansehen",
     "scroll": "Scrollen",
     "stats": {
       "liveLabel": "Jetzt live",
@@ -27,28 +27,29 @@
       "crewOsLabel": "Betriebsebene"
     }
   },
-  "proof": {
-    "label": "Ergebnisse, die wir aufbauen",
-    "note": "Ehrliche Platzhalter, bis echte Kundendaten vorliegen."
-  },
   "how": {
     "label": "So funktioniert's",
-    "title": "Drei Schritte, ein laufendes System.",
+    "title": "Vier Schritte, ein laufendes System.",
     "steps": {
-      "listen": {
+      "analyze": {
         "n": "01",
         "title": "Analysieren",
-        "body": "Wir bilden ab, wie Ihr Betrieb wirklich läuft — jede wiederkehrende Aufgabe, Nachricht und Freigabe — nicht, wie es das Organigramm behauptet."
+        "body": "Wir bilden ab, wie Ihr Betrieb wirklich läuft — nicht, wie es das Organigramm behauptet, sondern wie es tatsächlich ist — und finden, wo Arbeit versickert: von Hand wiederholte Schritte, verpasste Nachfassaktionen, Stunden, die das Verschieben von Daten zwischen Tools frisst."
       },
-      "find": {
+      "design": {
         "n": "02",
-        "title": "Erkennen",
-        "body": "Wir finden, wo Arbeit verloren geht: die manuell wiederholten Schritte, die liegen gebliebenen Follow-ups, die Stunden, die das Verschieben von Daten zwischen Tools kostet."
+        "title": "Entwerfen",
+        "body": "Wir entscheiden gemeinsam, was sich zu automatisieren lohnt, und entwerfen die Lösung Schritt für Schritt: welcher Ablauf, welcher Kanal, welche Freigabekette."
       },
       "automate": {
         "n": "03",
         "title": "Automatisieren",
-        "body": "Wir verbinden diese Schritte mit Automatisierung, die 7/24 in Crew OS läuft — und liefern Ihnen die Zahlen, damit Sie den Gewinn messen können."
+        "body": "Wir verbinden den entworfenen Ablauf mit Automatisierung, die 7/24 in Crew OS läuft."
+      },
+      "report": {
+        "n": "04",
+        "title": "Berichten",
+        "body": "Sie sehen in Zahlen, was jeder Ablauf einbringt — der Gewinn wird nicht angenommen, sondern gemessen."
       }
     }
   },
@@ -63,8 +64,8 @@
     "items": {
       "gyms": {
         "name": "Fitnessstudios",
-        "automation": "Fitnessstudio-Managementsoftware",
-        "body": "Mitgliedschaften, Zahlungen, Check-ins, Kurs- und PT-Planung, automatische Erinnerungen und Mitglieder-Rückgewinnung — alles in einem Panel. Eine umfassende, branchenspezifische Management-Plattform.",
+        "automation": "Das abwandernde Mitglied zurückgewinnen",
+        "body": "Wenn ein Mitglied still und leise wegzubleiben beginnt, fällt es auf; ein passendes persönliches Angebot und ein PT-Termin gehen per WhatsApp raus — die Rückgewinnung wird nicht dem Zufall überlassen, sondern einzeln nachverfolgt.",
         "flow": {
           "trigger": "Ein Mitglied war 30 Tage nicht da",
           "action": "Ein passendes Angebot und ein PT-Termin gehen per WhatsApp raus",
@@ -237,28 +238,6 @@
       "excerpt": "Ein menschlicher SDR kostet $110,000+/Jahr; AI-SDR-Tools versprechen ähnliche Arbeit 7/24 zu einem Bruchteil der Kosten. Wir haben die führenden Plattformen, ihre Preismodelle und realistische Ergebnisse zusammengetragen.",
       "cta": "Artikel lesen",
       "readingTime": "8 Min. Lesezeit"
-    },
-    "articles": {
-      "one": {
-        "title": "Unsere WhatsApp-Freigabekette von 2 Tagen auf 10 Minuten verkürzt",
-        "tag": "E-Commerce",
-        "readingTime": "5 Min. Lesezeit"
-      },
-      "two": {
-        "title": "Wie wir die No-Shows in der Klinik halbiert haben",
-        "tag": "Klinik",
-        "readingTime": "4 Min. Lesezeit"
-      },
-      "three": {
-        "title": "Ihren ersten Flow in Crew OS bauen",
-        "tag": "Erste Schritte",
-        "readingTime": "6 Min. Lesezeit"
-      },
-      "four": {
-        "title": "Welche Arbeit sich zu automatisieren lohnt — und welche nicht?",
-        "tag": "Strategie",
-        "readingTime": "7 Min. Lesezeit"
-      }
     },
     "featured2": {
       "kicker": "Neu · News",

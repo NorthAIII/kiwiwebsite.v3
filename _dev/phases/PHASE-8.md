@@ -1,0 +1,240 @@
+# Phase 8: v0.2 Versiyon-Sonu Teknik Borç Kapatma (alt-sayfa a11y + text-pulse süpürmesi)
+
+**Durum:** 🔄 Devam ediyor
+
+<!-- Bu doküman faza girince (discuss-phase) oluşur; durum 🔄 ile başlar. Henüz girilmemiş fazların dokümanı/numarası olmaz — PHASES.md → Sıradaki Fazlar'da numarasız konu olarak durur. -->
+<!-- KURAL: Bu doküman tek-okunabilir kalmalı (CLAUDE.md → Boyut ve Bölünme). Bir bölüm büyüyüp kırmızı çizgiye (~20k token) yaklaşırsa faz HÂLÂ AKTİFKEN `PHASE-8-<slug>.md`'ye bölünür — parent'ta self-yeten özet + pointer kalır, içerik taşınıp silinir, parent o fazın mini-index'i olur. Tamamlandıktan (✅) sonra bölme yasaktır; verify-phase ve review-phase fazı dondurmadan önce boyutu kontrol eder. -->
+
+---
+
+## Genel Bilgiler
+
+**Amaç:** v0.2'nin **versiyon-sonu teknik borç kapatma fazı** (içerik fazları 4-7 tamamlandı → `içerik_fazları` → `teknik_borç` geçişi). Birikmiş sahipli borcun çekirdeği: **alt-sayfa erişilebilirliği** hiç derin denetlenmedi (Faz 4→5→6→7 boyunca ana sayfa a11y=100 kilitlenirken alt sayfalar "sonraki faza" bırakıldı). Bu faz o borcu kapatır: 5 alt sayfayı ana sayfayla **aynı a11y çıtasına** çeker (5 dil, AR RTL dahil derin), ana sayfada yapılan `--color-pulse-ink` token swap'ini alt sayfalardaki `text-pulse` ink-panel kullanımlarına yayar (dark-inversion süpürmesi), ve düzeltilen her alt sayfayı Faz 5 harness'ine **kümülatif a11y regresyon tohumu + CI** ile bağlar. Marka & Craft üst ekseni (Faz 4 disiplini) korunur; perf/i18n/ana-sayfa-a11y guardrail'leri regresyonsuz.
+
+**Milestone:** *(Faz 4-7 dersi: teknik borç fazı da "ölç + doğrula + kümülatif kilitle" çerçevesinde yazılır — yeşil sayılmadan önce fail-on-regression gösterilir.)*
+1. **5 alt sayfada a11y çıtası karşılandı** (`/bunker-os`, `/spor-salonu-yazilimi`, `/vaka-calismalari`, `/bulten/ai-sdr-araclari`, `/bulten/claude-opus-4-8-fable-5`): her sayfa Lighthouse a11y=**100 çift-tema** + `@axe-core/playwright` **WCAG-AA 0 ihlal** (light+dark), yerleşik ölçüm metodolojisiyle (`docs/perf/README.md`) kaydedildi.
+2. **5 dil derin doğrulandı** — TR (kaynak) + AR (RTL, asıl fark) her sayfada zorunlu derin; EN/DE/ES kapsandı (yapısal olarak TR ile aynı, kontrast/markup dil-bağımsız). AR'de `dir=rtl` + 0 `MISSING_MESSAGE` + logical prop bütünlüğü teyit.
+3. **`text-pulse` ink-panel dark-inversion süpürüldü** — alt sayfalardaki `text-pulse` ink-panel kullanımları `--color-pulse-ink` adaptif token'a geçti (light birebir / dark okunur); a11y çıtasının parçası, craft korunur.
+4. **Kümülatif harness genişledi** — düzeltilen her alt sayfa için Playwright/axe a11y regresyon tohumu eklendi + CI'da otomatik korunuyor (fail-on-regression kanıtlı). Faz 4 a11y=100 gibi elle-korunur değil, artık otomatik.
+5. **Guardrail'ler regresyonsuz** — ana sayfa a11y=100 çift-tema · perf korunan taban (mobil 90/LCP 3164ms, masaüstü 100, CLS≈0) · i18n 5-dil parite (yeni anahtar eklenirse 5 dil eşzamanlı) · CLS=0.
+6. **Marka & Craft korundu** — alt-sayfa fix'leri de imza/craft'ı bozmadan (bağlam-özel, token tek-kaynak, gözle onay); sıfır görsel regresyon.
+
+### Feature Listesi
+
+(MODULE-MAP `— v0.2 versiyon-sonu teknik borç iş birimleri (Faz 8) —` + `modules/M1-M4, M6` referansı. Sahipli borç kaynağı: Faz 4→5→6→7 retrospektifleri "Sonraki Faz İçin Öneriler".)
+
+| Feature | Modül | Açıklama |
+|---------|-------|----------|
+| TD4: `text-pulse` ink-panel dark-inversion süpürmesi | M1 (+M2/M3) | Ana sayfadaki `--color-pulse-ink` token swap'ini alt sayfalardaki `text-pulse` ink-panel kullanımlarına yay (dark 1.22 → okunur); dar/mekanik, bilinen fix |
+| TD5: Alt-sayfa derin a11y denetimi | M2 (+M1/M3/M4) | 5 alt sayfa, 5 dil (AR RTL derin), ana sayfa çıtası (Lighthouse a11y=100 çift-tema + axe WCAG-AA 0 light+dark); sayfa-özel bileşenler (bunker-os/gym/forum) |
+| TD6: Alt-sayfa a11y kümülatif regresyon tohumu + CI | M6 (+M1-M3) | Düzeltilen her alt sayfa için Playwright/axe tohumu (Faz 5 harness genişletme) → CI otomatik korur |
+
+---
+
+## Kapsam Tartışması
+
+> Bu bölüm `/devflow:discuss-phase 8` oturumunda dolduruldu (2026-07-01).
+
+### Alınan Kararlar
+
+- **Faz tipi = v0.2 versiyon-sonu teknik borç kapatma.** Versiyon Sonu Durumu: `içerik_fazları` → **`teknik_borç`** (bu fazın birincil geçiş sorumluluğu). v0.2 içerik fazları (4 a11y, 5 test altyapısı, 6 mobil perf, 7 Umami) tamamlandı; E1 🟡 (canlı +1 v0.2 production release'e ertelendi — içerik açığı değil), P2 ❌ (craft-gate iptal). Teknik borç, dört fazın retrospektiflerinden **sistematik** toplandı.
+- **Kapsam = TB-A (text-pulse süpürmesi) + TB-B (alt-sayfa derin a11y), geniş tutuldu** (kullanıcı kararı 2026-07-01). Kullanıcı "geniş tut (alt-sayfa a11y dahil)" seçti — v0.2'yi alt sayfalar da temizlenmiş halde kapatmak için. En çok tekrarlanan sahipli borç (Faz 4→5→6→7 devri: "alt-sayfa derin a11y + `text-pulse` süpürmesi") bu fazda kapatılır.
+- **Denetim çıtası = ana sayfayla aynı** (kullanıcı kararı). Her alt sayfa: Lighthouse a11y=100 çift-tema + axe WCAG-AA 0 ihlal (light+dark). Gerekçe: v0.2 a11y'yi tutarlı kapatmak — ana sayfa çıtası (Faz 4) alt sayfalara aynı sertlikte taşınır; "yalnız axe sweep" (daha gevşek) reddedildi.
+- **Diller = 5'i de derin denetle, AR RTL dahil** (kullanıcı kararı). Kullanıcı önce "EN+TR'ye daralt, AR zorluyor" diye sordu; masaya konan gerçekler (5 dil zaten bitmiş+canlı; mevcut dil stratejisi non-TR yükünü zaten minimize ediyor; AR'nin asıl maliyeti RTL) sonrası **5 dili korumayı ve derin denetlemeyi** seçti. Vizyon değişmedi. Pratik matris: TR (kaynak) + AR (RTL, asıl fark) her sayfada zorunlu derin; EN/DE/ES kapsanır (kontrast/markup dil-bağımsız). **Strateji notu:** "AR'yi üründen çıkaralım mı" vizyon/PRD kararıdır — AR yükü sürerse `prd-review`'da (versiyon-sonu, canlı/SEO etkisiyle) yeniden değerlendirilir; bu faz karara bağlamaz.
+- **Kümülatif tohum + CI = evet** (kullanıcı kararı). Düzeltilen her alt sayfa için Playwright/axe a11y regresyon tohumu → CI otomatik korur. Gerekçe: ILKELER "kümülatif test altyapısı" + Faz 5 harness'i tam bunun için; Faz 4 a11y=100'ün elle-korunur olması bu fazda otomatike bağlanır. Kazanım kalıcılaşır (rot önlenir).
+- **TB-C (npm audit) dışarıda** (kullanıcı kararı). 2 moderate uyarı yalnız dev-tooling zinciri (vite→transitive postcss), production runtime'a gitmez; `--force` breaking riski. Bilinçli açık, ayrı ele alınır.
+
+### Kullanıcı Tercihleri
+
+- **Geniş tut** (2026-07-01): alt-sayfa a11y dahil; v0.2 alt sayfalar da temizlenmiş kapanır.
+- **5 dili de derin denetle** (2026-07-01): AR RTL dahil; dil setini üründen çıkarma reddedildi (vizyon korunur), strateji sorusu prd-review'a bırakıldı.
+- **Ana sayfayla aynı çıta** (2026-07-01): her alt sayfa a11y=100 çift-tema + axe WCAG-AA 0.
+- **Kümülatif tohum + CI ekle** (2026-07-01): düzeltilen alt sayfalar CI'da otomatik korunur.
+- **npm audit dışarıda** (2026-07-01): TB-C ayrı/bilinçli açık.
+
+### Sahipsiz Alan & Çapraz Konular
+
+- **Sayfa-özel bileşenler asıl bilinmeyen.** Global bileşenler (Nav/Footer/dil-switcher) Faz 4'te düzeldi ve tüm sayfalara yayıldı → alt sayfalarda **sayfa-özel** bileşenler (`components/bunker-os/`, `gym/`, `forum/`) derin denetlenir. `text-pulse` ink-panel deseni (TB-A) muhtemelen bu bileşenlerde; TB-A denetimin bir bulgusu ama bilinen/kesin olduğu için ayrı iş birimi.
+- **Craft koruması (Faz 4 disiplini, üst eksen):** alt-sayfa a11y fix'leri de imza/marka-yeşilini global düzleştirmez; bağlam-özel + token tek-kaynak (`--color-ink-faint`/`--color-pulse-ink` zaten global) + gözle onay. `aria-hidden ≠ color-contrast muafiyeti` (memory) ve `::before content:attr()` deseni geçerli.
+- **Ölçüm disiplini (memory):** a11y ölçümünde tema tuzağı (light+dark iki koşu; `bg-ink` panelleri dark'ta krem'e döner) + locale tuzağı (`NEXT_LOCALE` cookie; alt sayfalar prefixli olduğu için ana sayfadan farklı — `/en/...` vs `/spor-salonu-yazilimi`) + reveal `opacity:0` (reducedMotion + scroll) + Lighthouse-altküme vs ham axe (WCAG etiketleri) — hepsi research/plan'de teyit.
+- **Guardrail:** global token değişirse ana sayfa a11y=100'ü de etkiler → CI a11y job otomatik yakalar; perf tabanı korunur (alt-sayfa perf **optimize edilmez**, yalnız regresyonsuz).
+
+### Kapsam Dışı
+
+- **TB-C: npm audit uyarıları** (2 moderate dev-only) — bilinçli açık, ayrı ele alınır.
+- **Brief mobil perf açığı** (perf 90/LCP 3164ms vs ≥95/<2.5s) — kök neden CPU-bound WebGL, P2 craft-gate'te iptal; nihai doğrulama gerçek-cihaz/Vercel field gerektirir (metodolojik duvar). Lab teknik-borç fazında kapatılamaz — bilinçli/kayıtlı açık (DECISIONS 2026-06-30).
+- **Umami canlı +1 (S9-10)** — v0.2 production release aksiyonu (tüm revizeyi ilk kez `main`'e almak), teknik borç değil.
+- **Alt-sayfa PERF optimizasyonu** — bu faz yalnız a11y; alt-sayfa perf yalnız **regresyonsuz** tutulur, optimize edilmez (perf tabanı ana sayfa-birincil).
+- **Dil setini değiştirme / AR'yi üründen çıkarma** — vizyon/PRD kararı; prd-review'a bırakıldı (vizyon korunur).
+- **Alakasız ertelenmiş kalemler** — `/bunker-os`→`/crew-os` redirect (M6, görsel/SEO versiyonu), `/forum`→404, A1 logo hizalama, A3 CTA affordance/scroll göstergesi (v0.1 backlog görsel/içerik) — bu fazda açılmaz.
+
+---
+
+## Araştırma Bulguları
+
+> Bu bölüm `/devflow:research-phase 8` oturumunda dolduruldu (2026-07-01). Araştırma **kod taramasıyla** somutlaştırıldı (grep + ölçüm harness'i incelemesi); genel-geçer bilgi değil, bu repo'nun gerçek yüzeyi.
+
+### Bulgu 0 — TD4 premisi gerçekle örtüşmüyor (kritik, kapsamı değiştirir)
+
+Kapsam tartışması TD4'ü "alt sayfalardaki `text-pulse` ink-panel kullanımlarını `--color-pulse-ink`'e yay" diye kurmuştu; kod taraması bu ön-kabulü **çürüttü**:
+
+- **Ham `text-pulse`** (text) tüm `src/` içinde **tek yerde**: `components/bunker-os/BunkerShowcase.tsx:85` — ve o bir **`aria-hidden` dekoratif SVG ikonu** (text-node değil). axe `color-contrast` kuralı text-node'u hedefler → SVG grafiği büyük olasılıkla **flag'lemez** (memory: "SVG `<text>` incomplete verir"; burada `<text>` bile yok, ikon path'i).
+- Diğer `text-pulse*` eşleşmeleri zaten adaptif **`text-pulse-ink`** ve **ana sayfada** (`SectorSolutions.tsx:131,143` — Faz 4 kazanımı). Alt sayfalarda **`text-pulse-ink`'e çevrilecek ham `text-pulse` text yok**.
+- `--color-pulse-ink` token'ı Faz 4'te global tanımlı (`globals.css:17` light `#6fe36f` / `globals.css:42` dark `#1f7a3d`) — süpürülecek alt-sayfa hedefi esasen boş.
+
+**Karar (kullanıcı, 2026-07-01): ölçüm-önce, TD5'e katla.** TD4 ayrı "bilinen süpürme" task'ı olarak açılmaz; TD5 derin axe denetimi hangi kontrast ihlallerini teyit ederse onlar düzeltilir. Gerekçe: memory disiplini "gerçek axe koşusu olmadan pre-fix yapma" + varsayım sorgulama (CLAUDE.md #5). Plan-phase task yapısını buna göre kurar.
+
+### Bulgu 1 — Alt-sayfaların gerçek a11y risk yüzeyi (TD5'in asıl işi)
+
+Kontrast riski taşıyan gerçek desenler, özellikle **dark-tema panel-inversiyonu** (`bg-ink`→krem, `text-canvas`→ink — memory `a11y-olcum-tema-tuzagi` §3):
+
+- **`text-canvas/45`, `/50`, `/60`, `/85`** — `bg-ink` paneller içinde düşük-opaklık metin (`BunkerShowcase.tsx:78,96,177,194,203`). Dark'ta krem üstünde düşük-opaklık ink → v0.1 ana-sayfa `text-canvas/40`=2.52 fail'inin birebir analogu. **En yüksek olasılıklı ihlal kaynağı.** (`/15` line 195 = ayraç barı, text değil → muaf.)
+- **`text-green/30`** (`BunkerShowcase.tsx:136`) — "nasıl çalışır" adım numaraları, group-hover'da `text-green`'e çıkar; dinlenme halinde düşük-kontrast dekoratif. v0.1 `#8af28a`=1.22 adım-no analogu.
+- **`text-canvas/40`-ailesi teyit gerektirir** — memory "salt punctuation komşu run'a dahil olup ölçümde görünmeyebilir; fix gerekip gerekmediğini gerçek axe koşusunda teyit et." → grep listesi aday, axe koşusu hakem.
+
+### Bulgu 2 — Faz 4 global kazanımları alt sayfalara zaten yayıldı (yüzeyi daraltır)
+
+- `--color-ink-faint` Faz 4'te tune edildi (`globals.css:11` `#67695f` / `globals.css:38` `#8a8c80`); v0.1'de `#7d8073`=4.39 (fail) idi. Alt sayfalarda yaygın `text-ink-faint` (`BunkerShowcase`, `Gym`, `CaseStudies`, article'lar) bu global fix'i **miras alır** → ayrıca düzeltilmesi gerekmez (axe teyidiyle).
+- **PageHeader paylaşımlı** (`components/PageHeader.tsx:26-27`): Faz 4'te düzelen `LanguageSwitcher` + `ThemeToggle`'ı kullanır → alt-sayfa header a11y'si (label-content-name-mismatch) zaten temiz.
+- Alt sayfalarda **`<dl>`/`<dt>`/`<dd>` yok** (grep teyitli) → v0.1 hero `definition-list`/`dlitem` sorunları alt sayfalarda **ilgisiz**.
+
+### Değerlendirilen Yaklaşımlar (ölçüm & harness)
+
+- **Yaklaşım A — Mevcut harness'i genişlet (`tests/e2e/`):** `home-a11y.spec.ts` desenini (light+dark döngü, `reducedMotion:'reduce'`, `scrollThrough`, `WCAG_TAGS` alt-küme, `NEXT_LOCALE` cookie) parametrik olarak alt sayfalara taşı. Artı: kanıtlı disiplin, `playwright.config.ts` zaten build+start (:3000) yapıyor, kümülatif ilkeye (ILKELER) birebir uyar. Eksi: yok.
+- **Yaklaşım B — Ayrı yeni test kurgusu:** Sıfırdan spec/harness. Artı: yok. Eksi: kanıtlı ölçüm disiplinini (tema/locale/reveal tuzakları) yeniden keşfetme riski.
+- **Seçilen: A.** Faz 5 seed'i tam bunun için kuruldu (TESTING.md "yeni sayfaların a11y'sini buraya ekleyerek alt-sayfa kapsamı kümülatif büyür"). Craft/perf'e dokunmaz, yalnız güvence ekler.
+
+### Kullanılacak Araçlar/Kütüphaneler
+
+Yeni bağımlılık **yok** (paket ekleme onay gerektirir — Dokunulmazlar). Mevcut zincir yeterli:
+- **`@playwright/test` + `@axe-core/playwright`** (repoda kurulu, `tests/e2e/`) — CI-korunan WCAG-AA 0-ihlal tohumu (TD6).
+- **Lighthouse 13.3.0** (npx-cache, `package.json`'a EKLENMEZ — perf/README metodolojisi) — a11y=100 çift-tema skor gate'i (manuel verify ölçümü, CI'da değil).
+- **Chrome 150 + SwiftShader flag'leri** (`--headless=new --no-sandbox --disable-dev-shm-usage --enable-unsafe-swiftshader`) — alt-sayfa hero'ları da LivingFlow kullanır → flag'ler alt sayfalarda da şart (memory `perf-olcum-devcontainer-kurulumu`).
+
+### Dikkat Edilecekler
+
+- **Locale tuzağı alt sayfalarda ana sayfadan FARKLI** (as-needed prefix). TR alt sayfa = **prefixsiz** yol (`/spor-salonu-yazilimi`, `/vaka-calismalari`, `/bunker-os`, `/bulten/ai-sdr-araclari`, `/bulten/claude-opus-4-8-fable-5`) → next-intl `localeDetection` yine `/en/...`'e yönlendirir, **`NEXT_LOCALE=tr` cookie şart**. EN/AR/DE/ES = açık-prefixli yol (`/ar/spor-salonu-yazilimi`) → cookie'siz doğrudan ölçülür. **Kaynak: repoda-tanımlı** route yolları (`src/app/[locale]/*/page.tsx`), cookie mekanizması runtime (next-intl, memory'de kanıtlı). (memory: locale tuzağı.)
+- **Tema tuzağı (pazarlık dışı):** her sayfa **light+dark iki koşu**. Asıl risk dark-panel inversiyonu (Bulgu 1). Lighthouse kanonik koşu dark render eder; axe için Playwright `emulateMedia({colorScheme})`. (memory: tema tuzağı.)
+- **Reveal tuzağı:** alt sayfalar da `data-reveal`/`Reveal` (GSAP `opacity:0`) kullanır → axe'ta `reducedMotion:'reduce'` + uçtan-uca scroll şart, yoksa alt-fold içerik taranmaz (yanlış yeşil). Mevcut `scrollThrough` yeniden kullanılır.
+- **AR RTL derinliği:** `/ar/...` her sayfada `dir="rtl"` + **0 `MISSING_MESSAGE`** (build log) + logical prop bütünlüğü. AR'nin asıl maliyeti kontrast değil (dil-bağımsız), **RTL layout** — gözle + axe teyidi.
+- **aria-hidden ≠ color-contrast muafiyeti:** dekoratif düşük-kontrast öğeye `aria-hidden` eklemek axe'tan çıkarmaz (memory kanıtlı). Görsel-koruyan doğru fix: `::before content:attr()` pseudo-element veya kontrast-geçen token — SVG ikon (text-node değil) zaten kapsam dışı.
+- **Guardrail regresyonu:** global token değişirse (örn. `text-canvas/NN` yerine token) **ana sayfa a11y=100'ü de etkiler** → CI a11y job otomatik yakalar. Alt-sayfa **perf optimize edilmez**, yalnız regresyonsuz (perf tabanı ana-sayfa birincil).
+- **Ölçüm ortamı:** taze devcontainer'da node/Chrome yoksa kullanıcı onayıyla kur (memory `perf-olcum-devcontainer-kurulumu`); host-yük gözlemi (`/proc/loadavg`) + fresh-prod-serve + listening-PID disiplini (a11y/CLS ortam-bağımsız, güvenilir).
+
+### Teknik Kararlar
+
+- **TD4 ayrı task DEĞİL → TD5 denetiminin bulgusu** (Bulgu 0; kullanıcı kararı). Plan-phase, kontrast fix'lerini TD5 axe-teyitli bulgulardan türetir; `--color-pulse-ink`/pseudo-element/token desenleri hazır araç.
+- **CI a11y tohumu = 5 dil × light+dark her alt sayfada** (kullanıcı kararı 2026-07-01). Discuss'taki "TR+AR zorunlu, EN/DE/ES kapsanır" pratik matrisinden **daha geniş**: kullanıcı maksimum kapsamı seçti → CI'da 5 sayfa × 5 dil × 2 tema. Plan-phase koşu sayısını (CI süresi) ve parametrik spec yapısını buna göre boyutlandırır; kontrast dil-bağımsız olduğu için ek sinyal düşük ama kullanıcı tam güvence istedi (kalıcılık önceliği, ILKELER). Lighthouse a11y=100 skor gate'i **manuel verify ölçümü** kalır (CI Playwright/axe ile ayrık — mevcut split korunur).
+- **a11y çıtası = ana sayfayla aynı** (discuss): her alt sayfa Lighthouse a11y=100 çift-tema **+** axe WCAG-AA 0 ihlal (light+dark). İki ayrı sinyal, ikisi de gate.
+- **Yeni i18n anahtarı beklenmiyor** — fix'ler CSS token/renk + markup/aria düzeyinde (Faz 4 deseni); yeni anahtar gerekirse 5 dile eşzamanlı (parite testi otomatik kapsar). Yalnız değer değişimi olursa TR tek-kaynak + versiyon-sınırı geçerli.
+
+---
+
+## Task Listesi
+
+> Bu bölüm `/devflow:plan-phase 8` oturumunda doldurulur.
+
+<!-- KURAL: Task Listesi yalnızca özet tablodur (#, Task, Durum, kısa açıklama). Task'ın icra detayı / oturum kaydı / çalışma notu buraya değil `tasks/TASK-N.md`'ye yazılır — bu bölüme sızan detay şişmedir, temizlenir (bölme değil). -->
+
+| # | Task | Durum | Açıklama |
+|---|------|-------|----------|
+| 8.01 | TASK-8.01 | ✅ Tamamlandı | Parametrik alt-sayfa a11y harness'i (helper çıkarımı + subpages spec) + 5 sayfa baseline axe envanteri (ölçüm-önce, fix yok, mühür yok) |
+| 8.02 | TASK-8.02 | ✅ Tamamlandı | `/bunker-os` derin a11y fix + mühür — 3 desen (text-green/30 adım no → ::before, text-canvas/45+50 → /65); 5 dil×2 tema 10 test 0 ihlal; TD4 milestone kapandı |
+| 8.03 | TASK-8.03 | ✅ Tamamlandı | `/spor-salonu-yazilimi` (Alpfit) a11y teyit + mühür — baseline 0 ihlal doğrulandı, kod fix yok; 10 test 0 ihlal + AR RTL teyit |
+| 8.04 | TASK-8.04 | ✅ Tamamlandı | `/vaka-calismalari` a11y teyit + mühür — baseline 0 ihlal doğrulandı, kod fix yok; 10 test 0 ihlal + AR RTL teyit (32 test regresyonsuz) |
+| 8.05 | TASK-8.05 | ✅ Tamamlandı | `/bulten` 2 makale (AiSdr + Claude) a11y teyit + mühür — baseline 0 ihlal, kontrast fix yok; ArticleClaude tablosunda RTL craft fix (physical→logical: `ml-2`→`ms-2`, `text-right`→`text-end`); 5 alt sayfa mühürü tamam (52 e2e test) |
+| 8.06 | TASK-8.06 | ✅ Tamamlandı | **verify-phase 8 UAT #3 bulgusu düzeltildi:** 2 bülten makale bileşenine (`ArticleAiSdr`/`ArticleClaude`) stillendirmesiz `<main>` landmark → Lighthouse `landmark-one-main` geçti, a11y 98→100 çift-tema (milestone #1 tamam); sıfır görsel değişim (article box birebir, TR/AR screenshot), 52 e2e regresyonsuz |
+
+**Durum simgeleri:** ⬜ Bekliyor | 🔄 Devam ediyor | ⏸️ Duraklatıldı | ✅ Tamamlandı | 🔴 Bloke | ❌ İptal
+
+> **Plan notları (plan-phase 8):**
+> - **İki gate, iki yer:** her task'ın enforce ettiği gate = **axe WCAG-AA 0 ihlal** (CI-korunan tohum, `subpages-a11y.spec.ts`). **Lighthouse a11y=100 çift-tema** skor gate'i (milestone #1) research kararı gereği **manuel verify ölçümü** kalır → 5 sayfa çift-tema sweep'i **verify-phase**'de yapılır (task değil). verify-plan/verify-phase bunu milestone'dan alır.
+> - **TD4 ayrı task değil** (Bulgu 0): text-pulse/dark-inversion süpürmesi 8.02'ye (BunkerShowcase — tek ham `text-pulse` SVG + tüm `text-canvas/NN` inversiyonları orada) katlandı.
+> - **Ölçüm-önce yapı:** 8.01 audit+harness (fix yok, mühür yok) → 8.02–8.05 sayfa-başı fix/teyit + mühür. Düşük-risk sayfalar (8.03/8.04/8.05) baseline'da 0 ihlal verirse "yalnız mühürle + AR RTL teyit" olur (kod fix yok) — beklenen, sorun değil.
+> - **CI genişlemesi kod gerektirmez:** `ci.yml` a11y job zaten `npm run test:e2e` koşar → `subpages-a11y.spec.ts`'e sayfa mühürlemek TD6 CI korumasını otomatik verir (yeni workflow dosyası yok). Tam matris: 5 sayfa × 5 dil × 2 tema = 50 alt-sayfa testi.
+
+---
+
+## UAT Sonuçları
+
+> Bu bölüm `/devflow:verify-phase 8` oturumunda dolduruldu; TASK-8.06 sonrası **yeniden koşuldu (2026-07-02)** — bütün kontroller (otomatik + UAT) baştan yapıldı. Önceki koşumda (2026-07-01) kalan UAT #3 (bülten `landmark-one-main`) bu koşumda **geçti**.
+
+**Tarih:** 2026-07-02 (yeniden koşum)
+**Toplam Senaryo:** 12 | **Geçen:** 12 | **Kalan:** 0
+
+**Otomatik kontroller (Adım 1):** CI (HEAD `d3adcb9`) `fast`+`a11y` job'ları **success** ✅ (REST API job-seviyesi teyit) · security-review **temiz** (0 bulgu — Faz 8 kaynak değişiklikleri sunum/a11y katmanı; `dangerouslySetInnerHTML`/`eval`/`innerHTML` yok, dinamik değerler build-time i18n `t()` = React auto-escape; yeni saldırı yüzeyi yok) ✅ · npm audit bilinçle kapsam dışı (TB-C).
+
+| # | Senaryo | Sonuç | Not |
+|---|---------|-------|-----|
+| 1 | CI otomatik doğrulama — HEAD commit CI `fast`+`a11y` job success | ✅ Geçti | HEAD `d3adcb9`: iki job da `success` (REST API job-seviyesi teyit) |
+| 2 | axe WCAG-AA 0 ihlal tam matris — `test:e2e` 52 test (5 alt sayfa×5 dil×2 tema=50 + home 2) yeşil | ✅ Geçti | 52/52 (bir tur `vaka-calismalari en-light` axe `analyze()` 30s **timeout** verdi — aşırı host-yükü altında (load avg 53); düşük yükte tek koşumda **geçti** 0 ihlal → ortam kaynaklı false-negative, gerçek regresyon değil, memory disiplini teyitli) |
+| 3 | Lighthouse a11y=100 çift-tema — 5 alt sayfa (manuel verify skor gate, milestone #1) | ✅ Geçti | **5 alt sayfa a11y=100** (canonical dark): ai-sdr=100, claude=100 (önceki 98→100, `landmark-one-main` düzeldi: her sayfa tam 1 `<main>`, 0 düşen audit), bunker-os/spor-salonu/vaka=100. Çift-tema: a11y skoru tema-bağımsız (memory) + axe light+dark 0 (senaryo 2) |
+| 4 | Ana sayfa a11y=100 guardrail regresyonsuz — home light+dark axe 0 + Lighthouse a11y=100 | ✅ Geçti | home Lighthouse a11y=100 (0 düşen audit) + e2e home 2 test 0 ihlal |
+| 5 | AR RTL derinliği — `/ar/<5 sayfa>` `dir="rtl"` (prerender+runtime) + 0 MISSING_MESSAGE | ✅ Geçti | 5 AR prerender HTML `dir="rtl"` ✅ + build 0 MISSING_MESSAGE |
+| 6 | i18n 5-dil parite — Vitest parite yeşil (eksik anahtar=fail); yeni anahtar eklenmedi | ✅ Geçti | Vitest 7 test yeşil (parite + smoke) |
+| 7 | text-pulse/dark-inversion süpürmesi (TD4) — BunkerShowcase dark panel okunur (dark axe 0) | ✅ Geçti | bunker-os dark 5 test 0 ihlal (52/52 içinde) + Lighthouse a11y=100 |
+| 8 | Kümülatif tohum + CI fail-on-regression — kasıtlı ihlal enjekte edilince `subpages-a11y` kırılır (adversarial kanıt) | ✅ Geçti | `text-canvas/65`→`/20` enjekte → bunker-os tr-dark testi `color-contrast` (wcag143, kontrast 1.53 #c5c5bd/#f2f1e8) ile kırıldı (1 failed) → geri alındı, working tree temiz |
+| 9 | Marka & Craft — sıfır görsel regresyon (bülten `<main>` + BunkerShowcase imza) | ✅ Geçti | `<main>` tamamen stilsiz (globals.css'te `main` selektörü yok → grep teyit); article kendi `mx-auto/max-w-2xl` box'ını korur → yapısal olarak sıfır görsel değişim (8.06 saf semantik sarım) |
+| 10 | RTL craft fix (ArticleClaude) — physical→logical; LTR birebir aynı, AR doğru aynalanır | ✅ Geçti | ArticleClaude'da physical prop yok (grep: 0 `ml-/mr-/text-right/text-left`), logical `text-end`×4 + `ms-2`; AR prerender `dir="rtl"` |
+| 11 | Build temiz + guardrail — `next build` temiz; smoke test yeşil | ✅ Geçti | build temiz 0 MISSING_MESSAGE · smoke (Vitest) 7/7 yeşil |
+| 12 | Adversarial: dekoratif öğe ≠ axe muafiyeti — `text-pulse` SVG flag'lenmez; adım-no `::before` görünür ama axe taramaz | ✅ Geçti | e2e 0 ihlal + `text-pulse` `aria-hidden` dekoratif SVG (text-node değil, `BunkerShowcase.tsx:85`) → color-contrast flag'lenmedi |
+
+**Sonuç (Adım 6):** Yeniden koşumda **12/12 geçti**. Önceki koşumun tek bulgusu (UAT #3 — 2 bülten makalesi `landmark-one-main` nedeniyle a11y=98) TASK-8.06 ile kapatıldı: her iki makale bileşeni (`ArticleAiSdr`/`ArticleClaude`) kök `<article>`'ı stilsiz `<main>` ile sarıyor → her sayfada tam 1 `<main>`, Lighthouse a11y=**100** çift-tema (0 düşen audit), sıfır görsel değişim. **Milestone #1 "a11y=100 çift-tema" 5 alt sayfanın tamamında karşılandı.** Düzeltme task'ı gerekmez → **adım=review**.
+
+---
+
+## Retrospektif
+
+> Bu bölüm `/devflow:review-phase 8` oturumunda dolduruldu (2026-07-02).
+
+### Ne İyi Gitti?
+- **Ölç-önce yapı işe yaradı.** 8.01 baseline envanteri (fix yok, mühür yok) → 8.02-8.05 sayfa-başı fix/teyit. 3 alt sayfa (spor-salonu/vaka/bülten) baseline'da 0 ihlal verdi → Faz 4 global kazanımları (`--color-ink-faint` tune, paylaşımlı PageHeader) miras alındı, gereksiz fix yapılmadı.
+- **Research Bulgu 0 boşa fix'i önledi.** Grep, TD4 premisini ("alt sayfalarda `text-pulse` süpürülecek") çürüttü — ham `text-pulse` tek yerde ve dekoratif `aria-hidden` SVG. Kod yazmadan gerçek axe koşusuna bağlandı (memory disiplini: gerçek axe olmadan pre-fix yok), TD5 bulgusuna katlandı.
+- **Memory disiplinleri doğrudan kullanıldı, keşif tekrar edilmedi.** aria-hidden ≠ contrast muafiyeti → adım no `::before content:attr()` deseniyle; tema tuzağı → light+dark iki koşu; locale tuzağı → `NEXT_LOCALE` cookie helper.
+- **Kümülatif mühür deseni CI'yı yeşil tuttu.** `PAGES` boş başladı → fix task'ları sayfa ekledikçe mühürledi; rollout boyunca CI hiç kırılmadı. Harness modüler (`a11y-helpers.ts` tek kaynak, home+subpages paylaşır, kopya kod yok — Modülerlik ekseni).
+- **Fail-on-regression kanıtlandı** (UAT #8): kasıtlı ihlal enjekte → tohum kırıldı → geri alındı. Güvence gerçek, elle-korunur değil.
+
+### Ne Kötü Gitti?
+- **İlk verify `landmark-one-main`'i kaçırdı → TASK-8.06 + re-run gerekti.** Kök neden: CI tohumu axe **WCAG-AA alt-kümesini** enforce eder; `landmark-one-main` bir Lighthouse yapısal/best-practice audit'idir, WCAG-AA'da **yok** → axe tohumu 0 ihlal (yeşil) verirken Lighthouse a11y 98'di (2 bülten sayfası `<main>`'siz). İki-gate tasarımı (CI axe + manuel Lighthouse) tam bunu yakaladı, ama bir sayfayı "bitti" saymadan önce iki gate'i de koşmak daha ucuzdu.
+- **Env-yük timeout'u** bir axe koşusunda (`vaka en-light`, load avg 53) false-negative verdi; düşük yükte re-run geçti. Bilinen memory disiplini (host yükünü `/proc/loadavg` ile gözle) yine geçerli — gerçek regresyon değil.
+
+### Sonraki Faz İçin Öneriler
+- **Sıradaki = senaryo testi fazı** (versiyon-sonu; `teknik_borç` → `senaryo_testi`). Alt-sayfa uçtan-uca senaryo doğrulaması bu harness'i yeniden kullanmalı (`subpages-a11y.spec.ts` + `a11y-helpers.ts`).
+- **Bir sayfayı a11y-mühürlerken iki gate'i de koş.** axe WCAG-AA 0 ihlal ≠ Lighthouse a11y=100 — landmark/region/heading-order WCAG-AA alt-kümesinde değil. "axe yeşil = bitti" varsayma; manuel Lighthouse yapısal koşusunu da al (→ memory Süreç Disiplinleri).
+- **Umami canlı +1 + genel canlı duman testi hâlâ v0.2 production release'e bağlı** — senaryo testi fazı bunu tetiklemez; bilinçli/kayıtlı açık (DECISIONS 2026-07-01).
+
+### Task-Spesifik Teknik Öğrenimler
+<!-- Bu fazdaki task'larda öğrenilen ama proje genelinde geçerli olmayan teknik nüanslar. -->
+- **`landmark-one-main` axe WCAG-AA alt-kümesinde yok.** `@axe-core/playwright` `withTags(['wcag2a','wcag2aa','wcag21a','wcag21aa'])` bu structural/best-practice audit'i taramaz → axe tohumu yeşilken Lighthouse a11y=98 mümkün. İki sinyal ayrık ve tamamlayıcı (skorların birbirini ima etmediği "iki-gate" tam bu yüzden var).
+- **Alt-sayfa `<main>` bileşenden gelir, layout'tan değil.** `[locale]/layout.tsx` sayfayı `<main>` ile sarmaz; her sayfa kendi `<main>`'ini verir (BunkerShowcase/Gym/CaseStudies `<main className="pt-16">`). Article bileşenleri bunu atlamıştı → 8.06 stilsiz `<main>` sarımıyla eşitledi (article kendi `pt-32` box'ını korur, `pt-16` gerekmez → sıfır görsel değişim).
+- **`::before content:attr(data-n)` dekoratif metni axe'tan çıkarır, görünümü korur.** Adım no `text-green/30` text-node'du → `aria-hidden` span + `data-n` + `before:content-[attr(data-n)]`; group-hover renk geçişi `group-hover:before:text-green` ile korundu. Text-node olmadığından axe color-contrast taramaz.
+
+## Kalite Kontrol Sonuçları
+
+> QUALITY.md 8 ekseni sistematik kontrol edildi. Faz yüzeyi dar: 3 kaynak dosyası (`BunkerShowcase.tsx` 3 kontrast + 1 `::before` deseni, `ArticleClaude.tsx` RTL logical + `<main>`, `ArticleAiSdr.tsx` `<main>`) + test harness (`a11y-helpers.ts` çıkarımı, `subpages-a11y.spec.ts` 50 test, `home-a11y.spec.ts` helper'a taşındı). Çekirdek eksenler: **Erişilebilirlik** + **Test Kapsamı** + **Marka & Craft**.
+
+| Eksen | Durum | Not |
+|-------|-------|-----|
+| Marka & Craft (imza) | ✅ | Fix'ler bağlam-özel: dark panel `text-canvas/50`→`/65` (imza yeşili/düzen dokunulmadı), step-no `::before` görünüm+hover birebir korundu, `<main>` tamamen stilsiz (globals.css'te `main` selektörü yok — grep teyit). Sıfır görsel regresyon (UAT #9/#10, TR/AR screenshot). |
+| Erişilebilirlik | ✅ | Fazın çekirdeği: 5 alt sayfa Lighthouse a11y=100 çift-tema + axe WCAG-AA 0 (light+dark, 50 test); `landmark-one-main` düzeldi (her sayfa tam 1 `<main>`); ana sayfa a11y=100 guardrail regresyonsuz. |
+| Güvenlik | ✅ | security-review temiz (0 bulgu); değişiklikler sunum/a11y katmanı — `dangerouslySetInnerHTML`/`eval`/`innerHTML` yok, dinamik değerler build-time i18n `t()` (React auto-escape). Yeni saldırı yüzeyi yok. |
+| Bakım Maliyeti | ✅ | Paylaşımlı `a11y-helpers.ts` (WCAG_TAGS/scrollThrough/gotoLocalized tek kaynak) — home+subpages kopya kod yok; kümülatif mühür deseni (`PAGES` append) belgeli; token-güdümlü fix (hardcode renk yok). |
+| Performans | ✅ | Kod fix'leri CSS opaklık/markup — perf'e değmez. Alt-sayfa perf **optimize edilmez, yalnız regresyonsuz** (scope kararı); ana sayfa perf tabanı (mobil 90/LCP 3164ms, masaüstü 100, CLS≈0) dokunulmadı. |
+| Hata Yönetimi & Degradasyon | ✅ | Yeni failure yüzeyi yok (saf CSS/markup); LivingFlow fallback/chatbot degradasyonu etkilenmedi; reveal/reduced-motion yolu korundu (harness `reducedMotion:'reduce'` ile tarar). |
+| Test Kapsamı | ✅ | 50 yeni alt-sayfa testi (5 sayfa×5 dil×2 tema) CI'a bağlı; fail-on-regression kanıtlı (UAT #8); yeni workflow dosyası gerekmedi (`ci.yml` a11y job zaten `test:e2e` koşar); Vitest 7/7. |
+| Yerelleştirme & RTL | ✅ | Yeni i18n anahtarı yok (parite testi yeşil); ArticleClaude RTL craft fix (physical→logical: `text-right`→`text-end`, `ml-2`→`ms-2`); 5 AR prerender `dir="rtl"` + 0 MISSING_MESSAGE. |
+
+### Kullanıcı Yolculuğu & Boşluk Tespiti
+
+Faz alt sayfaları ana sayfayla **aynı a11y çıtasına** çekti → uçtan uca kullanıcı deneyimi tutarlı; klavye/ekran-okuyucu kullanıcısı için 5 alt sayfa artık ana sayfayla eş. Yeni görünür yüzey/akış eklenmedi (fix'ler kontrast/markup/semantik). Sahipsiz boşluk yok; taşınan bilinçli açıklar sahipli ve kayıtlı: brief mobil perf (gerçek-cihaz duvarı, DECISIONS 2026-06-30), TB-C npm audit (dev-only), Umami canlı +1 (v0.2 production release), `/bunker-os`→`/crew-os` redirect (görsel/SEO versiyonu). Hiçbiri bu fazın kapsamı değil.
+
+## Sonuç
+
+- **Tamamlanma Tarihi:** 2026-07-02
+- **Toplam Task:** 6 (8.01 harness+baseline · 8.02 bunker-os fix+mühür · 8.03 spor-salonu teyit+mühür · 8.04 vaka teyit+mühür · 8.05 bülten teyit+mühür+RTL craft · 8.06 bülten `<main>` landmark)
+- **Notlar:** Milestone 6 kriterin tümü karşılandı; UAT 12/12; 8 kalite ekseni ✅; düzeltme task'ı yok. TD4 premisi grep'le çürütüldü → TD5 axe-bulgusuna katlandı (ölç-önce). İki-gate mühür (CI axe-WCAG tohumu + manuel Lighthouse) `landmark-one-main`'i yakaladı → TASK-8.06. v0.2 versiyon-sonu teknik borç fazı tamam → sırada **senaryo testi fazı** (Versiyon Sonu Durumu `teknik_borç` → `senaryo_testi`).
+
+---
+
+**Oluşturulma:** 2026-07-01
+**Son Güncelleme:** 2026-07-02 — review-phase 8: retrospektif + 8-eksen kalite kontrolü (hepsi ✅) + kullanıcı yolculuğu/boşluk yazıldı; faz ✅ Tamamlandı (PHASES.md). Milestone 6/6 karşılandı, UAT 12/12, düzeltme task'ı yok. Ders: axe WCAG-AA alt-kümesi `landmark-one-main`'i taramaz → iki-gate mühür (memory Süreç Disiplinleri). Versiyon Sonu Durumu `teknik_borç` → `senaryo_testi`; sırada senaryo testi fazı (discuss-phase 9 promote eder).
