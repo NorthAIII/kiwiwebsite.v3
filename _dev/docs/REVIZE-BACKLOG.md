@@ -6,6 +6,8 @@
 
 **PRD'ye bağlananlar (v0.1):** A2 (kopya) → `PRD/features/kopya-revizesi.md`; A4 (nasıl çalışır 3→4) → `PRD/features/nasil-calisir-4-adim.md`; A5 (sektörler) → `PRD/features/sektorler-derinlestirme.md`; A6 (Crew OS içerik) → `PRD/features/crew-os-bolumu.md`. (Satırlar execution detayı için duruyor; faza girince silinir.) Ürün taksonomisi (Bunker/Crew OS/Alpfit) ve dil stratejisi → `docs/DECISIONS.md` + `PRD/VIZYON.md`.
 
+**v0.3'e bağlananlar (re-kickoff 2026-07-02):** **A1** (logo hizalama) + **A3** (CTA kartı affordance + scroll göstergesi ölçekleme) + **B1** (Living Flow nabız kapsamı, karar-gate'li) + **SEO** `/bunker-os`→`/crew-os` redirect (i18n namespace 5-dil rename) & çıplak `/forum`→404 → **v0.3 = Görsel & Etkileşim Cilası + URL taksonomisi/SEO** (VERSIONS.md; iş birimi satırları discuss-phase'de MODULE-MAP'e damgalanır). Satırlar execution detayı için duruyor; faza girince silinir.
+
 **prd-refine doğrulaması (2026-06-28, kodla teyit edildi):** A2 premise *"genel kopya zayıf"* abartılı — canlı TR kopya büyük ölçüde güçlü; v0.1 cerrahi (ana sayfa, F1–F6). **A5** *"hepsi sığ"* abartılı — 5 sektör güçlü, asıl sorun gym paneli desen-dışı. **A6** büyük ölçüde **çözülmüş** — Crew OS ana metni doğru; kalan tek kalem panel akış adları (bırakıldı). **A3** kopya değil **görsel** (kartlar zaten `<Link>`) → görsel cila versiyonu.
 
 ---
@@ -54,4 +56,4 @@
 
 ---
 
-**Son Güncelleme:** 2026-06-27 — map-codebase: kullanıcı tespitleri + brief bekleyen işleri toplandı (PRD tohumu).
+**Son Güncelleme:** 2026-07-02 — re-kickoff: A1 + A3 + B1 + SEO (`/crew-os` redirect & `/forum`→404) v0.3'e bağlandı (Görsel & Etkileşim Cilası + URL taksonomisi/SEO).

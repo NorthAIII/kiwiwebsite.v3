@@ -6,7 +6,7 @@
 
 > **DevFlow-öncesi durum:** Site DevFlow eklenmeden önce inşa edildi. Aşağıdaki feature'ların tamamı mevcut kodda **çalışır halde** (Durum ✅), ama hiçbiri bir DevFlow fazından geçmediği için Faz sütunu "—"dır. Güçlü revize ilerledikçe, yeniden ele alınan/eklenen feature'lar için yeni feature satırları ve faz atamaları eklenecektir.
 
-> **Taksonomi (DECISIONS 2026-06-27):** Bayrak katman sitede her zaman **Crew OS** (public ad); **Bunker OS** iç kod adıdır, kullanıcıya görünmez (iki ürün değil, aynı şey). **Alpfit** ayrı, bağımsız dikey üründür. Aşağıda F2.5 (ana sayfa Crew OS teaser) ve F2.7 (Crew OS showcase sayfası) bu ada göre adlandırıldı — sayfanın route'u **hâlâ `/bunker-os`** (iç ad URL'de sızıyor; public `/crew-os` + redirect kararı görsel/SEO versiyonuna ertelendi — açık konu, M6).
+> **Taksonomi (DECISIONS 2026-06-27):** Bayrak katman sitede her zaman **Crew OS** (public ad); **Bunker OS** iç kod adıdır, kullanıcıya görünmez (iki ürün değil, aynı şey). **Alpfit** ayrı, bağımsız dikey üründür. Aşağıda F2.5 (ana sayfa Crew OS teaser) ve F2.7 (Crew OS showcase sayfası) bu ada göre adlandırıldı — sayfanın route'u **hâlâ `/bunker-os`** (iç ad URL'de sızıyor; public `/crew-os` + kalıcı redirect **v0.3 kapsamına alındı** — SEO iş birimi, M6+M2+M4; iş birimi satırı discuss-phase'de damgalanır).
 
 ---
 
@@ -163,4 +163,4 @@ M6 (SEO/Deploy) ─────────────────────>
 
 ---
 
-**Son Güncelleme:** 2026-07-02 — review-phase 9: Faz 9 (v0.2 versiyon-sonu senaryo testi, S1–S9) ✅ Tamamlandı — UAT 14/14, 0 kaynak değişimi, 0 düzeltme task'ı. Yeni feature üretmedi (çapraz doğrulama); v0.2 birikimi uçtan-uca regresyonsuz teyit. Sıradaki: prd-review.
+**Son Güncelleme:** 2026-07-02 — re-kickoff (v0.2→v0.3): taksonomi notu güncellendi (`/crew-os` redirect v0.3 kapsamına alındı). v0.3 iş birimi satırları (A1 logo · A3 CTA affordance · B1 Living Flow nabız [gate'li] · SEO `/crew-os`+`/forum`→404) **bilinçle discuss-phase'e bırakıldı** (just-in-time: faz numarası + kesin iş birimi ayrımı faza girince damgalanır; v0.2 satırları/durumları korundu).

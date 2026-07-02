@@ -42,10 +42,14 @@ Faz numaraları **global, sürekli ve append-only**'dir — versiyon değişse b
 
 > Yaklaşan faz konuları — **numarasız**. Faza girildiğinde (discuss-phase) buradan çıkar, numara (mevcut en büyük faz no + 1) alıp Faz Durumu tablosuna 🔄 olarak geçer. Aşağıdakiler güçlü revize için aday konulardır; kesin kapsam ve sıra PRD/discuss-phase'de netleşir.
 
-**v0.2 kalan fazları** (sıra discuss-phase 4'te sabitlendi: a11y → teknik temel → perf → Umami; Faz 4 = a11y, Faz 5 = test altyapısı, Faz 6 = mobil perf/LCP, Faz 7 = Umami girildi):
-- _(v0.2 içerik fazları tamamlandı — Umami = Faz 7 girildi; sıradaki versiyon-sonu sabit fazları)_
+**v0.3 near-term faz konuları** (re-kickoff 2026-07-02; **numarasız** — faza girince discuss-phase damgalar; kesin faz ayrımı discuss-phase 1'de sabitlenir):
+- **Görsel cila** — A1 (logo hizalama) + A3 (CTA kartı affordance + scroll göstergesi ölçekleme). Saf CSS/görsel craft; en güvenli, dar. Milestone: logo hizalı + CTA kartları görsel olarak tıklanabilir + scroll göstergesi doğru ölçekli; a11y=100/perf tabanı/CLS regresyonsuz.
+- **Living Flow nabız kapsamı** — B1 (**karar-gate'li**; craft-duyarlı imza riski). Milestone: nabız kapsamı kararı verildi (uygula VEYA iptal-kaydet); imza + reduced-motion + perf tabanı korundu.
+- **URL taksonomisi / SEO redirect** — `/bunker-os`→`/crew-os` + `/forum`→404. Milestone: public `/crew-os` yayında + `/bunker-os` kalıcı redirect + i18n namespace `bunker`→`crew` 5-dil senkron + sitemap/canonical/alternates güncel + iç linkler temiz; SSG/build temiz.
 
-> v0.2 içerik fazları bitince versiyon-sonu sabit fazları gelir: teknik borç → senaryo testi → prd-review (dinamik, faza girince doğrudan tabloya eklenir). Faz ayrımı (kaç faz) her discuss-phase'de netleşir.
+> ⚠️ **v0.3 içerik fazlarından ÖNCE:** v0.2 production release (revize `main`'e ilk merge; Umami canlı +1 + duman testi orada kapanır) — ayrı operasyonel adım, faz döngüsü dışı (bkz. DURUM.md).
+
+> v0.3 içerik fazları bitince versiyon-sonu sabit fazları gelir: teknik borç → senaryo testi → prd-review (dinamik, faza girince doğrudan tabloya eklenir). Faz ayrımı (kaç faz) discuss-phase'de netleşir.
 
 <!-- KURAL: Bu liste YAKIN ufku tutar (örn. aktif versiyonun kalan fazları), uzak gelecek değil — uzak ileriye dönük plan PRD/VERSIONS.md'dedir. Numara YAZMA (numara faza girince damgalanır). Bir konu faza girince bu listeden silinir (mezuniyet — soft delete yasak: HTML comment/üstü çizili/"Önceki:" prefix yok). -->
 <!-- NOT: VERSIONS.md feature→versiyon haritasını tekrar etme; burada faz konusu (geliştirme birimi) + milestone tutulur, feature listesi değil. -->
@@ -89,6 +93,6 @@ Faz numaraları **global, sürekli ve append-only**'dir — versiyon değişse b
 
 ---
 
-**Son Güncelleme:** 2026-07-02 — review-phase 9: Faz 9 (v0.2 versiyon-sonu senaryo testi) ✅ Tamamlandı; S1–S9 + UAT 14/14, 0 kaynak değişimi/0 düzeltme task'ı, milestone 5/5. v0.2 versiyon-sonu fazları (8,9) tamam; Versiyon Sonu Durumu → prd_review_bekliyor. Sıradaki zorunlu adım: prd-review.
+**Son Güncelleme:** 2026-07-02 — re-kickoff (v0.2→v0.3): v0.2 tamamlandı (prd-review PRD değişikliği yok); Sıradaki Fazlar v0.3 near-term konularına güncellendi (görsel cila A1/A3 → Living Flow nabız B1 gate'li → URL/SEO redirect), numarasız. v0.3 içerik fazlarından önce v0.2 production release bekliyor. Sıradaki adım: discuss-phase (v0.3 ilk fazı).
 
 <!-- KURAL: Bu satır her güncellemede ÜZERİNE YAZILIR. "Önceki:" prefix ile kümülatif yığma YASAK (CLAUDE.md → Doküman Disiplini). -->
