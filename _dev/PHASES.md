@@ -28,7 +28,7 @@ Faz numaraları **global, sürekli ve append-only**'dir — versiyon değişse b
 | 7 | v0.2 Umami analytics (E1) | Self-hosted Umami script'i (`next/script`, `[locale]/layout.tsx` head, afterInteractive) tüm locale'lerde pageview ölçümü; canlıda gözle doğrulanır; Faz 6 perf tabanı regresyonsuz | ✅ |
 | 8 | v0.2 versiyon-sonu teknik borç kapatma | Alt-sayfa derin a11y (5 alt sayfa, 5 dil/AR RTL, ana sayfa çıtası a11y=100 çift-tema + axe WCAG-AA 0) + `text-pulse` ink-panel süpürmesi + kümülatif a11y regresyon tohumu/CI; guardrail'ler regresyonsuz | ✅ |
 | 9 | v0.2 versiyon-sonu senaryo testi | v0.2 ana sayfa + 5 alt sayfa uçtan-uca doğrulama (S1–S9: giriş/yolculuk/mod/kontrol/taksonomi/5-dil/chatbot/v0.2-guardrail/adversarial); TR öncelik, otonom, keşfet+kaydet+triyaj | ✅ |
-| 10 | v0.3 görsel cila (A1 logo + A3 CTA affordance & scroll göstergesi) | Saf CSS/görsel craft: logo her yüzeyde hizalı + Hero CTA kartları ince/zarif affordance + scroll göstergesi doğru ölçek; guardrail (a11y=100 çift-tema/perf tabanı/CLS≈0/i18n parite) regresyonsuz | 🔄 |
+| 10 | v0.3 görsel cila (A1 logo + A3 CTA affordance & scroll göstergesi) | Saf CSS/görsel craft: logo her yüzeyde hizalı + Hero CTA kartları ince/zarif affordance + scroll göstergesi doğru ölçek; guardrail (a11y=100 çift-tema/perf tabanı/CLS≈0/i18n parite) regresyonsuz | ✅ |
 
 **Durum simgeleri:**
 - 🔄 **Devam ediyor** — discuss-phase başladı (aktif faz)
@@ -89,11 +89,12 @@ Faz numaraları **global, sürekli ve append-only**'dir — versiyon değişse b
 | Faz 9 girildi (v0.2 versiyon-sonu senaryo testi) | 2026-07-02 | discuss-phase 9: Adım 0b (Versiyon Sonu Durumu zaten senaryo_testi); kapsam ana sayfa + 5 alt sayfa uçtan-uca (Faz 3'ten genişletildi — Faz 8 alt sayfaları çıtaya çekti), TR birincil + non-TR tutarlılık, chatbot 0-token, keşfet+kaydet+triyaj; S1–S9 kataloğu; dinamik faz doğrudan tabloya 🔄; sıradaki adım research-phase 9 |
 | Faz 9 ✅ (Senaryo Testi) → versiyon sonu | 2026-07-02 | S1–S9 + UAT 14/14; 0 kaynak değişimi, 0 kapsam-içi bug, 0 düzeltme task'ı; suite-first hibrit + bağımsız yeniden-doğrulama; milestone 5/5, 8 kalite ekseni ✅; v0.2 versiyon-sonu fazları (8,9) tamam; Versiyon Sonu Durumu → prd_review_bekliyor; sıradaki = zorunlu prd-review |
 | Faz 10 girildi (v0.3 görsel cila) | 2026-07-02 | discuss-phase 10: v0.3 ilk içerik fazı (içerik_fazları, normal döngü); kapsam A1 logo hizalama (her yüzey) + A3 CTA affordance (ince/zarif) + A3 scroll göstergesi (merkez-alt) — saf CSS/görsel, yeni i18n anahtarı yok; B1 + SEO redirect ayrı fazlara bırakıldı; Sıradaki Fazlar'dan mezun, tabloya 🔄; sıradaki adım research-phase 10 |
+| Faz 10 ✅ (v0.3 görsel cila) → sonraki içerik fazı | 2026-07-02 | A1 kök nedeni (3 kopya-kod lockup) ortak `<Logo>` ile kalıcı kapandı; A3a ok affordance + A3b scroll göstergesi orantı; UAT 17/17, 8 kalite ekseni (7 ✅ + 1 N/A); guardrail (a11y=100 çift-tema/perf tabanı/CLS=0/i18n parite) regresyonsuz; 0 imza/davranış/içerik değişimi; Versiyon Sonu Durumu içerik_fazları (değişmez); sıradaki = v0.3 içerik fazı (discuss-phase 11 promote eder) |
 
 <!-- KURAL: Her geçiş için TEK satır + kısa not. Geçiş gerekçesi/detayı PHASE-N.md retrospektifindedir, burada tekrar edilmez. "Önceki:" prefix veya HTML comment ile detay yığma YASAK (CLAUDE.md → Doküman Disiplini). -->
 
 ---
 
-**Son Güncelleme:** 2026-07-02 — v0.2 production release **hafif operasyonel adım** olarak planlandı (kullanıcı kararı: numaralı faz değil, checklist + hemen; runbook `docs/RELEASE-v0.2.md`), `run-task 10`'dan önce konumlandı. (Faz 10 planlaması ayrıca verify-plan adımında — bkz. DURUM.md.)
+**Son Güncelleme:** 2026-07-02 — review-phase 10 ✅: Faz 10 (v0.3 görsel cila) tamamlandı (A1 ortak `<Logo>` + A3a/A3b; UAT 17/17, guardrail regresyonsuz), tablo ✅ + geçiş notu eklendi. Versiyon Sonu Durumu `içerik_fazları` (değişmez) → sıradaki v0.3 içerik fazı discuss-phase 11'de promote edilir.
 
 <!-- KURAL: Bu satır her güncellemede ÜZERİNE YAZILIR. "Önceki:" prefix ile kümülatif yığma YASAK (CLAUDE.md → Doküman Disiplini). -->

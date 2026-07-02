@@ -9,6 +9,22 @@
 
 <!-- Her yeni karar aşağıdaki formatta en üste eklenir (en yeni en üstte) -->
 
+### 2026-07-02 — A1 logo tutarlılığı ortak `<Logo>` bileşeniyle; RTL ok idiomu site-geneli fiziksel kalır (lone-flip yok) (Faz 10)
+
+**Bağlam:** Faz 10 (v0.3 görsel cila). İki tasarım kararı damgalandı. (a) **A1 kök nedeni:** mark + "Kiwi AI Lab" wordmark lockup'ı üç yüzeyde (`Nav.tsx`, `PageHeader.tsx`, `Footer.tsx`) **kopya-kod** olarak tekrar ediyordu → optik hiza drift'i. (b) **A3a affordance × RTL:** Hero'nun iki stat `<Link>`'ine site-standart `→ group-hover:translate-x-1` oku eklendi; site-geneli ok idiomu (10+ yer) AR'de `dir="rtl"` altında **fiziksel** (`→` glyph, logical dönüşüm yok).
+
+**Seçenekler:**
+1. A1: her yüzeyde ayrı flex/optik nudge (yerinde) · vs · ortak `<Logo>` bileşeni (tek kaynak).
+2. RTL ok: bu iki oku logical yap (AR'de aynala) · vs · site-idiomuyla tutarlı fiziksel bırak.
+
+**Karar:** (a) **Ortak `<Logo>` bileşeni** — mark+wordmark lockup'ı tek `src/components/Logo.tsx`'e çıkarıldı; Nav/PageHeader/Footer onu tüketir. Optik dikey hiza tek yerde (`leading-none` + `items-center`), saran link bileşene dahil DEĞİL (tek focusable tüketiciden gelir), wordmark rengi `currentColor` mirası (Footer'ın koyu zemini otomatik uyar). (b) **RTL ok'lar fiziksel kalır** — iki oku tek başına logical yapmak onları diğer 10+ oktan ayırıp tutarsızlık yaratırdı; site-geneli logical-ok ayrı/sonraki iş olarak kayıtta.
+
+**Gerekçe:** (a) Kalıcılık (ILKELER) + modülerlik (QUALITY §5): kopya-kod drift'i (A1 kök nedeni) inşa gereği kapanır, yerinde-nudge yalnız semptomu örterdi. (b) Craft en üst eksen — tutarlılık idiomun bütününde korunur; iki öğeyi izole flip'lemek "zero template smell"i bozan görsel tutarsızlıktır. AR ok yönü ayrı bir bilinçli iş olarak ertelendi (bir faza girerse tüm idiom birlikte ele alınmalı).
+
+**İlgili Task/Faz:** Faz 10 (TASK-10.01–10.04); detay → `phases/PHASE-10.md` Araştırma Bulguları + Retrospektif. v4 translate-transition tuzağı → `_dev/MEMORY.md` Teknik Tuzaklar.
+
+---
+
 ### 2026-07-02 — Alt-sayfa a11y iki ayrı gate ile mühürlenir (CI axe-WCAG tohumu + manuel Lighthouse); biri diğerini ima etmez (Faz 8)
 
 **Bağlam:** review-phase 8. Faz 8 çıtası "her alt sayfa Lighthouse a11y=100 çift-tema **+** axe WCAG-AA 0 ihlal". İlk verify koşumunda `subpages-a11y.spec.ts` (axe `withTags(['wcag2a','wcag2aa','wcag21a','wcag21aa'])`) 5 sayfa × 5 dil × 2 tema = 50 test **yeşildi**, ama 2 bülten makale sayfası Lighthouse a11y=**98** verdi (`landmark-one-main` — sayfada `<main>` yok). Kök neden: `landmark-one-main` bir Lighthouse best-practice/structural audit'idir, **WCAG-AA alt-kümesinde değil** → axe tohumu onu hiç taramaz. İki sinyal aynı şeyi ölçmez.

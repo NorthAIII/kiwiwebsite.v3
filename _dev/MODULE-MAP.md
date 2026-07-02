@@ -146,9 +146,9 @@ M6 (SEO/Deploy) ─────────────────────>
 | **— v0.2 versiyon-sonu senaryo testi (Faz 9 — çapraz doğrulama, yeni feature üretmez) —** | | | | |
 | S1–S9: v0.2 ana sayfa + 5 alt sayfa uçtan-uca senaryo doğrulaması (giriş/yolculuk/mod/kontrol/taksonomi/5-dil/chatbot/v0.2-guardrail/adversarial) | tümü | v0.2 | 9 | ✅ |
 | **— v0.3 görsel cila iş birimleri (Faz 10 — saf CSS/görsel craft; imza/davranış/içerik değişmez) —** | | | | |
-| A1: Logo/marka işareti hizalama (KiwiMark her yüzeyde: Nav + varsa PageHeader/Footer, tutarlı) | M3 (+M1) | v0.3 | 10 | 🔄 |
-| A3a: Hero CTA kartı affordance (Alpfit/Crew OS `<Link>` ince/zarif tıklanabilir; kart zaten Link) | M2 (+M3) | v0.3 | 10 | 🔄 |
-| A3b: Hero scroll göstergesi ölçekleme (merkez-alt "Kaydır" doğru ölçek/konum; desktop-only korunur) | M2 (+M1) | v0.3 | 10 | 🔄 |
+| A1: Logo/marka işareti hizalama (KiwiMark her yüzeyde: Nav + varsa PageHeader/Footer, tutarlı) | M3 (+M1) | v0.3 | 10 | ✅ |
+| A3a: Hero CTA kartı affordance (Alpfit/Crew OS `<Link>` ince/zarif tıklanabilir; kart zaten Link) | M2 (+M3) | v0.3 | 10 | ✅ |
+| A3b: Hero scroll göstergesi ölçekleme (merkez-alt "Kaydır" doğru ölçek/konum; desktop-only korunur) | M2 (+M1) | v0.3 | 10 | ✅ |
 
 **Durum simgeleri:**
 - ⬜ **Bekliyor** — Fazı henüz başlamadı
@@ -167,4 +167,4 @@ M6 (SEO/Deploy) ─────────────────────>
 
 ---
 
-**Son Güncelleme:** 2026-07-02 — discuss-phase 10: v0.3 görsel cila iş birimleri (A1 logo · A3a CTA affordance · A3b scroll göstergesi) Faz 10'a damgalandı (🔄, saf CSS/görsel). B1 Living Flow nabız (gate'li) + SEO `/crew-os`/`/forum`→404 ayrı fazlara bırakıldı (henüz atanmadı).
+**Son Güncelleme:** 2026-07-02 — review-phase 10: v0.3 görsel cila iş birimleri (A1 logo · A3a CTA affordance · A3b scroll göstergesi) ✅ (ortak `<Logo>` + ok idiomu + gösterge orantı; UAT 17/17, guardrail regresyonsuz). B1 Living Flow nabız (gate'li) + SEO `/crew-os`/`/forum`→404 ayrı fazlara bırakıldı (henüz atanmadı).
