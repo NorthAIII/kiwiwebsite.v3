@@ -7,7 +7,7 @@
 >
 > Bu yapı şişmeyi önler: index ince kalır (hep yüklü), detay yalnızca gerekince okunur.
 
-**Son Güncelleme:** 2026-07-02 — run-task 9.06: `playwright-bundled-chromium-webgl-yok` notuna focus-visible ölçüm disiplini eklendi — standalone Playwright'te `:focus-visible` yeşil outline'ı doğrularken Tailwind v4 `transition-colors` outline-color'ı anime eder → Tab-sonrası okuma ara-değer verir (yanlış-negatif); `reducedMotion:'reduce'` ile transition≈0 → outline anında yeşil (9.09 ve gelecek focus ölçümleri için).
+**Son Güncelleme:** 2026-07-02 — run-task 9.08: `playwright-bundled-chromium-webgl-yok` notuna scratchpad ESM tuzağı eklendi — scratchpad'deki standalone `.mjs` `@playwright/test`'i çözemez (Node ESM bare-specifier repo `node_modules`'ı görmez + CJS named-export) → mutlak yol + default import (`import pw from "/workspaces/.../@playwright/test/index.js"; const {chromium}=pw;`); 9.09 ve gelecek scratchpad Playwright script'leri için.
 
 <!-- KURAL: Bu satır her güncellemede ÜZERİNE YAZILIR. "Önceki:" prefix ile kümülatif yığma YASAK (CLAUDE.md → Doküman Disiplini). -->
 
