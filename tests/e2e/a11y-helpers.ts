@@ -33,11 +33,11 @@ export async function scrollThrough(page: Page): Promise<void> {
 }
 
 // Locale-farkındalıklı navigasyon. next-intl `as-needed` prefix stratejisi:
-//   - TR (varsayılan) → prefixsiz yol (`/`, `/bunker-os`). Accept-Language ile
+//   - TR (varsayılan) → prefixsiz yol (`/`, `/crew-os`). Accept-Language ile
 //     `/en` vb.'ye yönlenmesini önlemek için NEXT_LOCALE=tr cookie ŞART
 //     (cookie precedence > Accept-Language → TR ölçülür; MEMORY: locale tuzağı).
-//   - EN/AR/DE/ES → açık-prefixli yol (`/ar/bunker-os`); cookie'siz doğrudan.
-// `path` TR prefixsiz yoldur ("/" veya "/bunker-os"); locale prefix'i burada eklenir.
+//   - EN/AR/DE/ES → açık-prefixli yol (`/ar/crew-os`); cookie'siz doğrudan.
+// `path` TR prefixsiz yoldur ("/" veya "/crew-os"); locale prefix'i burada eklenir.
 export async function gotoLocalized(
   page: Page,
   context: BrowserContext,

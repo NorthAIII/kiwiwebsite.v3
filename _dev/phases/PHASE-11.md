@@ -115,7 +115,7 @@
 
 | # | Task | Durum | Açıklama |
 |---|------|-------|----------|
-| 11.01 | TASK-11.01 | ⬜ Bekliyor | SEO1: route `bunker-os/`→`crew-os/` + kalıcı 308 redirect (çıplak + 5-locale pattern) + sitemap PATHS + route-path test |
+| 11.01 | TASK-11.01 | ✅ Tamamlandı | SEO1: route `bunker-os/`→`crew-os/` + kalıcı 308 redirect (çıplak + 5-locale pattern) + sitemap PATHS + route-path test |
 | 11.02 | TASK-11.02 | ⬜ Bekliyor | SEO2: i18n namespace `bunkerOs`→`crewOs` (7 tüketici) + `bunker`→`crew` (2 tüketici), 5-dil atomik (0 MISSING_MESSAGE) |
 | 11.03 | TASK-11.03 | ⬜ Bekliyor | SEO3: iç link `/bunker-os`→`/crew-os` (Hero + Bunker; çift-redirect kaldır) |
 

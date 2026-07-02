@@ -4,7 +4,7 @@ import { routing } from "@/i18n/routing";
 const BASE = "https://kiwiailab.com";
 const PATHS = [
   "",
-  "/bunker-os",
+  "/crew-os",
   "/spor-salonu-yazilimi",
   "/vaka-calismalari",
   "/bulten/ai-sdr-araclari",
