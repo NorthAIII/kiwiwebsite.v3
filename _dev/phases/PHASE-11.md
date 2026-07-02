@@ -67,20 +67,43 @@
 
 ## Araştırma Bulguları
 
-> Bu bölüm `/devflow:research-phase 11` oturumunda doldurulur.
+> Bu bölüm `/devflow:research-phase 11` oturumunda dolduruldu (2026-07-02). Ampirik teyit: `next build` + `next start` (localhost:3999) üzerinde mevcut redirect davranışı curl ile ölçüldü (Next 15.3, next-intl 4.1).
 
 ### Değerlendirilen Yaklaşımlar
-- [Yaklaşım 1]: [Açıklama, artılar, eksiler]
-- **Seçilen:** [Hangisi ve neden]
+
+**Redirect mekanizması** (`/bunker-os` → `/crew-os`, 5 locale):
+- **A — `next.config.ts` `redirects()`, kalıcı (308), açık locale pattern'leri.** Mevcut `/forum` konvansiyonunun (kanıt: `next.config.ts:13-18`) locale-doğru genişletilmişi. Artı: SSG/route çözümünden önce edge'de çalışır, SEO-doğru kalıcı 308, eski route klasörü tamamen silinir (çakışma yok), tek yer. Eksi: locale varyantlarını **açık** yazmak gerekir (aşağıda, ampirik gerekçe); `next.config.ts` Dokunulmaz — ama bu değişiklik fazın tam amacı (onay kapsam içi).
+- **B — `bunker-os/page.tsx` içinde `redirect("/crew-os")` (next/navigation).** Artı: kolokasyon. Eksi: server `redirect()` **307 (geçici)** döner — SEO-kalıcı değil; eski route klasörünü **tutmayı** gerektirir ("eski klasör silinir" kararıyla çelişir); render setup'tan sonra çalışır. Elendi.
+- **C — next-intl `pathnames` (yerelleştirilmiş route adları).** Routing modelini değiştirir, tek bir path rename için aşırı; imza/craft'a değmez. Elendi.
+- **Seçilen: A** — kalıcı config redirect + açık 5-locale pattern. Kalıcılık ilkesiyle (SEO-doğru 308, eski yol kalıcı yönlenir) ve mevcut konvansiyonla hizalı.
+
+**i18n namespace rename adları:** `bunkerOs` → **`crewOs`** (showcase), `bunker` → **`crew`** (ana sayfa teaser). İki namespace ayrık kalır (discuss kararı). Değerler değişmez (TR tek kaynak; zaten "Crew OS" markalı → stale-lik minimal).
 
 ### Kullanılacak Araçlar/Kütüphaneler
-- [Araç 1]: [Versiyon, ne için]
+- **Next.js 15.3 `redirects()`** (path-to-regexp `source`) — kalıcı redirect. Named param + regex kısıt: `source: "/:locale(en|ar|de|es)/bunker-os"`, `destination: "/:locale/crew-os"`.
+- **next-intl 4.1 middleware** (`as-needed`) — mevcut; rename yeni routing config gerektirmez.
+- Yeni kütüphane **yok** — faz mevcut altyapıyla mekanik rename + redirect.
 
 ### Dikkat Edilecekler
-- [Tuzak/Risk 1]: [Nasıl kaçınılacak]
+
+- **Config redirect `source` literal eşleşir — locale prefix'i OTOMATİK kapsanmaz (AMPİRİK KANIT).** `curl` testi: `/forum` → **308** `/bulten` (çalışır) ama `/en/forum`, `/de/forum` → **404** (redirect YOK). Yani `/crew-os` redirect'i **iki giriş** ister: (1) çıplak `source: "/bunker-os"`, (2) prefixli `source: "/:locale(en|ar|de|es)/bunker-os"`. Tek `source: "/bunker-os"` yazılırsa `/en/bunker-os` vb. rename sonrası **404** olur (kaynak: `next.config.ts:13-18`, mevcut; genişletme = yeni).
+- **Config redirect middleware'den ÖNCE çalışır** → `/bunker-os` → `/crew-os` (308) Accept-Language'dan bağımsız fire eder; sonra `/crew-os` için next-intl locale müzakeresi normal çalışır. Çift-redirect (SEO-anlamlı) yok. (Edge: `/tr/bunker-os` → middleware 307 → `/bunker-os` → 308 → `/crew-os`; `/tr/` prefix kullanıcı-dışı, önemsiz çift-hop.)
+- **Eski `src/app/[locale]/bunker-os/` klasörü SİLİNMELİ** — redirect config'e taşınınca fiziksel route kalırsa redirect'le çakışır (route 200 kazanır, redirect hiç fire etmez). (kaynak: `src/app/[locale]/bunker-os/page.tsx`, mevcut → silinecek.)
+- **`generateStaticParams` alt sayfada YOK — layout'tan miras alınır** (`src/app/[locale]/layout.tsx:49`, tek tanım). Yeni `crew-os/page.tsx` kendi `generateStaticParams`'ını yazmaz; 5-locale SSG layout'tan gelir (build teyitli). Discuss'taki "yeni crew-os generateStaticParams üretmeli" ifadesi **düzeltilir**: yalnız `page.tsx` gerekir.
+- **`generateMetadata` canonical/alternates DÜZELTMESİ GEREKMEZ — çünkü page'de YOK.** `bunker-os/page.tsx:9-17` yalnız `title`/`description` set eder; canonical/alternates layout'tan miras (`layout.tsx:42-45` → canonical `"/"`). Yani rename için page-seviyesi canonical **güncellenecek bir şey yok**; yalnız `sitemap.ts` PATHS güncellenir. Discuss'taki "showcase generateMetadata canonical/alternates güncel" ifadesi **düzeltilir** (page'de canonical yok). ⚠️ **Latent SEO gözlemi (kapsam DIŞI, kayıt):** tüm alt sayfalar layout'tan canonical=`"/"` miras alıyor (her alt sayfa ana sayfaya canonicalize oluyor) — mevcut/faz-öncesi durum; bu dar rename fazının konusu değil, gelecek SEO fazı adayı.
+- **Namespace `bunkerOs` 7 tüketicili — hepsi rename edilmeli** (paylaşılan `back`/`cta` şeridi): `bunker-os/page.tsx` (×2), `bunker-os/BunkerShowcase.tsx:9`, `spor-salonu-yazilimi/page.tsx:27`, `vaka-calismalari/page.tsx:31`, `bulten/ai-sdr-araclari/page.tsx:26`, `bulten/claude-opus-4-8-fable-5/page.tsx:32`. Namespace `bunker` 2 tüketicili: `Bunker.tsx:8`, `BunkerShowcase.tsx:10` (`tb`). Bir tüketici atlanırsa runtime `MISSING_MESSAGE`. (kaynak: hepsi repoda-tanımlı, grep-teyitli.)
+- **JSON namespace anahtarı 5 dosyada eşzamanlı rename** (`messages/{tr,en,ar,de,es}.json` — `bunker`@131, `bunkerOs`@152). Anahtar-rename = "stale kopya" istisnası dışı; eksik/desync anahtar yasak. i18n-parite testi (`tests/i18n-parity.test.ts`) anahtar **kümesini** karşılaştırır, namespace adına string-referans vermez → 5 dosyada eşit rename edilirse yeşil kalır (test kodu değişmez).
+- **Route path'e referans veren test güncellenir:** `tests/e2e/subpages-a11y.spec.ts:23` `{ label: "bunker-os", path: "/bunker-os" }` → `/crew-os`. `tests/e2e/a11y-helpers.ts:36-40` yalnız **yorum** olarak `/bunker-os` anar (fonksiyonel değil; opsiyonel tazeleme).
+- **Kapsam-dışı kod tanımlayıcıları (dokunulmaz, discuss kararı — kayıt):** `components/bunker-os/` dizin + `Bunker.tsx`/`BunkerShowcase.tsx` dosya adları; `BunkerShowcase.tsx:117,220` `@keyframes bunkerback` animasyon adı; `Bunker.tsx:19` `id="bunker"` section id + `Nav.tsx:23` `href: "#bunker"` anchor + `nav.bunker` label anahtarı (ana sayfa fragment'i, URL taksonomisi değil — iç ad kalır; label değeri zaten "Crew OS"). Plan-phase teyit eder; varsayılan = dokunma.
+- **`/forum` locale-prefix gap (KAPSAM DIŞI — kullanıcı kararı 2026-07-02):** `/en/forum` vb. → 404 ampirik bulundu; discuss'ın "301 zaten doğru" varsayımı bare yol içindi. Kullanıcı "kaydet, kapsam dışı" dedi — bu faz `/forum`'a dokunmaz; gap gelecek SEO fazı adayı olarak kayıtlı.
 
 ### Teknik Kararlar
-- [Karar 1]: [Gerekçe]
+
+- **Redirect = `next.config.ts` kalıcı (308) + açık 5-locale pattern** (Yaklaşım A). Çıplak `/bunker-os` + `/:locale(en|ar|de|es)/bunker-os` iki giriş. Gerekçe: SEO-doğru kalıcılık, edge-öncelik, eski klasör silinir; ampirik olarak locale-prefix'in açık yazılması **zorunlu**.
+- **Namespace adları `crewOs` (showcase) + `crew` (teaser)** — plan-phase kesinleştirir; iki namespace ayrık. Gerekçe: public ad hizalaması, minimal/mekanik, değer değişmez.
+- **Eski `bunker-os/` route klasörü silinir**, redirect config'e taşınır. Gerekçe: fiziksel route ↔ redirect çakışmasını önler.
+- **Canonical/alternates & generateStaticParams'a page-seviyesinde dokunulmaz** — ikisi de layout'tan miras; rename yalnız `sitemap.ts` + iç link + namespace + route klasörü + test yüzeyini kapsar. Gerekçe: dar-faz disiplini; discuss'ın iki ifadesi (page canonical / page generateStaticParams gereği) bu bulguyla düzeltildi.
+- **`/forum` ve kod-adı tanımlayıcıları kapsam dışı** (kullanıcı + discuss kararları). Gerekçe: dar cerrahi faz; taksonomi iç kod adına izin verir.
 
 ---
 
@@ -152,4 +175,4 @@
 ---
 
 **Oluşturulma:** 2026-07-02 (discuss-phase 11)
-**Son Güncelleme:** 2026-07-02 — discuss-phase 11: Kapsam Tartışması yazıldı. Faz 11 = URL taksonomisi/SEO (`/bunker-os`→`/crew-os` rename + redirect + namespace 5-dil + SEO metadata + iç linkler); `/forum`→404 reddedildi (redirect korunur); kod dosya adları iç-ad kalır. Sıradaki adım: research-phase 11.
+**Son Güncelleme:** 2026-07-02 — research-phase 11: Araştırma Bulguları yazıldı. Ampirik teyit (build+curl): config redirect `source` locale-prefix'i kapsamaz (`/en/forum`→404) → `/crew-os` redirect'i açık 5-locale pattern ister (Yaklaşım A: kalıcı 308 config). Namespace `crewOs`/`crew` (7+2 tüketici); page-seviyesi canonical/generateStaticParams YOK (layout'tan miras — discuss iki ifadesi düzeltildi); `/forum` gap kullanıcı kararıyla kapsam dışı (kayıt). Sıradaki adım: plan-phase 11.
