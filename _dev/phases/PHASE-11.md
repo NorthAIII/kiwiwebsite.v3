@@ -125,14 +125,33 @@
 
 ## UAT Sonuçları
 
-> Bu bölüm `/devflow:verify-phase 11` oturumunda doldurulur.
+> Bu bölüm `/devflow:verify-phase 11` oturumunda dolduruldu (2026-07-02).
 
-**Tarih:** [tarih]
-**Toplam Senaryo:** X | **Geçen:** Y | **Kalan:** Z
+**Tarih:** 2026-07-02
+**Toplam Senaryo:** 13 | **Geçen:** 13 | **Kalan:** 0
+
+**Test modu:** Otonom. **Ortam notu:** Canlı `next start` bu cloud devcontainer'da sandbox tarafından öldürüldü (worker-fork kısıtı, exit 144). Redirect doğrulaması **build ground-truth** üzerinden: derlenmiş `.next/routes-manifest.json` (edge'in runtime'da birebir uyguladığı redirect regex + statusCode) + TASK-11.01'in farklı ortamda kaydettiği canlı curl 308. İçerik/link/SSG doğrulaması diskteki prerender HTML (`.next/server/app/*.html`) — build ground-truth.
 
 | # | Senaryo | Sonuç | Not |
 |---|---------|-------|-----|
-| 1 | [Senaryo 1] | ✅/❌ | [not] |
+| 1 | Public `/crew-os` 5 locale SSG → 200 (tr/en/ar/de/es) | ✅ Geçti | prerender-manifest: `/{tr,en,ar,de,es}/crew-os` 5 route + 5 `.html`; build ● SSG |
+| 2 | Çıplak `/bunker-os` → **308** `/crew-os` (kalıcı) | ✅ Geçti | routes-manifest derlenmiş kural: `[308] /bunker-os → /crew-os` |
+| 3 | Prefixli `/{en,ar,de,es}/bunker-os` → **308** `/{locale}/crew-os` (locale gap yok — kritik) | ✅ Geçti | routes-manifest: `[308] /:locale(en\|ar\|de\|es)/bunker-os → /:locale/crew-os` |
+| 4 | Eski `/bunker-os` fiziksel route yok (redirect fire eder, route 200 kazanmaz) | ✅ Geçti | prerender-manifest bunker-os=`[]`; app dizininde `bunker-os` route yok (yalnız `components/bunker-os/` iç dizin) |
+| 5 | `/forum` + `/forum/:slug` → **308** `/bulten` regresyonsuz (kapsam-dışı korundu) | ✅ Geçti | routes-manifest: `[308] /forum → /bulten` + `[308] /forum/:slug* → /bulten/:slug*` korunmuş |
+| 6 | `next build` temiz + **0 MISSING_MESSAGE** (5 locale SSG, tüm alt sayfalar) | ✅ Geçti | build.log: `✓ Compiled successfully`, 0 MISSING_MESSAGE / 0 error / 0 warn |
+| 7 | i18n 5-dil parite: `crewOs`+`crew` her dilde, `bunkerOs`+`bunker` (top-level) hiçbir dilde | ✅ Geçti | Vitest `i18n-parity` 5/5; 5 dilde top-level `bunker`/`bunkerOs`=`[]`, `crew`+`crewOs` var |
+| 8 | `sitemap.xml` `/crew-os` (5 locale) içerir, `/bunker-os` içermez | ✅ Geçti | derlenmiş `sitemap.xml.body`: 5× `crew-os` loc, 0× `bunker-os` |
+| 9 | İç linkler temiz: Hero+Bunker doğrudan `/crew-os` (prerender, çift-redirect yok), 5 locale doğru prefix | ✅ Geçti | prerender: TR 2× `/crew-os`, EN 2× `/en/crew-os`, AR 2× `/ar/crew-os`; 0 `/bunker-os` iç link |
+| 10 | Kapsam-dışı kod tanımlayıcıları korundu: `nav.bunker` label + `#bunker` anchor + `@keyframes bunkerback` + `components/bunker-os/` import path | ✅ Geçti | `nav.bunker`="Crew OS" 5 dil; `id="bunker"`+`href="#bunker"`; `@keyframes bunkerback`; import path `@/components/bunker-os/` korundu |
+| 11 | Guardrail a11y=100 çift-tema (showcase `/crew-os`, 5 locale × light+dark) | ✅ Geçti | CI `a11y (playwright+axe)` HEAD'de conclusion=success (`/crew-os` 5 locale × 2 tema WCAG-AA 0); showcase DOM'u değişmedi (identifier rename) → a11y=100 tabanı yapısal korunur |
+| 12 | RTL (AR) + içerik regresyonsuz: `/ar/crew-os` 200, `dir=rtl`, "Crew OS" içerik boşluksuz | ✅ Geçti | `/ar/crew-os.html` `dir="rtl"` + "Crew OS" 2× render (boşluk yok) |
+| 13 | Perf/CLS korunan taban: yalnız identifier rename (DOM/asset/görsel değişmez) → yapısal regresyonsuz | ✅ Geçti | Değişiklik yalnız URL/namespace tanımlayıcısı + href değeri; render edilen bayt (asset/görsel/DOM yapısı) değişmedi → perf/CLS yapısal olarak regresyonsuz |
+
+**Otomatik kontrol bulguları (Adım 1):**
+- **CI:** `fast (build+vitest)` 3 kod commit'inde ✅; `a11y (playwright+axe)` HEAD (7b2e808) dahil hepsinde ✅ (GitHub runner, gerçek tarayıcı). Düzeltme gerektiren bulgu **yok**.
+- **npm audit:** 3 moderate (PostCSS XSS, `next` transitive) — **faz-öncesi kayıtlı TB-C**, bu fazın getirdiği değil; fix = `next` downgrade (breaking), kapsam dışı. Yeni bulgu değil.
+- **Security-review:** Temiz / N-A — diff tamamen URL/namespace rename + statik-literal redirect (`destination` sabit iç path, kullanıcı-kontrolsüz → open-redirect yok); yeni girdi/secret/injection yüzeyi yok.
 
 ---
 
