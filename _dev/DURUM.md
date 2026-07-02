@@ -1,6 +1,6 @@
 # DURUM — Proje Dashboard
 
-**Son Güncelleme:** 2026-07-02 — **plan-phase 9 tamamlandı:** 9 doğrulama task'ı oluşturuldu (S1–S9 → TASK-9.01…9.09), `phases/PHASE-9.md` Task Listesi + `tasks/TASK-9.0X.md`. TK1 dört kümesi oturum-boyutuna bölündü (HTTP/SSG · suite-guardrail iki-gate · runtime-tarayıcı · çapraz). Doğrulama fazı → kaynak kod değişmez; standalone Playwright script'leri scratchpad'de. Adım=verify-plan → sıradaki: **verify-plan 9** (yeni oturum).
+**Son Güncelleme:** 2026-07-02 — **verify-plan 9 tamamlandı:** 9 task dokümanı fresh context ile review edildi; referans gerçeklik-kontrolü temiz (route/redirect/route.ts satır ref'leri birebir, e2e=52 + vitest=7 sayıları teyitli), S1–S9→9.01…9.09 milestone eşleşmesi tam. 1 mekanik düzeltme: 9 task'a eksik template bölümleri eklendi (Tamamlanma Kriterleri + Oturum Kayıtları + Oluşturulma footer). Yapısal değişiklik yok. Adım=task → sıradaki: **run-task TASK-9.01** (yeni oturum).
 
 <!-- KURAL: Bu satır her oturum sonunda ÜZERİNE YAZILIR — tek satır, tek cümle. "Önceki:" / "Eski:" prefix ile kümülatif yığma YASAK; HTML comment'e sarma da yasak (CLAUDE.md → Doküman Disiplini). Tarih + kısa özet yeterli; detay için git log + ilgili PHASE/TASK dokümanları. -->
 
@@ -9,8 +9,8 @@
 ## Aktif Faz
 
 **Faz:** 9 (v0.2 versiyon-sonu **senaryo testi**) — discuss-phase 9 tamamlandı, PHASES tablosunda 🔄. Kapsam = ana sayfa + 5 alt sayfa uçtan-uca çapraz doğrulama (yeni feature üretmez), Faz 3 (v0.1 senaryo testi) deseninde ama alt sayfalar dahil (Faz 8 çıtaya çekti); alt-sayfa harness'i (`subpages-a11y.spec.ts` + `a11y-helpers.ts`) yeniden kullanılır. Faz 8 ✅; Faz 7 (Umami E1) ✅; Faz 6 (mobil perf/LCP) ✅; Faz 5 (test altyapısı D1) ✅; Faz 4 (v0.2 a11y) ✅.
-**Adım:** verify-plan — sıradaki adım **verify-plan 9** (task dokümanlarını review et, yeni oturum). Kapsam + Araştırma + Plan tamamlandı (`phases/PHASE-9.md`): 9 doğrulama task'ı (S1–S9 → TASK-9.01…9.09), suite-first hibrit metodoloji, TK1–TK7.
-**İlerleme:** plan-phase 9 (2026-07-02) tamamlandı — 9 task dokümanı oluşturuldu (kaynak kod değişmedi, yalnız `_dev/` docs). **Bekleyen versiyon-sonu aksiyonu:** v0.2 production release (tüm revize `main`'e ilk merge) — Umami canlı +1 (S9-10 Faz 7) o adımda kapanır (senaryo testi kod-tarafı varlığı S8'de doğrular, canlı panel değil). **Kapsam dışı (bilinçli açık):** brief mobil perf (gerçek-cihaz duvarı), TB-C npm audit, `/bunker-os`→`/crew-os` redirect + `/forum`→404 (görsel/SEO versiyonu), dil setini değiştirme (prd-review).
+**Adım:** task — sıradaki adım **run-task TASK-9.01** (ilk doğrulama task'ı, yeni oturum). Kapsam + Araştırma + Plan + verify-plan tamamlandı (`phases/PHASE-9.md`): 9 doğrulama task'ı (S1–S9 → TASK-9.01…9.09), suite-first hibrit metodoloji, TK1–TK7; plan review temiz (1 mekanik template düzeltmesi).
+**İlerleme:** verify-plan 9 (2026-07-02) tamamlandı — 9 task fresh context ile review edildi, referans/sayı doğrulamaları temiz, eksik template bölümleri eklendi (mekanik). Kaynak kod değişmedi, yalnız `_dev/` docs. **Bekleyen versiyon-sonu aksiyonu:** v0.2 production release (tüm revize `main`'e ilk merge) — Umami canlı +1 (S9-10 Faz 7) o adımda kapanır (senaryo testi kod-tarafı varlığı S8'de doğrular, canlı panel değil). **Kapsam dışı (bilinçli açık):** brief mobil perf (gerçek-cihaz duvarı), TB-C npm audit, `/bunker-os`→`/crew-os` redirect + `/forum`→404 (görsel/SEO versiyonu), dil setini değiştirme (prd-review).
 **Son Faz Dokümanı:** `phases/PHASE-9.md` (🔄 Devam ediyor — Kapsam + Araştırma + Plan yazıldı, 9 task hazır). Faz 8 ✅ `phases/PHASE-8.md`.
 
 ---
@@ -28,9 +28,9 @@
 
 ## Aktif Task
 
-**Task:** Aktif task yok — Faz 9, adım=verify-plan. 9 task dokümanı hazır (TASK-9.01…9.09); ilk task **verify-plan 9** sonrası **run-task ile TASK-9.01**'den başlar (yeni oturum).
-**Durum:** Faz 9 (senaryo testi) 🔄 — adım=verify-plan. Faz 8 tüm task'ları ✅ (8.01→8.06) archive'da.
-**İlerleme:** plan-phase 9 tamamlandı (2026-07-02): 9 doğrulama task'ı (S1–S9) oluşturuldu `tasks/TASK-9.0X.md` + `phases/PHASE-9.md` Task Listesi. Kaynak kod değişmedi (yalnız `_dev/` docs).
+**Task:** Sıradaki aktif task **TASK-9.01** (S1 giriş/yönlendirme matrisi) — Faz 9, adım=task. 9 task dokümanı review'dan geçti; **run-task ile TASK-9.01**'den başlanır (yeni oturum).
+**Durum:** Faz 9 (senaryo testi) 🔄 — adım=task (verify-plan tamam). Faz 8 tüm task'ları ✅ (8.01→8.06) archive'da.
+**İlerleme:** verify-plan 9 tamamlandı (2026-07-02): 9 task review edildi, referans/sayı doğrulamaları temiz, 1 mekanik template düzeltmesi (Tamamlanma Kriterleri + Oturum Kayıtları + footer 9 task'a eklendi). Kaynak kod değişmedi (yalnız `_dev/` docs).
 
 ---
 
@@ -70,12 +70,12 @@ _(Faz 9 henüz task üretmedi — ilk task tamamlanınca özet buraya gelir.)_
 
 ## Hızlı Erişim
 
-**Aktif Task:** Yok — Faz 9, adım=verify-plan. 9 task hazır (TASK-9.01…9.09). Sıradaki: verify-plan 9. Bekleyen: v0.2 production release (Umami canlı +1 orada kapanır).
-**Aktif Faz:** 9 (v0.2 senaryo testi) · adım=verify-plan — Faz 8 ✅ (8.01→8.06; review tamam); Faz 7 ✅; Faz 6 ✅; Faz 5 ✅; Faz 4 ✅; Aktif Versiyon v0.2, Versiyon Sonu Durumu: senaryo_testi
+**Aktif Task:** Sıradaki TASK-9.01 (S1) — Faz 9, adım=task. 9 task review'dan geçti (TASK-9.01…9.09). Sıradaki: run-task TASK-9.01. Bekleyen: v0.2 production release (Umami canlı +1 orada kapanır).
+**Aktif Faz:** 9 (v0.2 senaryo testi) · adım=task — Faz 8 ✅ (8.01→8.06; review tamam); Faz 7 ✅; Faz 6 ✅; Faz 5 ✅; Faz 4 ✅; Aktif Versiyon v0.2, Versiyon Sonu Durumu: senaryo_testi
 **Task Sistemi:** `tasks/TASKS-README.md`
 **PRD (karar kaynağı):** `PRD/VIZYON.md` · `PRD/VERSIONS.md` · `PRD/features/`
 **Revize Backlog (bilinen sorunlar):** `docs/REVIZE-BACKLOG.md`
 
 ---
 
-**Son Güncelleme:** 2026-07-02 — plan-phase 9: 9 doğrulama task'ı (S1–S9 → TASK-9.01…9.09) oluşturuldu; PHASE-9 Task Listesi + DURUM task tablosu güncellendi. Adım=verify-plan. Sıradaki: verify-plan 9.
+**Son Güncelleme:** 2026-07-02 — verify-plan 9: 9 task fresh context ile review edildi (referans/sayı doğrulamaları temiz); 1 mekanik düzeltme (eksik template bölümleri 9 task'a eklendi); yapısal değişiklik yok. Adım=task. Sıradaki: run-task TASK-9.01.

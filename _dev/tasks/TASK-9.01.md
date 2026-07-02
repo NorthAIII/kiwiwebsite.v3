@@ -81,3 +81,23 @@ _dev/
 - [ ] `/forum`→`/bulten` ve `/forum/<slug>`→`/bulten/<slug>` **308**; çıplak `/bulten`→404 bulgusu kaydedildi (record-not-fix)
 - [ ] Bilinmeyen-locale davranışı gözlemlendi ve kaydedildi (peşinen iddia yok)
 - [ ] Bulgular triyaj edildi; PHASE-9 + task doc'a yazıldı
+
+---
+
+## Tamamlanma Kriterleri
+
+- [ ] Tüm alt görevler tamamlandı
+- [ ] Tüm test kriterleri karşılandı
+- [ ] Git commit & push yapıldı (conventional commits formatı)
+- [ ] Bu doküman güncellendi (oturum kaydı)
+- [ ] DURUM.md güncellendi
+
+---
+
+## Oturum Kayıtları
+
+<!-- Task çalıştırıldığında (run-task) doldurulur. -->
+
+---
+
+**Oluşturulma:** 2026-07-02

@@ -80,3 +80,23 @@ _dev/
 - [ ] 30 sayfada `MISSING_MESSAGE` yok; bilinçli-stale görünür kopukluk yok (leak metriği doğru uygulandı)
 - [ ] AR render/parite (`dir="rtl"` + AR metin, MISSING_MESSAGE yok) teyit edildi
 - [ ] Bulgular triyaj edildi; PHASE-9 + task doc'a yazıldı
+
+---
+
+## Tamamlanma Kriterleri
+
+- [ ] Tüm alt görevler tamamlandı
+- [ ] Tüm test kriterleri karşılandı
+- [ ] Git commit & push yapıldı (conventional commits formatı)
+- [ ] Bu doküman güncellendi (oturum kaydı)
+- [ ] DURUM.md güncellendi
+
+---
+
+## Oturum Kayıtları
+
+<!-- Task çalıştırıldığında (run-task) doldurulur. -->
+
+---
+
+**Oluşturulma:** 2026-07-02

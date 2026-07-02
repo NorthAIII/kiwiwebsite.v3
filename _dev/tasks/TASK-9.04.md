@@ -81,3 +81,23 @@ _dev/
 - [ ] home mobil perf ≥90 / LCP ≤~3164ms, home masaüstü perf 100, CLS≈0 — korunan taban altına düşülmedi
 - [ ] Skorlar `docs/perf/` tabanı ile kıyaslandı; brief açığı record-not-fix kaydedildi
 - [ ] Sonuçlar PHASE-9 + task doc'a yazıldı; TASK-9.03 axe gate'i ile çapraz-referanslandı
+
+---
+
+## Tamamlanma Kriterleri
+
+- [ ] Tüm alt görevler tamamlandı
+- [ ] Tüm test kriterleri karşılandı
+- [ ] Git commit & push yapıldı (conventional commits formatı)
+- [ ] Bu doküman güncellendi (oturum kaydı)
+- [ ] DURUM.md güncellendi
+
+---
+
+## Oturum Kayıtları
+
+<!-- Task çalıştırıldığında (run-task) doldurulur. -->
+
+---
+
+**Oluşturulma:** 2026-07-02

@@ -76,3 +76,23 @@ _dev/
 - [ ] Key-yok → 503 + zarif offline UI (sahte-online yok); stream-kopması UI'ı takmaz
 - [ ] **Toplam Anthropic API çağrısı = 0** teyit edildi (happy-path koşulmadı)
 - [ ] Standalone script scratchpad'de kaldı; bulgular triyajlı PHASE-9 + task doc'a yazıldı
+
+---
+
+## Tamamlanma Kriterleri
+
+- [ ] Tüm alt görevler tamamlandı
+- [ ] Tüm test kriterleri karşılandı
+- [ ] Git commit & push yapıldı (conventional commits formatı)
+- [ ] Bu doküman güncellendi (oturum kaydı)
+- [ ] DURUM.md güncellendi
+
+---
+
+## Oturum Kayıtları
+
+<!-- Task çalıştırıldığında (run-task) doldurulur. -->
+
+---
+
+**Oluşturulma:** 2026-07-02

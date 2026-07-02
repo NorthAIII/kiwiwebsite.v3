@@ -76,3 +76,23 @@ _dev/
 - [ ] CI `fast` + `a11y` job son commit'te `conclusion=success` (REST veya `gh`)
 - [ ] Kırmızı çıkarsa TK7 triyaj yapıldı (düzeltme task'ı önerisi kaydedildi)
 - [ ] Sonuçlar PHASE-9 + task doc'a yazıldı; Lighthouse gate'i TASK-9.04'e çapraz-referanslandı
+
+---
+
+## Tamamlanma Kriterleri
+
+- [ ] Tüm alt görevler tamamlandı
+- [ ] Tüm test kriterleri karşılandı
+- [ ] Git commit & push yapıldı (conventional commits formatı)
+- [ ] Bu doküman güncellendi (oturum kaydı)
+- [ ] DURUM.md güncellendi
+
+---
+
+## Oturum Kayıtları
+
+<!-- Task çalıştırıldığında (run-task) doldurulur. -->
+
+---
+
+**Oluşturulma:** 2026-07-02

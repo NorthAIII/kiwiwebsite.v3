@@ -82,3 +82,23 @@ _dev/
 - [ ] AR-RTL × dark × reduced birleşik mod 6 sayfada bozulmadı
 - [ ] 320/768/1440'ta yatay taşma yok; near-zero CLS
 - [ ] Standalone Playwright script scratchpad'de kaldı (repo temiz); bulgular triyajlı PHASE-9 + task doc'a yazıldı
+
+---
+
+## Tamamlanma Kriterleri
+
+- [ ] Tüm alt görevler tamamlandı
+- [ ] Tüm test kriterleri karşılandı
+- [ ] Git commit & push yapıldı (conventional commits formatı)
+- [ ] Bu doküman güncellendi (oturum kaydı)
+- [ ] DURUM.md güncellendi
+
+---
+
+## Oturum Kayıtları
+
+<!-- Task çalıştırıldığında (run-task) doldurulur. -->
+
+---
+
+**Oluşturulma:** 2026-07-02
