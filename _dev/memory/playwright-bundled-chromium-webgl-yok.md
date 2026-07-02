@@ -1,0 +1,11 @@
+# Standalone Playwright runtime testinde WebGL → bundled chromium yetmez, `channel:'chrome'` şart
+
+**Tuzak:** Living Flow (veya herhangi WebGL) davranışını standalone Playwright script'iyle (`chromium.launch()`) doğrularken **Playwright-bundled chromium'da WebGL yoktur** — `canvas.getContext('webgl2')`/`'webgl'` **null** döner, `--enable-unsafe-swiftshader` / `--use-gl=angle --use-angle=swiftshader` / `--enable-webgl --ignore-gpu-blocklist` dahil **hiçbir flag kombinasyonu** açmadı (bu devcontainer, Playwright 1.61.1 chromium-1228). `window.WebGLRenderingContext` ctor'u var ama context yaratılmıyor.
+
+**Neden kritik (sessiz yanlış-negatif):** `LivingFlow.tsx` degradasyonu `if (reduce || !supportsWebGL()) setMode('static')`. Bundled chromium'da `supportsWebGL()` **her zaman false** → mode **her zaman `static`**. Böyle bir ortamda "reduced-motion → StaticFlow" ve "no-WebGL → StaticFlow" testleri **geçer ama ayırt edici değildir** (static'i degradasyon tetiklemesinden değil, WebGL-yokluğundan alır); "mobil-low → FlowCanvas" ise **yanlışlıkla FAIL** eder (canvas hiç oluşmaz).
+
+**Çözüm:** Sistem google-chrome kullan — `chromium.launch({ channel: 'chrome', headless: true, args: ['--no-sandbox','--enable-unsafe-swiftshader','--disable-dev-shm-usage'] })` → `getContext('webgl2')` çalışır (`renderer:"WebKit WebGL"`, SwiftShader software-GL). `--enable-unsafe-swiftshader` **şart** (Chrome software-WebGL; yoksa FlowCanvas `TARGET_CRASHED` — [perf-olcum-devcontainer-kurulumu](perf-olcum-devcontainer-kurulumu.md) ile aynı flag ailesi).
+
+**Ayırt-edicilik sanity ekle (disiplin):** WebGL-bağımlı degradasyon test edilirken **ilk senaryo** "full-motion + WebGL açık → `canvas` var (mode high)" olsun. Bu geçmezse ortam WebGL vermiyordur ve tüm `static` sonuçları artefakttır — sonuçları geçerli sayma. (TASK-9.05'te tam bu yaşandı: sanity eklenmeden önce mobil-low 3/3 yanlış-static verdi.) Gelecek runtime task'ları (S4/9.06, S9/9.09 — Living Flow'a dokunur) için de geçerli.
+
+**Detection markörleri (LivingFlow):** `canvas` = FlowCanvas (mode high/low) · `svg[viewBox="0 0 1200 800"]` = StaticFlow (mode static). "low" DOM-attribute bırakmaz → high/low ayrımı DOM'dan yapılamaz; gating-değişmezi = canvas varlığı (static değil).

@@ -7,7 +7,7 @@
 >
 > Bu yapı şişmeyi önler: index ince kalır (hep yüklü), detay yalnızca gerekince okunur.
 
-**Son Güncelleme:** 2026-07-02 — review-phase 8: yeni Süreç Disiplini eklendi — bir sayfayı a11y-mühürlerken iki gate'i de koş (axe WCAG-AA 0 ihlal ≠ Lighthouse a11y=100; `landmark`/`region`/`heading-order` WCAG-AA alt-kümesinde yok). "axe yeşil = 100" varsayma.
+**Son Güncelleme:** 2026-07-02 — run-task 9.05: yeni Ortam & Araç notu eklendi — standalone Playwright'te WebGL testi için bundled chromium yetmez, `channel:'chrome'` + `--enable-unsafe-swiftshader` şart (yoksa LivingFlow degradasyonu hep static → testler ayırt edici değil); WebGL-bağımlı degradasyon testine ayırt-edicilik sanity ekle.
 
 <!-- KURAL: Bu satır her güncellemede ÜZERİNE YAZILIR. "Önceki:" prefix ile kümülatif yığma YASAK (CLAUDE.md → Doküman Disiplini). -->
 
@@ -40,6 +40,7 @@
 - [Repo haritası](memory/repo-haritasi.md) — frontend = `NorthAIII/kiwiwebsite.v3` (bu repo, public); backend ayrı/private = `NorthAIII/kiwi-ai-lab`; eski repo'lar terk edilmiş öncül (yeniden kullanma).
 - **CI (GitHub Actions) gözlemi `gh` olmadan da yapılabilir** — repo **public** olduğundan Actions run/job durumu auth'suz REST API ile okunur: `curl -s "https://api.github.com/repos/NorthAIII/kiwiwebsite.v3/actions/runs?head_sha=<sha>"` → run id; sonra `/actions/runs/<id>/jobs` `jq '.jobs[] | "\(.name): \(.conclusion)"'` ile job-seviyesi `conclusion=success` ampirik teyit edilir (`gh run watch` eşdeğeri). CI workflow: `.github/workflows/ci.yml` (fast + a11y job; TASK-5.04). Ortam notu: bazı oturum ortamlarında `gh`/`node`/`python` kurulu olmayabilir (taze cloud devcontainer) — workflow GitHub runner'da koştuğu için node yerelde gerekmez.
 - [DevFlow sistemi](memory/devflow-sistemi.md) — DevFlow özel araç (`github.com/36337/DevFlow`); bu yüzden public repo'da `.claude/` gitignore'da, `_dev/` commit'lenir.
+- [Standalone Playwright'te WebGL → `channel:'chrome'` şart](memory/playwright-bundled-chromium-webgl-yok.md) — **Playwright-bundled chromium WebGL vermiyor** (`getContext('webgl2')`=null, hiçbir flag açmadı) → `LivingFlow` degradasyonu her zaman `static`e düşer: "reduced/no-WebGL → StaticFlow" testleri geçer ama **ayırt edici değil**, "mobil-low → FlowCanvas" **yanlış FAIL**. Çözüm: `chromium.launch({channel:'chrome', args:['--enable-unsafe-swiftshader',...]})`. WebGL-bağımlı degradasyon testine **ayırt-edicilik sanity** ekle (full-motion+WebGL→canvas var, mode high). Runtime task'ları 9.06/9.09 da etkiler. (TASK-9.05.)
 - [Perf ölçüm araç-zinciri devcontainer kurulumu](memory/perf-olcum-devcontainer-kurulumu.md) — Taze devcontainer'da node/Chrome yoksa (kullanıcı onayıyla) kur: node20 (NodeSource) + Chrome 150 (resmi repo) + LH 13.3.0 (npx-cache); `npm install` + `git checkout package-lock.json` (lock dokunulmaz; `npm ci` @swc/helpers drift'iyle reddeder). **Chrome-flags ŞART:** `--disable-dev-shm-usage` (64M /dev/shm) + `--enable-unsafe-swiftshader` (Chrome 150 software-WebGL; yoksa Living Flow `TARGET_CRASHED`). LH 13.x LCP elementini `lcp-breakdown-insight`'ta verir (eski `largest-contentful-paint-element` audit'i yok). **Software-GL ortamı perf/TBT'yi şişirir (ortamlar arası kıyaslanamaz); LCP/FCP/CLS Lantern-deterministik (kıyaslanabilir).**
 
 ## Çapraz Öğrenimler
