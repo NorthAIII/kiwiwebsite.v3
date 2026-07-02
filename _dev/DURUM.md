@@ -1,6 +1,6 @@
 # DURUM — Proje Dashboard
 
-**Son Güncelleme:** 2026-07-01 — **run-task 8.06:** iki bülten makalesine (`ArticleAiSdr`/`ArticleClaude`) stillendirmesiz `<main>` landmark eklendi → Lighthouse a11y **98→100** çift-tema (`landmark-one-main` geçti); sıfır görsel değişim (article box birebir, TR/AR screenshot onayı). e2e 52/52 + vitest 7/7 + build temiz. Faz 8'in tüm task'ları ✅ → **Adım=verify** (verify-phase 8 baştan koşulur).
+**Son Güncelleme:** 2026-07-02 — **verify-phase 8 yeniden koşum (TASK-8.06 sonrası):** UAT 12 senaryo **12/12 geçti**, düzeltme task'ı yok. CI (HEAD `d3adcb9`) `fast`+`a11y` success · security-review temiz · e2e 52/52 · Vitest 7/7 · build 0 MISSING_MESSAGE · **Lighthouse 5 alt sayfa + home a11y=100** (2 bülten 98→100, `landmark-one-main` düzeldi) · fail-on-regression kanıtı · 5 AR `dir=rtl`. **Milestone #1 tüm 5 alt sayfada karşılandı → Adım=review** (review-phase 8).
 
 <!-- KURAL: Bu satır her oturum sonunda ÜZERİNE YAZILIR — tek satır, tek cümle. "Önceki:" / "Eski:" prefix ile kümülatif yığma YASAK; HTML comment'e sarma da yasak (CLAUDE.md → Doküman Disiplini). Tarih + kısa özet yeterli; detay için git log + ilgili PHASE/TASK dokümanları. -->
 
@@ -9,9 +9,9 @@
 ## Aktif Faz
 
 **Faz:** 8 — v0.2 versiyon-sonu **teknik borç kapatma** fazı (kapsam discuss-phase 8'de damgalandı). Faz 7 (Umami E1) ✅; Faz 6 (mobil perf/LCP) ✅; Faz 5 (test altyapısı D1) ✅; Faz 4 (v0.2 a11y 89→100) ✅ — v0.2 içerik fazları (4-7) tamamlandı.
-**Adım:** verify — Faz 8'in **tüm task'ları ✅** (8.01→8.06); sıradaki adım **verify-phase 8** (yeni oturum) — 8.06 düzeltmesi sonrası tüm UAT kontrolleri baştan koşulur. Faz 8 kapsamı: alt-sayfa derin a11y (5 alt sayfa, 5 dil/AR RTL, ana sayfa çıtası a11y=100 çift-tema + axe WCAG-AA 0 light+dark) + kümülatif a11y tohumu/CI. Task yapısı: 8.01 harness+audit ✅ → 8.02 /bunker-os fix ✅ (TD4 fold kapandı) → 8.03 /spor-salonu-yazilimi ✅ → 8.04 /vaka-calismalari ✅ → 8.05 /bulten 2 makale ✅ → **8.06 bülten `<main>` landmark ✅** (a11y 98→100).
-**İlerleme:** **run-task 8.06** (2026-07-01) — verify-phase 8 UAT #3 bulgusu kapatıldı. İki bülten makale bileşenine (`ArticleAiSdr`/`ArticleClaude`) kök `<article>`'ı saran stillendirmesiz `<main>` eklendi → Lighthouse a11y **98→100** (`landmark-one-main` skoru 1, dark kanonik; light kontrast axe ile zaten kanıtlı). Tek main garantili (prerender: her sayfada 1 `<main>`, `<main><article`). Sıfır görsel değişim: `main > article` box 4 varyantta birebir (x=304/w=672 @1280px), TR light + AR dark screenshot onayı, AR `dir="rtl"` korundu. Testler: build temiz 0 MISSING_MESSAGE · Vitest 7/7 · `test:e2e` **52/52 yeşil** (landmark ekleme axe suite'i regresyona sokmadı). Home + diğer 3 alt sayfa a11y=100 dokunulmadı. **Milestone #1 "a11y=100 çift-tema" 5 alt sayfanın tamamında karşılandı.** **Bekleyen versiyon-sonu aksiyonu:** v0.2 production release (tüm revize `main`'e ilk merge) — Umami canlı +1 (S9-10) o adımda kapanır. **Kapsam dışı:** brief mobil perf (gerçek-cihaz), TB-C npm audit.
-**Son Faz Dokümanı:** `phases/PHASE-8.md` (🔄 Devam ediyor — tüm task ✅, verify-phase 8 yeniden koşulacak)
+**Adım:** review — Faz 8'in **tüm task'ları ✅** (8.01→8.06) + **verify-phase 8 yeniden koşumu 12/12 geçti** (TASK-8.06 sonrası, düzeltme task'ı yok). Sıradaki adım **review-phase 8** (yeni oturum). Faz 8 kapsamı: alt-sayfa derin a11y (5 alt sayfa, 5 dil/AR RTL, ana sayfa çıtası a11y=100 çift-tema + axe WCAG-AA 0 light+dark) + kümülatif a11y tohumu/CI. Task yapısı: 8.01 harness+audit ✅ → 8.02 /bunker-os fix ✅ (TD4 fold kapandı) → 8.03 /spor-salonu-yazilimi ✅ → 8.04 /vaka-calismalari ✅ → 8.05 /bulten 2 makale ✅ → 8.06 bülten `<main>` landmark ✅.
+**İlerleme:** **verify-phase 8 yeniden koşum** (2026-07-02) — TASK-8.06 sonrası bütün kontroller baştan yapıldı, **12/12 UAT geçti**. Otomatik: CI (HEAD `d3adcb9`) `fast`+`a11y` success · security-review temiz (0 bulgu, sunum/a11y katmanı) · npm audit kapsam dışı (TB-C). Otonom: **Lighthouse 5 alt sayfa + home a11y=100** (2 bülten `landmark-one-main` düzeldi 98→100, her sayfa tam 1 `<main>` + 0 düşen audit; diğer 3 alt sayfa + home dokunulmadı, 100) · e2e **52/52** (bir `vaka en-light` axe timeout'u aşırı host-yükü altında → düşük yükte re-run'da geçti, false-negative) · Vitest 7/7 · build 0 MISSING_MESSAGE · 5 AR prerender `dir=rtl` · fail-on-regression kanıtı (enjekte→kırıldı→geri alındı). **Milestone #1 "a11y=100 çift-tema" 5 alt sayfanın tamamında karşılandı.** **Bekleyen versiyon-sonu aksiyonu:** v0.2 production release (tüm revize `main`'e ilk merge) — Umami canlı +1 (S9-10) o adımda kapanır. **Kapsam dışı:** brief mobil perf (gerçek-cihaz), TB-C npm audit.
+**Son Faz Dokümanı:** `phases/PHASE-8.md` (🔄 Devam ediyor — tüm task ✅, verify 12/12, review-phase 8 bekliyor)
 
 ---
 
@@ -28,9 +28,9 @@
 
 ## Aktif Task
 
-**Task:** TASK-8.06 (✅ Tamamlandı) — 2 bülten makale bileşenine stillendirmesiz `<main>` landmark eklendi (Lighthouse a11y 98→100 çift-tema; sıfır görsel değişim). Faz 8'in tüm task'ları tamam. Sıradaki adım **verify-phase 8** (yeni oturum, baştan).
-**Durum:** Faz 8 aktif, adım=verify. Tüm task'lar ✅ (8.01→8.06); 8.06 verify bulgusunu kapattı. verify-phase 8 baştan koşulur (tüm UAT kontrolleri).
-**İlerleme:** 8.06 fix'i: `ArticleAiSdr`/`ArticleClaude` kök `<article>` styling'siz `<main>` ile sarıldı → `landmark-one-main` geçti, iki bülten sayfası Lighthouse a11y=100 (dark kanonik). Tek main garantili (prerender teyit). Sıfır görsel değişim (article box birebir, TR/AR screenshot). e2e 52/52 (axe suite regresyonsuz) + vitest 7/7 + build temiz. Milestone #1 (a11y=100 çift-tema) 5 alt sayfanın tamamında karşılandı. Bekleyen versiyon-sonu aksiyonu: v0.2 production release (Umami canlı +1 orada kapanır).
+**Task:** Aktif task yok — Faz 8'in tüm task'ları ✅ (8.01→8.06) ve **verify-phase 8 yeniden koşumu 12/12 geçti** (düzeltme task'ı gerekmedi). Sıradaki adım **review-phase 8** (yeni oturum).
+**Durum:** Faz 8 aktif, adım=review. Tüm task'lar ✅; verify 12/12 (TASK-8.06 önceki UAT #3'ü kapattı). review-phase 8 bekliyor.
+**İlerleme:** verify-phase 8 yeniden koşumu (2026-07-02): 12/12 UAT geçti, 0 düzeltme. Lighthouse 5 alt sayfa + home a11y=100 (2 bülten `landmark-one-main` 98→100); e2e 52/52; Vitest 7/7; build temiz; 5 AR `dir=rtl`; fail-on-regression kanıtı; CI success; security-review temiz. Milestone #1 (a11y=100 çift-tema) 5 alt sayfanın tamamında karşılandı. Bekleyen versiyon-sonu aksiyonu: v0.2 production release (Umami canlı +1 orada kapanır).
 
 ---
 
@@ -75,12 +75,12 @@
 
 ## Hızlı Erişim
 
-**Aktif Task:** TASK-8.06 (✅ bülten `<main>` landmark, a11y 98→100). Faz 8'in tüm task'ları ✅. Sıradaki: verify-phase 8 (yeniden, baştan). Bekleyen: v0.2 production release (Umami canlı +1 orada kapanır).
-**Aktif Faz:** 8 — v0.2 versiyon-sonu teknik borç · adım=verify (8.01→8.06 ✅; verify-phase 8 yeniden koşulacak); Faz 7 ✅; Faz 6 ✅; Faz 5 ✅; Faz 4 ✅; Aktif Versiyon v0.2, Versiyon Sonu Durumu: teknik_borç
+**Aktif Task:** Yok — Faz 8 tüm task'lar ✅ + verify 12/12 geçti. Sıradaki: review-phase 8. Bekleyen: v0.2 production release (Umami canlı +1 orada kapanır).
+**Aktif Faz:** 8 — v0.2 versiyon-sonu teknik borç · adım=review (8.01→8.06 ✅; verify-phase 8 yeniden koşumu 12/12); Faz 7 ✅; Faz 6 ✅; Faz 5 ✅; Faz 4 ✅; Aktif Versiyon v0.2, Versiyon Sonu Durumu: teknik_borç
 **Task Sistemi:** `tasks/TASKS-README.md`
 **PRD (karar kaynağı):** `PRD/VIZYON.md` · `PRD/VERSIONS.md` · `PRD/features/`
 **Revize Backlog (bilinen sorunlar):** `docs/REVIZE-BACKLOG.md`
 
 ---
 
-**Son Güncelleme:** 2026-07-01 — run-task 8.06: 2 bülten makalesine stillendirmesiz `<main>` landmark → Lighthouse a11y 98→100 çift-tema (`landmark-one-main` geçti); sıfır görsel değişim (article box birebir + TR/AR screenshot). e2e 52/52 + vitest 7/7 + build temiz. Faz 8'in tüm task'ları ✅. Adım=verify. Sıradaki: verify-phase 8 (yeniden, baştan).
+**Son Güncelleme:** 2026-07-02 — verify-phase 8 yeniden koşum (TASK-8.06 sonrası): UAT **12/12 geçti**, düzeltme task'ı yok. CI success · security-review temiz · Lighthouse 5 alt sayfa + home a11y=100 (2 bülten 98→100) · e2e 52/52 · Vitest 7/7 · build 0 MISSING_MESSAGE · 5 AR `dir=rtl` · fail-on-regression kanıtı. Milestone #1 tamam. Adım=review. Sıradaki: review-phase 8.

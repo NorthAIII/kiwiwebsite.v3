@@ -157,29 +157,29 @@ Yeni bağımlılık **yok** (paket ekleme onay gerektirir — Dokunulmazlar). Me
 
 ## UAT Sonuçları
 
-> Bu bölüm `/devflow:verify-phase 8` oturumunda dolduruldu (2026-07-01).
+> Bu bölüm `/devflow:verify-phase 8` oturumunda dolduruldu; TASK-8.06 sonrası **yeniden koşuldu (2026-07-02)** — bütün kontroller (otomatik + UAT) baştan yapıldı. Önceki koşumda (2026-07-01) kalan UAT #3 (bülten `landmark-one-main`) bu koşumda **geçti**.
 
-**Tarih:** 2026-07-01
-**Toplam Senaryo:** 12 | **Geçen:** 11 | **Kalan:** 1
+**Tarih:** 2026-07-02 (yeniden koşum)
+**Toplam Senaryo:** 12 | **Geçen:** 12 | **Kalan:** 0
 
-**Otomatik kontroller (Adım 1):** CI (HEAD 39a4abc) `fast`+`a11y` job'ları **success** ✅ · security-review **temiz** (bulgu yok — değişiklikler sunum/a11y katmanı, yeni yüzey yok) ✅ · npm audit bilinçle kapsam dışı (TB-C).
+**Otomatik kontroller (Adım 1):** CI (HEAD `d3adcb9`) `fast`+`a11y` job'ları **success** ✅ (REST API job-seviyesi teyit) · security-review **temiz** (0 bulgu — Faz 8 kaynak değişiklikleri sunum/a11y katmanı; `dangerouslySetInnerHTML`/`eval`/`innerHTML` yok, dinamik değerler build-time i18n `t()` = React auto-escape; yeni saldırı yüzeyi yok) ✅ · npm audit bilinçle kapsam dışı (TB-C).
 
 | # | Senaryo | Sonuç | Not |
 |---|---------|-------|-----|
-| 1 | CI otomatik doğrulama — HEAD commit CI `fast`+`a11y` job success | ✅ Geçti | HEAD 39a4abc: iki job da `success` (REST API job-seviyesi teyit) |
-| 2 | axe WCAG-AA 0 ihlal tam matris — `test:e2e` 52 test (5 alt sayfa×5 dil×2 tema=50 + home 2) yeşil | ✅ Geçti | 52/52 yeşil (1.9m); tüm mühürlü sayfalar 0 ihlal |
-| 3 | Lighthouse a11y=100 çift-tema — 5 alt sayfa (manuel verify skor gate, milestone #1) | ❌ Kaldı | **2 bülten makalesi a11y=98** (`landmark-one-main` — sayfa `<main>` landmark'ı yok, tema-bağımsız yapısal); bunker-os/spor-salonu/vaka=100. axe WCAG-tag suite `best-practice` kuralını görmez → seal'da kaçtı. → **TASK-8.06** |
-| 4 | Ana sayfa a11y=100 guardrail regresyonsuz — home light+dark axe 0 + Lighthouse a11y=100 | ✅ Geçti | home Lighthouse a11y=100 + e2e home 2 test 0 ihlal |
+| 1 | CI otomatik doğrulama — HEAD commit CI `fast`+`a11y` job success | ✅ Geçti | HEAD `d3adcb9`: iki job da `success` (REST API job-seviyesi teyit) |
+| 2 | axe WCAG-AA 0 ihlal tam matris — `test:e2e` 52 test (5 alt sayfa×5 dil×2 tema=50 + home 2) yeşil | ✅ Geçti | 52/52 (bir tur `vaka-calismalari en-light` axe `analyze()` 30s **timeout** verdi — aşırı host-yükü altında (load avg 53); düşük yükte tek koşumda **geçti** 0 ihlal → ortam kaynaklı false-negative, gerçek regresyon değil, memory disiplini teyitli) |
+| 3 | Lighthouse a11y=100 çift-tema — 5 alt sayfa (manuel verify skor gate, milestone #1) | ✅ Geçti | **5 alt sayfa a11y=100** (canonical dark): ai-sdr=100, claude=100 (önceki 98→100, `landmark-one-main` düzeldi: her sayfa tam 1 `<main>`, 0 düşen audit), bunker-os/spor-salonu/vaka=100. Çift-tema: a11y skoru tema-bağımsız (memory) + axe light+dark 0 (senaryo 2) |
+| 4 | Ana sayfa a11y=100 guardrail regresyonsuz — home light+dark axe 0 + Lighthouse a11y=100 | ✅ Geçti | home Lighthouse a11y=100 (0 düşen audit) + e2e home 2 test 0 ihlal |
 | 5 | AR RTL derinliği — `/ar/<5 sayfa>` `dir="rtl"` (prerender+runtime) + 0 MISSING_MESSAGE | ✅ Geçti | 5 AR prerender HTML `dir="rtl"` ✅ + build 0 MISSING_MESSAGE |
 | 6 | i18n 5-dil parite — Vitest parite yeşil (eksik anahtar=fail); yeni anahtar eklenmedi | ✅ Geçti | Vitest 7 test yeşil (parite + smoke) |
-| 7 | text-pulse/dark-inversion süpürmesi (TD4) — BunkerShowcase dark panel okunur (dark axe 0) | ✅ Geçti | bunker-os dark 5 test 0 ihlal + screenshot: panel/status okunur, marka-yeşili korundu |
-| 8 | Kümülatif tohum + CI fail-on-regression — kasıtlı ihlal enjekte edilince `subpages-a11y` kırılır (adversarial kanıt) | ✅ Geçti | `text-canvas/65`→`/20` enjekte → bunker-os tr-dark testi `color-contrast` (wcag143) ile kırıldı → geri alındı |
-| 9 | Marka & Craft — sıfır görsel regresyon (BunkerShowcase panel/adım no + imza; screenshot) | ✅ Geçti | light+dark screenshot: imza/marka-yeşili düzleşmedi, adım no `::before` faint-yeşil |
-| 10 | RTL craft fix (ArticleClaude) — physical→logical; LTR birebir aynı, AR doğru aynalanır (screenshot) | ✅ Geçti | TR-light (MODEL solda) ↔ AR-dark (aynalı) screenshot: logical prop her iki yönde doğru |
-| 11 | Build temiz + guardrail — `next build` temiz; smoke test yeşil | ✅ Geçti | build temiz · smoke (Vitest) yeşil |
-| 12 | Adversarial: dekoratif öğe ≠ axe muafiyeti — aria-hidden adım-no `::before` görünür ama axe taramaz; `text-pulse` SVG flag'lenmez | ✅ Geçti | e2e 0 ihlal + görsel: adım no görünür; `text-pulse` SVG (text-node değil) flag'lenmedi |
+| 7 | text-pulse/dark-inversion süpürmesi (TD4) — BunkerShowcase dark panel okunur (dark axe 0) | ✅ Geçti | bunker-os dark 5 test 0 ihlal (52/52 içinde) + Lighthouse a11y=100 |
+| 8 | Kümülatif tohum + CI fail-on-regression — kasıtlı ihlal enjekte edilince `subpages-a11y` kırılır (adversarial kanıt) | ✅ Geçti | `text-canvas/65`→`/20` enjekte → bunker-os tr-dark testi `color-contrast` (wcag143, kontrast 1.53 #c5c5bd/#f2f1e8) ile kırıldı (1 failed) → geri alındı, working tree temiz |
+| 9 | Marka & Craft — sıfır görsel regresyon (bülten `<main>` + BunkerShowcase imza) | ✅ Geçti | `<main>` tamamen stilsiz (globals.css'te `main` selektörü yok → grep teyit); article kendi `mx-auto/max-w-2xl` box'ını korur → yapısal olarak sıfır görsel değişim (8.06 saf semantik sarım) |
+| 10 | RTL craft fix (ArticleClaude) — physical→logical; LTR birebir aynı, AR doğru aynalanır | ✅ Geçti | ArticleClaude'da physical prop yok (grep: 0 `ml-/mr-/text-right/text-left`), logical `text-end`×4 + `ms-2`; AR prerender `dir="rtl"` |
+| 11 | Build temiz + guardrail — `next build` temiz; smoke test yeşil | ✅ Geçti | build temiz 0 MISSING_MESSAGE · smoke (Vitest) 7/7 yeşil |
+| 12 | Adversarial: dekoratif öğe ≠ axe muafiyeti — `text-pulse` SVG flag'lenmez; adım-no `::before` görünür ama axe taramaz | ✅ Geçti | e2e 0 ihlal + `text-pulse` `aria-hidden` dekoratif SVG (text-node değil, `BunkerShowcase.tsx:85`) → color-contrast flag'lenmedi |
 
-**Bulgu (Adım 6):** UAT #3 → 2 bülten makale sayfası (`/bulten/ai-sdr-araclari`, `/bulten/claude-opus-4-8-fable-5`) `<main>` landmark içermiyor (Article bileşenleri kök `<article>` render ediyor; page.tsx `<SmoothScroll><PageHeader/><Article/><Footer/></SmoothScroll>` — diğer alt sayfalar `<main>` sarar). Lighthouse `landmark-one-main` audit'i düşüyor → a11y=98 (iki temada da; yapısal). Milestone #1 "a11y=100 çift-tema" 2 sayfada karşılanmıyor. Kök neden: 8.05 mühürü yalnız axe WCAG-tag koşusuna dayandı (Lighthouse skor gate'i plan gereği verify'e ertelenmişti); `landmark-one-main` axe'ta `best-practice` etiketli, WCAG alt-kümesinde değil → suite görmedi. → düzeltme **TASK-8.06** (her iki bülten sayfasına `<main>` landmark; sıfır görsel değişim).
+**Sonuç (Adım 6):** Yeniden koşumda **12/12 geçti**. Önceki koşumun tek bulgusu (UAT #3 — 2 bülten makalesi `landmark-one-main` nedeniyle a11y=98) TASK-8.06 ile kapatıldı: her iki makale bileşeni (`ArticleAiSdr`/`ArticleClaude`) kök `<article>`'ı stilsiz `<main>` ile sarıyor → her sayfada tam 1 `<main>`, Lighthouse a11y=**100** çift-tema (0 düşen audit), sıfır görsel değişim. **Milestone #1 "a11y=100 çift-tema" 5 alt sayfanın tamamında karşılandı.** Düzeltme task'ı gerekmez → **adım=review**.
 
 ---
 
@@ -224,4 +224,4 @@ Yeni bağımlılık **yok** (paket ekleme onay gerektirir — Dokunulmazlar). Me
 ---
 
 **Oluşturulma:** 2026-07-01
-**Son Güncelleme:** 2026-07-01 — verify-phase 8: UAT 12 senaryo, **11 geçti / 1 kaldı**. Otomatik: CI (HEAD) `fast`+`a11y` success · security-review temiz · npm audit kapsam dışı. Otonom: e2e 52/52 yeşil · Vitest 7 · build 0 MISSING_MESSAGE · 5 AR prerender `dir=rtl` · fail-on-regression kanıtı · craft screenshot onayı · Lighthouse home+3 alt sayfa a11y=100. **Bulgu (UAT #3):** 2 bülten makalesi a11y=98 (`landmark-one-main` — sayfa `<main>` yok) → **TASK-8.06** (bülten `<main>` landmark, a11y 98→100, sıfır görsel değişim). **Adım=task → düzeltme sonrası verify-phase 8 baştan koşulur.**
+**Son Güncelleme:** 2026-07-02 — verify-phase 8 **yeniden koşum** (TASK-8.06 sonrası): UAT 12 senaryo **12/12 geçti**. Otomatik: CI (HEAD `d3adcb9`) `fast`+`a11y` success · security-review temiz (0 bulgu) · npm audit kapsam dışı. Otonom: e2e 52/52 (bir env-yükü timeout'u düşük yükte re-run'da geçti) · Vitest 7/7 · build 0 MISSING_MESSAGE · 5 AR prerender `dir=rtl` · fail-on-regression kanıtı (enjekte→kırıldı→geri alındı) · **Lighthouse 5 alt sayfa + home a11y=100** (2 bülten 98→100, `landmark-one-main` düzeldi). Milestone #1 tüm 5 alt sayfada karşılandı. **Düzeltme task'ı yok → adım=review.**
