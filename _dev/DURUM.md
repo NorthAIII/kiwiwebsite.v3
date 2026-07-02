@@ -1,6 +1,6 @@
 # DURUM — Proje Dashboard
 
-**Son Güncelleme:** 2026-07-02 — **verify-phase 11 tamamlandı (UAT):** 13/13 senaryo ✅, düzeltme task'ı **yok**. Otomatik kontroller temiz: CI `fast`+`a11y` (playwright/axe) HEAD dahil hepsinde success; security-review N-A (statik-literal redirect, open-redirect yok); npm audit 3 moderate = faz-öncesi TB-C (kapsam dışı). Redirect build-ground-truth (`routes-manifest` `[308]` × çıplak+5-locale), sitemap 5× crew-os/0× bunker-os, iç link doğrudan `/crew-os` (çift-redirect yok), i18n-parite 5/5, prerender 5-locale SSG. **Sıradaki adım: `review-phase 11` (faz review + retrospektif, yeni oturum).**
+**Son Güncelleme:** 2026-07-02 — **review-phase 11 tamamlandı: Faz 11 ✅** (v0.3 URL taksonomisi/SEO). Retrospektif + 8 kalite ekseni (7 ✅ + 1 N/A güvenlik) + kullanıcı yolculuğu/boşluk PHASE-11'e yazıldı; kaynak kod bağımsız teyit edildi (redirect/route/sitemap/namespace/iç link tutarlı); taksonomi (DECISIONS 2026-06-27) son açık ucu kapandı. MODULE-MAP SEO1-3 ✅ + F2.7 route referansları `/crew-os`'a güncellendi; DECISIONS + memory (config-redirect locale-prefix tuzağı) eklendi. Kayıtlı açık: latent canonical=`/` + `/forum` locale gap (gelecek SEO fazı). **Sıradaki adım: `discuss-phase 12` (v0.3 sonraki içerik fazı — B1 Living Flow nabız, gate'li).**
 
 <!-- KURAL: Bu satır her oturum sonunda ÜZERİNE YAZILIR — tek satır, tek cümle. "Önceki:" / "Eski:" prefix ile kümülatif yığma YASAK; HTML comment'e sarma da yasak (CLAUDE.md → Doküman Disiplini). Tarih + kısa özet yeterli; detay için git log + ilgili PHASE/TASK dokümanları. -->
 
@@ -8,10 +8,10 @@
 
 ## Aktif Faz
 
-**Faz:** 11 — **v0.3 URL taksonomisi / SEO** (`/bunker-os`→`/crew-os`). Kapsam: route rename + kalıcı redirect (5 locale) + i18n namespace `bunkerOs`/`bunker`→crew 5-dil rename + sitemap/canonical/alternates + iç linkler temiz. `/forum`→404 reddedildi (mevcut 301 korunur); kod dosya adları iç-ad kalır. **Faz 10 ✅ Tamamlandı** (v0.3 görsel cila — A1 logo + A3a/A3b). v0.2 tamamen ✅ (Faz 4–9 + prd-review + production release).
-**Adım:** review (verify-phase 11 ✅ → UAT 13/13, 0 düzeltme task'ı; sıradaki `review-phase 11` faz review+retrospektif. Versiyon Sonu Durumu = `içerik_fazları`, değişmez). ✅ **v0.2 production release tamamlandı (2026-07-02)** — revize `main`'de, canlı deploy `a71adbc`, Umami canlı +1 doğrulandı (`docs/RELEASE-v0.2.md`). Açık takip: chatbot canlı `ANTHROPIC_API_KEY` env (release engeli değil).
-**İlerleme:** verify-phase 11 (2026-07-02) ✅ — UAT 13/13 senaryo geçti, düzeltme task'ı yok; otomatik kontroller (CI fast+a11y success, security N-A, npm audit faz-öncesi TB-C) temiz. Redirect `routes-manifest` `[308]` (çıplak+5-locale), sitemap 5× crew-os, iç link doğrudan (çift-redirect yok), i18n-parite 5/5, 5-locale SSG prerender. TASK-11.03 (2026-07-02) ✅ — iç link `/bunker-os`→`/crew-os` (Hero:115 + Bunker:41); çift-redirect kaldırıldı. TASK-11.02 (2026-07-02) ✅ — i18n namespace `bunkerOs`→`crewOs` (7 tüketici) + `bunker`→`crew` (2 tüketici) 5-dil atomik. TASK-11.01 (2026-07-02) ✅ — route rename + kalıcı 308 redirect (çıplak + 5-locale pattern) + sitemap. verify-plan 11 ✅. plan-phase 11 ✅. research-phase 11 ✅. discuss-phase 11 ✅. **Sahipli açıklar (record, faz-dışı):** non-TR alt-sayfa stale (4 sayfa ar/de/es, versiyon-sınırı), **alt-sayfa canonical=`/` (layout miras, latent SEO, gelecek faz)**, **`/forum` locale-prefix gap (`/en/forum`→404, gelecek faz)**, brief mobil perf (gerçek-cihaz duvarı), B1 Living Flow nabız (v0.3, ayrı gate'li faz), site-geneli logical-ok (RTL, ayrı iş), dil-seti/AR stratejisi, TB-C npm audit (3 moderate).
-**Son Faz Dokümanı:** `phases/PHASE-11.md` (🔄 Kapsam + Araştırma + Task Listesi yazıldı; verify-plan/UAT bekliyor). Faz 10 ✅ `phases/PHASE-10.md`.
+**Faz:** 12 (geçici ad: **B1 Living Flow nabız kapsamı** — karar-gate'li, imza-riskli) — henüz girilmedi (discuss-phase 12 numarayı/kapsamı damgalar). **Faz 11 ✅ Tamamlandı** (v0.3 URL taksonomisi/SEO — `/bunker-os`→`/crew-os` rename + kalıcı 308 redirect + namespace 5-dil + sitemap/iç link temiz). Faz 10 ✅ (v0.3 görsel cila). v0.2 tamamen ✅ (Faz 4–9 + prd-review + production release).
+**Adım:** discuss (Faz 11 review ✅ → sıradaki `discuss-phase 12`; v0.3 sonraki içerik fazı, Versiyon Sonu Durumu = `içerik_fazları`, değişmez). ✅ **v0.2 production release tamamlandı (2026-07-02)** — revize `main`'de, canlı deploy `a71adbc`, Umami canlı +1 doğrulandı (`docs/RELEASE-v0.2.md`). Açık takip: chatbot canlı `ANTHROPIC_API_KEY` env (release engeli değil).
+**İlerleme:** review-phase 11 (2026-07-02) ✅ — Faz 11 kapandı: milestone karşılandı (public `/crew-os` 5-locale SSG + kalıcı 308 redirect çıplak+5-locale + namespace 5-dil senkron 0 MISSING_MESSAGE + sitemap/iç link temiz); UAT 13/13; 8 kalite ekseni (7 ✅ + 1 N/A); kaynak kod bağımsız teyit edildi; taksonomi son açık ucu kapandı; MODULE-MAP/DECISIONS/memory güncellendi. **Sahipli açıklar (record, faz-dışı):** non-TR alt-sayfa stale (4 sayfa ar/de/es, versiyon-sınırı), **alt-sayfa canonical=`/` (layout miras, latent SEO, gelecek faz)**, **`/forum` locale-prefix gap (`/en/forum`→404, gelecek faz)**, brief mobil perf (gerçek-cihaz duvarı), B1 Living Flow nabız (v0.3, ayrı gate'li faz — sıradaki), site-geneli logical-ok (RTL, ayrı iş), dil-seti/AR stratejisi, TB-C npm audit (3 moderate).
+**Son Faz Dokümanı:** `phases/PHASE-11.md` (✅ Tamamlandı — retrospektif + kalite kontrol yazıldı). Faz 10 ✅ `phases/PHASE-10.md`.
 
 ---
 
@@ -28,37 +28,27 @@
 
 ## Aktif Task
 
-**Task:** — Faz 11 UAT tamamlandı (13/13 ✅, düzeltme task'ı yok). Aktif bekleyen task yok; sıradaki adım `review-phase 11` (faz review + retrospektif).
-**Durum:** Faz 11 🔄 → Adım **review** (tüm tasklar ✅ + UAT ✅). Versiyon Sonu Durumu = `içerik_fazları`; Aktif Versiyon v0.3.
-**İlerleme:** verify-phase 11 (2026-07-02) ✅ — 13/13 UAT senaryo geçti; otomatik kontroller temiz; 0 düzeltme task'ı. Sıradaki = `review-phase 11`.
+**Task:** — Faz 11 review tamamlandı (faz ✅). Aktif bekleyen task yok; sıradaki adım `discuss-phase 12` (v0.3 sonraki içerik fazı — B1 Living Flow nabız).
+**Durum:** Faz 11 ✅ Tamamlandı → Adım **discuss** (sıradaki faz kapsam tartışması). Versiyon Sonu Durumu = `içerik_fazları`; Aktif Versiyon v0.3.
+**İlerleme:** review-phase 11 (2026-07-02) ✅ — retrospektif + kalite kontrol yazıldı, faz ✅; 0 düzeltme task'ı. Sıradaki = `discuss-phase 12`.
 
 ---
 
 ## Task Durumu (Aktif Faz)
 
-> Faz 11 (v0.3 URL taksonomisi/SEO) — 3 task (SEO1-3); **TASK-11.01 ✅, TASK-11.02 ✅, TASK-11.03 ✅ — tüm tasklar tamam**, sıradaki **verify-phase 11**. Faz 10 ✅ (10.01–10.04, detay `phases/PHASE-10.md`); Faz 4–9 ✅ — hepsi archive'da.
+> **Faz 11 ✅ Tamamlandı** (3 task SEO1-3, hepsi archive'da) — tablo yeni faza (Faz 12, henüz girilmedi) sıfırlandı. Faz 12 task'ları `discuss-phase 12` + `plan-phase 12` sonrası oluşur. Faz 11 detayı → `phases/PHASE-11.md` + `tasks/archive/`. Faz 4–10 ✅.
 
 | # | Task | Durum | Açıklama |
 |---|------|-------|----------|
-| 11.01 | TASK-11.01 | ✅ Tamamlandı | SEO1: route `bunker-os/`→`crew-os/` + kalıcı 308 redirect (çıplak+5-locale) + sitemap + route-path test |
-| 11.02 | TASK-11.02 | ✅ Tamamlandı | SEO2: i18n namespace `bunkerOs`→`crewOs` (7 tüketici) + `bunker`→`crew` (2 tüketici), 5-dil atomik (0 MISSING_MESSAGE) |
-| 11.03 | TASK-11.03 | ✅ Tamamlandı | SEO3: iç link `/bunker-os`→`/crew-os` (Hero+Bunker; çift-redirect kaldırıldı — doğrudan hedef) |
+| — | — | — | Faz 12 henüz girilmedi (discuss-phase bekliyor); task yok |
 
 ---
 
 ## Son Task Özetleri
 
-> **KURAL:** Sadece son 2 task özeti tutulur, daha eskileri **gerçekten silinir** (HTML comment'e sarma, "Önceki:" prefix, üstü çizili etiket yasak — detay için git log + arşivlenmiş task dokümanı). Her özet kısa formatlı: paragraf yasak, **bullet zorunlu**, "Özet" alanı max 3 bullet. **Yeni faza geçildi → Faz 10 task özetleri sıfırlandı** (Faz 10 detayları `phases/PHASE-10.md` + `tasks/archive/`).
+> **KURAL:** Sadece son 2 task özeti tutulur, daha eskileri **gerçekten silinir** (HTML comment'e sarma, "Önceki:" prefix, üstü çizili etiket yasak — detay için git log + arşivlenmiş task dokümanı). Her özet kısa formatlı: paragraf yasak, **bullet zorunlu**, "Özet" alanı max 3 bullet. **Yeni faza geçildi → Faz 11 task özetleri sıfırlandı** (Faz 11 detayları `phases/PHASE-11.md` + `tasks/archive/`).
 
-**TASK-11.03** (2026-07-02) ✅ — SEO3: iç link `/bunker-os`→`/crew-os` (çift-redirect kaldırıldı)
-- `Hero.tsx:115` + `Bunker.tsx:41` `href="/bunker-os"` → `href="/crew-os"`; link doğrudan hedefe (`/bunker-os`→308 hop yok).
-- `page.tsx:7` import path (`components/bunker-os/`) dokunulmadı — link değil, component dizini (iç kod adı).
-- Doğrulama: grep 0 iç link · `next build` temiz + 0 MISSING_MESSAGE · prerender TR 2× `/crew-os` + EN 2× `/en/crew-os` (next-intl prefix) · a11y regresyonsuz (yalnız href değeri değişti).
-
-**TASK-11.02** (2026-07-02) ✅ — SEO2: i18n namespace `bunkerOs`→`crewOs` + `bunker`→`crew` (5-dil atomik)
-- 5 JSON top-level anahtar (`bunkerOs`@152→`crewOs`, `bunker`@131→`crew`; 2-boşluk ankraj → `nav.bunker` etkilenmez) + 9 tüketici (7 crewOs + 2 crew) tek commit'te.
-- Değerler dokunulmadı (TR tek kaynak); `nav.bunker` label / `id="bunker"` / `href="#bunker"` / `@keyframes bunkerback` / component dosya adları korundu.
-- Doğrulama: grep 0 kalan referans · i18n-parite 5/5 · `next build` temiz + 0 MISSING_MESSAGE (5-locale SSG) · prerender HTML boşluksuz · a11y 10/10 (5 locale×2 tema).
+_(Faz 12 henüz girilmedi — task özeti yok. İlk task tamamlanınca burası dolar.)_
 
 <!-- KURAL: Sadece son 2 task özeti tutulur, daha eskileri silinir (gerçek silme — HTML comment yasak). -->
 <!-- KURAL: Sadece aktif fazın task'leri gösterilir. Geçmiş fazların bilgileri phases/ klasöründedir. -->
@@ -72,8 +62,8 @@
 
 ## Hızlı Erişim
 
-**Aktif Task:** Faz 11 UAT ✅ (13/13, 0 düzeltme). Sıradaki adım **review-phase 11** (faz review + retrospektif, yeni oturum). Açık takip: chatbot canlı env key.
-**Aktif Faz:** 11 🔄 — v0.3 URL taksonomisi/SEO (`/bunker-os`→`/crew-os` rename + redirect + namespace 5-dil + SEO metadata + iç link). Faz 10 ✅ (görsel cila). v0.2 Faz 4–9 ✅ + prd-review ✅ + production release ✅. **Aktif Versiyon v0.3**, Versiyon Sonu Durumu: **içerik_fazları** → sıradaki komut `run-task`.
+**Aktif Task:** Faz 11 ✅ Tamamlandı (review + retrospektif yazıldı). Sıradaki adım **discuss-phase 12** (v0.3 sonraki içerik fazı — B1 Living Flow nabız, gate'li; yeni oturum). Açık takip: chatbot canlı env key.
+**Aktif Faz:** 11 ✅ Tamamlandı — v0.3 URL taksonomisi/SEO (`/bunker-os`→`/crew-os` rename + redirect + namespace 5-dil + iç link). Faz 10 ✅ (görsel cila). v0.2 Faz 4–9 ✅ + prd-review ✅ + production release ✅. **Aktif Versiyon v0.3**, Versiyon Sonu Durumu: **içerik_fazları** → sıradaki komut `discuss-phase 12`.
 **Task Sistemi:** `tasks/TASKS-README.md`
 **PRD (karar kaynağı):** `PRD/VIZYON.md` · `PRD/VERSIONS.md` · `PRD/features/`
 **Revize Backlog (bilinen sorunlar):** `docs/REVIZE-BACKLOG.md`
@@ -81,4 +71,4 @@
 
 ---
 
-**Son Güncelleme:** 2026-07-02 — **verify-phase 11 ✅ (UAT):** 13/13 senaryo geçti, düzeltme task'ı **yok**. Otomatik kontroller: CI `fast`+`a11y` (playwright/axe) HEAD (7b2e808) dahil hepsinde success; security-review N-A (statik-literal redirect → open-redirect yok, yeni girdi/secret yüzeyi yok); npm audit 3 moderate = faz-öncesi TB-C (`next` transitive, kapsam dışı). UAT build-ground-truth ile: `routes-manifest` `[308]` çıplak `/bunker-os`+5-locale prefix + `/forum` regresyonsuz; prerender 5-locale `/crew-os` SSG; `sitemap.xml.body` 5× crew-os / 0× bunker-os; iç link Hero+Bunker doğrudan `/crew-os` (çift-redirect yok); i18n-parite 5/5; kapsam-dışı kod adları (nav.bunker/#bunker/keyframe/import path) korundu; AR `dir=rtl`. Ortam notu: canlı `next start` sandbox'ta öldü (worker-fork), redirect derlenmiş manifest + TASK-11.01 kayıtlı curl 308 ile doğrulandı. **Faz 11 tüm tasklar + UAT ✅ → sıradaki DevFlow komutu: `review-phase 11`.**
+**Son Güncelleme:** 2026-07-02 — **review-phase 11 ✅: Faz 11 kapandı** (v0.3 URL taksonomisi/SEO). Retrospektif + 8 kalite ekseni (7 ✅ + 1 N/A güvenlik) + kullanıcı yolculuğu/boşluk PHASE-11'e yazıldı; PHASES tablosu 11→✅ + geçiş notu; MODULE-MAP SEO1-3 ✅ + F2.7/taksonomi route referansları `/crew-os`'a güncellendi; DECISIONS 2026-07-02 (redirect kararı + taksonomi son açık ucu kapandı); memory `next-config-redirect-locale-prefix` (config redirect locale-prefix tuzağı) eklendi. Kaynak kod bağımsız teyit edildi (redirect 308 çıplak+5-locale · sitemap 5× crew-os/0× bunker-os · namespace 5-dilde crew+crewOs / 0 kalan tüketici · iç link doğrudan). Kayıtlı açık: latent canonical=`/` + `/forum` locale gap (gelecek SEO fazı). Versiyon Sonu Durumu içerik_fazları (değişmez). **Sıradaki DevFlow komutu: `discuss-phase 12` (B1 Living Flow nabız, gate'li).**

@@ -1,6 +1,6 @@
 # Phase 11: URL taksonomisi / SEO redirect (`/bunker-os` → `/crew-os`)
 
-**Durum:** 🔄 Devam ediyor
+**Durum:** ✅ Tamamlandı
 
 <!-- Bu doküman faza girince (discuss-phase) oluşur; durum 🔄 ile başlar. Henüz girilmemiş fazların dokümanı/numarası olmaz — PHASES.md → Sıradaki Fazlar'da numarasız konu olarak durur. -->
 <!-- KURAL: Bu doküman tek-okunabilir kalmalı (CLAUDE.md → Boyut ve Bölünme). Bir bölüm büyüyüp kırmızı çizgiye (~20k token) yaklaşırsa faz HÂLÂ AKTİFKEN `PHASE-N-<slug>.md`'ye bölünür — parent'ta self-yeten özet + pointer kalır, içerik taşınıp silinir, parent o fazın mini-index'i olur. Tamamlandıktan (✅) sonra bölme yasaktır; verify-phase ve review-phase fazı dondurmadan önce boyutu kontrol eder. -->
@@ -157,43 +157,64 @@
 
 ## Retrospektif
 
-> Bu bölüm `/devflow:review-phase 11` oturumunda doldurulur.
+> Bu bölüm `/devflow:review-phase 11` oturumunda dolduruldu (2026-07-02).
 
 ### Ne İyi Gitti?
-- [Tekrarlanması gereken pratikler]
+- **Ampirik research sessiz bir 404 bug'ını önledi.** research-phase, config redirect `source`'unun locale prefix'ini **otomatik kapsamadığını** yazmadan önce `/forum` curl'üyle kanıtladı (`/forum`→308 ama `/en/forum`→404). Bu yüzden redirect **iki açık giriş** (çıplak + `/:locale(en|ar|de|es)/…`) olarak yazıldı → rename sonrası `/en/bunker-os` vb. **404 olmadan** yönlendi. Kod-tahmini yerine ölçüm.
+- **Dar cerrahi disiplin — public yüzey ≠ iç kod adı ayrımı korundu.** Yalnız kullanıcıya sızan katman (URL + i18n namespace) rename edildi; iç kod tanımlayıcıları (`Bunker.tsx`, `components/bunker-os/`, `@keyframes bunkerback`, `id="bunker"`, `nav.bunker`) bilinçle korundu (taksonomi izin veriyor). Diff minimal kaldı, "tam tutarlılık/kod dahil rename" refleksi elendi.
+- **Research iki discuss over-claim'ini planlama öncesi düzeltti.** discuss'ın "page-seviyesi canonical/alternates güncellenecek" + "yeni crew-os generateStaticParams üretmeli" ifadeleri kaynak-teyidiyle çürütüldü (ikisi de layout'tan miras). Task'lar var olmayan yüzeyleri kovalamadı.
+- **Sandbox kısıtı altında build-ground-truth UAT.** Canlı `next start` bu cloud devcontainer'da worker-fork kısıtıyla öldü (exit 144); redirect derlenmiş `routes-manifest.json` (`[308]` regex + statusCode) + TASK-11.01'in farklı ortamda kaydettiği canlı curl 308 ile doğrulandı. Kısıt sahte-geçmişe kaçmadan, dürüst ve kanıtlı kapatıldı.
 
 ### Ne Kötü Gitti?
-- [Sorunlar ve darboğazlar]
+- **Stray `next-server` port tuzağı tekrar tetiklendi (11.01 ilk curl `/crew-os`→404).** Önceki oturumdan kalan 2 stray process portu tutup eski build'i sundu → yanlış-negatif. Zaten memory'de kayıtlı disiplinle (listening-PID teyidi) hızlı teşhis edilip temiz portta çözüldü; kaybettirdiği süre az.
+- **Canlı redirect doğrulaması bu oturumda yapılamadı (ortam kısıtı, defect değil).** `next start` sandbox'ta ölünce fresh canlı curl alınamadı; build ground-truth + önceki kayıtlı curl'e dayanıldı. Redirect/routing fazlarında canlı runtime gerektiğinde bu ortam sınırı hesaba katılmalı (gerçek-canlı teyit merge/Vercel gerektirebilir).
 
 ### Sonraki Faz İçin Öneriler
-- [Alınan dersler, tavsiyeler]
+- **Sıradaki = v0.3 sonraki içerik fazı** (Versiyon Sonu Durumu `içerik_fazları` değişmez). Sıradaki Fazlar'da tek numarasız konu kaldı: **B1 Living Flow nabız kapsamı** (karar-gate'li, imza-riskli). Kapsam/sıra discuss-phase 12'de damgalanır.
+- **Latent canonical=`/` SEO açığı biriktiriyor.** Tüm alt sayfalar layout'tan `canonical="/"` miras alıyor (her alt sayfa ana sayfaya canonicalize oluyor) — faz-öncesi durum, bu dar rename fazının konusu değildi. Gerçek bir SEO/metadata fazı geldiğinde page-seviyesi canonical/alternates ele alınmalı (kayıtlı açık).
+- **`/forum` locale-prefix gap kayıtlı** (`/en/forum`→404, aynı config-redirect locale davranışından) — aynı gelecek SEO fazı adayı. `/forum` bu fazda bilinçle korundu (301 çalışıyor).
+- **Config redirect locale-prefix tuzağı artık memory'de** ([next-config-redirect-locale-prefix](../memory/next-config-redirect-locale-prefix.md)) → gelecekteki her redirect'te iki-giriş deseni (çıplak + açık locale) kullanılmalı.
+
+### Task-Spesifik Teknik Öğrenimler
+<!-- Bu fazdaki task'larda öğrenilen ama proje genelinde geçerli olmayan teknik nüanslar (araç davranışı, framework bug'ı, vb.). MEMORY.md'nin değil, faz retrosunun evidir. -->
+- **`git mv` route rename'de history korudu.** `bunker-os/`→`crew-os/` klasör taşıması `git mv` ile yapıldı; eski dosya history'si yeni yolda izlenebilir kaldı (kör kopya-sil değil).
+- **Namespace rename `sed`'inde exact-string ankraj kritik.** `bunkerOs`→`crewOs` (7 tüketici) + `bunker`→`crew` (2 tüketici) tek geçişte; JSON'da satır-başı 2-boşluk ankraj (`^  "bunker"`) `nav.bunker` (4-boşluk, iç içe) ve `useTranslations("bunker")` ↔ `"bunkerOs")` ayrımını korudu. Namespace substring çakışmasında ankraj deseni önden düşünülmeli.
 
 ---
 
 ## Kalite Kontrol Sonuçları
 
-> Bu bölüm `/devflow:review-phase 11` oturumunda doldurulur.
+> Bu bölüm `/devflow:review-phase 11` oturumunda dolduruldu (2026-07-02). Faz saf URL/namespace tanımlayıcı rename'i (içerik/tasarım/davranış/DOM değişmedi). Eksenler rename'in doğruluğunu + guardrail regresyonsuzluğunu ölçer.
 
 | Eksen | Durum | Not |
 |-------|-------|-----|
-| Marka & Craft (imza) | ✅ / ⚠️ / ❌ | ... |
-| Erişilebilirlik | ✅ / N/A | ... |
-| Performans | ✅ / ⚠️ / ❌ | ... |
-| Yerelleştirme & RTL | ✅ / ⚠️ / ❌ | ... |
-| Modülerlik & Bakım | ✅ / ⚠️ / ❌ | ... |
-| Hata Yönetimi & Degradasyon | ✅ / ⚠️ / ❌ | ... |
-| Güvenlik | ✅ / N/A | ... |
-| Test Kapsamı | ✅ / ⚠️ / ❌ | ... |
+| Marka & Craft (imza) | ✅ | İçerik/kopya/tasarım/akış dokunulmadı; yalnız URL + i18n namespace + href değeri. Living Flow/imza sıfır değişim → zero template smell yapısal korunur. |
+| Erişilebilirlik | ✅ | Showcase DOM'u değişmedi (identifier rename) → a11y=100 çift-tema tabanı yapısal korunur; CI `a11y (playwright+axe)` HEAD'de success (`/crew-os` 5 locale × light+dark WCAG-AA 0). Route-path test `/crew-os`'a güncellendi. |
+| Performans | ✅ | Yalnız tanımlayıcı/href değişimi — render edilen bayt (asset/görsel/DOM yapısı) değişmedi → perf/CLS yapısal regresyonsuz. Yeni bağımlılık/asset YOK. Redirect edge-seviyesi (SSG'yi etkilemez). |
+| Yerelleştirme & RTL | ✅ | Namespace rename 5-dil atomik (0 `MISSING_MESSAGE`), i18n-parite 5/5. Değerler dokunulmadı (TR tek kaynak, zaten "Crew OS" markalı → yeni stale-lik yok). AR `dir=rtl` + `/ar/crew-os` içerik boşluksuz korundu. |
+| Modülerlik & Bakım | ✅ | Public yüzey (URL/namespace) ↔ iç kod adı (dosya/dizin/keyframe/id/nav.bunker) ayrımı bilinçle korundu → taksonomi tutarlı, diff minimal. İki namespace (`crew`/`crewOs`) ayrık. Redirect tek yerde (config), sitemap tek kaynak. |
+| Hata Yönetimi & Degradasyon | ✅ | Redirect kalıcı 308 edge-seviyesi; yeni failure surface yok. Eski `bunker-os/` klasörü silindi → route↔redirect çakışması yok (redirect kesin fire eder). Build ground-truth (`routes-manifest`) ile doğrulandı. |
+| Güvenlik | N/A | `security-review` N-A: `destination` sabit iç literal (kullanıcı-kontrolsüz → open-redirect yok); yeni girdi/secret/injection yüzeyi yok. npm audit 3 moderate = faz-öncesi kayıtlı TB-C (`next` transitif, statik-site istismar-edilemez, kapsam dışı). |
+| Test Kapsamı | ✅ | Route-path test `/crew-os`'a güncellendi (`subpages-a11y.spec.ts`); i18n-parite testi anahtar-kümesini karşılaştırdığı için namespace rename'i yapısal kapsar (test kodu değişmedi, 5/5 yeşil). Yeni davranış yok → yeni test gerekmez. CI `fast`+`a11y` yeşil. |
+
+### Kullanıcı Yolculuğu & Boşluk Tespiti
+
+- **Public URL yolculuğu artık tutarlı.** İç kod adı "Bunker OS" URL'de sızmıyor; kullanıcı her yüzeyde (Hero teaser, Bunker teaser, sitemap, showcase) `/crew-os` görür. Eski `/bunker-os` linkleri kalıcı 308 ile korunur (SEO-güvenli, kırık link yok). Taksonomi kararının (DECISIONS 2026-06-27) son açık ucu kapandı.
+- **Boşluklar (sahipli, yeni değil — hepsi kayıtlı):**
+  1. **Latent canonical=`/`** — tüm alt sayfalar layout'tan ana-sayfa canonical'ı miras alıyor (faz-öncesi durum). Bu dar rename fazının konusu değil; gelecek SEO/metadata fazı adayı.
+  2. **`/forum` locale-prefix gap** (`/en/forum`→404) — aynı config-redirect locale davranışı; kullanıcı kararıyla kapsam dışı, kayıtlı.
+  3. **Non-TR alt-sayfa içerik tazeliği** (ar/de/es stale) — versiyon-sınırı, dil stratejisi (prd-review). Bu faz metin çevirmedi.
+  - Hiçbiri sahipsiz değil; üçü de bir gelecek faza/kayda bağlı.
 
 ---
 
 ## Sonuç
 
-- **Tamamlanma Tarihi:** [Tarih]
-- **Toplam Task:** [Sayı]
-- **Notlar:** [Önemli kararlar, sonraki faza aktarılanlar]
+- **Tamamlanma Tarihi:** 2026-07-02 (review-phase 11)
+- **Toplam Task:** 3 (11.01 route rename + kalıcı 308 redirect [çıplak+5-locale] + sitemap · 11.02 i18n namespace `bunkerOs`→`crewOs`/`bunker`→`crew` 5-dil atomik · 11.03 iç link `/bunker-os`→`/crew-os` çift-redirect kaldırıldı)
+- **Notlar:** v0.3'ün ikinci içerik fazı. Saf URL/namespace tanımlayıcı rename — içerik/tasarım/davranış/DOM değişmedi. Milestone karşılandı: public `/crew-os` (5 locale SSG) + `/bunker-os` kalıcı 308 redirect (çıplak+5-locale, locale gap yok) + namespace 5-dil senkron (0 `MISSING_MESSAGE`) + sitemap + iç link temiz (çift-redirect yok). UAT 13/13, 8 kalite ekseni (7 ✅ + 1 N/A güvenlik). Taksonomi (DECISIONS 2026-06-27) son açık ucu kapandı. Kapsam dışı/kayıtlı: latent canonical=`/`, `/forum` locale gap, kod-adı tanımlayıcıları (iç ad, korundu). Sıradaki = v0.3 sonraki içerik fazı (Sıradaki Fazlar'da yalnız B1 Living Flow nabız kaldı).
 
 ---
 
 **Oluşturulma:** 2026-07-02 (discuss-phase 11)
-**Son Güncelleme:** 2026-07-02 — run-task TASK-11.03 ✅: iç link `/bunker-os`→`/crew-os` (Hero:115 + Bunker:41); Task Listesi'nde 11.03 ✅. Doğrulama ampirik (grep 0 iç link · build temiz 0 MISSING_MESSAGE · prerender TR 2× `/crew-os` + EN 2× `/en/crew-os`, çift-redirect yok). **Fazın tüm task'ları (11.01/11.02/11.03) ✅ — sıradaki adım: verify-phase 11 (UAT).**
+**Son Güncelleme:** 2026-07-02 — review-phase 11 ✅: retrospektif + 8 kalite ekseni (7 ✅ + 1 N/A) + kullanıcı yolculuğu/boşluk yazıldı; durum ✅ Tamamlandı. Milestone karşılandı (public `/crew-os` 5-locale SSG + kalıcı 308 redirect çıplak+5-locale + namespace 5-dil senkron 0 MISSING_MESSAGE + sitemap/iç link temiz). Kaynak kod bağımsız teyit edildi (redirect/route/sitemap/namespace/iç link tutarlı). Kayıtlı açıklar: latent canonical=`/`, `/forum` locale gap (gelecek SEO fazı). **Faz 11 kapandı — sıradaki: discuss-phase 12 (v0.3 sonraki içerik fazı — B1 Living Flow nabız).**

@@ -9,6 +9,23 @@
 
 <!-- Her yeni karar aşağıdaki formatta en üste eklenir (en yeni en üstte) -->
 
+### 2026-07-02 — `/bunker-os` → public `/crew-os` route rename + kalıcı 308 redirect; `next.config.ts` config-redirect + açık 5-locale pattern; `/forum`→404 reddedildi; kod-adı iç kalır (Faz 11)
+
+**Bağlam:** Faz 11 (v0.3 URL taksonomisi/SEO). Taksonomi kararının (2026-06-27: public Crew OS / iç ad Bunker OS) son açık ucu — iç kod adının kullanıcıya sızdığı **tek** yüzey olan `/bunker-os` route'u — kapatıldı. research-phase ampirik kanıt topladı (`next build` + curl): Next config `redirects()` `source`'u locale prefix'ini **otomatik kapsamaz** (`/forum`→308 ama `/en/forum`→404).
+
+**Seçenekler:**
+1. Redirect mekanizması: **A** `next.config.ts` `redirects()` kalıcı 308 + açık locale pattern · **B** `bunker-os/page.tsx` içinde server `redirect()` (307-geçici) · **C** next-intl `pathnames` (yerelleştirilmiş route adları).
+2. `/forum` → 404 (backlog isteği) · vs · mevcut `/forum`→`/bulten` 301 korunur.
+3. Rename kapsamı: yalnız public yüzey (URL + i18n namespace) · vs · kod dahil tam rename (`Bunker.tsx`→`Crew.tsx`, `components/bunker-os/`→`crew-os/`).
+
+**Karar:** (1) **Yaklaşım A** — config kalıcı 308, **iki açık giriş**: çıplak `source: "/bunker-os"` + prefixli `source: "/:locale(en|ar|de|es)/bunker-os"`. Eski `bunker-os/` route klasörü silinir (redirect config'e taşınır). (2) **`/forum`→404 REDDEDİLDİ** — çalışan 301 SEO-doğru/zararsız, bozmak için gerekçe yok; bu faz `/forum`'a dokunmaz. (3) **Yalnız public yüzey rename** — route klasörü `crew-os/` + i18n namespace `bunkerOs`→`crewOs`/`bunker`→`crew` (5-dil atomik); kod dosya/dizin adları (`Bunker.tsx`, `components/bunker-os/`, `@keyframes bunkerback`, `id="bunker"`, `nav.bunker`) **iç kod adı olarak kalır** (taksonomi izin veriyor).
+
+**Gerekçe:** (1) SEO-doğru kalıcılık (308), edge-öncelik (SSG/route çözümünden önce), eski klasör silinince route↔redirect çakışması olmaz. B 307-geçici + klasör tutmayı gerektirir (kalıcılık ilkesine ters); C tek path rename için aşırı. Locale-prefix'in açık yazılması **ampirik olarak zorunlu** (yoksa `/en/bunker-os`→404). (2) Kalıcılık — çalışan değeri bozma; eski link korunur. (3) Dar-faz disiplini + taksonomi: iç kod adı kodda kalabilir, saf refactor diff'i büyütür. **Not:** page-seviyesi canonical/alternates güncellenmedi çünkü yok (layout'tan `canonical="/"` miras) — latent SEO açığı (tüm alt sayfa ana sayfaya canonicalize) + `/forum` locale-prefix gap (`/en/forum`→404) gelecek SEO fazı adayı olarak kayıtlı.
+
+**İlgili Task/Faz:** Faz 11 (TASK-11.01–11.03); detay → `phases/PHASE-11.md` Araştırma Bulguları + Retrospektif. Config-redirect locale-prefix tuzağı → `_dev/MEMORY.md` Teknik Tuzaklar (`memory/next-config-redirect-locale-prefix.md`). Bu karar 2026-06-27 taksonomi kararının "Sonuç (takip): `/bunker-os` route adlandırması hizalanacak" ucunu kapatır.
+
+---
+
 ### 2026-07-02 — A1 logo tutarlılığı ortak `<Logo>` bileşeniyle; RTL ok idiomu site-geneli fiziksel kalır (lone-flip yok) (Faz 10)
 
 **Bağlam:** Faz 10 (v0.3 görsel cila). İki tasarım kararı damgalandı. (a) **A1 kök nedeni:** mark + "Kiwi AI Lab" wordmark lockup'ı üç yüzeyde (`Nav.tsx`, `PageHeader.tsx`, `Footer.tsx`) **kopya-kod** olarak tekrar ediyordu → optik hiza drift'i. (b) **A3a affordance × RTL:** Hero'nun iki stat `<Link>`'ine site-standart `→ group-hover:translate-x-1` oku eklendi; site-geneli ok idiomu (10+ yer) AR'de `dir="rtl"` altında **fiziksel** (`→` glyph, logical dönüşüm yok).
