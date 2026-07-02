@@ -115,7 +115,9 @@
 
 | # | Task | Durum | Açıklama |
 |---|------|-------|----------|
-| — | _(plan-phase 11 dolduracak)_ | — | — |
+| 11.01 | TASK-11.01 | ⬜ Bekliyor | SEO1: route `bunker-os/`→`crew-os/` + kalıcı 308 redirect (çıplak + 5-locale pattern) + sitemap PATHS + route-path test |
+| 11.02 | TASK-11.02 | ⬜ Bekliyor | SEO2: i18n namespace `bunkerOs`→`crewOs` (7 tüketici) + `bunker`→`crew` (2 tüketici), 5-dil atomik (0 MISSING_MESSAGE) |
+| 11.03 | TASK-11.03 | ⬜ Bekliyor | SEO3: iç link `/bunker-os`→`/crew-os` (Hero + Bunker; çift-redirect kaldır) |
 
 **Durum simgeleri:** ⬜ Bekliyor | 🔄 Devam ediyor | ⏸️ Duraklatıldı | ✅ Tamamlandı | 🔴 Bloke | ❌ İptal
 
@@ -175,4 +177,4 @@
 ---
 
 **Oluşturulma:** 2026-07-02 (discuss-phase 11)
-**Son Güncelleme:** 2026-07-02 — research-phase 11: Araştırma Bulguları yazıldı. Ampirik teyit (build+curl): config redirect `source` locale-prefix'i kapsamaz (`/en/forum`→404) → `/crew-os` redirect'i açık 5-locale pattern ister (Yaklaşım A: kalıcı 308 config). Namespace `crewOs`/`crew` (7+2 tüketici); page-seviyesi canonical/generateStaticParams YOK (layout'tan miras — discuss iki ifadesi düzeltildi); `/forum` gap kullanıcı kararıyla kapsam dışı (kayıt). Sıradaki adım: plan-phase 11.
+**Son Güncelleme:** 2026-07-02 — plan-phase 11: 3 task dokümanı oluşturuldu (11.01 route rename+redirect+sitemap · 11.02 i18n namespace rename 5-dil atomik · 11.03 iç link temizliği). Task Listesi tablosu dolduruldu; dependency: 11.02+11.03 → 11.01. Sıradaki adım: verify-plan 11.
