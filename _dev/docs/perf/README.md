@@ -1,6 +1,6 @@
 # Perf Taban Kayıtları — Ana Sayfa Lighthouse
 
-Ana sayfa Lighthouse perf/a11y tabanları. Ölçüm **yerel production build** üzerinde (`next build && next start`); revize branch canlıya deploy olmuyor (kiwiailab.com eski kodu yansıtır) → bu "yerel taban". İlk taban: **v0.1, 2026-06-28** (TASK-2.03 / Phase 2). En güncel ölçüm: **v0.2 / Faz 7, 2026-07-01** (TASK-7.02; Umami analytics entegrasyonu sonrası aynı-ortam before/after — `afterInteractive` script LCP penceresinden sonra yüklendiği için **regresyon yok**, preconnect eklenmedi; aşağıda **Faz 7 / TASK-7.02** bölümü). Bir önceki: v0.2 / Faz 6 final (TASK-6.07).
+Ana sayfa Lighthouse perf/a11y tabanları. Ölçüm **yerel production build** üzerinde (`next build && next start`); revize branch canlıya deploy olmuyor (kiwiailab.com eski kodu yansıtır) → bu "yerel taban". İlk taban: **v0.1, 2026-06-28** (TASK-2.03 / Phase 2). En güncel ölçüm: **v0.2 / Faz 9, 2026-07-02** (TASK-9.04; versiyon-sonu senaryo testi S8-Lighthouse re-teyit — kaynak kod değişmedi, 6/6 dark kanonik Lighthouse a11y=100 + 12/12 gerçek light/dark axe 0 ihlal + perf korunan taban regresyonsuz; aşağıda **Faz 9 / TASK-9.04** bölümü). Bir önceki: v0.2 / Faz 7 (TASK-7.02; Umami before/after, regresyon yok).
 
 > ⚠️ **İki kanonik-koşu tuzağı (Faz 4 TASK-4.01/4.08 düzeltmeleri — okumadan ölçme):**
 > 1. **Ölçülen-locale:** Cookie'siz kanonik koşu Chrome `Accept-Language` ile `/` → **`/en`**'e redirect olur (next-intl `localeDetection`). v0.1 tabanı bu yüzden "TR `/`" değil, aslında **`/en`**'i ölçtü (artifact `finalUrl=/en` ile kanıtlı). **TR varsayılan** sayfasını ölçmek için `NEXT_LOCALE=tr` cookie şart (Lighthouse `--extra-headers='{"Cookie":"NEXT_LOCALE=tr"}'`). TR `/` sayfası `/en`'den **ağırdır** (hero metni daha uzun) — perf/LCP/FCP farkı buradan gelir, regresyon değil.
@@ -273,6 +273,28 @@ Ortam: node 20.20.2 + Chrome 150 + LH 13.3.0 (npx-cache), flags `--headless=new 
 - **LCP/FCP/CLS (Lantern-deterministik) Faz 6 tabanının altında/eşit** — mobil LCP after 2714 ms ≤ 3164 ms; masaüstü 660 ms ≤ 0.69 s; CLS≈0 her yerde. Same-env before→after tüm delta'lar koşu-içi gürültü bandında (dağılımlar örtüşüyor); mobil perf 88 vs 90 farkı 2 puan (before 87–93 / after 81–90 bantları örtüşük) → anlamlı regresyon değil.
 - **Neden regresyon yok — `afterInteractive` LCP sonrası yükler:** `network-requests` audit'i `umami.kiwiailab.com` isteğinin ölçümde **fiilen alındığını** gösteriyor (after artefaktlarında var, before'da yok), ama script hydration sonrası (LCP penceresinden sonra) enjekte edildiği için LCP elementiyle (hero metni) yarışmıyor. L3 font budamasının (Faz 6) aksine — o LCP kritik yolundaydı, bu değil. Araştırmanın "Lantern network lever'ı görünür olabilir" tezi doğruydu ama **yalnız LCP kritik yolundaki** asset'ler için; `afterInteractive` script o yolda değil.
 - **Karar: preconnect/dns-prefetch eklenmedi** (araştırma D · YAGNI). Veri regresyon göstermedi → yeni origin için erken bağlantı gerekmedi; 7.01 dosyalarına dokunulmadı, DECISIONS'a yeni girdi gerekmedi (regresyon-tetikli strateji değişikliği olmadı).
+
+---
+
+## v0.2 / Faz 9 — TASK-9.04: S8-Lighthouse re-teyit (a11y=100 çift-tema + perf korunan taban) (2026-07-02)
+
+v0.2 versiyon-sonu **senaryo testi** guardrail'i (S8): kaynak kod **değişmedi** (doğrulama fazı) → yeni artefakt kaydedilmedi; skorlar korunan tabanla kıyaslandı, kayıt buraya. Ortam: node 20.20.2 + Chrome 150 + LH 13.3.0 (npx-cache), flags birebir (`--headless=new --no-sandbox --disable-dev-shm-usage --enable-unsafe-swiftshader`). Fresh-prod-serve (`rm -rf .next && next build` → `next start -p 4173`, listening-PID 84813 teyit), düşük yük (load 0.79–1.43), TR `/` (`NEXT_LOCALE=tr`, finalUrl `/` teyit), element-denetimli.
+
+### a11y=100 çift-tema (iki-gate TK5, S8 skor gate tarafı)
+
+- **Lighthouse kanonik (dark), 6 sayfa:** `/`·`/spor-salonu-yazilimi`·`/vaka-calismalari`·`/bunker-os`·`/bulten/ai-sdr-araclari`·`/bulten/claude-opus-4-8-fable-5` → **6/6 a11y=100**, 0 düşen audit, `runtimeError=none`. Structural audit'ler (`landmark-one-main`/`heading-order`/`list`/`bypass`) tema-bağımsız → light'a da geçerli.
+- **Gerçek light+dark axe, 6 sayfa × 2 tema = 12 koşu:** standalone Playwright (`localStorage.theme` seed FOUC öncesi + `html.dark` themeOk teyit + `reducedMotion:'reduce'`+scroll) + LH npx-cache axe-core **4.12.1** (LH'nin bundle motoru), violation'lar LH a11y audit-id kümesine filtreli → **12/12 koşuda 0 Lighthouse-ilgili ihlal** (best-practice gürültüsü bile 0). → a11y=100 çift-tema gerçekten doğrulandı. Bu, TASK-9.03 axe WCAG-AA suite'inin (52) göremediği **structural** katmanı kapatır (iki-gate TK5).
+
+### Perf korunan taban (home, çok-koşu median)
+
+| Preset (TR `/`) | perf | LCP | FCP | CLS | TBT | LCP elementi | Verdi |
+|---|---|---|---|---|---|---|---|
+| Masaüstü | **100** | 629 ms | 336 ms | 0.000 | ~27 ms | `<span data-hero="l2">` | taban ✓ |
+| Mobil | 65 (env) | **3171 ms** | 1516 ms | 0.000 | ~2000 ms (env) | `<p data-hero="sub">` | comparable metrikler ✓ |
+
+- **LCP/FCP/CLS (Lantern-deterministik, ortamlar arası kıyaslanabilir) korunan tabanla eşit:** mobil LCP 3171 ≈ Faz-6/7 taban 3164 ms; FCP 1516 ≈ 1506 ms; masaüstü LCP 629 ≤ 0.69 s; CLS=0 her yerde. LCP elementleri değişmedi (hero metni her iki preset). **Regresyon yok.**
+- **perf 65 / TBT ~2000ms = ağır-SwiftShader ortam anomalisi** (TASK-6.01 perf 62/TBT 1842 ile birebir; software-GL main-thread şişkinliği) — memory gereği **ortamlar arası kıyaslanamaz, regresyon sinyali değil**. Bu devcontainer 6.01'in ağır-SwiftShader varyantı (6.07 temsilî ortamın perf 90'ı değil).
+- **Brief mobil perf açığı record-not-fix (TK7):** mobil LCP 3171ms > brief <2.5s; kök neden CPU-bound WebGL (gerçek-cihaz duvarı, DECISIONS 2026-06-30). Senaryo testte kaydedildi, düzeltilmedi.
 
 ---
 
