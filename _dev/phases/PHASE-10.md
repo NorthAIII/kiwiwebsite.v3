@@ -132,7 +132,32 @@
 
 ## UAT Sonuçları
 
-> Bu bölüm `/devflow:verify-phase 10` oturumunda doldurulacak.
+**Tarih:** 2026-07-02 (verify-phase 10)
+**Toplam Senaryo:** 17 | **Geçen:** 17 | **Kalan:** 0
+
+**Test modu:** Otonom + görsel onay (kullanıcı tercihi) — ölçülebilir senaryolar Playwright (`channel:'chrome'` + swiftshader, `NEXT_LOCALE=tr`, deviceScaleFactor 2) ile otonom; hiza/orantı/estetik görsel yargı kullanıcı onayıyla (screenshot). Tüm görsel/craft senaryoları kullanıcı onayladı.
+
+**Otomatik kontroller (Adım 1):** CI 4/4 commit yeşil (`fast` build+vitest ✅ + `a11y` playwright+axe ✅); yerel build temiz + vitest 7/7 + i18n 5-dil parite; security-review 0 bulgu (saf sunum, yeni yüzey yok); npm audit 3 moderate (postcss transitive — kayıtlı sahipli açık TB-C, faz-dışı). Düzeltme task'ı doğuran bulgu yok.
+
+| # | Senaryo | Sonuç | Not |
+|---|---------|-------|-----|
+| 1 | A1 — Nav logosu `/` çift-tema: mark ↔ "Kiwi AI Lab" dikey hizalı (light+dark) | ✅ Geçti | vcenter Δ=0px; mark yeşil token flip (light `rgb(31,122,61)` / dark `rgb(79,176,106)`) |
+| 2 | A1 — PageHeader logosu alt-sayfada (`/spor-salonu-yazilimi`) Nav ile aynı hiza (light+dark) | ✅ Geçti | vcenter Δ=0px, Nav ile identik render (tek `<Logo>`) |
+| 3 | A1 — Footer logosu koyu `bg-ink` üstünde hizalı+okunur (mark yeşil / wordmark text-canvas), light+dark | ✅ Geçti | vcenter Δ=0px; wordmark **tam opaklık** (`rgb(247,246,241)`/`rgb(19,21,16)` ink-panel flip), non-link teyitli. (Harness ilk ölçümü dış-wrapper'ı seçip 0.6 alpha gösterdi — selector artefaktı, iç span tam opaklık) |
+| 4 | A1 — Üç yüzey tutarlı (aynı lockup, drift yok); tek `<Logo>` kaynağından | ✅ Geçti | Nav/PageHeader/Footer hepsi `<Logo>` tüketiyor; kopya-kod kök nedeni kapandı |
+| 5 | A1 — Davranış: Nav logo → `#top`, PageHeader logo → `/`, Footer logo tıklanabilir DEĞİL (non-link) | ✅ Geçti | href'ler değişmedi; Footer wordmark `closest('a')===null` |
+| 6 | A1 — a11y: lockup tek tab-stop + focus-visible 2px yeşil outline; mark `aria-hidden`, ad wordmark'tan | ✅ Geçti | 0 nested focusable; svg `aria-hidden="true"` |
+| 7 | A3a — İki stat Link'inde ok dinlenmede soluk-görünür (hover'sız / dokunmatik / reduced-motion okunur) | ✅ Geçti | rest `rgb(103,105,95)`/`rgb(138,140,128)` = `text-ink-faint` (kontrast-geçer, dinlenmede görünür) |
+| 8 | A3a — Hover'da ok yeşilleşir + 4px animasyonlu kayar (zıplamaz, `transition-[translate,color]`) | ✅ Geçti | `transitionProperty="translate, color"`, hover translate 4px, `text-green` |
+| 9 | A3a — Link hedefleri değişmedi (Alpfit → `/spor-salonu-yazilimi`, Crew OS → `/bunker-os`); hover'da CLS=0 | ✅ Geçti | hedefler aynı; link genişliği rest=hover (Δ=0px) |
+| 10 | A3b — Scroll göstergesi hero'ya orantılı (64px çizgi + 12px etiket), "çok küçük" değil (light+dark) | ✅ Geçti | çizgi 64px, etiket "Kaydır" 12px, gap 28px; görsel onaylı orantı |
+| 11 | A3b — Desktop-only korundu: mobilde (<md) gizli (`display:none`), desktop'ta görünür | ✅ Geçti | 375px → `display:none`; 1440px → `flex` |
+| 12 | A3b — Hairline DPR'de net (opaklık `/60`, `w-px` crisp); `animate-pulse` + reduced-motion statik okunur | ✅ Geçti | width 1px crisp, opacity 0.6, `animationName=pulse` |
+| 13 | Guardrail — a11y çift-tema: axe WCAG-AA 0 ihlal (CI+tohum) + Lighthouse a11y=100 light+dark | ✅ Geçti | Lighthouse a11y=100 (0 başarısız audit) + axe 0 ihlal light **ve** dark |
+| 14 | Guardrail — i18n 5-dil parite: `hero.scroll` + `hero.stats.*` tr/en/ar/de/es tam (eksik anahtar yok) | ✅ Geçti | 5 dilde scroll+liveProduct/liveLabel/crewOs/crewOsLabel tam |
+| 15 | Guardrail — CLS≈0 korundu (sayfa geneli; gösterge `absolute` akış-dışı, hero flex kaymaz) | ✅ Geçti | PerformanceObserver CLS=0.0000 (load+scroll) |
+| 16 | RTL (AR) — Footer logo + ok idiomu AR'de tutarlı (fiziksel ok korundu, lockup hizalı) | ✅ Geçti | `dir=rtl`; footer vcenter Δ=0px; fiziksel `→` glyph ×2 (site-idiomuyla tutarlı, lone-flip yok) |
+| 17 | Adversarial — uzun DE metni / dar viewport: Logo wordmark + Footer meta satırı taşma/bozulma yok | ✅ Geçti | 360px & 768px'te yatay taşma yok (scrollW=clientW); Logo wordmark tek satır |
 
 ---
 

@@ -1,6 +1,6 @@
 # DURUM — Proje Dashboard
 
-**Son Güncelleme:** 2026-07-02 — **TASK-10.04 ✅ (A3b):** Hero merkez-alt scroll göstergesi anıtsal hero'ya orantılandı: çizgi `h-10`→`h-16` (64px), opaklık `/40`→`/60` (DPR-robustness), etiket `text-[11px]`→`text-xs` (12px), `gap-2`→`gap-3`; `w-px` crisp hairline + `bottom-7 left-1/2 hidden md:flex` + `animate-pulse` korundu, adaptif token (`--color-ink-faint`, `dark:` YOK). Build ✓, home a11y **2/2** (light+dark), görsel: 64px çizgi/12px etiket · mobil `display:none` · token light↔dark flip · cluster gap 28px (CLS yok). **Faz 10 TÜM task'ları (10.01–10.04) ✅** → Adım **verify**. Sıradaki DevFlow komutu: **`verify-phase 10`** (UAT, yeni oturum).
+**Son Güncelleme:** 2026-07-02 — **verify-phase 10 tamamlandı — UAT 17/17 ✅:** Faz 10 (v0.3 görsel cila) tüm senaryolar geçti (A1 logo hiza ×3 yüzey vcenter Δ=0px · A3a ok affordance dinlenme+hover · A3b scroll göstergesi 64px orantılı · guardrail'ler: Lighthouse a11y=100 + axe 0 ihlal çift-tema, i18n 5-dil parite, CLS=0, RTL/adversarial temiz). Otomatik: CI 4/4 yeşil, build+vitest 7/7, security-review 0 bulgu. Düzeltme task'ı yok → Adım **review**. Sıradaki DevFlow komutu: **`review-phase 10`** (faz review + retrospektif, yeni oturum).
 
 <!-- KURAL: Bu satır her oturum sonunda ÜZERİNE YAZILIR — tek satır, tek cümle. "Önceki:" / "Eski:" prefix ile kümülatif yığma YASAK; HTML comment'e sarma da yasak (CLAUDE.md → Doküman Disiplini). Tarih + kısa özet yeterli; detay için git log + ilgili PHASE/TASK dokümanları. -->
 
@@ -8,10 +8,10 @@
 
 ## Aktif Faz
 
-**Faz:** 10 — v0.3 görsel cila (A1 logo hizalama + A3 CTA affordance & scroll göstergesi). v0.3'ün ilk fazı; saf CSS/görsel craft, imza/davranış/içerik değişmez. Kapsam damgalandı (discuss-phase 10). **Tüm task'lar (10.01–10.04) ✅ → UAT (verify-phase 10) bekliyor.** v0.2 tamamen ✅ (Faz 4–9 + prd-review, PRD değişikliği yok).
-**Adım:** verify (TASK-10.01–10.04 ✅ → sıradaki `verify-phase 10`; Versiyon Sonu Durumu = `içerik_fazları`). ✅ **v0.2 production release tamamlandı (2026-07-02)** — revize `main`'de, canlı deploy `a71adbc`, Umami canlı +1 doğrulandı (`docs/RELEASE-v0.2.md`). Açık takip: chatbot canlı `ANTHROPIC_API_KEY` env (release engeli değil).
-**İlerleme:** run-task TASK-10.04 (2026-07-02) ✅ — Hero merkez-alt scroll göstergesi anıtsal hero'ya orantılandı: çizgi `h-10`→`h-16` (64px), opaklık `/40`→`/60` (DPR-robustness), etiket `text-[11px]`→`text-xs` (12px), `gap-2`→`gap-3`; `w-px` crisp hairline + `bottom-7 left-1/2 hidden md:flex` + `animate-pulse` korundu, adaptif token (`--color-ink-faint`, `dark:` YOK). build ✓, home a11y 2/2 (light+dark), görsel: 64px çizgi/12px etiket · mobil `display:none` (desktop-only korundu) · token light↔dark flip · cluster gap 28px sabit (CLS yok). **Fazın tüm task'ları bitti** — sıradaki adım UAT. Yeni npm/i18n anahtarı yok. **Sahipli açıklar (record):** non-TR alt-sayfa stale (4 sayfa ar/de/es, versiyon-sınırı), brief mobil perf (gerçek-cihaz duvarı), `/bunker-os`→`/crew-os` redirect + `/forum`→404 (v0.3, ayrı faz), dil-seti/AR stratejisi, TB-C npm audit (3 moderate).
-**Son Faz Dokümanı:** `phases/PHASE-10.md` (🔄 Devam ediyor — kapsam + araştırma + task listesi + verify-plan ✅; TASK-10.01–10.04 ✅ → UAT bekliyor). Faz 9 ✅ `phases/PHASE-9.md`.
+**Faz:** 10 — v0.3 görsel cila (A1 logo hizalama + A3 CTA affordance & scroll göstergesi). v0.3'ün ilk fazı; saf CSS/görsel craft, imza/davranış/içerik değişmez. Kapsam damgalandı (discuss-phase 10). **Tüm task'lar (10.01–10.04) ✅ + UAT 17/17 ✅ → review (review-phase 10) bekliyor.** v0.2 tamamen ✅ (Faz 4–9 + prd-review, PRD değişikliği yok).
+**Adım:** review (TASK-10.01–10.04 ✅ + verify-phase 10 UAT 17/17 ✅ → sıradaki `review-phase 10`; Versiyon Sonu Durumu = `içerik_fazları`). ✅ **v0.2 production release tamamlandı (2026-07-02)** — revize `main`'de, canlı deploy `a71adbc`, Umami canlı +1 doğrulandı (`docs/RELEASE-v0.2.md`). Açık takip: chatbot canlı `ANTHROPIC_API_KEY` env (release engeli değil).
+**İlerleme:** verify-phase 10 (2026-07-02) ✅ — UAT 17/17 geçti (otonom + görsel onay modu). Otomatik kontroller: CI 4/4 commit yeşil (fast build+vitest + a11y axe), yerel build temiz + vitest 7/7, security-review 0 bulgu, npm audit 3 moderate (kayıtlı sahipli TB-C). Senaryolar: A1 logo hiza ×3 yüzey (vcenter Δ=0px), A3a ok affordance (dinlenme ipucu+hover animasyon, CLS=0), A3b scroll göstergesi (64px orantı, desktop-only), guardrail'ler (Lighthouse a11y=100 + axe 0 ihlal çift-tema, i18n 5-dil parite, CLS=0, RTL/adversarial temiz). Düzeltme task'ı doğuran bulgu yok. **Sahipli açıklar (record):** non-TR alt-sayfa stale (4 sayfa ar/de/es, versiyon-sınırı), brief mobil perf (gerçek-cihaz duvarı), `/bunker-os`→`/crew-os` redirect + `/forum`→404 (v0.3, ayrı faz), dil-seti/AR stratejisi, TB-C npm audit (3 moderate).
+**Son Faz Dokümanı:** `phases/PHASE-10.md` (🔄 Devam ediyor — kapsam + araştırma + task listesi + verify-plan ✅; TASK-10.01–10.04 ✅ + UAT 17/17 ✅ → review bekliyor). Faz 9 ✅ `phases/PHASE-9.md`.
 
 ---
 
@@ -28,15 +28,15 @@
 
 ## Aktif Task
 
-**Task:** Fazda bekleyen task **yok** — TASK-10.01–10.04 tümü ✅. Sıradaki adım UAT (`verify-phase 10`), ayrı oturumda.
-**Durum:** Faz 10 (v0.3 görsel cila) 🔄 — Adım **verify**. Versiyon Sonu Durumu = `içerik_fazları`; Aktif Versiyon v0.3.
-**İlerleme:** run-task TASK-10.04 (2026-07-02) ✅ — Hero scroll göstergesi orantılandı (çizgi 64px, opaklık /60, etiket 12px; crisp hairline + desktop-only + adaptif token korundu). build ✓, home a11y 2/2 (light+dark), görsel doğrulandı (mobil display:none, token flip, CLS yok). Sıradaki = `verify-phase 10`.
+**Task:** Fazda bekleyen task **yok** — TASK-10.01–10.04 tümü ✅ + UAT 17/17 ✅. Düzeltme task'ı yok. Sıradaki adım faz review (`review-phase 10`), ayrı oturumda.
+**Durum:** Faz 10 (v0.3 görsel cila) 🔄 — Adım **review**. Versiyon Sonu Durumu = `içerik_fazları`; Aktif Versiyon v0.3.
+**İlerleme:** verify-phase 10 (2026-07-02) ✅ — UAT 17/17 geçti; otomatik kontroller (CI 4/4 yeşil, security-review 0 bulgu) temiz; düzeltme task'ı yok. Sıradaki = `review-phase 10`.
 
 ---
 
 ## Task Durumu (Aktif Faz)
 
-> Faz 10 (v0.3 görsel cila) 🔄 — kapsam tartışması ✅ + research ✅ + plan ✅ + verify-plan ✅; TASK-10.01–10.04 **tümü ✅** → UAT bekliyor. Faz 9 ✅ (9.01–9.09, detay `phases/PHASE-9.md`); Faz 4–8 ✅ — hepsi archive'da.
+> Faz 10 (v0.3 görsel cila) 🔄 — kapsam tartışması ✅ + research ✅ + plan ✅ + verify-plan ✅; TASK-10.01–10.04 **tümü ✅** + verify-phase UAT 17/17 ✅ → review bekliyor. Faz 9 ✅ (9.01–9.09, detay `phases/PHASE-9.md`); Faz 4–8 ✅ — hepsi archive'da.
 
 | # | Task | Durum | Açıklama |
 |---|------|-------|----------|
@@ -73,8 +73,8 @@
 
 ## Hızlı Erişim
 
-**Aktif Task:** Fazda bekleyen task **yok** — TASK-10.01–10.04 tümü ✅. TASK-10.04 ✅ (Hero scroll göstergesi orantılandı: 64px çizgi, /60 opaklık, 12px etiket; crisp hairline + desktop-only + adaptif token korundu; build ✓, home a11y 2/2, görsel doğrulandı, CLS yok). Sıradaki adım **verify-phase 10** (UAT, yeni oturum). Açık takip: chatbot canlı env key.
-**Aktif Faz:** 10 — v0.3 görsel cila (A1 logo + A3 CTA affordance & scroll göstergesi), 🔄 Adım **verify** (10.01–10.04 tümü ✅ → UAT). v0.2 Faz 4–9 ✅ + prd-review ✅ + production release ✅. **Aktif Versiyon v0.3**, Versiyon Sonu Durumu: **içerik_fazları** → sıradaki komut `verify-phase 10`.
+**Aktif Task:** Fazda bekleyen task **yok** — TASK-10.01–10.04 tümü ✅ + UAT 17/17 ✅. Düzeltme task'ı yok. Sıradaki adım **review-phase 10** (faz review + retrospektif, yeni oturum). Açık takip: chatbot canlı env key.
+**Aktif Faz:** 10 — v0.3 görsel cila (A1 logo + A3 CTA affordance & scroll göstergesi), 🔄 Adım **review** (10.01–10.04 ✅ + UAT 17/17 ✅). v0.2 Faz 4–9 ✅ + prd-review ✅ + production release ✅. **Aktif Versiyon v0.3**, Versiyon Sonu Durumu: **içerik_fazları** → sıradaki komut `review-phase 10`.
 **Task Sistemi:** `tasks/TASKS-README.md`
 **PRD (karar kaynağı):** `PRD/VIZYON.md` · `PRD/VERSIONS.md` · `PRD/features/`
 **Revize Backlog (bilinen sorunlar):** `docs/REVIZE-BACKLOG.md`
@@ -82,4 +82,4 @@
 
 ---
 
-**Son Güncelleme:** 2026-07-02 — **TASK-10.04 ✅ (A3b):** Hero merkez-alt scroll göstergesi anıtsal hero'ya orantılandı (çizgi `h-10`→`h-16`/64px, opaklık `/40`→`/60`, etiket `text-[11px]`→`text-xs`/12px, `gap-2`→`gap-3`); `w-px` crisp hairline + `bottom-7 hidden md:flex` + `animate-pulse` + adaptif token korundu. Build ✓, home a11y **2/2** (light+dark), görsel: 64px çizgi/12px etiket · mobil `display:none` · token flip · CLS yok. **Faz 10 TÜM task'ları (10.01–10.04) ✅** → Adım **verify**. Sıradaki DevFlow komutu: **`verify-phase 10`** (UAT).
+**Son Güncelleme:** 2026-07-02 — **verify-phase 10 ✅ — UAT 17/17:** Faz 10 (v0.3 görsel cila) tüm senaryolar geçti (A1 logo hiza ×3 yüzey vcenter Δ=0px · A3a ok affordance · A3b scroll göstergesi 64px orantı · guardrail'ler Lighthouse a11y=100 + axe 0 ihlal çift-tema, i18n 5-dil parite, CLS=0, RTL/adversarial temiz). Otomatik: CI 4/4 yeşil, build+vitest 7/7, security-review 0 bulgu. Düzeltme task'ı yok → Adım **review**. Sıradaki DevFlow komutu: **`review-phase 10`** (faz review + retrospektif).
