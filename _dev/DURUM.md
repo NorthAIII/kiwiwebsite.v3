@@ -1,6 +1,6 @@
 # DURUM — Proje Dashboard
 
-**Son Güncelleme:** 2026-07-02 — **discuss-phase 9 tamamlandı:** Faz 9 (v0.2 versiyon-sonu senaryo testi) girildi ve PHASES tablosuna 🔄 eklendi. Kapsam = ana sayfa + 5 alt sayfa uçtan-uca (Faz 3'ten genişletildi — Faz 8 alt sayfaları a11y çıtasına çekti); TR birincil + non-TR tutarlılık; chatbot 0-token; keşfet+kaydet+triyaj; S1–S9 kataloğu (S8 = v0.2 kazanım guardrail'leri, yeni). Adım=research → sıradaki: **research-phase 9**.
+**Son Güncelleme:** 2026-07-02 — **research-phase 9 tamamlandı:** Araştırma bulguları `phases/PHASE-9.md`'ye yazıldı. Metodoloji = suite-first hibrit (S6/S8 guardrail = commit'li suite `test:e2e` 52 + `test` 7 + CI + Lighthouse; S1–S5/S7/S9 ad-hoc en-ucuz-araç). Runtime sürücü = standalone Playwright script (MCP bu oturumda yok — kullanıcı kararı). S1–S9 araç eşlemesi + kaynak-işaretli tuzaklar + TK1–TK7 kaydedildi. Adım=plan → sıradaki: **plan-phase 9**.
 
 <!-- KURAL: Bu satır her oturum sonunda ÜZERİNE YAZILIR — tek satır, tek cümle. "Önceki:" / "Eski:" prefix ile kümülatif yığma YASAK; HTML comment'e sarma da yasak (CLAUDE.md → Doküman Disiplini). Tarih + kısa özet yeterli; detay için git log + ilgili PHASE/TASK dokümanları. -->
 
@@ -9,8 +9,8 @@
 ## Aktif Faz
 
 **Faz:** 9 (v0.2 versiyon-sonu **senaryo testi**) — discuss-phase 9 tamamlandı, PHASES tablosunda 🔄. Kapsam = ana sayfa + 5 alt sayfa uçtan-uca çapraz doğrulama (yeni feature üretmez), Faz 3 (v0.1 senaryo testi) deseninde ama alt sayfalar dahil (Faz 8 çıtaya çekti); alt-sayfa harness'i (`subpages-a11y.spec.ts` + `a11y-helpers.ts`) yeniden kullanılır. Faz 8 ✅; Faz 7 (Umami E1) ✅; Faz 6 (mobil perf/LCP) ✅; Faz 5 (test altyapısı D1) ✅; Faz 4 (v0.2 a11y) ✅.
-**Adım:** research — sıradaki adım **research-phase 9** (senaryo doğrulama metodolojisi, yeni oturum). Kapsam Tartışması tamamlandı (`phases/PHASE-9.md`): S1–S9 kataloğu, TR birincil + non-TR tutarlılık, chatbot 0-token, keşfet+kaydet+triyaj.
-**İlerleme:** discuss-phase 9 (2026-07-02) tamamlandı — Faz 9 girildi. **Bekleyen versiyon-sonu aksiyonu:** v0.2 production release (tüm revize `main`'e ilk merge) — Umami canlı +1 (S9-10 Faz 7) o adımda kapanır (senaryo testi kod-tarafı varlığı S8'de doğrular, canlı panel değil). **Kapsam dışı (bilinçli açık):** brief mobil perf (gerçek-cihaz duvarı), TB-C npm audit, `/bunker-os`→`/crew-os` redirect + `/forum`→404 (görsel/SEO versiyonu), dil setini değiştirme (prd-review).
+**Adım:** plan — sıradaki adım **plan-phase 9** (S1–S9 senaryo grupları task'a dönüşür, yeni oturum). Kapsam Tartışması + Araştırma Bulguları tamamlandı (`phases/PHASE-9.md`): suite-first hibrit metodoloji, S1–S9 araç eşlemesi, standalone Playwright runtime sürücü, TK1–TK7.
+**İlerleme:** research-phase 9 (2026-07-02) tamamlandı — araştırma bulguları yazıldı (kaynak kod değişmedi, yalnız `_dev/` docs). **Bekleyen versiyon-sonu aksiyonu:** v0.2 production release (tüm revize `main`'e ilk merge) — Umami canlı +1 (S9-10 Faz 7) o adımda kapanır (senaryo testi kod-tarafı varlığı S8'de doğrular, canlı panel değil). **Kapsam dışı (bilinçli açık):** brief mobil perf (gerçek-cihaz duvarı), TB-C npm audit, `/bunker-os`→`/crew-os` redirect + `/forum`→404 (görsel/SEO versiyonu), dil setini değiştirme (prd-review).
 **Son Faz Dokümanı:** `phases/PHASE-9.md` (🔄 Devam ediyor — Kapsam Tartışması yazıldı). Faz 8 ✅ `phases/PHASE-8.md`.
 
 ---
@@ -28,9 +28,9 @@
 
 ## Aktif Task
 
-**Task:** Aktif task yok — Faz 9 girildi (discuss-phase 9 tamam), adım=research. Sıradaki adım **research-phase 9** (senaryo doğrulama metodolojisi, yeni oturum). Task'lar plan-phase 9'da açılır.
-**Durum:** Faz 9 (senaryo testi) 🔄 — adım=research. Faz 8 tüm task'ları ✅ (8.01→8.06) archive'da.
-**İlerleme:** discuss-phase 9 tamamlandı (2026-07-02): Faz 9 girildi, S1–S9 kataloğu + kapsam kararları `phases/PHASE-9.md`'ye yazıldı. Kaynak kod değişmedi (yalnız `_dev/` docs).
+**Task:** Aktif task yok — Faz 9, adım=plan. Sıradaki adım **plan-phase 9** (S1–S9 senaryo grupları task'a dönüşür, yeni oturum). Task'lar plan-phase 9'da açılır.
+**Durum:** Faz 9 (senaryo testi) 🔄 — adım=plan. Faz 8 tüm task'ları ✅ (8.01→8.06) archive'da.
+**İlerleme:** research-phase 9 tamamlandı (2026-07-02): araştırma bulguları (suite-first hibrit metodoloji + S1–S9 araç eşlemesi + TK1–TK7) `phases/PHASE-9.md`'ye yazıldı. Kaynak kod değişmedi (yalnız `_dev/` docs).
 
 ---
 
@@ -62,12 +62,12 @@ _(Faz 9 henüz task üretmedi — ilk task tamamlanınca özet buraya gelir.)_
 
 ## Hızlı Erişim
 
-**Aktif Task:** Yok — Faz 9 girildi, adım=research. Sıradaki: research-phase 9. Bekleyen: v0.2 production release (Umami canlı +1 orada kapanır).
-**Aktif Faz:** 9 (v0.2 senaryo testi) · adım=research — Faz 8 ✅ (8.01→8.06; review tamam); Faz 7 ✅; Faz 6 ✅; Faz 5 ✅; Faz 4 ✅; Aktif Versiyon v0.2, Versiyon Sonu Durumu: senaryo_testi
+**Aktif Task:** Yok — Faz 9, adım=plan. Sıradaki: plan-phase 9. Bekleyen: v0.2 production release (Umami canlı +1 orada kapanır).
+**Aktif Faz:** 9 (v0.2 senaryo testi) · adım=plan — Faz 8 ✅ (8.01→8.06; review tamam); Faz 7 ✅; Faz 6 ✅; Faz 5 ✅; Faz 4 ✅; Aktif Versiyon v0.2, Versiyon Sonu Durumu: senaryo_testi
 **Task Sistemi:** `tasks/TASKS-README.md`
 **PRD (karar kaynağı):** `PRD/VIZYON.md` · `PRD/VERSIONS.md` · `PRD/features/`
 **Revize Backlog (bilinen sorunlar):** `docs/REVIZE-BACKLOG.md`
 
 ---
 
-**Son Güncelleme:** 2026-07-02 — discuss-phase 9: Faz 9 (v0.2 versiyon-sonu senaryo testi) girildi, PHASES tablosuna 🔄. Kapsam ana sayfa + 5 alt sayfa uçtan-uca (S1–S9), TR birincil + non-TR tutarlılık, chatbot 0-token. Adım=research. Sıradaki: research-phase 9.
+**Son Güncelleme:** 2026-07-02 — research-phase 9: Araştırma Bulguları `phases/PHASE-9.md`'ye yazıldı (suite-first hibrit metodoloji, S1–S9 araç eşlemesi, standalone Playwright runtime sürücü, kaynak-işaretli tuzaklar, TK1–TK7). Adım=plan. Sıradaki: plan-phase 9.

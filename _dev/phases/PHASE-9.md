@@ -78,20 +78,76 @@
 
 ## Araştırma Bulguları
 
-> Bu bölüm `/devflow:research-phase 9` oturumunda doldurulur.
+> Bu bölüm `/devflow:research-phase 9` oturumunda dolduruldu (2026-07-02). Araştırma konusu: S1–S9'u **nasıl otonom koşarız** (yeni feature değil — doğrulama metodolojisi). Kapsam kararları baz alındı (ana sayfa + 5 alt sayfa, TR birincil + non-TR tutarlılık, chatbot 0-token, keşfet+kaydet+triyaj, otonom). Faz 3 (v0.1 senaryo testi) modelidir; iki yapısal fark metodolojiyi değiştirir → aşağıda.
+
+### Faz 3'ten iki yapısal fark (metodolojiyi belirler)
+
+1. **Artık gerçek test altyapısı var (Faz 5/8).** Faz 3 tamamen ad-hoc'tu (curl/grep + Playwright MCP). Şimdi commit'li suite: `npm run test:e2e` (Playwright+axe **52 test** = 6 sayfa × 5 dil × 2 tema a11y, `subpages-a11y.spec.ts` + `home-a11y.spec.ts`), `npm run test` (Vitest i18n parite + smoke, 7 test), CI (`.github/workflows/ci.yml` `fast`+`a11y`), Lighthouse çift-tema (manuel). **Bu suite = S8 guardrail'lerinin + S6-paritesinin re-teyit aracı**; "senaryoyu koşmak" burada "suite'i koşmak"tır (ad-hoc replay değil). ILKELER kümülatif test altyapısıyla birebir.
+2. **Alt sayfalar kapsamda + `a11y-helpers.ts` sürücüleri yeniden kullanılabilir.** `gotoLocalized` (NEXT_LOCALE cookie → locale tuzağı çözülü) + `scrollThrough` (reducedMotion+scroll → reveal tuzağı çözülü) alt sayfalara Playwright ile gitmenin kanıtlı desenleri; S2/S3/S4 alt-sayfa yolculuklarında standalone script'e kopyalanır.
 
 ### Değerlendirilen Yaklaşımlar
-- [Yaklaşım 1]: [Açıklama, artılar, eksiler]
-- **Seçilen:** [Hangisi ve neden]
+
+Çekirdek soru: senaryoları hangi araçla mekanik yürütürüz (QUALITY eksenleri: §1 craft-regresyon, §2 a11y, §3 perf-gözlem, §4 i18n/RTL, §6 degradasyon).
+
+- **A — Saf ad-hoc replay (Faz 3'ü birebir tekrarla):** Her şeyi curl/grep + browser-script ile sıfırdan koş, commit'li suite'i yok say. **Eksi:** S8/S6 için zaten kanıtlı + CI-korunan suite'i görmezden gelmek; kümülatif altyapı ilkesine aykırı; guardrail re-teyidini elle yeniden keşfetmek.
+- **B — Suite-first hibrit (SEÇİLEN):** Guardrail/parite katmanı (S6, S8) commit'li suite ile koşulur (`test:e2e` 52 + `test` 7 + CI job durumu + Lighthouse çift-tema); yolculuk/degradasyon/taksonomi/chatbot/adversarial katmanı (S1–S5, S7, S9) **en ucuz yeterli ad-hoc araca** eşlenir (markup/HTTP → curl/grep/node; client-runtime → standalone Playwright script). Gerekçe: suite tam olarak S8 için kuruldu (Faz 8); ad-hoc yalnız suite'in görmediği dikiş/yolculuk/race'e harcanır → minimum yük + deterministik tekrar (ILKELER kalıcılık + "az araç = yüksek kalite").
+
+**Runtime sürücü kararı (kullanıcı, 2026-07-02): standalone Playwright script.** Discuss-phase 9 runtime senaryolar için "Playwright MCP" demişti; **bu oturumda MCP mevcut değil** (session MCP'leri yalnız Google Drive). Kurulu `@playwright/test` var → S3/S4/S9 için scratchpad'de tek-seferlik `chromium.launch()` script'leri (fresh prod :3000'e karşı), `gotoLocalized`/`scrollThrough` desenleri kopyalanır. Repo temiz kalır (commit'lenmez — doğrulama fazı kaynak koda dokunmaz), Faz 3 MCP-run'ın temiz eşdeğeri.
+
+### Senaryo → araç eşlemesi
+
+| Senaryo | Birincil araç | Ne kontrol edilir |
+|---------|---------------|-------------------|
+| S1 Giriş/yönlendirme (ana sayfa **+ 5 alt sayfa**) | curl (`-I`/`-sS`) + grep | 5 locale × 6 sayfa 200; `/forum`→`/bulten` **308** (+slug); TR prefixsiz (`/spor-salonu-yazilimi`) vs prefixli (`/en/...`); derin-link `/en#sectors`; bilinmeyen-locale **gözlemlenir** (peşinen iddia yok) |
+| S2 TR yolculuğu + alt-sayfa çıkış/dönüş | curl+grep (link/href) + standalone Playwright (CTA/anchor scroll, client-nav) | Hero→ikincil CTA→sektörler(gym+Alpfit çıkış)→4-adım→Crew OS→Forum→Footer; ana sayfa→alt sayfa (Alpfit/Crew OS/vaka/bülten) client-nav→içerik bütün→dönüş; kopuk link/boş bölüm yok |
+| S3 Degradasyon (ana sayfa **+ alt sayfa hero'ları**) | **standalone Playwright** (emulateMedia + resize) | light/dark FOUC yok, reduced→StaticFlow, no-WebGL shim, mobil "low", **AR-RTL×dark×reduced birlikte**, 320/768/1440 taşma yok + near-zero CLS; her alt sayfa hero'sunda LivingFlow var |
+| S4 Kontroller/kalıcılık (home + alt sayfa) | **standalone Playwright** | tema toggle+reload kalıcılık+LivingFlow uniform, dil-switcher (path koru — anchor kütüphane-varsayılanı düşer, Faz 3 record-not-fix), Escape/dış-tık/klavye, klavye-only yolculuk + yeşil focus-visible |
+| S5 Taksonomi/dürüstlük (5 dil, home **+ alt sayfa, özellikle /bunker-os**) | curl+grep (render görünür metin) | "Crew OS" var / "Bunker" görünür metinde yok (namespace/route iç kalıntısı ayrıştırılır); uydurma sonuç / sahte "● online" / yasak metafor yok |
+| S6 5-dil bütünlük & non-TR tutarlılık | **Vitest parite** + curl+grep (`MISSING_MESSAGE`, 6 sayfa × 5 dil) | parite (eksik anahtar=fail, suite), runtime render `MISSING_MESSAGE` yok, bilinçli-stale görünür kopukluk yok, **AR-RTL aynalama (alt-sayfa Faz 8 fix dahil)** |
+| S7 Chatbot 0-token | kod-inceleme + curl POST (dummy-key malformed) + standalone Playwright (offline UI) | sanitizasyon doğruluğu; dummy-key→400 kısa-devre (Anthropic'e ulaşmadan); key-yok→503 offline UI (sahte-online yok); stream-kopması UI takılmaz; **toplam API çağrısı = 0** |
+| S8 v0.2 guardrail'leri (YENİ — suite koşu) | **`test:e2e` 52 + `test` 7 + CI job durumu + Lighthouse çift-tema** | axe WCAG-AA 0 ihlal (fail-on-regression); Vitest parite; a11y=100 çift-tema (home + 5 alt sayfa); Umami script kod-tarafı tüm sayfa/locale; perf korunan taban; CI `fast`+`a11y` yeşil |
+| S9 Adversarial/holistik | Bash (`next build`) + curl (JS-off SSG, home+alt sayfa) + standalone Playwright (race) | build temiz + 0 MISSING_MESSAGE, JS-kapalı SSG okunur, hızlı dil/tema toggle race, hızlı scroll/anchor zıplama (ScrollTrigger kararlılığı) |
+
+### Ortam Kararı (kanonik)
+
+**Fresh prod build (`next build` → `next start -p <port>`) = kanonik doğrulama ortamı** (Faz 3 TK2 birebir). Gerekçe: (a) canlıya giden çıktı budur — SSG prerender ground-truth (`.next/server/app/*.html`), redirect/middleware prod davranışı; (b) `next build` zaten S9'un "temiz build = regresyon tabanı" kalemi; (c) dev server'ın HMR/overlay/minify-yok gürültüsü versiyon-sonu doğrulamayı kirletir. `playwright.config.ts` webServer'ı zaten `build && start` :3000 yapar (`reuseExistingServer` yerelde) → `test:e2e` kendi prod-serve'ini kurar; ad-hoc curl/standalone-script için aynı prod-serve paylaşılır veya ayrı portta koşulur. **Memory disiplini:** serve eden **listening-PID az önce başlatılan process mi** teyit (stray/stale `next-server` yanlış-negatifi → MEMORY Süreç Disiplinleri); şüphede disk prerender ground-truth.
 
 ### Kullanılacak Araçlar/Kütüphaneler
-- [Araç 1]: [Versiyon, ne için]
+
+Yeni bağımlılık **yok** (paket ekleme onay ister — Dokunulmazlar). Ortam bu oturumda teyitli: node **v20.20.2**, npm 10.8.2, npx, curl, jq, ss, lsof, grep, **google-chrome mevcut** (chromium binary yok), loadavg 1.85 (düşük ✓).
+- **`@playwright/test` + `@axe-core/playwright`** (repoda kurulu): S8 guardrail suite (`test:e2e` 52 test). İlk koşuda tarayıcı binary gerekirse `npx playwright install --with-deps chromium` (onayla) veya system Chrome (`channel:'chrome'`).
+- **Vitest** (repoda kurulu): `npm run test` → i18n parite (S6) + smoke.
+- **playwright lib (`chromium.launch()`) standalone script** (scratchpad): S3/S4/S9 runtime; MCP eşdeğeri, repo'ya yazılmaz.
+- **curl / grep / node v20 / jq**: HTTP status/redirect/SSG markup + i18n key-diff + `MISSING_MESSAGE` avı.
+- **`next build`/`next start`**: kanonik ortam + S9 build-temizliği. **ss/lsof**: listening-PID teyidi.
+- **Lighthouse 13.3.0** (npx-cache, `package.json`'a EKLENMEZ): S8 a11y=100 çift-tema skor gate (manuel; alt-sayfa hero'ları da LivingFlow → Chrome flag'leri `--headless=new --no-sandbox --disable-dev-shm-usage --enable-unsafe-swiftshader` şart, memory `perf-olcum-devcontainer-kurulumu`). **CI job durumu**: repo public → auth'suz REST API (`gh` yoksa; memory Ortam Notları).
+- **`doc-scan.sh` + `cat /proc/loadavg`**: perf-bitişik gözlemden (CLS/LCP) önce host yükü (memory).
 
 ### Dikkat Edilecekler
-- [Tuzak/Risk 1]: [Nasıl kaçınılacak]
+
+> Precondition tanımlayıcı kaynakları işaretli: **(repo)** = repoda tanımlı, tanım sitesi verili · **(dış)** = dış sistem · **(lib)** = kütüphane konvansiyonu. Bu **kayıttır, doğrulama değil** — referans-gerçeklik tutarlılığını verify-plan denetler.
+
+- **Locale tuzağı alt sayfalarda ana sayfadan FARKLI** (as-needed prefix). TR alt sayfa = **prefixsiz** yol (`/spor-salonu-yazilimi`, `/vaka-calismalari`, `/bunker-os`, `/bulten/ai-sdr-araclari`, `/bulten/claude-opus-4-8-fable-5`) → next-intl `localeDetection` `/en/...`'e yönlendirir, **`NEXT_LOCALE=tr` cookie şart**; EN/AR/DE/ES açık-prefixli, cookie'siz. curl bunu tetiklemez (header yok) → curl-yeşil ile tarayıcı-kırmızı tutarsızlığı beklenen. **(repo:** `src/app/[locale]/*/page.tsx`; cookie mekanizması **(lib)** next-intl, `a11y-helpers.ts:41-56` `gotoLocalized`.) (memory: locale tuzağı.)
+- **Chatbot `apiKey` kontrolü sanitizasyondan ÖNCE** **(repo:** `src/app/api/chat/route.ts:21-24` → `:35-46`**).** Key yokken HER istek **503**; malformed 400 kısa-devresine (geçersiz JSON / boş / sonda-user-yok) ulaşılamaz. 0-token tasarımı: (a) 400 yollarını *çalıştırmak* için **dummy/geçersiz key** (400'ler `new Anthropic()`'ten `:48` önce döner → sıfır API çağrısı); (b) key-yok offline yolu **ayrı** (503 + UI). Naif "key-yok + malformed → 400" **yanlış-negatif** (503 alır). (Faz 3 TK3 birebir.)
+- **Redirect 308 (301 değil)** **(repo:** `next.config.ts:14-17` `permanent:true` → Next.js 308 method-koruyan**).** curl beklentisi 308. Çıplak `/forum`→`/bulten` (index yok)→**404** = Faz 3 sahipli bulgusu (görsel/SEO M6), record-not-fix.
+- **Tema = localStorage + `html.dark`, prefers-color-scheme DEĞİL** **(repo:** `[locale]/layout.tsx` FOUC script + ThemeToggle**).** Playwright `emulateMedia({colorScheme})` temayı **çevirmez** (yalnız FOUC fallback'i etkiler); dark testi = localStorage set + reload veya toggle'a tıkla. (memory: tema-fix + a11y-ölçüm tema tuzağı.)
+- **Living Flow client-only (`dynamic ssr:false`)** **(repo:** `LivingFlow.tsx`**).** Degradasyon modu (high/low/static) **client'ta** seçilir → curl markup'ta canvas/StaticFlow yok. **S3 zorunlu tarayıcı** (standalone Playwright): reduced-motion `emulateMedia({reducedMotion:'reduce'})`, no-WebGL `getContext` shim / context WebGL kapatma, mobil "low" viewport≤768 + gating-değişmezi (DOM'da attribute yok — Faz 3 öğrenimi). **Alt sayfa hero'ları da LivingFlow kullanır** → S3 6 sayfaya genişler.
+- **"Bunker" anahtar-adı/komponent/route ≠ render yüzeyi.** messages JSON'da `bunker` namespace anahtarı, değer her dilde **"Crew OS"** **(repo:** `messages/*.json`**);** `/bunker-os` route href + `components/bunker-os/` iç kalıntı (public-`/crew-os` ertelendi — M6). S5 yalnız **render edilen görünür metni** denetler (RSC flight payload `self.__next_f` script-tag'i ayıklanır — Faz 3 deseni); kaynak/URL değil. Alt-sayfa yüzeyi özellikle `/bunker-os` showcase. **(repo:** `BunkerShowcase.tsx`.)
+- **i18n parite Vitest suite'te** **(repo:** `tests/i18n-parity.test.ts`; `messages/{tr,en,ar,de,es}.json`**).** S6 yapısal parite = `npm run test` (eksik/fazla anahtar=fail); iş runtime `MISSING_MESSAGE` avı (6 sayfa × 5 dil render) + bilinçli-stale görünür-kopukluk. `MISSING_MESSAGE` = **(lib)** next-intl runtime hata string'i. **"Birebir-TR değer" sayısı stale değil, leak metriğidir** (Faz 3 öğrenimi: marka/sayı/ortak-kelime filtresi + render distinkt-cümle leak birlikte gerekir).
+- **İki-gate a11y: axe WCAG-AA ≠ Lighthouse a11y=100** **(repo:** `a11y-helpers.ts:16` `WCAG_TAGS`; `subpages-a11y.spec.ts`**).** `landmark-one-main`/`region`/`heading-order` WCAG-AA alt-kümesinde yok → `test:e2e` 52 yeşilken Lighthouse <100 mümkün (Faz 8 dersi: 2 bülten sayfası a11y=98, TASK-8.06 düzeltti). S8 **iki gate'i de** koşar (axe suite CI-korunan + Lighthouse çift-tema manuel). (memory: iki-gate.)
+- **Umami script = kod-tarafı, canlı DEĞİL** **(repo:** `tests/umami-script.test.tsx` + layout Script**).** S8 yalnız script'in tüm sayfa/locale'de `afterInteractive` + `data-domains` ile yüklendiğini kod-tarafı doğrular; **canlı panel +1 kapsam dışı** (v0.2 production release, DECISIONS 2026-07-01). "Canlıda gördüm" iddiası kanıt-artefaktına bağlanır (memory Süreç Disiplinleri).
+- **Perf/a11y bulguları = sahipli/ertelenmiş, record-not-fix.** Brief mobil perf açığı (perf 90/LCP 3164ms vs ≥95/<2.5s; kök neden CPU-bound WebGL, gerçek-cihaz duvarı — DECISIONS 2026-06-30) senaryo testte çıkarsa kaydet, düzeltme. Perf-bitişik ölçümden önce `/proc/loadavg` + çok-koşu median; software-GL ortamı perf/TBT'yi şişirir, a11y/CLS/LCP ortam-bağımsız güvenilir (memory).
+- **Stray/stale `next-server` yanlış-negatifi** (memory): önceki oturum portu tutan eski build edit-öncesi metni sunabilir → "metin bulunamadı" yanılır. Test başında listening-PID **fresh build** mi teyit; şüphede disk prerender ground-truth. Ayrıca `reuseExistingServer` (playwright.config) yerelde eldeki server'ı kullanır → S8 suite koşusundan önce :3000'de doğru build oturduğunu teyit et.
 
 ### Teknik Kararlar
-- [Karar 1]: [Gerekçe]
+
+- **TK1 — Suite-first hibrit (Yaklaşım B).** Guardrail/parite (S6/S8) commit'li suite (`test:e2e` 52 + `test` 7 + CI + Lighthouse); yolculuk/degradasyon/taksonomi/chatbot/adversarial (S1–S5/S7/S9) ad-hoc en-ucuz-araç. plan-phase task sınırlarını bundan alır: HTTP/SSG grubu (S1/S5/S6-curl), suite-guardrail grubu (S8+S6-Vitest), runtime-tarayıcı grubu (S3/S4), çapraz (S2/S7/S9). Gerekçe: kümülatif altyapı (ILKELER) + minimum yük + deterministik.
+- **TK2 — Kanonik ortam = fresh prod build, PID-teyitli** (Faz 3 birebir). dev tali. `test:e2e` kendi prod-serve'ini kurar; ad-hoc script/curl aynı prod-serve'i paylaşır veya ayrı portta. `reuseExistingServer` tuzağına dikkat (doğru build oturmuş mu).
+- **TK3 — Runtime sürücü = standalone Playwright script (scratchpad), MCP DEĞİL** (kullanıcı kararı; MCP bu oturumda yok). `chromium.launch()` + `gotoLocalized`/`scrollThrough` desenleri kopyalanır; repo'ya yazılmaz (doğrulama fazı). Tarayıcı binary: `npx playwright install chromium` (onay) veya `channel:'chrome'` (system Chrome mevcut).
+- **TK4 — Chatbot 0-token üç-katman** (Faz 3 TK3 birebir): (1) sanitizasyon **kod-incelemesi** (omurga); (2) **dummy-key** ile 400/503 kısa-devre *çalıştırma* (Anthropic'e ulaşmadan — happy-path koşulmaz, sıfır çağrı); (3) **key-yok** offline UI (standalone Playwright). "API'ye ulaşmadan red" + "sıfır API çağrısı".
+- **TK5 — S8 = suite re-teyit, iki gate ayrık.** axe WCAG-AA (`test:e2e`, CI-korunan, fail-on-regression) + Lighthouse a11y=100 çift-tema (manuel skor gate) — ikisi ayrı sinyal, ikisi de gate (Faz 8 dersi). Umami kod-tarafı + perf korunan taban + CI job durumu S8'e dahil; canlı +1 hariç.
+- **TK6 — Degradasyon = standalone Playwright emulateMedia (reducedMotion/colorScheme) + viewport resize + no-WebGL shim;** S3 6 sayfaya (home + 5 alt sayfa hero) genişler. "low" DOM-attribute yok → gating-değişmezi ile doğrula (Faz 3 öğrenimi).
+- **TK7 — Triyaj kapısı** (kapsam bulgu politikası): kapsam-içi (ana sayfa **veya 5 alt sayfa**) gerçek bug → bu fazda düzeltme task'ı (CI a11y job otomatik korur); kapsam-dışı/ertelenmiş (brief-perf, `/bunker-os`→`/crew-os`, çıplak `/forum`→404, TB-C, dil-seti) → sahipli kayıt, yeniden litige edilmez.
 
 ---
 
@@ -163,4 +219,4 @@
 ---
 
 **Oluşturulma:** 2026-07-02
-**Son Güncelleme:** 2026-07-02 — discuss-phase 9: Kapsam Tartışması yazıldı. Faz tipi = v0.2 versiyon-sonu senaryo testi; kapsam = ana sayfa + 5 alt sayfa uçtan-uca (Faz 3'ten genişletildi, Faz 8 alt sayfaları çıtaya çekti); TR birincil + non-TR tutarlılık; chatbot 0-token; S1–S9 kataloğu onaylandı. Sıradaki adım: research-phase 9.
+**Son Güncelleme:** 2026-07-02 — research-phase 9: Araştırma Bulguları yazıldı. Metodoloji = suite-first hibrit (TK1): S6/S8 guardrail commit'li suite (`test:e2e` 52 + `test` 7 + CI + Lighthouse), S1–S5/S7/S9 ad-hoc en-ucuz-araç. Runtime sürücü = standalone Playwright script (MCP bu oturumda yok — kullanıcı kararı TK3). S1–S9 araç eşlemesi + Dikkat Edilecekler (locale/tema/reveal/apiKey-gate/iki-gate tuzakları, kaynak-işaretli) + TK1–TK7 kaydedildi. Boyut 8093 token (tek-okunabilir, bölme yok). Sıradaki adım: plan-phase 9.
