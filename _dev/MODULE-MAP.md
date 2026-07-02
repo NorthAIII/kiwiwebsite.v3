@@ -145,6 +145,10 @@ M6 (SEO/Deploy) ─────────────────────>
 | TD6: Alt-sayfa a11y kümülatif regresyon tohumu + CI (Faz 5 harness genişletme) | M6 (+M1-M3) | v0.2 | 8 | ✅ |
 | **— v0.2 versiyon-sonu senaryo testi (Faz 9 — çapraz doğrulama, yeni feature üretmez) —** | | | | |
 | S1–S9: v0.2 ana sayfa + 5 alt sayfa uçtan-uca senaryo doğrulaması (giriş/yolculuk/mod/kontrol/taksonomi/5-dil/chatbot/v0.2-guardrail/adversarial) | tümü | v0.2 | 9 | ✅ |
+| **— v0.3 görsel cila iş birimleri (Faz 10 — saf CSS/görsel craft; imza/davranış/içerik değişmez) —** | | | | |
+| A1: Logo/marka işareti hizalama (KiwiMark her yüzeyde: Nav + varsa PageHeader/Footer, tutarlı) | M3 (+M1) | v0.3 | 10 | 🔄 |
+| A3a: Hero CTA kartı affordance (Alpfit/Crew OS `<Link>` ince/zarif tıklanabilir; kart zaten Link) | M2 (+M3) | v0.3 | 10 | 🔄 |
+| A3b: Hero scroll göstergesi ölçekleme (merkez-alt "Kaydır" doğru ölçek/konum; desktop-only korunur) | M2 (+M1) | v0.3 | 10 | 🔄 |
 
 **Durum simgeleri:**
 - ⬜ **Bekliyor** — Fazı henüz başlamadı
@@ -163,4 +167,4 @@ M6 (SEO/Deploy) ─────────────────────>
 
 ---
 
-**Son Güncelleme:** 2026-07-02 — re-kickoff (v0.2→v0.3): taksonomi notu güncellendi (`/crew-os` redirect v0.3 kapsamına alındı). v0.3 iş birimi satırları (A1 logo · A3 CTA affordance · B1 Living Flow nabız [gate'li] · SEO `/crew-os`+`/forum`→404) **bilinçle discuss-phase'e bırakıldı** (just-in-time: faz numarası + kesin iş birimi ayrımı faza girince damgalanır; v0.2 satırları/durumları korundu).
+**Son Güncelleme:** 2026-07-02 — discuss-phase 10: v0.3 görsel cila iş birimleri (A1 logo · A3a CTA affordance · A3b scroll göstergesi) Faz 10'a damgalandı (🔄, saf CSS/görsel). B1 Living Flow nabız (gate'li) + SEO `/crew-os`/`/forum`→404 ayrı fazlara bırakıldı (henüz atanmadı).

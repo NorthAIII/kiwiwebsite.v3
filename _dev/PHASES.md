@@ -28,6 +28,7 @@ Faz numaraları **global, sürekli ve append-only**'dir — versiyon değişse b
 | 7 | v0.2 Umami analytics (E1) | Self-hosted Umami script'i (`next/script`, `[locale]/layout.tsx` head, afterInteractive) tüm locale'lerde pageview ölçümü; canlıda gözle doğrulanır; Faz 6 perf tabanı regresyonsuz | ✅ |
 | 8 | v0.2 versiyon-sonu teknik borç kapatma | Alt-sayfa derin a11y (5 alt sayfa, 5 dil/AR RTL, ana sayfa çıtası a11y=100 çift-tema + axe WCAG-AA 0) + `text-pulse` ink-panel süpürmesi + kümülatif a11y regresyon tohumu/CI; guardrail'ler regresyonsuz | ✅ |
 | 9 | v0.2 versiyon-sonu senaryo testi | v0.2 ana sayfa + 5 alt sayfa uçtan-uca doğrulama (S1–S9: giriş/yolculuk/mod/kontrol/taksonomi/5-dil/chatbot/v0.2-guardrail/adversarial); TR öncelik, otonom, keşfet+kaydet+triyaj | ✅ |
+| 10 | v0.3 görsel cila (A1 logo + A3 CTA affordance & scroll göstergesi) | Saf CSS/görsel craft: logo her yüzeyde hizalı + Hero CTA kartları ince/zarif affordance + scroll göstergesi doğru ölçek; guardrail (a11y=100 çift-tema/perf tabanı/CLS≈0/i18n parite) regresyonsuz | 🔄 |
 
 **Durum simgeleri:**
 - 🔄 **Devam ediyor** — discuss-phase başladı (aktif faz)
@@ -42,8 +43,7 @@ Faz numaraları **global, sürekli ve append-only**'dir — versiyon değişse b
 
 > Yaklaşan faz konuları — **numarasız**. Faza girildiğinde (discuss-phase) buradan çıkar, numara (mevcut en büyük faz no + 1) alıp Faz Durumu tablosuna 🔄 olarak geçer. Aşağıdakiler güçlü revize için aday konulardır; kesin kapsam ve sıra PRD/discuss-phase'de netleşir.
 
-**v0.3 near-term faz konuları** (re-kickoff 2026-07-02; **numarasız** — faza girince discuss-phase damgalar; kesin faz ayrımı discuss-phase 1'de sabitlenir):
-- **Görsel cila** — A1 (logo hizalama) + A3 (CTA kartı affordance + scroll göstergesi ölçekleme). Saf CSS/görsel craft; en güvenli, dar. Milestone: logo hizalı + CTA kartları görsel olarak tıklanabilir + scroll göstergesi doğru ölçekli; a11y=100/perf tabanı/CLS regresyonsuz.
+**v0.3 near-term faz konuları** (re-kickoff 2026-07-02; **numarasız** — faza girince discuss-phase damgalar):
 - **Living Flow nabız kapsamı** — B1 (**karar-gate'li**; craft-duyarlı imza riski). Milestone: nabız kapsamı kararı verildi (uygula VEYA iptal-kaydet); imza + reduced-motion + perf tabanı korundu.
 - **URL taksonomisi / SEO redirect** — `/bunker-os`→`/crew-os` + `/forum`→404. Milestone: public `/crew-os` yayında + `/bunker-os` kalıcı redirect + i18n namespace `bunker`→`crew` 5-dil senkron + sitemap/canonical/alternates güncel + iç linkler temiz; SSG/build temiz.
 
@@ -88,11 +88,12 @@ Faz numaraları **global, sürekli ve append-only**'dir — versiyon değişse b
 | Faz 8 ✅ (Teknik Borç) → senaryo testi | 2026-07-02 | 5 alt sayfa a11y=100 çift-tema + axe WCAG-AA 0 (50 test); UAT 12/12, kalite 8 eksen ✅; TD4 premisi grep'le çürütüldü (TD5'e katlandı); iki-gate mühür `landmark-one-main`'i yakaladı (8.06); guardrail (home a11y=100/perf tabanı/i18n parite) regresyonsuz; Versiyon Sonu Durumu → senaryo_testi (discuss-phase 9 promote eder) |
 | Faz 9 girildi (v0.2 versiyon-sonu senaryo testi) | 2026-07-02 | discuss-phase 9: Adım 0b (Versiyon Sonu Durumu zaten senaryo_testi); kapsam ana sayfa + 5 alt sayfa uçtan-uca (Faz 3'ten genişletildi — Faz 8 alt sayfaları çıtaya çekti), TR birincil + non-TR tutarlılık, chatbot 0-token, keşfet+kaydet+triyaj; S1–S9 kataloğu; dinamik faz doğrudan tabloya 🔄; sıradaki adım research-phase 9 |
 | Faz 9 ✅ (Senaryo Testi) → versiyon sonu | 2026-07-02 | S1–S9 + UAT 14/14; 0 kaynak değişimi, 0 kapsam-içi bug, 0 düzeltme task'ı; suite-first hibrit + bağımsız yeniden-doğrulama; milestone 5/5, 8 kalite ekseni ✅; v0.2 versiyon-sonu fazları (8,9) tamam; Versiyon Sonu Durumu → prd_review_bekliyor; sıradaki = zorunlu prd-review |
+| Faz 10 girildi (v0.3 görsel cila) | 2026-07-02 | discuss-phase 10: v0.3 ilk içerik fazı (içerik_fazları, normal döngü); kapsam A1 logo hizalama (her yüzey) + A3 CTA affordance (ince/zarif) + A3 scroll göstergesi (merkez-alt) — saf CSS/görsel, yeni i18n anahtarı yok; B1 + SEO redirect ayrı fazlara bırakıldı; Sıradaki Fazlar'dan mezun, tabloya 🔄; sıradaki adım research-phase 10 |
 
 <!-- KURAL: Her geçiş için TEK satır + kısa not. Geçiş gerekçesi/detayı PHASE-N.md retrospektifindedir, burada tekrar edilmez. "Önceki:" prefix veya HTML comment ile detay yığma YASAK (CLAUDE.md → Doküman Disiplini). -->
 
 ---
 
-**Son Güncelleme:** 2026-07-02 — re-kickoff (v0.2→v0.3): v0.2 tamamlandı (prd-review PRD değişikliği yok); Sıradaki Fazlar v0.3 near-term konularına güncellendi (görsel cila A1/A3 → Living Flow nabız B1 gate'li → URL/SEO redirect), numarasız. v0.3 içerik fazlarından önce v0.2 production release bekliyor. Sıradaki adım: discuss-phase (v0.3 ilk fazı).
+**Son Güncelleme:** 2026-07-02 — discuss-phase 10: Faz 10 (v0.3 görsel cila — A1 logo + A3 CTA affordance & scroll göstergesi) girildi, Faz Durumu tablosuna 🔄; Görsel cila Sıradaki Fazlar'dan mezun (B1 + SEO redirect kaldı). Sıradaki adım: research-phase 10.
 
 <!-- KURAL: Bu satır her güncellemede ÜZERİNE YAZILIR. "Önceki:" prefix ile kümülatif yığma YASAK (CLAUDE.md → Doküman Disiplini). -->
