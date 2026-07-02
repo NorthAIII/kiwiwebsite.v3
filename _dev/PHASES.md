@@ -47,7 +47,7 @@ Faz numaraları **global, sürekli ve append-only**'dir — versiyon değişse b
 - **Living Flow nabız kapsamı** — B1 (**karar-gate'li**; craft-duyarlı imza riski). Milestone: nabız kapsamı kararı verildi (uygula VEYA iptal-kaydet); imza + reduced-motion + perf tabanı korundu.
 - **URL taksonomisi / SEO redirect** — `/bunker-os`→`/crew-os` + `/forum`→404. Milestone: public `/crew-os` yayında + `/bunker-os` kalıcı redirect + i18n namespace `bunker`→`crew` 5-dil senkron + sitemap/canonical/alternates güncel + iç linkler temiz; SSG/build temiz.
 
-> ⚠️ **v0.3 içerik fazlarından ÖNCE:** v0.2 production release (revize `main`'e ilk merge; Umami canlı +1 + duman testi orada kapanır) — ayrı operasyonel adım, faz döngüsü dışı (bkz. DURUM.md).
+> ⚠️ **v0.3 içerik fazlarından ÖNCE (sabit kural: `run-task 10`'dan önce):** v0.2 production release — revize `main`'e ilk merge; Umami canlı +1 + genel duman testi orada kapanır. **Ayrı operasyonel adım, faz döngüsü dışı** (numaralı faz değil — kullanıcı kararı 2026-07-02: hafif oturum + checklist). Runbook: `docs/RELEASE-v0.2.md`. Zamanlama: hemen/sonraki oturum (temiz v0.2 penceresi açık — Faz 10 henüz src'ye dokunmadı).
 
 > v0.3 içerik fazları bitince versiyon-sonu sabit fazları gelir: teknik borç → senaryo testi → prd-review (dinamik, faza girince doğrudan tabloya eklenir). Faz ayrımı (kaç faz) discuss-phase'de netleşir.
 
@@ -94,6 +94,6 @@ Faz numaraları **global, sürekli ve append-only**'dir — versiyon değişse b
 
 ---
 
-**Son Güncelleme:** 2026-07-02 — discuss-phase 10: Faz 10 (v0.3 görsel cila — A1 logo + A3 CTA affordance & scroll göstergesi) girildi, Faz Durumu tablosuna 🔄; Görsel cila Sıradaki Fazlar'dan mezun (B1 + SEO redirect kaldı). Sıradaki adım: research-phase 10.
+**Son Güncelleme:** 2026-07-02 — v0.2 production release **hafif operasyonel adım** olarak planlandı (kullanıcı kararı: numaralı faz değil, checklist + hemen; runbook `docs/RELEASE-v0.2.md`), `run-task 10`'dan önce konumlandı. (Faz 10 planlaması ayrıca verify-plan adımında — bkz. DURUM.md.)
 
 <!-- KURAL: Bu satır her güncellemede ÜZERİNE YAZILIR. "Önceki:" prefix ile kümülatif yığma YASAK (CLAUDE.md → Doküman Disiplini). -->

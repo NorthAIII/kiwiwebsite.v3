@@ -76,6 +76,7 @@
 | `docs/TESTING.md` | Test convention notu: komutlar + test yerleri + 3 katman (Vitest node/jsdom + Playwright/axe) + a11y ölçüm disiplini (özet/pointer) + kümülatif beklenti + CI |
 | `docs/REVIZE-BACKLOG.md` | Güçlü revize ham girdisi: kullanıcı tespitleri + bekleyen işler (PRD tohumu) |
 | `docs/UMAMI-ANALYTICS.md` | Umami analytics entegrasyon spec'i (bekliyor — kod, değerler, uyarılar) |
+| `docs/RELEASE-v0.2.md` | v0.2 production release runbook & checklist (hafif operasyonel oturum: temiz pencere → PR/merge → canlı duman testi → Umami +1). run-task 10'dan önce. |
 | `docs/perf/` | Ana sayfa Lighthouse perf/a11y tabanları (`README.md` = metodoloji+koşu tablosu+a11y kırılımı; `home-{mobile,desktop}-<tarih>.{html,json}` kanonik artefaktlar). İlk taban: v0.1 2026-06-28 (TD3). |
 
 ---
