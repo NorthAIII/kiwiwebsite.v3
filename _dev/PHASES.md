@@ -30,6 +30,7 @@ Faz numaraları **global, sürekli ve append-only**'dir — versiyon değişse b
 | 9 | v0.2 versiyon-sonu senaryo testi | v0.2 ana sayfa + 5 alt sayfa uçtan-uca doğrulama (S1–S9: giriş/yolculuk/mod/kontrol/taksonomi/5-dil/chatbot/v0.2-guardrail/adversarial); TR öncelik, otonom, keşfet+kaydet+triyaj | ✅ |
 | 10 | v0.3 görsel cila (A1 logo + A3 CTA affordance & scroll göstergesi) | Saf CSS/görsel craft: logo her yüzeyde hizalı + Hero CTA kartları ince/zarif affordance + scroll göstergesi doğru ölçek; guardrail (a11y=100 çift-tema/perf tabanı/CLS≈0/i18n parite) regresyonsuz | ✅ |
 | 11 | v0.3 URL taksonomisi / SEO (`/bunker-os`→`/crew-os`) | Public `/crew-os` (5 locale SSG) + `/bunker-os` kalıcı redirect + i18n namespace `bunkerOs`/`bunker`→crew 5-dil rename + sitemap/canonical/alternates + iç linkler temiz; `/forum` redirect korunur; guardrail (a11y=100 çift-tema/perf tabanı/CLS≈0/i18n parite) regresyonsuz | ✅ |
+| 12 | v0.3 Living Flow nabız kapsamı (B1, karar-gate'li) | Nabız kapsamı kararı uygulandı VEYA iptal-kaydedildi; kontrollü aşağı-taşıma (sürekli soluk iplik, desktop-öncelik, bölüme-uyarlanan opaklık); imza/reduced-motion/a11y kontrast=100 çift-tema/perf tabanı korundu (regresyonsuz) | 🔄 |
 
 **Durum simgeleri:**
 - 🔄 **Devam ediyor** — discuss-phase başladı (aktif faz)
@@ -45,7 +46,7 @@ Faz numaraları **global, sürekli ve append-only**'dir — versiyon değişse b
 > Yaklaşan faz konuları — **numarasız**. Faza girildiğinde (discuss-phase) buradan çıkar, numara (mevcut en büyük faz no + 1) alıp Faz Durumu tablosuna 🔄 olarak geçer. Aşağıdakiler güçlü revize için aday konulardır; kesin kapsam ve sıra PRD/discuss-phase'de netleşir.
 
 **v0.3 near-term faz konuları** (re-kickoff 2026-07-02; **numarasız** — faza girince discuss-phase damgalar):
-- **Living Flow nabız kapsamı** — B1 (**karar-gate'li**; craft-duyarlı imza riski). Milestone: nabız kapsamı kararı verildi (uygula VEYA iptal-kaydet); imza + reduced-motion + perf tabanı korundu.
+- _(Tümü faza girdi — B1 Living Flow nabız kapsamı Faz 12'ye damgalandı 2026-07-02. v0.3 içerik fazı konusu kalmadı; Faz 12 bitince versiyon-sonu sabit fazları gelir.)_
 
 > ✅ **v0.2 production release tamamlandı (2026-07-02):** revize `main`'e merge (PR #6 `4847431`) + canlı deploy `a71adbc`; Umami canlı +1 + §3 duman testi kapandı. Runbook/Sonuç: `docs/RELEASE-v0.2.md`. v0.3 run-task artık serbest. (Açık takip: chatbot canlı `ANTHROPIC_API_KEY` env — release engeli değil.)
 
@@ -92,11 +93,12 @@ Faz numaraları **global, sürekli ve append-only**'dir — versiyon değişse b
 | Faz 10 ✅ (v0.3 görsel cila) → sonraki içerik fazı | 2026-07-02 | A1 kök nedeni (3 kopya-kod lockup) ortak `<Logo>` ile kalıcı kapandı; A3a ok affordance + A3b scroll göstergesi orantı; UAT 17/17, 8 kalite ekseni (7 ✅ + 1 N/A); guardrail (a11y=100 çift-tema/perf tabanı/CLS=0/i18n parite) regresyonsuz; 0 imza/davranış/içerik değişimi; Versiyon Sonu Durumu içerik_fazları (değişmez); sıradaki = v0.3 içerik fazı (discuss-phase 11 promote eder) |
 | Faz 11 girildi (v0.3 URL taksonomisi/SEO) | 2026-07-02 | discuss-phase 11: içerik_fazları (normal döngü); kapsam SEO1 route `/bunker-os`→`/crew-os` rename+kalıcı redirect (5 locale) + SEO2 i18n namespace `bunkerOs`/`bunker`→crew 5-dil rename + SEO3 iç link + sitemap/canonical/alternates; `/forum`→404 reddedildi (mevcut 301 korunur, çalışan redirect'i bozmak için gerekçe yok); kod dosya adları iç-ad kalır (taksonomi izin veriyor); B1 nabız ayrı gate'li faza; Sıradaki Fazlar'dan mezun, tabloya 🔄; sıradaki adım research-phase 11 |
 | Faz 11 ✅ (v0.3 URL taksonomisi/SEO) → sonraki içerik fazı | 2026-07-02 | Milestone karşılandı: public `/crew-os` 5-locale SSG + kalıcı 308 redirect (çıplak+5-locale, locale gap yok) + namespace 5-dil senkron (0 MISSING_MESSAGE) + sitemap/iç link temiz (çift-redirect yok); taksonomi (DECISIONS 2026-06-27) son açık ucu kapandı; UAT 13/13, kalite 8 eksen (7 ✅ + 1 N/A); kod-adı tanımlayıcıları iç-ad korundu; kayıtlı açık: latent canonical=`/` + `/forum` locale gap (gelecek SEO fazı); guardrail regresyonsuz; Versiyon Sonu Durumu içerik_fazları (değişmez); sıradaki = v0.3 sonraki içerik fazı — B1 Living Flow nabız (discuss-phase 12 promote eder) |
+| Faz 12 girildi (v0.3 Living Flow nabız kapsamı B1) | 2026-07-02 | discuss-phase 12: içerik_fazları (normal döngü); karar-gate'li/imza-riskli faz; kapsam kontrollü aşağı-taşıma → sürekli soluk iplik + desktop-öncelik (mobil korunur) + bölüme-uyarlanan opaklık; gate: kontrast=100/perf tabanı/craft korunamıyorsa iptal-kaydet (P2 emsali); yeni i18n anahtarı yok; mobil aşağı-taşıma + /crew-os/Alpfit/404 + Hero çekirdek efekti kapsam dışı; Sıradaki Fazlar'dan mezun (v0.3 içerik konusu bitti), tabloya 🔄; sıradaki adım research-phase 12 |
 
 <!-- KURAL: Her geçiş için TEK satır + kısa not. Geçiş gerekçesi/detayı PHASE-N.md retrospektifindedir, burada tekrar edilmez. "Önceki:" prefix veya HTML comment ile detay yığma YASAK (CLAUDE.md → Doküman Disiplini). -->
 
 ---
 
-**Son Güncelleme:** 2026-07-02 — review-phase 11: Faz 11 ✅ Tamamlandı (retrospektif + kalite kontrol PHASE-11.md'ye yazıldı); Faz Durumu tablosu 11→✅, geçiş notu eklendi. Milestone karşılandı (public `/crew-os` + kalıcı redirect + namespace 5-dil + sitemap/iç link temiz). Versiyon Sonu Durumu içerik_fazları (değişmez). Sıradaki Fazlar'da yalnız B1 (Living Flow nabız, gate'li) kaldı. Sıradaki adım: discuss-phase 12.
+**Son Güncelleme:** 2026-07-02 — discuss-phase 12: Faz 12 (v0.3 Living Flow nabız kapsamı B1) Faz Durumu tablosuna 🔄 eklendi; B1 Sıradaki Fazlar'dan mezun edildi (v0.3 içerik konusu kalmadı); geçiş notu eklendi. Karar-gate'li/imza-riskli faz: kontrollü aşağı-taşıma (sürekli soluk iplik / desktop-öncelik / bölüme-uyarlanan opaklık), gate craft/kontrast/perf korunamıyorsa iptal-kaydet. Versiyon Sonu Durumu içerik_fazları (değişmez). Sıradaki adım: research-phase 12.
 
 <!-- KURAL: Bu satır her güncellemede ÜZERİNE YAZILIR. "Önceki:" prefix ile kümülatif yığma YASAK (CLAUDE.md → Doküman Disiplini). -->
