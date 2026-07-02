@@ -121,7 +121,7 @@
 
 | # | Task | Durum | Açıklama |
 |---|------|-------|----------|
-| 10.01 | TASK-10.01 | ⬜ Bekliyor | A1 — Ortak `<Logo>` bileşeni + Nav & PageHeader benimseme (optik dikey hiza tek yerde) |
+| 10.01 | TASK-10.01 | ✅ Tamamlandı | A1 — Ortak `<Logo>` bileşeni + Nav & PageHeader benimseme (optik dikey hiza tek yerde) |
 | 10.02 | TASK-10.02 | ⬜ Bekliyor | A1 — Footer'da `<Logo>` benimseme (size 18, non-link, `text-canvas` koyu zemin); 10.01'e bağlı |
 | 10.03 | TASK-10.03 | ⬜ Bekliyor | A3a — Hero iki stat Link'ine site-standart ok idiomu + durağan ipucu |
 | 10.04 | TASK-10.04 | ⬜ Bekliyor | A3b — Hero merkez-alt scroll göstergesi ölçekleme (desktop-only korunur) |
@@ -157,4 +157,4 @@
 ---
 
 **Oluşturulma:** 2026-07-02 (discuss-phase 10)
-**Son Güncelleme:** 2026-07-02 — plan-phase 10: 4 task yazıldı (10.01–10.04, Task Listesi tablosu dolduruldu).
+**Son Güncelleme:** 2026-07-02 — run-task TASK-10.01 ✅: ortak `<Logo>` bileşeni (`src/components/Logo.tsx`) + Nav & PageHeader benimseme; optik hiza tek yerde (`leading-none`+`items-center`, nudge gerekmedi); build ✓, a11y 52/52 (light+dark), çift-tema görsel hizalı.
