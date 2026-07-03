@@ -1,6 +1,6 @@
 # DURUM — Proje Dashboard
 
-**Son Güncelleme:** 2026-07-03 — **review-phase 13 ✅: Faz 13 (SEO-metadata hijyeni) tamamlandı; retrospektif + 8 kalite ekseni (hepsi ✅) PHASE-13'e yazıldı, 0 düzeltme task'ı.** Kod incelendi (helper tek kaynak, 6 sayfa self-canonical, layout canonical miras ettirmez); test 39/39 bağımsız yeşil. TB-1 (fail-safe canonical + 5-dil hreflang/x-default) + TB-2 (`/forum`→`/` 6×308, `:slug*` sıra tuzağı) kapandı; kök-çözüm denetimi `/bulten` 404-hedefini yakaladı. Guardrail'ler yapısal regresyonsuz. **Versiyon Sonu Durumu `teknik_borç`→`senaryo_testi`.** Sıradaki adım **`discuss-phase 14`** (v0.3 versiyon-sonu senaryo testi fazı).
+**Son Güncelleme:** 2026-07-03 — **discuss-phase 14 ✅: Faz 14 (v0.3 versiyon-sonu senaryo testi) girildi; Kapsam Tartışması PHASE-14'e yazıldı.** Kapsam ana sayfa + 5 alt sayfa uçtan-uca (S1–S9, Faz 9'dan v0.3 deltasına uyarlandı — `/crew-os` route rename + Living Flow sayfa-boyu nabız + SEO metadata katmanı + logo); TR birincil + non-TR tutarlılık; chatbot 0-token (dokunulmadı, bütünsellik için korundu); keşfet+kaydet+triyaj; otonom. Versiyon Sonu Durumu `senaryo_testi` (değişmez). Sıradaki adım **`research-phase 14`**.
 
 <!-- KURAL: Bu satır her oturum sonunda ÜZERİNE YAZILIR — tek satır, tek cümle. "Önceki:" / "Eski:" prefix ile kümülatif yığma YASAK; HTML comment'e sarma da yasak (CLAUDE.md → Doküman Disiplini). Tarih + kısa özet yeterli; detay için git log + ilgili PHASE/TASK dokümanları. -->
 
@@ -8,10 +8,10 @@
 
 ## Aktif Faz
 
-**Faz:** 14 — **v0.3 versiyon-sonu senaryo testi** (geçici ad; discuss-phase 14 damgalar) — henüz girilmedi. **Faz 13 ✅** (SEO-metadata hijyeni: TB-1 canonical/hreflang + TB-2 `/forum` redirect). Faz 12 ✅ (B1 Living Flow nabız). Faz 11 ✅ (URL taksonomisi/SEO). Faz 10 ✅ (görsel cila). v0.2 tamamen ✅ (Faz 4–9 + prd-review + production release).
-**Adım:** discuss (Versiyon Sonu Durumu `teknik_borç`→`senaryo_testi` review-phase 13'te damgalandı; senaryo testi fazına geçiliyor). ✅ **v0.2 production release tamamlandı (2026-07-02)** — revize `main`'de, canlı deploy `a71adbc`, Umami canlı +1 doğrulandı (`docs/RELEASE-v0.2.md`). Açık takip: chatbot canlı `ANTHROPIC_API_KEY` env (release engeli değil).
-**İlerleme:** review-phase 13 (2026-07-03) ✅ — Faz 13 tamamlandı: retrospektif + 8 kalite ekseni (hepsi ✅) PHASE-13'e yazıldı; kod incelendi, 39/39 test bağımsız yeşil; 0 düzeltme task'ı. TB-1 (fail-safe self-canonical + 5-dil hreflang/x-default, tek-kaynak helper) + TB-2 (`/forum`→`/` 6×308, sıra tuzağı) kapandı. **Kayıtlı sahipli açıklar (gelecek/prd-review):** TB-3 full-motion tohumu (WebGL flaky), TB-4 site-geneli logical-ok (RTL), TB-5 npm audit (next downgrade breaking), B grubu (non-TR tazelik / AR-dil stratejisi / brief mobil perf) → prd-review.
-**Son Faz Dokümanı:** `phases/PHASE-13.md` (✅ Tamamlandı — Task Listesi 13.01–13.04 ✅; UAT 16/16; retrospektif + kalite kontrol yazıldı). Faz 12 ✅ `phases/PHASE-12.md`.
+**Faz:** 14 — **v0.3 versiyon-sonu senaryo testi** (girildi; discuss-phase 14 damgaladı) 🔄. **Faz 13 ✅** (SEO-metadata hijyeni: TB-1 canonical/hreflang + TB-2 `/forum` redirect). Faz 12 ✅ (B1 Living Flow nabız). Faz 11 ✅ (URL taksonomisi/SEO). Faz 10 ✅ (görsel cila). v0.2 tamamen ✅ (Faz 4–9 + prd-review + production release).
+**Adım:** research (discuss-phase 14 tamamlandı — Kapsam Tartışması PHASE-14'e yazıldı; sıradaki = teknik araştırma). ✅ **v0.2 production release tamamlandı (2026-07-02)** — revize `main`'de, canlı deploy `a71adbc`, Umami canlı +1 doğrulandı (`docs/RELEASE-v0.2.md`). Açık takip: chatbot canlı `ANTHROPIC_API_KEY` env (release engeli değil).
+**İlerleme:** discuss-phase 14 (2026-07-03) ✅ — Faz 14 girildi (senaryo testi): kapsam ana sayfa + 5 alt sayfa uçtan-uca (S1–S9, v0.3 deltasına uyarlandı — `/crew-os` route + sayfa-boyu nabız + SEO metadata + logo), TR birincil + non-TR tutarlılık, chatbot 0-token, keşfet+kaydet+triyaj, otonom. Ortam riski kaydı: bu devcontainer'da `next start` öldürülebilir (Faz 13) → S3 runtime-tarayıcı katmanı metodoloji riski, research-phase araç eşlemesinde çözülür. **Kayıtlı sahipli açıklar (gelecek/prd-review):** TB-3 full-motion tohumu (WebGL flaky), TB-4 site-geneli logical-ok (RTL), TB-5 npm audit (next downgrade breaking), B grubu (non-TR tazelik / AR-dil stratejisi / brief mobil perf) → prd-review.
+**Son Faz Dokümanı:** `phases/PHASE-14.md` (🔄 Devam ediyor — Kapsam Tartışması yazıldı; research/plan bekliyor). Faz 13 ✅ `phases/PHASE-13.md` (UAT 16/16). Faz 12 ✅ `phases/PHASE-12.md`.
 
 ---
 
@@ -28,19 +28,19 @@
 
 ## Aktif Task
 
-**Task:** Faz 13 ✅ tamamlandı (review-phase 13). Yeni faz (14 — senaryo testi) henüz girilmedi → aktif task yok. Sıradaki adım task değil **`discuss-phase 14`** (senaryo testi fazı kapsam tartışması).
-**Durum:** Faz 13 ✅; Versiyon Sonu Durumu = `senaryo_testi`; Aktif Versiyon v0.3. Aktif Faz 14 discuss bekliyor.
-**İlerleme:** review-phase 13 (2026-07-03) ✅ — retrospektif + 8 kalite ekseni PHASE-13'e yazıldı; 39/39 test yeşil; 0 düzeltme task'ı. Sıradaki = `discuss-phase 14`.
+**Task:** Faz 14 (senaryo testi) girildi (discuss-phase 14 ✅). Task listesi henüz boş → plan-phase 14'te dolar. Sıradaki adım task değil **`research-phase 14`** (senaryo testi metodolojisi araştırması).
+**Durum:** Faz 14 🔄 (Kapsam Tartışması yazıldı); Versiyon Sonu Durumu = `senaryo_testi`; Aktif Versiyon v0.3. Adım = research.
+**İlerleme:** discuss-phase 14 (2026-07-03) ✅ — kapsam ana sayfa + 5 alt sayfa uçtan-uca (S1–S9, v0.3 deltasına uyarlandı), TR birincil + non-TR tutarlılık, chatbot 0-token, otonom. Sıradaki = `research-phase 14`.
 
 ---
 
 ## Task Durumu (Aktif Faz)
 
-> **Faz 14 henüz girilmedi** — senaryo testi fazı `discuss-phase 14` ile başlar (Versiyon Sonu Durumu `senaryo_testi`). Task listesi discuss/plan sonrası dolar. Faz 4–13 ✅.
+> **Faz 14 girildi (discuss ✅)** — senaryo testi fazı; S1–S9 kataloğu Kapsam Tartışması'nda (`phases/PHASE-14.md`). Task listesi `plan-phase 14`'te dolar. Faz 4–13 ✅.
 
 | # | Task | Durum | Açıklama |
 |---|------|-------|----------|
-| — | — | — | Faz 14 discuss-phase'de planlanacak |
+| — | — | — | Faz 14 task listesi plan-phase 14'te doldurulacak (S1–S9 senaryo grupları → araç eşlemesi) |
 
 ---
 
@@ -62,8 +62,8 @@ _(Faz 14 henüz task üretmedi — senaryo testi fazı kaynak değiştirmeyebili
 
 ## Hızlı Erişim
 
-**Aktif Task:** Faz 13 ✅ (review-phase 13 tamamlandı). Yeni faz (14 — senaryo testi) henüz girilmedi. Sıradaki adım **`discuss-phase 14`**. Açık takip: chatbot canlı env key.
-**Aktif Faz:** **14 (henüz girilmedi)** — v0.3 versiyon-sonu senaryo testi (geçici ad; discuss-phase 14 damgalar). **Faz 13 ✅** — SEO-metadata hijyeni: TB-1 alt-sayfa self-canonical + 5-locale hreflang alternates (+x-default) + TB-2 `/forum` locale gap + tüm config redirect denetimi (`/forum`→`/`) + regresyon tohumu; UAT 16/16 + 8 kalite ekseni ✅. Faz 12 ✅ (B1 Living Flow nabız). Faz 11 ✅ (URL taksonomisi/SEO). Faz 10 ✅ (görsel cila). v0.2 Faz 4–9 ✅ + prd-review ✅ + production release ✅. **Aktif Versiyon v0.3**, Versiyon Sonu Durumu: **senaryo_testi** → sıradaki komut `discuss-phase 14`.
+**Aktif Task:** Faz 14 🔄 (discuss-phase 14 ✅ — Kapsam Tartışması yazıldı). Task listesi plan-phase'de dolar. Sıradaki adım **`research-phase 14`**. Açık takip: chatbot canlı env key.
+**Aktif Faz:** **14 🔄** — v0.3 versiyon-sonu senaryo testi (ana sayfa + 5 alt sayfa uçtan-uca; S1–S9 v0.3 deltasına uyarlandı: `/crew-os` route + Living Flow sayfa-boyu nabız + SEO metadata + logo; TR birincil, chatbot 0-token, otonom). **Faz 13 ✅** — SEO-metadata hijyeni: TB-1 self-canonical + 5-locale hreflang (+x-default) + TB-2 `/forum`→`/` config redirect denetimi; UAT 16/16 + 8 kalite ekseni ✅. Faz 12 ✅ (B1 nabız). Faz 11 ✅ (URL taksonomisi). Faz 10 ✅ (görsel cila). v0.2 Faz 4–9 ✅ + prd-review ✅ + production release ✅. **Aktif Versiyon v0.3**, Versiyon Sonu Durumu: **senaryo_testi** → sıradaki komut `research-phase 14`.
 **Task Sistemi:** `tasks/TASKS-README.md`
 **PRD (karar kaynağı):** `PRD/VIZYON.md` · `PRD/VERSIONS.md` · `PRD/features/`
 **Revize Backlog (bilinen sorunlar):** `docs/REVIZE-BACKLOG.md`
@@ -71,4 +71,4 @@ _(Faz 14 henüz task üretmedi — senaryo testi fazı kaynak değiştirmeyebili
 
 ---
 
-**Son Güncelleme:** 2026-07-03 — **review-phase 13 ✅: Faz 13 (SEO-metadata hijyeni) tamamlandı** (yalnız doküman: PHASE-13 retrospektif + kalite kontrol; PHASES/MODULE-MAP/DURUM). **Bütüncül değerlendirme:** 4 task tutarlı bütün — TB-1 (tek-kaynak `localizedAlternates` helper + fail-safe layout→sayfa taşıma; 6 sayfa self-canonical + 5-dil hreflang/x-default) + TB-2 (`/forum`→`/` locale-gap kapalı, 6×308, `:slug*` sıra tuzağı çürütüldü). Kod incelendi: helper tek kaynak, 5 alt sayfa + home kendi path'iyle çağırıyor, layout canonical miras ETTİRMİYOR, kopya-kod yok. **Milestone ✓** (UAT 16/16 karşıladı). **8 kalite ekseni hepsi ✅** (render surface 0 değişim → craft/a11y/perf yapısal korundu; modülerlik+fail-safe+kümülatif-tohum güçlü). `npm run test` 39/39 bağımsız yeşil. **0 düzeltme task'ı.** DECISIONS 2 Faz-13 girdisi (fail-safe canonical + `/forum`→`/` sıra tuzağı) task'larda kaydedilmiş. Faz dokümanı boyut ✅ (~6.6k token, bölme yok). **Versiyon Sonu Durumu `teknik_borç`→`senaryo_testi` damgalandı.** Kayıtlı açıklar (TB-3/4/5) + B grubu → prd-review. **Sıradaki DevFlow komutu: `discuss-phase 14` (v0.3 versiyon-sonu senaryo testi fazı).**
+**Son Güncelleme:** 2026-07-03 — **discuss-phase 14: Faz 14 (v0.3 versiyon-sonu senaryo testi) girildi** (yalnız doküman: PHASE-14 Genel Bilgiler + Kapsam Tartışması; PHASES tabloya 🔄 + geçiş notu; DURUM). **Adım 0b** (Versiyon Sonu Durumu zaten `senaryo_testi`, review-phase 13 damgaladı). **Kapsam kararları:** ana sayfa + 5 alt sayfa uçtan-uca (Faz 9 çıtası korunur — v0.3'ün iki çapraz yüzeyi: `/crew-os` route rename + Living Flow sayfa-boyu nabız → dar-kapsam yakalayamaz); S1–S9 kataloğu Faz 9'dan v0.3 deltasına uyarlandı (crew-os giriş matrisi + sayfa-boyu nabız degradasyonu + SEO metadata katmanı + logo); TR birincil + non-TR tutarlılık; chatbot 0-token (v0.3 dokunmadı, bütünsellik için korundu); keşfet+kaydet+triyaj; otonom. **Ortam riski kaydı:** bu devcontainer'da `next start` öldürülebilir (Faz 13) → S3 runtime-tarayıcı katmanı metodoloji riski, research-phase araç eşlemesinde çözülür. Kayıtlı açıklar (TB-3/4/5) + B grubu → prd-review. **Sıradaki DevFlow komutu: `research-phase 14`.**
