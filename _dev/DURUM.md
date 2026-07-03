@@ -1,6 +1,6 @@
 # DURUM — Proje Dashboard
 
-**Son Güncelleme:** 2026-07-03 — **verify-phase 13 ✅: UAT 16/16 senaryo geçti + otomatik kontroller temiz → düzeltme task'ı YOK, Faz 13 Adım=review.** Otonom test (build ground-truth: `routes-manifest.json` redirect regex + prerender `<head>` canonical/hreflang + Vitest). TB-1: her sayfa self-canonical + 5-dil hreflang+x-default doğrulandı, yalnız home TR çıplak-köke canonicalize (adversarial), layout fail-safe (canonical miras ettirmez). TB-2: 6 redirect 308, `/forum`→`/` locale-gap kapalı, sıra mührü. Otomatik: CI yeşil (fast+a11y job); npm audit 3 moderate=kayıtlı TB-5 (kapsam dışı); security temiz (saf metadata/redirect, runtime girdi/secret/auth yok). Test 39✅ · build temiz (0 MISSING_MESSAGE) · sitemap 30 URL canonical-tutarlı. Sıradaki adım **`review-phase 13`**.
+**Son Güncelleme:** 2026-07-03 — **review-phase 13 ✅: Faz 13 (SEO-metadata hijyeni) tamamlandı; retrospektif + 8 kalite ekseni (hepsi ✅) PHASE-13'e yazıldı, 0 düzeltme task'ı.** Kod incelendi (helper tek kaynak, 6 sayfa self-canonical, layout canonical miras ettirmez); test 39/39 bağımsız yeşil. TB-1 (fail-safe canonical + 5-dil hreflang/x-default) + TB-2 (`/forum`→`/` 6×308, `:slug*` sıra tuzağı) kapandı; kök-çözüm denetimi `/bulten` 404-hedefini yakaladı. Guardrail'ler yapısal regresyonsuz. **Versiyon Sonu Durumu `teknik_borç`→`senaryo_testi`.** Sıradaki adım **`discuss-phase 14`** (v0.3 versiyon-sonu senaryo testi fazı).
 
 <!-- KURAL: Bu satır her oturum sonunda ÜZERİNE YAZILIR — tek satır, tek cümle. "Önceki:" / "Eski:" prefix ile kümülatif yığma YASAK; HTML comment'e sarma da yasak (CLAUDE.md → Doküman Disiplini). Tarih + kısa özet yeterli; detay için git log + ilgili PHASE/TASK dokümanları. -->
 
@@ -8,10 +8,10 @@
 
 ## Aktif Faz
 
-**Faz:** 13 — **v0.3 versiyon-sonu teknik borç (SEO-metadata hijyeni)** 🔄 (tüm task'lar ✅ + UAT ✅ → review bekliyor). **Faz 12 ✅** (B1 Living Flow nabız kapsamı). Faz 11 ✅ (v0.3 URL taksonomisi/SEO). Faz 10 ✅ (v0.3 görsel cila). v0.2 tamamen ✅ (Faz 4–9 + prd-review + production release).
-**Adım:** review (TASK-13.01–13.04 ✅ + verify-phase 13 ✅ UAT 16/16 geçti, düzeltme task'ı yok; sıradaki `review-phase 13`; Versiyon Sonu Durumu = `teknik_borç`). ✅ **v0.2 production release tamamlandı (2026-07-02)** — revize `main`'de, canlı deploy `a71adbc`, Umami canlı +1 doğrulandı (`docs/RELEASE-v0.2.md`). Açık takip: chatbot canlı `ANTHROPIC_API_KEY` env (release engeli değil).
-**İlerleme:** verify-phase 13 (2026-07-03) ✅ — UAT 16/16 senaryo geçti (otonom, build ground-truth); otomatik kontroller temiz (CI yeşil; npm audit 3 moderate=TB-5 kapsam dışı; security temiz) → **düzeltme task'ı YOK**. TB-1 canonical/hreflang (her sayfa self-canonical + 5-dil+x-default; yalnız home TR çıplak-kök; layout fail-safe) + TB-2 redirect (6×308, `/forum`→`/` gap kapalı, sıra mührü) doğrulandı. 39✅ · build temiz · sitemap 30 URL canonical-tutarlı. **Kapsam-dışı/kayıtlı sahipli açıklar:** **TB-3 full-motion tohumu (WebGL flaky, gelecek faz)**, **TB-4 site-geneli logical-ok (RTL)**, **TB-5 npm audit (next downgrade breaking)**, B grubu → prd-review.
-**Son Faz Dokümanı:** `phases/PHASE-13.md` (🔄 Devam ediyor — Task Listesi: 13.01–13.04 ✅; UAT ✅ 16/16; review bekliyor). Faz 12 ✅ `phases/PHASE-12.md`.
+**Faz:** 14 — **v0.3 versiyon-sonu senaryo testi** (geçici ad; discuss-phase 14 damgalar) — henüz girilmedi. **Faz 13 ✅** (SEO-metadata hijyeni: TB-1 canonical/hreflang + TB-2 `/forum` redirect). Faz 12 ✅ (B1 Living Flow nabız). Faz 11 ✅ (URL taksonomisi/SEO). Faz 10 ✅ (görsel cila). v0.2 tamamen ✅ (Faz 4–9 + prd-review + production release).
+**Adım:** discuss (Versiyon Sonu Durumu `teknik_borç`→`senaryo_testi` review-phase 13'te damgalandı; senaryo testi fazına geçiliyor). ✅ **v0.2 production release tamamlandı (2026-07-02)** — revize `main`'de, canlı deploy `a71adbc`, Umami canlı +1 doğrulandı (`docs/RELEASE-v0.2.md`). Açık takip: chatbot canlı `ANTHROPIC_API_KEY` env (release engeli değil).
+**İlerleme:** review-phase 13 (2026-07-03) ✅ — Faz 13 tamamlandı: retrospektif + 8 kalite ekseni (hepsi ✅) PHASE-13'e yazıldı; kod incelendi, 39/39 test bağımsız yeşil; 0 düzeltme task'ı. TB-1 (fail-safe self-canonical + 5-dil hreflang/x-default, tek-kaynak helper) + TB-2 (`/forum`→`/` 6×308, sıra tuzağı) kapandı. **Kayıtlı sahipli açıklar (gelecek/prd-review):** TB-3 full-motion tohumu (WebGL flaky), TB-4 site-geneli logical-ok (RTL), TB-5 npm audit (next downgrade breaking), B grubu (non-TR tazelik / AR-dil stratejisi / brief mobil perf) → prd-review.
+**Son Faz Dokümanı:** `phases/PHASE-13.md` (✅ Tamamlandı — Task Listesi 13.01–13.04 ✅; UAT 16/16; retrospektif + kalite kontrol yazıldı). Faz 12 ✅ `phases/PHASE-12.md`.
 
 ---
 
@@ -19,7 +19,7 @@
 
 **Versiyon:** v0.3 — Görsel & Etkileşim Cilası (+ URL taksonomisi/SEO) (re-kickoff 2026-07-02'de sabitlendi; Craft en üst eksen — ILKELER)
 **Hedef:** A1 logo hizalama + A3 CTA kartı affordance & scroll göstergesi ölçekleme + B1 Living Flow nabız kapsamı (**karar-gate'li**, imza riski) + SEO `/bunker-os`→`/crew-os` redirect (i18n namespace 5-dil rename) & `/forum`→404; guardrail: a11y=100 çift-tema/perf tabanı/CLS≈0/i18n parite regresyonsuz. Kesin faz kapsamı/sırası discuss-phase'de
-**Versiyon Sonu Durumu:** teknik_borç
+**Versiyon Sonu Durumu:** senaryo_testi
 
 <!-- Versiyon geçişlerinde güncellenir. discuss-phase versiyon sonu tespitinde bu alanı okur. -->
 <!-- Değerler: içerik_fazları | teknik_borç | senaryo_testi | prd_review_bekliyor -->
@@ -28,38 +28,27 @@
 
 ## Aktif Task
 
-**Task:** Faz 13'ün tüm task'ları ✅ (13.01–13.04) + verify-phase 13 ✅ (UAT 16/16 geçti, düzeltme task'ı yok). Sıradaki adım task değil **`review-phase 13`** (faz review + retrospektif).
-**Durum:** Faz 13 🔄 → Adım **review**. Versiyon Sonu Durumu = `teknik_borç`; Aktif Versiyon v0.3.
-**İlerleme:** verify-phase 13 (2026-07-03) ✅ — 16 UAT senaryosu otonom (build ground-truth) geçti; CI yeşil, npm audit=TB-5 (kapsam dışı), security temiz → düzeltme task'ı yok. TB-1 (self-canonical + 5-dil hreflang/x-default, layout fail-safe) + TB-2 (redirect locale-gap kapalı, 6×308) doğrulandı. Sıradaki = `review-phase 13`.
+**Task:** Faz 13 ✅ tamamlandı (review-phase 13). Yeni faz (14 — senaryo testi) henüz girilmedi → aktif task yok. Sıradaki adım task değil **`discuss-phase 14`** (senaryo testi fazı kapsam tartışması).
+**Durum:** Faz 13 ✅; Versiyon Sonu Durumu = `senaryo_testi`; Aktif Versiyon v0.3. Aktif Faz 14 discuss bekliyor.
+**İlerleme:** review-phase 13 (2026-07-03) ✅ — retrospektif + 8 kalite ekseni PHASE-13'e yazıldı; 39/39 test yeşil; 0 düzeltme task'ı. Sıradaki = `discuss-phase 14`.
 
 ---
 
 ## Task Durumu (Aktif Faz)
 
-> **Faz 13 🔄** — plan yazıldı (`phases/PHASE-13.md` → Task Listesi). Task'lar `verify-plan 13` sonrası `run-task` ile sırayla çalışılır. Faz 4–12 ✅.
+> **Faz 14 henüz girilmedi** — senaryo testi fazı `discuss-phase 14` ile başlar (Versiyon Sonu Durumu `senaryo_testi`). Task listesi discuss/plan sonrası dolar. Faz 4–13 ✅.
 
 | # | Task | Durum | Açıklama |
 |---|------|-------|----------|
-| 13.01 | TASK-13.01 | ✅ Tamamlandı | Ortak `localizedAlternates` helper + locale-path util + sitemap refactor + helper unit testi (TB-1) |
-| 13.02 | TASK-13.02 | ✅ Tamamlandı | 5 alt sayfaya self-canonical + 5-locale hreflang alternates (TB-1) |
-| 13.03 | TASK-13.03 | ✅ Tamamlandı | alternates layout→ana sayfa taşıma (fail-safe default) (TB-1) |
-| 13.04 | TASK-13.04 | ✅ Tamamlandı | `/forum` locale-gap + config redirect denetimi + redirect regresyon tohumu (TB-2) |
+| — | — | — | Faz 14 discuss-phase'de planlanacak |
 
 ---
 
 ## Son Task Özetleri
 
-> **KURAL:** Sadece son 2 task özeti tutulur, daha eskileri **gerçekten silinir** (HTML comment'e sarma, "Önceki:" prefix, üstü çizili etiket yasak — detay için git log + arşivlenmiş task dokümanı). Her özet kısa formatlı: paragraf yasak, **bullet zorunlu**, "Özet" alanı max 3 bullet. **Faz 12 kapandı → Faz 12 task özetleri sıfırlandı** (detaylar `phases/PHASE-12.md` + `tasks/archive/`). Faz 13'ün ilk task'ı bitince buraya eklenir.
+> **KURAL:** Sadece son 2 task özeti tutulur, daha eskileri **gerçekten silinir** (HTML comment'e sarma, "Önceki:" prefix, üstü çizili etiket yasak — detay için git log + arşivlenmiş task dokümanı). Her özet kısa formatlı: paragraf yasak, **bullet zorunlu**, "Özet" alanı max 3 bullet. **Faz 13 kapandı → Faz 13 task özetleri sıfırlandı** (detaylar `phases/PHASE-13.md` + `tasks/archive/`). Faz 14'ün ilk task'ı bitince buraya eklenir.
 
-**TASK-13.04** — `/forum` locale-gap + tüm config redirect denetimi + regresyon tohumu (TB-2) ✅
-- **Özet:** `next.config.ts` `redirects()`: `/forum`→`/`, `/forum/:slug*`→`/bulten/:slug*`, `/bunker-os`→`/crew-os`; her biri çıplak+`/:locale(en|ar|de|es)/…` twin, 6 redirect 308. `/forum` hedefi `/bulten` değil `/` (`/bulten` index yok, içerik ana sayfada). **İcra bulgusu:** `:slug*` opsiyonel gruba derlenir → çıplak `/forum`'u da eşler; ıraksak hedefte çıplak-önce sıralandı (plan sırası çürütüldü).
-- **Test:** `npm run test` 39✅ (5 dosya, +16 seo-redirects); `next build` temiz (0 MISSING_MESSAGE); `routes-manifest.json` regex ground-truth — `/forum`→`/`, `/en/forum`→`/en`, `/forum/x`→`/bulten/x`, `/en/forum/x`→`/en/bulten/x`, `/bunker-os` çifti korundu, hepsi 308.
-- **Sınır:** içerik/DOM/route path değişmedi; `/bulten` index oluşturulmadı (kapsam dışı). DECISIONS+memory'ye sıra tuzağı taşındı.
-
-**TASK-13.03** — alternates'i layout'tan ana sayfaya taşı (fail-safe default) (TB-1) ✅
-- **Özet:** `layout.tsx` `generateMetadata`'dan `alternates` bloğu kaldırıldı (title/desc/og/metadataBase korundu); `page.tsx`'e `generateMetadata` eklendi (`alternates: localizedAlternates(locale, "")` → title/desc layout'tan sığ-merge). Layout artık canonical miras ETTİRMEZ → unutan sayfa "canonical yok" (zararsız), yanlış `/` değil. **TB-1 tamamlandı.**
-- **Test:** `npm run test` 23✅; `next build` temiz (0 MISSING_MESSAGE); prerender `<head>` — home tr→root, en/ar→prefixli + 5-dil hreflang+x-default, title/desc dolu (layout mirası); 5 alt sayfa (13.02) kendi path'inde (regresyonsuz); `/`'a canonicalize olan tek route = home TR.
-- **Sınır:** DOM/içerik/route path değişmedi; DECISIONS'a fail-safe canonical mimarisi kararı eklendi.
+_(Faz 14 henüz task üretmedi — senaryo testi fazı kaynak değiştirmeyebilir; ilk task/senaryo sonucu buraya eklenir.)_
 
 <!-- KURAL: Sadece son 2 task özeti tutulur, daha eskileri silinir (gerçek silme — HTML comment yasak). -->
 <!-- KURAL: Sadece aktif fazın task'leri gösterilir. Geçmiş fazların bilgileri phases/ klasöründedir. -->
@@ -73,8 +62,8 @@
 
 ## Hızlı Erişim
 
-**Aktif Task:** Faz 13 tüm task'lar ✅ (13.01–13.04) + verify-phase 13 ✅ (UAT 16/16, düzeltme task'ı yok). Sıradaki adım task değil **`review-phase 13`** (faz review + retrospektif). Açık takip: chatbot canlı env key.
-**Aktif Faz:** **13 🔄** — v0.3 versiyon-sonu teknik borç (SEO-metadata hijyeni): TB-1 alt-sayfa self-canonical + 5-locale hreflang alternates (+x-default) ✅ + TB-2 `/forum` locale gap + tüm config redirect denetimi (`/forum`→`/`) + regresyon tohumu ✅. İcra + UAT bitti → review bekliyor. Faz 12 ✅ (B1 Living Flow nabız). Faz 11 ✅ (URL taksonomisi/SEO). Faz 10 ✅ (görsel cila). v0.2 Faz 4–9 ✅ + prd-review ✅ + production release ✅. **Aktif Versiyon v0.3**, Versiyon Sonu Durumu: **teknik_borç** → sıradaki komut `review-phase 13`.
+**Aktif Task:** Faz 13 ✅ (review-phase 13 tamamlandı). Yeni faz (14 — senaryo testi) henüz girilmedi. Sıradaki adım **`discuss-phase 14`**. Açık takip: chatbot canlı env key.
+**Aktif Faz:** **14 (henüz girilmedi)** — v0.3 versiyon-sonu senaryo testi (geçici ad; discuss-phase 14 damgalar). **Faz 13 ✅** — SEO-metadata hijyeni: TB-1 alt-sayfa self-canonical + 5-locale hreflang alternates (+x-default) + TB-2 `/forum` locale gap + tüm config redirect denetimi (`/forum`→`/`) + regresyon tohumu; UAT 16/16 + 8 kalite ekseni ✅. Faz 12 ✅ (B1 Living Flow nabız). Faz 11 ✅ (URL taksonomisi/SEO). Faz 10 ✅ (görsel cila). v0.2 Faz 4–9 ✅ + prd-review ✅ + production release ✅. **Aktif Versiyon v0.3**, Versiyon Sonu Durumu: **senaryo_testi** → sıradaki komut `discuss-phase 14`.
 **Task Sistemi:** `tasks/TASKS-README.md`
 **PRD (karar kaynağı):** `PRD/VIZYON.md` · `PRD/VERSIONS.md` · `PRD/features/`
 **Revize Backlog (bilinen sorunlar):** `docs/REVIZE-BACKLOG.md`
@@ -82,4 +71,4 @@
 
 ---
 
-**Son Güncelleme:** 2026-07-03 — **verify-phase 13 ✅: UAT 16/16 senaryo geçti + otomatik kontroller temiz → düzeltme task'ı YOK, Faz 13 Adım=review** (yalnız doküman: PHASE-13 UAT tablosu + DURUM). Otonom test (build ground-truth: `routes-manifest.json` redirect regex + prerender `<head>` canonical/hreflang + Vitest). **TB-1 doğrulandı:** 6 sayfanın (home+5 alt) her biri self-canonical + 5-dil hreflang + x-default (prerender `<head>`); çıplak-köke canonicalize olan **yalnız 1** sayfa (home TR) = adversarial negatif geçti; layout `generateMetadata` alternates miras ETTİRMEZ (fail-safe). **TB-2 doğrulandı:** 6 redirect 308 (`/forum`→`/`, `/en|ar|de|es/forum`→`/:locale`, `/forum/:slug*`→`/bulten/:slug*`+twin, `/bunker-os`+twin→`/crew-os`); locale-gap kapalı (twin regex 4 non-default prefix eşler); sıra mührü (çıplak `/forum` slug'a düşmez). **Guardrail:** i18n 5-dil parite yeşil, `next build` 0 `MISSING_MESSAGE`, sitemap 30 URL canonical-tutarlı, DOM/asset değişmedi → a11y/perf/CLS yapısal regresyonsuz. **Otomatik kontroller (Adım 1):** CI (`80570d8`) fast+a11y job ✅; npm audit 3 moderate = kayıtlı **TB-5** (kapsam dışı: fix=next downgrade breaking, statik-site istismar-edilemez); security temiz (saf metadata/redirect, runtime girdi/secret/auth yok). `npm run test` 5 dosya/**39 test** ✅. **Sıradaki DevFlow komutu: `review-phase 13` (faz review + retrospektif).**
+**Son Güncelleme:** 2026-07-03 — **review-phase 13 ✅: Faz 13 (SEO-metadata hijyeni) tamamlandı** (yalnız doküman: PHASE-13 retrospektif + kalite kontrol; PHASES/MODULE-MAP/DURUM). **Bütüncül değerlendirme:** 4 task tutarlı bütün — TB-1 (tek-kaynak `localizedAlternates` helper + fail-safe layout→sayfa taşıma; 6 sayfa self-canonical + 5-dil hreflang/x-default) + TB-2 (`/forum`→`/` locale-gap kapalı, 6×308, `:slug*` sıra tuzağı çürütüldü). Kod incelendi: helper tek kaynak, 5 alt sayfa + home kendi path'iyle çağırıyor, layout canonical miras ETTİRMİYOR, kopya-kod yok. **Milestone ✓** (UAT 16/16 karşıladı). **8 kalite ekseni hepsi ✅** (render surface 0 değişim → craft/a11y/perf yapısal korundu; modülerlik+fail-safe+kümülatif-tohum güçlü). `npm run test` 39/39 bağımsız yeşil. **0 düzeltme task'ı.** DECISIONS 2 Faz-13 girdisi (fail-safe canonical + `/forum`→`/` sıra tuzağı) task'larda kaydedilmiş. Faz dokümanı boyut ✅ (~6.6k token, bölme yok). **Versiyon Sonu Durumu `teknik_borç`→`senaryo_testi` damgalandı.** Kayıtlı açıklar (TB-3/4/5) + B grubu → prd-review. **Sıradaki DevFlow komutu: `discuss-phase 14` (v0.3 versiyon-sonu senaryo testi fazı).**

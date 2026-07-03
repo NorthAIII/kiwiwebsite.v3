@@ -1,6 +1,6 @@
 # Phase 13: v0.3 Versiyon-Sonu Teknik Borç — SEO-Metadata Hijyeni
 
-**Durum:** 🔄 Devam ediyor
+**Durum:** ✅ Tamamlandı
 
 <!-- Bu doküman faza girince (discuss-phase) oluşur; durum 🔄 ile başlar. Henüz girilmemiş fazların dokümanı/numarası olmaz — PHASES.md → Sıradaki Fazlar'da numarasız konu olarak durur. -->
 <!-- KURAL: Bu doküman tek-okunabilir kalmalı (CLAUDE.md → Boyut ve Bölünme). Bir bölüm büyüyüp kırmızı çizgiye (~20k token) yaklaşırsa faz HÂLÂ AKTİFKEN `PHASE-13-<slug>.md`'ye bölünür — parent'ta self-yeten özet + pointer kalır, içerik taşınıp silinir, parent o fazın mini-index'i olur. Tamamlandıktan (✅) sonra bölme yasaktır; verify-phase ve review-phase fazı dondurmadan önce boyutu kontrol eder. -->
@@ -178,43 +178,58 @@
 
 ## Retrospektif
 
-> Bu bölüm `/devflow:review-phase 13` oturumunda doldurulur.
+> `/devflow:review-phase 13` oturumunda dolduruldu (2026-07-03).
 
 ### Ne İyi Gitti?
-- [Tekrarlanması gereken pratikler]
+- **Kök-çözüm disiplini gerçek latent bug yakaladı.** TB-2 yalnız bilinen `/forum` gap'ini değil next.config'teki **tüm** redirect'leri denetledi → `/bulten` index'in var olmadığı (mevcut `/forum`→`/bulten` zaten 404'e iniyordu) bu denetimde ortaya çıktı. Naïf locale-twin ekleme 1 yerine **5 locale'i** 404'e yönlendirirdi; denetim genişliği bunu önledi ve `/forum`→`/` doğru hedefini damgaladı. "Noktasal düzeltme" yerine "tüm yüzeyi tara" kararı ödedi.
+- **Fail-safe mimari seçimi kalıcılık ilkesini somutlaştırdı.** `alternates`'i layout'tan kaldırma kararının çekirdeği "default nerede yaşamalı" sorusuydu: layout'ta kalsaydı unutan gelecek sayfa **yanlış** `/`'a canonicalize olurdu (zararlı, SEO'da sayfa yok sayılır); layout'tan kaldırınca unutan sayfa **canonical'sız** olur (zararsız, Google self-referans alır). Zararlı-varsayılan → zararsız-varsayılan; gelecek sayfalar için robust.
+- **Ampirik ground-truth planı düzeltti.** Plan "`/forum/:slug*` girişi çıplak `/forum`'dan önce gelsin (mevcut sıra zaten böyle)" diyordu. `routes-manifest.json` regex testi bunu çürüttü: `:slug*` opsiyonel gruba derlenir → çıplak `/forum`'u da eşler (sıfır segment); ıraksak hedeflerde (çıplak→`/`, slug→`/bulten`) slug-önce sırası çıplak `/forum`'u yanlış hedefe yönlendiriyordu. Build-artefaktı ground-truth "mantık doğru görünüyor"u yendi; test bu sırayı mühürledi.
+- **Tek-kaynak helper — kopya-kod refleksi proaktif elendi.** Faz 10 `<Logo>` dersi bu fazda önden uygulandı: locale→prefix mantığı + canonical/hreflang üretimi tek `src/i18n/metadata.ts`'te, sitemap ile ortak util. 6 sayfaya elle kopyalama yok → drift kapısı baştan kapandı.
+- **Kümülatif test + flaky-olmayan tohum seçimi.** Faz 12'de ertelenen WebGL runtime flakiness'ine girmeden, saf-node assertion tohumu (`routes-manifest.json` + helper unit) seçildi → sessiz SEO regresyonunu ucuz/kararlı yakalar.
 
 ### Ne Kötü Gitti?
-- [Sorunlar ve darboğazlar]
+- **Plan/research redirect regex semantiğini önden test etmedi.** `:slug*` opsiyonel-grup boş-segment tuzağı plan sırasında öngörülemedi ("mevcut sıra zaten böyle, koru" varsayımı). Küçük ve doğru yerde (icra ground-truth'u) çözüldü, ama research aşaması örnek path'leri `routes-manifest.json` regex'ine test etseydi doğru sıra plana yazılırdı. → Süreç disiplini adayı (aşağıda).
+- **`/bulten` 404-hedefi Faz 11'den beri latentti.** Mevcut `/forum`→`/bulten` redirect'i zaten 404'e iniyordu; Faz 11 "`/forum`'a dokunma" kararı verdiği için denetimsiz kaldı, ancak Faz 13'te yakalandı. Doğru yerde kapandı ama daha erken görünebilirdi.
 
 ### Sonraki Faz İçin Öneriler
-- [Alınan dersler, tavsiyeler]
+- **Faz 13 = versiyon-sonu teknik borç fazı → sıradaki senaryo testi fazı.** Versiyon Sonu Durumu `teknik_borç`→`senaryo_testi` (bu review damgaladı); `discuss-phase 14` senaryo testi fazına promote eder.
+- **Config redirect/rewrite eklerken/değiştirirken `:param*`/`:param?` semantiğini `routes-manifest.json` regex'iyle önden doğrula** (boş-segment/opsiyonel-grup tuzağı). Bu artık memory'de kayıtlı (`next-config-redirect-locale-prefix` → "Denetim: routes-manifest.json regex'lerini örnek path'lere test et").
+- **Kayıtlı sahipli açıklar açık kalır:** TB-3 (full-motion tohumu, WebGL-flaky), TB-4 (site-geneli logical-ok RTL), TB-5 (npm audit — next downgrade breaking). B grubu (non-TR tazelik / AR-dil stratejisi / brief mobil perf) → zorunlu prd-review'da ele alınır.
+
+### Task-Spesifik Teknik Öğrenimler
+<!-- Bu fazdaki task'larda öğrenilen ama proje genelinde geçerli olmayan teknik nüanslar. Proje-geneli redirect/metadata tuzakları zaten memory'de (`next-config-redirect-locale-prefix`) — burada faza-özgü olanlar. -->
+- **App Router metadata sığ-merge `alternates`'i bütün-obje olarak değiştirir.** Alt sayfa yalnız `canonical` yazarsa `languages` (hreflang) düşer → helper `canonical` + `languages` + `x-default`'ı **birlikte** döndürmeli, sayfa tarafı asla parçalı yazmamalı. (TB-1 mimarisinin kritik mekaniği.)
+- **`localePath` `|| "/"` fallback'i yalnız TR-home (`""`) için devreye girer** — `("tr","")` → `"" || "/"` = `"/"`; prefixli/pathli tüm diğer kombinasyonlar zaten truthy. Boş-string edge'i tek yerde, sitemap + canonical tek kaynaktan aynı normalizasyonu alır.
+- **Sitemap non-TR home `/en/`→`/en` normalizasyonu** ortak util'e geçince kasıtlı düzeldi (layout canonical ile hizalandı); `trailingSlash:false` ile `/en/` zaten `/en`'e redirect'lenirdi — regresyon değil, drift kapanışı.
 
 ---
 
 ## Kalite Kontrol Sonuçları
 
-> Bu bölüm `/devflow:review-phase 13` oturumunda doldurulur.
+> `/devflow:review-phase 13` oturumunda dolduruldu (2026-07-03). Faz saf metadata/redirect katmanı — render edilen DOM/asset/görsel değişmedi; craft/a11y/perf eksenleri **yapısal olarak** korundu (Faz 11 emsali), yine de doğrulandı.
 
 | Eksen | Durum | Not |
 |-------|-------|-----|
-| Marka & Craft (imza) | ✅ / ⚠️ / ❌ | ... |
-| Erişilebilirlik | ✅ / ⚠️ / ❌ | ... |
-| Performans | ✅ / ⚠️ / ❌ | ... |
-| Yerelleştirme & RTL | ✅ / ⚠️ / ❌ | ... |
-| Modülerlik & Bakım | ✅ / ⚠️ / ❌ | ... |
-| Hata Yönetimi & Degradasyon | ✅ / ⚠️ / ❌ | ... |
-| Güvenlik | ✅ / N/A | ... |
-| Test Kapsamı | ✅ / ⚠️ / ❌ | ... |
+| Marka & Craft (imza) | ✅ | Render surface (DOM/asset/görsel) 0 değişim → imza/craft dokunulmadı; yalnız `<head>` metadata + config redirect. |
+| Erişilebilirlik | ✅ | DOM değişmedi → a11y=100 çift-tema korunur; CI axe (home light+dark) yeşil. Hreflang/canonical AT-görünmez katman. |
+| Performans | ✅ | Asset/render-path 0 değişim → perf tabanı/LCP/CLS≈0 korunur (yapısal). Yeni bağımlılık yok. |
+| Yerelleştirme & RTL | ✅ | Yeni i18n anahtarı yok → 5-dil parite riski yok; `next build` 0 `MISSING_MESSAGE`; hreflang kodları doğru (AR=`ar`), x-default = TR prefixsiz. `/ar` canonical/redirect `dir` etkilenmez. |
+| Modülerlik & Bakım | ✅ | Tek-kaynak `localizedAlternates` + `localePath` helper (kopya-kod yok, Faz 10 dersi); locale→prefix sitemap ile ortak util. Fail-safe default → gelecek sayfa robust. |
+| Hata Yönetimi & Degradasyon | ✅ | Fail-safe canonical (unutan sayfa → zararsız canonical-yok, yanlış `/` değil); redirect tohumu manifest yoksa **açık fail** (silent skip yok). |
+| Güvenlik | ✅ | Saf metadata/redirect; runtime kullanıcı girdisi yok (redirect kaynak/hedef statik iç path; helper girdileri whitelist-locale + hardcoded literal path; çıktı Next-escape). Secret/auth yüzeyi yok. |
+| Test Kapsamı | ✅ | 2 yeni node tohum dosyası (`seo-metadata` + `seo-redirects`); toplam 39 test yeşil. Flaky-olmayan (WebGL yok) → kümülatif test ilkesiyle hizalı; sessiz SEO regresyonunu yakalar. |
+
+**Kullanıcı yolculuğu / boşluk:** Metadata/redirect kullanıcıya doğrudan görünmez, ancak `/en/forum` vb. locale-gap'in kapanması non-TR kullanıcıya 404 yerine doğru redirect verir (yolculuk iyileşmesi). Sahipsiz boşluk yok. Tek latent yüzey: `/bulten` index'i doğrudan ziyaret edilirse 404 — ama kod tabanında ona link yok (teyitli) ve `/forum`→`/` girişi kapıyı kapatır; `/bulten` index oluşturma bilinçle kapsam dışı (içerik/route üretimi).
 
 ---
 
 ## Sonuç
 
-- **Tamamlanma Tarihi:** [Tarih]
-- **Toplam Task:** [Sayı]
-- **Notlar:** [Önemli kararlar, sonraki faza aktarılanlar]
+- **Tamamlanma Tarihi:** 2026-07-03
+- **Toplam Task:** 4 (13.01 helper+util+sitemap · 13.02 5 alt sayfa · 13.03 layout→home · 13.04 redirect denetimi) — hepsi ✅, 0 düzeltme task'ı
+- **Notlar:** TB-1 (fail-safe self-canonical + 5-dil hreflang/x-default, tek-kaynak helper) + TB-2 (`/forum` locale-gap kapalı + tüm config redirect denetimi, 6×308) kapandı. İçerik/tasarım/davranış/DOM 0 değişim; guardrail'ler yapısal regresyonsuz. Kararlar → DECISIONS 2026-07-03 (fail-safe canonical + `/forum`→`/` sıra tuzağı). Kayıtlı açıklar (TB-3/4/5) + B grubu → prd-review'a taşındı. Versiyon Sonu Durumu `teknik_borç`→`senaryo_testi`; sıradaki = senaryo testi fazı (`discuss-phase 14`).
 
 ---
 
 **Oluşturulma:** 2026-07-03 (discuss-phase 13)
-**Son Güncelleme:** 2026-07-03 — verify-phase 13 ✅: UAT 16/16 senaryo geçti (otonom, build ground-truth: `routes-manifest.json` + prerender `<head>` + Vitest) + otomatik kontroller temiz (CI fast+a11y yeşil; npm audit 3 moderate=kayıtlı TB-5 kapsam dışı; security temiz) → **düzeltme task'ı YOK**. TB-1 (her sayfa self-canonical + 5-dil hreflang/x-default; yalnız home TR çıplak-kök; layout fail-safe) + TB-2 (6 redirect 308, `/forum`→`/` locale-gap kapalı, sıra mührü) + guardrail'ler (i18n parite, 0 MISSING_MESSAGE, sitemap 30 URL canonical-tutarlı, yapısal regresyonsuz) doğrulandı. Faz dokümanı boyut kontrolü ✅ (~6.4k token, tek-okunabilir). **Faz 13 icra+UAT bitti → Adım review.** Sıradaki adım: review-phase 13.
+**Son Güncelleme:** 2026-07-03 — review-phase 13 ✅: retrospektif + 8 kalite ekseni (hepsi ✅) faz dokümanına yazıldı; kod incelendi (helper tek kaynak, 6 sayfa self-canonical, layout canonical miras ettirmez), test 39/39 bağımsız yeşil. Milestone ✓ (UAT 16/16 karşıladı); 0 düzeltme task'ı. Faz dokümanı boyut ✅ (~6.6k token, tek-okunabilir, bölme yok). Versiyon Sonu Durumu `teknik_borç`→`senaryo_testi`; Faz 13 ✅ dondu; sıradaki = senaryo testi fazı (`discuss-phase 14`).
