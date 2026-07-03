@@ -176,7 +176,7 @@ Discuss-phase'in araştırmaya bıraktığı soru: bu cloud devcontainer'da runt
 
 | # | Task | Durum | Açıklama |
 |---|------|-------|----------|
-| 14.01 | TASK-14.01 | 🔄 Aktif (bekliyor) | S1 — giriş/yönlendirme matrisi (curl + routes-manifest, katman A): 6 sayfa × 5 locale 200; `/crew-os` yeni public, `/bunker-os`→`/crew-os` 308 (çıplak+5-locale twin), `/forum`→`/` 308, `/forum/:slug*`→`/bulten/:slug*` 308; kanonik prod-serve kurar |
+| 14.01 | TASK-14.01 | ✅ Tamamlandı | S1 — giriş/yönlendirme matrisi (curl + routes-manifest, katman A): 6 sayfa × 5 locale 200; `/crew-os` yeni public, `/bunker-os`→`/crew-os` 308 (çıplak+5-locale twin), `/forum`→`/` 308, `/forum/:slug*`→`/bulten/:slug*` 308; kanonik prod-serve kurar. **Bulgu: 30/30 route 200 (lang+AR-rtl doğru); tüm redirect'ler 308 doğru hedef+5-twin; kapsam-içi bug YOK. Sahipli kayıt: çıplak `/bulten`→404, `/tr`→307, bilinmeyen-locale→404 (beklenen).** |
 | 14.02 | TASK-14.02 | ⬜ Bekliyor | S5 + S6-render (prerender grep, katman A): "Crew OS" görünür / "Bunker" görünür metin+URL'de yok; yasak metafor/sahte-online yok; 30 sayfa-locale 0 MISSING_MESSAGE; namespace crew senkron; AR-RTL; bilinçli-stale non-TR görünür kopukluk yok |
 | 14.03 | TASK-14.03 | ⬜ Bekliyor | S8-suite + S6-parite (katman A/B): Vitest 39 (i18n-parite + seo-metadata/seo-redirects Faz-13 + smoke/umami) + `test:e2e` axe (home+subpages WCAG-AA 0) + CI `fast`+`a11y` success |
 | 14.04 | TASK-14.04 | ⬜ Bekliyor | S8-Lighthouse (katman C): a11y=100 çift-tema 6 sayfa × light/dark + Living Flow sayfa-boyu nabız perf tabanı (desktop 100/CLS 0) + perf korunan taban; LH 12.8.2 LCP-anahtar teyit; ölç+kaydet+karar |
@@ -244,4 +244,4 @@ Discuss-phase'in araştırmaya bıraktığı soru: bu cloud devcontainer'da runt
 ---
 
 **Oluşturulma:** 2026-07-03 (discuss-phase 14)
-**Son Güncelleme:** 2026-07-03 — verify-plan 14: plan review tamamlandı (9 task fresh-context doğrulandı; mekanik 0/yapısal 0). Referans gerçeklik-kontrolü temiz (6 route + redirect'ler + metadata helper'ları :17/:30 + 5 tohum/2 e2e + CI + living-flow/`--flow-veil` + crew namespace — hepsi gerçekle birebir); milestone S1–S9 tam eşleşme. TASK-14.01 aktif. Sıradaki adım: run-task (TASK-14.01).
+**Son Güncelleme:** 2026-07-03 — run-task TASK-14.01 ✅: S1 giriş/redirect matrisi doğrulandı (fresh prod build + curl). 30/30 route 200 (lang+AR-rtl doğru); `/bunker-os`→`/crew-os` 308 (çıplak+5-twin), `/forum`→`/` 308 (+twin), `/forum/<slug>`→`/bulten/<slug>` 308 (+twin) — hepsi permanent, `-L` uçtan-uca 200; kapsam-içi bug YOK. Sahipli kayıt: çıplak `/bulten`→404, `/tr`→307, bilinmeyen-locale→404 (beklenen). Sıradaki adım: run-task (TASK-14.02, S5+S6-render).
