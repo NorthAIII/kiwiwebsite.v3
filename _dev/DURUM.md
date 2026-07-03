@@ -1,6 +1,6 @@
 # DURUM — Proje Dashboard
 
-**Son Güncelleme:** 2026-07-03 — **discuss-phase 13 ✅: Faz 13 (v0.3 versiyon-sonu teknik borç — SEO-metadata hijyeni) girildi.** Versiyon Sonu Durumu `içerik_fazları`→`teknik_borç` damgalandı; kapsam TB-1 (alt-sayfa self-canonical + 5-locale hreflang alternates) + TB-2 (`/forum` locale gap + **tüm** config redirect denetimi) + hafif regresyon tohumu (WebGL-flaky değil). TB-3/TB-4/TB-5 kayıtlı sahipli açık; B grubu (non-TR tazelik / AR-dil stratejisi / brief mobil perf) → prd-review. Sıradaki adım **`research-phase 13`**.
+**Son Güncelleme:** 2026-07-03 — **research-phase 13 ✅: Faz 13 teknik araştırma tamam.** TB-1 kök teyitli: alt sayfalar `alternates` set etmiyor → layout `canonical="/"`'ını sığ-merge ile miras alıyor; çözüm ortak `localizedAlternates` helper + alternates layout→sayfalara (fail-safe). TB-2 denetim: `/forum`+`/forum/:slug*` locale-twin'siz; **beklenmedik bulgu** `/bulten` index 404 → **kullanıcı kararı `/forum`→`/`**; x-default eklenir. Regresyon tohumu = Vitest node (helper unit + routes-manifest assertion). Sıradaki adım **`plan-phase 13`**.
 
 <!-- KURAL: Bu satır her oturum sonunda ÜZERİNE YAZILIR — tek satır, tek cümle. "Önceki:" / "Eski:" prefix ile kümülatif yığma YASAK; HTML comment'e sarma da yasak (CLAUDE.md → Doküman Disiplini). Tarih + kısa özet yeterli; detay için git log + ilgili PHASE/TASK dokümanları. -->
 
@@ -9,9 +9,9 @@
 ## Aktif Faz
 
 **Faz:** 13 — **v0.3 versiyon-sonu teknik borç (SEO-metadata hijyeni)** 🔄 (discuss-phase 13 damgaladı). **Faz 12 ✅** (B1 Living Flow nabız kapsamı). Faz 11 ✅ (v0.3 URL taksonomisi/SEO). Faz 10 ✅ (v0.3 görsel cila). v0.2 tamamen ✅ (Faz 4–9 + prd-review + production release).
-**Adım:** research (discuss-phase 13 kapsam tartışması tamam → sıradaki `research-phase 13`; Versiyon Sonu Durumu = `teknik_borç`). ✅ **v0.2 production release tamamlandı (2026-07-02)** — revize `main`'de, canlı deploy `a71adbc`, Umami canlı +1 doğrulandı (`docs/RELEASE-v0.2.md`). Açık takip: chatbot canlı `ANTHROPIC_API_KEY` env (release engeli değil).
-**İlerleme:** discuss-phase 13 (2026-07-03) ✅ — Faz 13 kapsamı damgalandı: **TB-1** (alt-sayfa self-canonical + 5-locale hreflang alternates, kalıcılık) + **TB-2** (`/forum` locale gap + tüm config redirect denetimi, kök çözüm) + hafif regresyon tohumu (metadata/routes-manifest assertion, WebGL-flaky değil). **Kapsam-dışı/kayıtlı sahipli açıklar:** **TB-3 fixed-backdrop full-motion invariant tohumu (WebGL flaky, gelecek faz)**, **TB-4 site-geneli logical-ok (RTL, geniş yüzey)**, **TB-5 npm audit (3 moderate, next downgrade breaking)**, non-TR alt-sayfa stale + AR/dil-seti stratejisi + brief mobil perf (**B grubu → prd-review**).
-**Son Faz Dokümanı:** `phases/PHASE-13.md` (🔄 Devam ediyor — Kapsam Tartışması yazıldı; research/plan bekliyor). Faz 12 ✅ `phases/PHASE-12.md`.
+**Adım:** plan (research-phase 13 teknik araştırma tamam → sıradaki `plan-phase 13`; Versiyon Sonu Durumu = `teknik_borç`). ✅ **v0.2 production release tamamlandı (2026-07-02)** — revize `main`'de, canlı deploy `a71adbc`, Umami canlı +1 doğrulandı (`docs/RELEASE-v0.2.md`). Açık takip: chatbot canlı `ANTHROPIC_API_KEY` env (release engeli değil).
+**İlerleme:** research-phase 13 (2026-07-03) ✅ — Araştırma Bulguları yazıldı (`phases/PHASE-13.md`). **TB-1** çözümü: ortak `localizedAlternates(locale, path)` helper (canonical + 5-dil languages + x-default), `alternates` layout'tan sayfalara taşınır (fail-safe: unutulursa canonical yok = zararsız). **TB-2** çözümü: iki-giriş deseni `/forum`+`/forum/:slug*`'a; denetimde **beklenmedik bulgu** `/bulten` index 404 → **kullanıcı kararı `/forum`→`/`** (`/forum/:slug*`→`/bulten/:slug*` geçerli). **x-default eklenir** (kullanıcı kararı). Regresyon tohumu = Vitest node (helper unit + `routes-manifest.json` locale-kapsam assertion, WebGL-flaky değil). Yeni bağımlılık yok. **Kapsam-dışı/kayıtlı sahipli açıklar:** **TB-3 full-motion tohumu (WebGL flaky, gelecek faz)**, **TB-4 site-geneli logical-ok (RTL)**, **TB-5 npm audit (next downgrade breaking)**, B grubu → prd-review.
+**Son Faz Dokümanı:** `phases/PHASE-13.md` (🔄 Devam ediyor — Kapsam Tartışması + Araştırma Bulguları yazıldı; plan bekliyor). Faz 12 ✅ `phases/PHASE-12.md`.
 
 ---
 
@@ -28,9 +28,9 @@
 
 ## Aktif Task
 
-**Task:** — (Faz 13 girildi, kapsam tartışıldı; task'lar `plan-phase 13`'te oluşturulacak). Sıradaki adım **`research-phase 13`** (teknik araştırma — yeni oturum).
-**Durum:** Faz 13 🔄 → Adım **research**. Versiyon Sonu Durumu = `teknik_borç`; Aktif Versiyon v0.3.
-**İlerleme:** discuss-phase 13 (2026-07-03) ✅ — kapsam damgalandı (TB-1 canonical+alternates + TB-2 `/forum` gap + tüm redirect denetimi + hafif tohum). Sıradaki = `research-phase 13`.
+**Task:** — (Faz 13 kapsamı + araştırması tamam; task'lar `plan-phase 13`'te oluşturulacak). Sıradaki adım **`plan-phase 13`** (task yazımı — yeni oturum).
+**Durum:** Faz 13 🔄 → Adım **plan**. Versiyon Sonu Durumu = `teknik_borç`; Aktif Versiyon v0.3.
+**İlerleme:** research-phase 13 (2026-07-03) ✅ — Araştırma Bulguları yazıldı (TB-1 ortak helper + alternates layout→sayfalara fail-safe; TB-2 iki-giriş deseni + `/forum`→`/` kararı [`/bulten` 404 bulgusu]; x-default; Vitest node tohum). Sıradaki = `plan-phase 13`.
 
 ---
 
@@ -60,8 +60,8 @@ _(Henüz yok — Faz 13 task'ları çalışılmadı.)_
 
 ## Hızlı Erişim
 
-**Aktif Task:** Aktif task yok (Faz 13 🔄 girildi, kapsam tartışıldı; task'lar plan-phase 13'te). Sıradaki adım **research-phase 13** (teknik araştırma, yeni oturum). Açık takip: chatbot canlı env key.
-**Aktif Faz:** **13 🔄** — v0.3 versiyon-sonu teknik borç (SEO-metadata hijyeni): TB-1 alt-sayfa self-canonical + 5-locale hreflang alternates + TB-2 `/forum` locale gap + tüm config redirect denetimi + hafif regresyon tohumu. Faz 12 ✅ (B1 Living Flow nabız). Faz 11 ✅ (URL taksonomisi/SEO). Faz 10 ✅ (görsel cila). v0.2 Faz 4–9 ✅ + prd-review ✅ + production release ✅. **Aktif Versiyon v0.3**, Versiyon Sonu Durumu: **teknik_borç** → sıradaki komut `research-phase 13`.
+**Aktif Task:** Aktif task yok (Faz 13 🔄 kapsam + araştırma tamam; task'lar plan-phase 13'te). Sıradaki adım **plan-phase 13** (task yazımı, yeni oturum). Açık takip: chatbot canlı env key.
+**Aktif Faz:** **13 🔄** — v0.3 versiyon-sonu teknik borç (SEO-metadata hijyeni): TB-1 alt-sayfa self-canonical + 5-locale hreflang alternates (+x-default) + TB-2 `/forum` locale gap + tüm config redirect denetimi (`/forum`→`/`) + hafif regresyon tohumu. Faz 12 ✅ (B1 Living Flow nabız). Faz 11 ✅ (URL taksonomisi/SEO). Faz 10 ✅ (görsel cila). v0.2 Faz 4–9 ✅ + prd-review ✅ + production release ✅. **Aktif Versiyon v0.3**, Versiyon Sonu Durumu: **teknik_borç** → sıradaki komut `plan-phase 13`.
 **Task Sistemi:** `tasks/TASKS-README.md`
 **PRD (karar kaynağı):** `PRD/VIZYON.md` · `PRD/VERSIONS.md` · `PRD/features/`
 **Revize Backlog (bilinen sorunlar):** `docs/REVIZE-BACKLOG.md`
@@ -69,4 +69,4 @@ _(Henüz yok — Faz 13 task'ları çalışılmadı.)_
 
 ---
 
-**Son Güncelleme:** 2026-07-03 — **discuss-phase 13 ✅: Faz 13 (v0.3 versiyon-sonu teknik borç — SEO-metadata hijyeni) girildi.** Adım 0 versiyon-sonu tespiti: v0.3 içerik fazları (10/11/12) ✅ + Aktif Faz/Adım dolu → Versiyon Sonu Durumu `içerik_fazları`→`teknik_borç` damgalandı. v0.3 fazlarının retrospektifleri + kayıtlı sahipli açıklar sistematik tarandı; kullanıcı "borç listesi tam" onayı verdi. **Kapsam (kullanıcı kararı):** TB-1 alt-sayfa self-canonical + 5-locale hreflang alternates (kalıcılık — tam SEO, yarım değil) + TB-2 `/forum` locale gap düzelt + **tüm** config redirect'leri locale-gap için denetle (kök çözüm) + hafif regresyon tohumu (metadata/routes-manifest assertion, WebGL-flaky değil, kümülatif test). **Kapsam-dışı/kayıtlı:** TB-3 (full-motion tohumu, WebGL flaky) · TB-4 (logical-ok RTL, geniş yüzey) · TB-5 (npm audit, next downgrade breaking); **B grubu → prd-review** (non-TR tazelik / AR-dil stratejisi / brief mobil perf — strateji/ölçüm, kod borç değil). Faz dokümanı `phases/PHASE-13.md` (Kapsam Tartışması yazıldı). **Sıradaki DevFlow komutu: `research-phase 13`.**
+**Son Güncelleme:** 2026-07-03 — **research-phase 13 ✅: Faz 13 teknik araştırma tamam** (`phases/PHASE-13.md` → Araştırma Bulguları). Kod tabanı incelendi (layout + 5 alt-sayfa `generateMetadata`, next.config redirects, sitemap/robots/routing). **TB-1 kök teyitli:** alt sayfalar `alternates` set etmiyor → Next.js sığ-merge ile layout'un `canonical="/"`'ını miras alıyor (her alt sayfa ana sayfaya canonicalize). **Çözüm:** ortak `localizedAlternates(locale, path)` helper (canonical + 5-dil languages + x-default) + `alternates` layout'tan sayfalara taşınır (**fail-safe:** unutulan sayfada canonical yok = zararsız, layout'ta kalsa yanlış `/` = zararlı); locale→prefix eşlemesi sitemap.ts ile ortak util. **TB-2 denetim:** `/forum`+`/forum/:slug*` locale-twin'siz (gap); iki-giriş deseni (`/bunker-os` emsali) uygulanır. **Beklenmedik bulgu:** `/bulten` index sayfası yok → `/forum`→`/bulten` 404'e iniyor → **kullanıcı kararı `/forum`→`/`** (`/forum/:slug*`→`/bulten/:slug*` geçerli, korunur). **x-default eklenir** (→ TR prefixsiz, kullanıcı kararı). **Regresyon tohumu:** Vitest node — helper unit testi + `routes-manifest.json` redirect locale-kapsam assertion (WebGL/flaky değil). Yeni bağımlılık yok; içerik/DOM/route değişmez. **Sıradaki DevFlow komutu: `plan-phase 13`.**

@@ -66,20 +66,63 @@
 
 ## Araştırma Bulguları
 
-> Bu bölüm `/devflow:research-phase 13` oturumunda doldurulur.
+> Bu bölüm `/devflow:research-phase 13` oturumunda dolduruldu (2026-07-03). Kaynak: kod tabanı incelemesi (layout + 5 alt-sayfa `generateMetadata`, next.config redirects, sitemap/robots/routing) + `next-config-redirect-locale-prefix` memory (Faz 11 ampirik). Doğrulama build ground-truth ile verify-plan/task'ta yapılır (bu cloud devcontainer'da `next start` sandbox tarafından öldürülebilir → `routes-manifest.json` + prerender `<head>`).
+
+### Mevcut Durum Tespiti (kök neden)
+
+**TB-1 — canonical/hreflang miras hatası:**
+- `alternates: { canonical, languages }` **layout `generateMetadata`'sında** tanımlı (`src/app/[locale]/layout.tsx` — kaynak: repoda-tanımlı) → yalnız ana sayfa için doğru.
+- 5 alt sayfanın hepsinin kendi `generateMetadata`'sı **yalnız `title`/`description`** set eder, `alternates` set **etmez** (`crew-os`, `spor-salonu-yazilimi`, `vaka-calismalari`, `bulten/ai-sdr-araclari`, `bulten/claude-opus-4-8-fable-5`).
+- **Next.js App Router metadata sığ-merge (shallow):** alt sayfa `alternates`'i vermediği için layout'unkini **aynen miras alır** → her alt sayfa `canonical="/"` + tüm hreflang'ler ana sayfaya işaret eder ("kanonik'im ana sayfa"). TB-1'in tam kökü.
+- **Kritik mekanik:** sığ-merge'de `alternates` **bütün-obje** olarak değişir → düzeltirken her sayfaya `canonical` + `languages`'ı **birlikte** (tam obje) yazmak şart; yalnız `canonical` yazmak `languages`'ı düşürür.
+
+**TB-2 — redirect locale-gap denetimi (4 redirect'in tümü tarandı):**
+
+| Redirect (`next.config.ts`) | Locale twin | Durum |
+|---|---|---|
+| `/bunker-os` → `/crew-os` (+ `/:locale(en\|ar\|de\|es)/bunker-os` twin) | ✅ var | Faz 11'de kapatıldı, sağlam |
+| `/forum` → `/bulten` | ❌ yok | `/en/forum`→404 gap **+ hedef `/bulten` 404** (aşağıda) |
+| `/forum/:slug*` → `/bulten/:slug*` | ❌ yok | `/en/forum/x`→404 gap; hedef geçerli (200) |
+
+- **Beklenmedik bulgu (denetimden çıktı):** `src/app/[locale]/bulten/` altında **index `page.tsx` YOK** (yalnız 2 makale klasörü). Yani `/forum` → 308 → `/bulten` = **404'e iniyor**. Kod tabanında `/bulten` index'e link yok; bülten içeriği ana sayfada `id="forum"` bölümünde (`src/components/Forum.tsx:12`), makale linkleri doğrudan `/bulten/<slug>`. Locale-twin eklemek düzeltmeden **1 yerine 5 locale'i 404'e** yönlendirirdi.
 
 ### Değerlendirilen Yaklaşımlar
-- [Yaklaşım 1]: [Açıklama, artılar, eksiler]
-- **Seçilen:** [Hangisi ve neden]
+
+**TB-1 canonical mimarisi:**
+- **A — Sayfa-içi elle alternates:** Her sayfa `generateMetadata`'sında `alternates`'i elle kurar. Artı: açık, basit. Eksi: 6 sayfaya kopya-kod → drift (Faz 10 `<Logo>` dersiyle aynı tuzak); her yeni sayfa hatırlamak zorunda.
+- **B — Ortak helper (`localizedAlternates(locale, path)` → `{canonical, languages}`):** Tek yardımcı, her sayfa kendi path'iyle çağırır. Artı: tek kaynak, DRY, modülerlik+kalıcılık ilkesi; yeni sayfa tek satırla katılır. Eksi: her sayfa yine helper'ı çağırmalı (unit test/lint ile güvenceye alınır). **`alternates`'i layout'tan kaldırıp her sayfaya taşı** → **fail-safe:** bir sayfa unutursa `canonical` *yok* olur (Google URL'in kendisini self-referans alır = zararsız); layout'ta kalsaydı unutan sayfa yine *yanlış* `/`'a canonicalize olurdu = zararlı.
+- **C — Layout-seviyesi pathname'den dinamik canonical:** Reddedildi — App Router `generateMetadata`'ya tam pathname geçmez (yalnız `params`=locale); middleware header enjeksiyonu gerektirir, kırılgan.
+- **Seçilen: B (ortak helper + alternates layout'tan sayfalara taşınır).** Kalıcılık (fail-safe default) + modülerlik (kopya-kod yok) ilkeleriyle hizalı. sitemap.ts zaten aynı locale→prefix mantığını kullanıyor (`locale === defaultLocale ? "" : /${locale}`) → bu eşlemeyi ortak util'e çıkarıp sitemap + helper'ı tek kaynağa bağla.
+
+**TB-2 redirect:**
+- **Seçilen:** Kanıtlı iki-giriş desenini (`/bunker-os` emsali, memory) `/forum` + `/forum/:slug*`'a uygula. Düşük risk; desen Faz 11'de ampirik doğrulandı.
+
+### Alınan Kararlar (bu oturumda kullanıcı onayı)
+
+- **`/forum` (index) hedefi → `/`** (kullanıcı kararı). Denetim `/bulten` index'in 404 olduğunu ortaya çıkardı; bülten içeriği zaten ana sayfada → `/forum` → `/` (5 locale twin ile) en dürüst/kalıcı çözüm. `/forum/:slug*` → `/bulten/:slug*` hedefi geçerli, yalnız locale-twin eklenir. **Not:** `/bulten` index'in kendisini oluşturmak kapsam dışı (içerik/route üretimi); bu düzeltme yalnız redirect hedefini geçerli kılar.
+- **`x-default` hreflang eklenir → varsayılan locale'in prefixsiz URL'i** (kullanıcı kararı). Google dil-müzakere best-practice; helper'a tek satır, tüm sayfalara uniform gelir.
 
 ### Kullanılacak Araçlar/Kütüphaneler
-- [Araç 1]: [Versiyon, ne için]
+
+- **Yeni bağımlılık yok.** Mevcut stack: next-intl v4.1 (`routing.locales`/`defaultLocale` helper girdisi), Next.js 15.3 App Router metadata API (`metadataBase` zaten `https://kiwiailab.com` → relative canonical/languages absolute'e çözülür).
+- **Test:** Vitest **node** (helper saf-fonksiyon unit testi + `routes-manifest.json` redirect locale-kapsam assertion'ı) — mevcut 3-katman altyapısı (`docs/TESTING.md`), WebGL/Playwright gerektirmez.
 
 ### Dikkat Edilecekler
-- [Tuzak/Risk 1]: [Nasıl kaçınılacak]
+
+- **`alternates` sığ-merge bütün-obje:** her sayfada `canonical` + `languages` (+`x-default`) birlikte; eksik alan diğerini düşürür. (Kaynak: Next.js metadata resolution, repoda-tanımlı davranış.)
+- **Config redirect `source` locale-prefix'i otomatik kapsamaz** (AMPİRİK, `_dev/memory/next-config-redirect-locale-prefix.md`): her redirect iki giriş (çıplak + `/:locale(en|ar|de|es)/…`); `permanent:true`→308; çift-redirect yok (config middleware'den önce edge'de).
+- **Çakışan fiziksel route uyarısı:** Redirect kaynağıyla aynı yolda route klasörü kalırsa route 200 kazanır — `/forum` klasörü yok (teyitli), sorun yok.
+- **Kopya-kod refleksi (Faz 10 dersi):** canonical/alternates + locale→prefix mantığı tek helper/util'de; sayfalara elle kopyalama yok.
+- **i18n:** yeni anahtar yok → 5-dil parite riski yok; hreflang locale kodları doğru (AR=`ar`). Değer çevirisi faz konusu değil.
+- **Sitemap/robots tutarlılığı:** helper locale→URL eşlemesi sitemap.ts ile aynı kaynaktan gelmeli (drift önleme); robots dokunulmaz.
+- **Ortam kısıtı:** Doğrulama build ground-truth (`routes-manifest.json` redirect regex+statusCode; prerender `<head>` canonical/alternates) — kanıt-artefaktına bağlanır, sahte-geçmiş yok.
 
 ### Teknik Kararlar
-- [Karar 1]: [Gerekçe]
+
+- **TB-1:** ortak `localizedAlternates(locale, path)` helper (canonical + 5-dil languages + x-default); `alternates` layout'tan kaldırılıp ana sayfa dahil her sayfa kendi path'iyle çağırır (fail-safe). locale→prefix eşlemesi sitemap.ts ile ortak util. *(Gerekçe: kalıcılık fail-safe default + modülerlik kopya-kod yok; ILKELER.)*
+- **TB-2:** `/forum` → `/` (+ locale twin), `/forum/:slug*` → `/bulten/:slug*` (+ locale twin); `/bunker-os` çifti korunur. İki-giriş deseni memory'den. *(Gerekçe: kök çözüm — tüm redirect'ler locale-kapsamlı; `/forum` 404-hedefi düzeltilir.)*
+- **Regresyon tohumu:** Vitest node — (1) helper unit testi (deterministik canonical/alternates çıktısı), (2) `routes-manifest.json` her redirect için çıplak+prefixli giriş assertion'ı. WebGL/flaky değil. *(Gerekçe: kümülatif test ilkesi; Faz 12 ertelenen full-motion flakiness riski yok.)*
+- **Sınır:** içerik/kopya/tasarım/davranış/DOM/route path değişmez; `/bulten` index oluşturma kapsam dışı (yalnız redirect hedefi geçerli kılınır). *(Gerekçe: cerrahi minimal, kapsam disiplini.)*
 
 ---
 
@@ -151,4 +194,4 @@
 ---
 
 **Oluşturulma:** 2026-07-03 (discuss-phase 13)
-**Son Güncelleme:** 2026-07-03 — discuss-phase 13: kapsam tartışması tamam. Versiyon-sonu tespiti `içerik_fazları`→`teknik_borç` damgalandı; kapsam TB-1 (alt-sayfa self-canonical + 5-locale hreflang alternates) + TB-2 (`/forum` locale gap + tüm config redirect denetimi) + hafif regresyon tohumu (WebGL-flaky değil); TB-3/TB-4/TB-5 kayıtlı sahipli açık, B grubu → prd-review. Sıradaki adım: research-phase 13.
+**Son Güncelleme:** 2026-07-03 — research-phase 13: Araştırma Bulguları yazıldı. TB-1 kök: alt sayfalar `alternates` set etmiyor → layout'un `canonical="/"`'ını sığ-merge ile miras alıyor; çözüm ortak `localizedAlternates` helper + alternates layout'tan sayfalara taşınır (fail-safe). TB-2 denetim: `/forum`+`/forum/:slug*` locale-twin'siz; **beklenmedik bulgu** `/bulten` index 404 → kullanıcı kararı `/forum`→`/`. x-default eklenir (kullanıcı kararı). Regresyon tohumu = Vitest node (helper unit + routes-manifest assertion). Sıradaki adım: plan-phase 13.
