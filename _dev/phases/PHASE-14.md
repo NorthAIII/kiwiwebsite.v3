@@ -90,20 +90,79 @@
 
 ## Araştırma Bulguları
 
-> Bu bölüm `/devflow:research-phase 14` oturumunda doldurulur.
+> Bu bölüm `/devflow:research-phase 14` oturumunda dolduruldu (2026-07-03). Senaryo testi fazı olduğu için araştırma = **yeni kütüphane/mimari değil**, S1–S9 senaryo gruplarının bu ortamda hangi araçla doğrulanacağı (**araç eşlemesi**) + discuss-phase'in erteledği **S3 ortam riskinin ampirik çözümü**. Yeni kod üretilmez.
 
-### Değerlendirilen Yaklaşımlar
-- [Yaklaşım 1]: [Açıklama, artılar, eksiler]
-- **Seçilen:** [Hangisi ve neden]
+### Ortam Ampirik Teyidi (S3 riski çözüldü — en kritik bulgu)
+
+Discuss-phase'in araştırmaya bıraktığı soru: bu cloud devcontainer'da runtime-tarayıcı+WebGL katmanı (S3 sayfa-boyu nabız) çalışabilir mi, yoksa Faz 13 gibi build-ground-truth'a mı düşülür? **Bu oturumda uçtan uca ölçülerek çözüldü:**
+
+| Yetenek | Sonuç | Kanıt |
+|---------|-------|-------|
+| `next build` + `next start` | ✅ **Kararlı çalışıyor** (Faz 13'ten farklı) | Ready in 593ms, port 3000 dinledi, 12s+ hayatta; curl 200. Faz 13'teki spontane `exit 144` **bu oturumda görülmedi** (144 yalnız benim `pkill`'imden geldi). |
+| System Chrome + WebGL2 | ✅ **Çalışıyor** | `channel:'chrome'` + `--enable-unsafe-swiftshader` → WebGL2 (SwiftShader/ANGLE Vulkan); LivingFlow **gerçek canvas** render etti (1×, 1280×720). |
+| Bundled chromium + WebGL | ❌ **Yok** (beklenen) | `getContext('webgl2')=null`, LivingFlow **0 canvas** (static'e düştü). Memory `playwright-bundled-chromium-webgl-yok.md` birebir doğrulandı. |
+| Vitest seed suite | ✅ 39/39 yeşil | 5 dosya (seo-redirects, seo-metadata, i18n-parity, smoke, umami-script), 1.03s. |
+| HTTP/redirect katmanı | ✅ Canlı doğru | `/`→200, `/crew-os`→200, `/bunker-os`→308→`/crew-os`, `/en/bunker-os`→308→`/en/crew-os`, `/forum`→308→`/`. |
+| Lighthouse | ✅ Mevcut (npx-cache **12.8.2**) | Memory 13.3.0 kaydeder → **sürüm deltası var**; LCP-element audit anahtarı 12.x'te farklı olabilir (`largest-contentful-paint-element` vs 13.x `lcp-breakdown-insight`) — plan-phase perf task'ında anahtar teyit edilir. Perf **skoru** / CLS / a11y skoru guardrail re-teyidi sürümden bağımsız. |
+
+**Sonuç:** S3'ün runtime-tarayıcı+WebGL katmanı **bu ortamda koşulabilir** (Faz 13'ün kötümser notu bu oturumda geçerli değil) — build-ground-truth'a mecburi düşüş **yok**. Yine de imza-WebGL doğrulaması **yalnız system Chrome** ile yapılır (bundled chromium WebGL vermez → S3'te yanlış-static).
+
+### Değerlendirilen Yaklaşımlar (senaryo doğrulama katmanları)
+
+- **A) Build-ground-truth katmanı** (curl + `routes-manifest.json` + prerender `.next/server/app/*.html` + Vitest 39-tohum): Deterministik, ortam-bağımsız, her koşuda çalışır. Runtime JS/WebGL/etkileşim **egzersiz etmez**. → S1 (route/redirect matrisi), S5/S6 (taksonomi/parite — görünür metin & `MISSING_MESSAGE`), S8 (`seo-*` tohumları), S9 (`next build` temiz + 0 MISSING_MESSAGE).
+- **B) Runtime — bundled chromium (`test:e2e` config zemini)**: `playwright.config.ts` webServer'ı `build && start` koşar (Desktop Chrome device). CI-parite, axe a11y için yeterli. **WebGL YOK** → S3 sayfa-boyu nabzı doğrulayamaz, LivingFlow static görünür. → S8 a11y=100 axe re-teyidi (home + subpages spec'leri), klavye/DOM etkileşimi (S4 WebGL-bağımsız kısmı).
+- **C) Runtime — standalone Playwright + system Chrome** (`channel:'chrome'`, `--enable-unsafe-swiftshader`, `--disable-dev-shm-usage`): Gerçek WebGL (bu oturumda kanıtlı). Manuel harness gerekir; software-GL perf'i şişirir (ortamlar-arası kıyaslanamaz; LCP/FCP/CLS Lantern-deterministik kıyaslanabilir). → S3 (sayfa-boyu nabız degradasyonu: light/dark FOUC, reduced-motion **tüm sayfa** StaticFlow, mobil-low nabız yok, AR-RTL×dark×reduced, taşma/CLS), S4 (tema/dil kalıcılık + Living Flow uniform), S9-race (hızlı toggle/scroll).
+- **Seçilen: Katmanlı/hibrit — her senaryo grubunu onu en sağlam kanıtlayan araca eşle.** Build-ground-truth nerede yeterse orada (deterministik, ILKELER kalıcılık); runtime yalnız gerçekten JS/WebGL/etkileşim gerektiren yerde; WebGL gereken S3'te **system Chrome (C)**, WebGL-gerektirmeyen a11y'de **bundled/config (B)**. Perf/a11y guardrail (S8) Lighthouse çift-tema. Gerekçe: senaryo testi kaynak koda dokunmaz → çoğu senaryo build-ground-truth'ta deterministik kanıtlanır; ortam-bağımlı runtime katmanı yalnız kaçınılmaz yerde.
+
+**S1–S9 → araç eşlemesi (plan-phase task gruplarının iskeleti):**
+
+| Senaryo | Birincil araç (katman) | Not |
+|---------|------------------------|-----|
+| S1 giriş/redirect matrisi | curl + `routes-manifest` + Vitest `seo-redirects` (A) | çıplak+5-locale twin; `NEXT_LOCALE=tr` cookie TR için |
+| S2 TR yolculuğu | system Chrome (C) + prerender HTML (A) | `<Logo>` tutarlılık, `/tr/` sızıntı yok, kopuk link yok |
+| S3 mod kombinasyonları (nabız) | **system Chrome (C) — WebGL ŞART** | bundled chromium yanlış-static; reduced-motion tüm sayfa; mobil-low; AR-RTL×dark×reduced |
+| S4 kontroller & kalıcılık | system Chrome (C) | tema `html.dark`+localStorage; dil-switcher `router.replace` butonu |
+| S5 taksonomi & dürüstlük | prerender HTML grep (A) | "Crew OS" görünür / "Bunker" görünür yüzeyde yok (kod kalıntısı hariç) |
+| S6 5-dil bütünlük/non-TR | Vitest `i18n-parity` + prerender ×5 dil (A) | 0 `MISSING_MESSAGE`, namespace `bunker`→`crew` senkron, AR-RTL |
+| S7 chatbot 0-token | kod-inceleme + bundled chromium offline UI (A/B) | **0 API çağrısı**; inline `#chat` section; malformed kısa-devre |
+| S8 guardrail suite | `test:e2e` axe (B) + Lighthouse çift-tema (C) + Vitest `seo-*` (A) | a11y=100, desktop perf 100/CLS 0, canonical/hreflang |
+| S9 adversarial/holistik | `next build` (A) + system Chrome race (C) | JS-kapalı SSG okunabilirlik, hızlı toggle/scroll |
 
 ### Kullanılacak Araçlar/Kütüphaneler
-- [Araç 1]: [Versiyon, ne için]
+
+- **`next build && next start`** (Next 15.5.19) — prod zemin (Faz 4 a11y ölçüm zemini birebir); bu oturumda kararlı. `stray next-server` PID tuzağına dikkat (listening-PID teyidi).
+- **curl** — HTTP status/redirect/`Location` (S1); `--cookie "NEXT_LOCALE=tr"` TR için (Accept-Language auto-locale tuzağı).
+- **Vitest 4.1.9** (`npm test`) — 39 tohum: `tests/seo-redirects.test.ts`, `seo-metadata.test.ts`, `i18n-parity.test.ts`, `smoke.test.tsx`, `umami-script.test.tsx` (build-ground-truth; `seo-redirects` `.next/routes-manifest.json` okur → `next build` önce).
+- **Playwright `test:e2e`** (bundled chromium, `playwright.config.ts` `build&&start` webServer) — axe a11y regresyon: `tests/e2e/home-a11y.spec.ts`, `subpages-a11y.spec.ts` (S8 axe re-teyit).
+- **Standalone Playwright + system Chrome** — `chromium.launch({channel:'chrome', args:['--enable-unsafe-swiftshader','--disable-dev-shm-usage', ...]})` (S3/S4/S9-race; **WebGL için tek yol**).
+- **Lighthouse 12.8.2** (npx-cache) + system Chrome — perf/a11y çift-tema (S8 guardrail); `--disable-dev-shm-usage` + `--enable-unsafe-swiftshader` şart (yoksa Living Flow `TARGET_CRASHED`). Software-GL perf şişer.
+- **build-ground-truth grep** — `.next/routes-manifest.json` (redirect regex) + `.next/server/app/**/*.html` (prerender = SSG doğruluğu, S5/S6/S9).
 
 ### Dikkat Edilecekler
-- [Tuzak/Risk 1]: [Nasıl kaçınılacak]
+
+- **Bundled chromium WebGL vermiyor → S3 yalnız system Chrome.** Bundled ile koşarsan LivingFlow her zaman static'e düşer → "sayfa-boyu nabız" **doğrulanamaz** (yanlış-yeşil değil, ayırt-edici değil). WebGL-bağımlı degradasyona **ayırt-edicilik sanity** ekle (full-motion+WebGL→canvas var). Kaynak: memory `playwright-bundled-chromium-webgl-yok.md`.
+- **`/dev/shm` = 64M (küçük)** → tüm Chrome/Lighthouse çağrılarında `--disable-dev-shm-usage` **zorunlu** (yoksa renderer çöker). Kaynak: bu oturum probe.
+- **`next start` bu oturumda kararlı ama garanti değil.** Faz 13'te `exit 144` spontane görülmüştü; burada görülmedi. Runtime katmanı yine de ortam-bağımlı — plan-phase her runtime task'ına build-ground-truth **fallback** yazsın (S3 hariç — o WebGL zorunlu, fallback prerender canvas-yokluğunu ayırt edemez).
+- **Locale tuzağı:** TR (prefixsiz `/`) tarayıcıda `Accept-Language` ile `/en`'e sapabilir → `NEXT_LOCALE=tr` cookie şart; EN/AR/DE/ES açık-prefixli. curl header göndermez (sapmaz). Kaynak: memory locale tuzağı.
+- **Tema tuzağı:** proje `html.dark` class + CSS-değişken flip (prefers-color-scheme DEĞİL) → `emulateMedia({colorScheme})` **çevirmez**; tema-toggle butonu/localStorage üzerinden çevir. Light+dark **iki koşu** (dark-panel kontrast inversiyonu). Kaynak: memory a11y-ölçüm-tema-tuzağı.
+- **Reveal tuzağı:** `reducedMotion:'reduce'` + scroll (full-motion'da reveal `opacity:0` atlanır, a11y/kontrast yanlış ölçülür).
+- **Selector teyidi:** LanguageSwitcher `<a href>` değil `router.replace` **butonu**; Chatbot floating değil inline `#chat` section. Harness "FAIL" → önce artefakt mı diye sor. Kaynak: memory `runtime-harness-selector-teyidi.md`.
+- **Perf ölçümü:** her koşudan önce `cat /proc/loadavg` (bu oturum ~1.3, düşük ✓); software-GL perf ortamlar-arası kıyaslanamaz, LCP/FCP/CLS Lantern-deterministik kıyaslanabilir; regresyon karşılaştırmasında **aynı locale + aynı ortam**. Kaynak: memory Lantern körlüğü + host-yükü disiplini.
+- **Precondition tanımlayıcıları (kaynak işaretli — plan/verify-plan besler):**
+  - Test scriptleri `npm test` / `npm run test:e2e` — **repoda-tanımlı** (`package.json` scripts).
+  - Tohum test dosyaları `tests/seo-redirects.test.ts`·`seo-metadata.test.ts`·`i18n-parity.test.ts`·`e2e/home-a11y.spec.ts`·`e2e/subpages-a11y.spec.ts` — **repoda-tanımlı**.
+  - `routes-manifest.json` — **build çıktısı** (`.next/`, her `next build`'de üretilir; `seo-redirects` testi buna dayanır).
+  - Redirect kaynakları `/bunker-os`→`/crew-os`, `/forum`→`/`, `/forum/:slug*`→`/bulten/:slug*` + 5-locale twin'leri — **repoda-tanımlı** ([next.config.ts:27-48](next.config.ts#L27-L48)).
+  - Canonical/hreflang helper `localePath` + `localizedAlternates` — **repoda-tanımlı** ([src/i18n/metadata.ts:17](src/i18n/metadata.ts#L17), [:30](src/i18n/metadata.ts#L30)).
+  - 5 alt sayfa route'ları `/crew-os`·`/spor-salonu-yazilimi`·`/vaka-calismalari`·`/bulten/ai-sdr-araclari`·`/bulten/claude-opus-4-8-fable-5` — **repoda-tanımlı** (`src/app/[locale]/…` teyitli).
+  - `ANTHROPIC_API_KEY` yokluğu → chatbot offline (S7 0-token) — **dış/env** (bu ortamda tanımsız; değer asla yazılmaz).
 
 ### Teknik Kararlar
-- [Karar 1]: [Gerekçe]
+
+- **S3 metodoloji riski ÇÖZÜLDÜ (build-ground-truth fallback'e mecburi düşüş yok).** Runtime-tarayıcı+WebGL bu ortamda system Chrome ile koşulabilir (ampirik). Gerekçe: discuss-phase bu kararı research'e bıraktı; ölçüldü, kanıtlandı.
+- **WebGL doğrulaması yalnız system Chrome (`channel:'chrome'`+swiftshader); a11y/axe bundled chromium (config).** İki motor iki amaç: WebGL egzersizi vs CI-parite a11y. Gerekçe: bundled WebGL vermez, config zemini a11y için mühürlü.
+- **Katmanlı hibrit doğrulama: build-ground-truth öncelikli, runtime yalnız kaçınılmazda.** Senaryo testi kaynak-değişmez → çoğu senaryo deterministik build-ground-truth'ta; ortam-bağımlı runtime en aza indirilir. Gerekçe: ILKELER kalıcılık + Faz 13 ortam dersi.
+- **Milestone "ölç + kaydet + karar ver" (geçiş peşinen varsayılmaz).** Faz 2/3/8/9 dersi; runtime katmanı ortam-bağımlı kaldığı için özellikle geçerli.
 
 ---
 
