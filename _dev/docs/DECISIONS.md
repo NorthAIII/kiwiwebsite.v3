@@ -9,6 +9,18 @@
 
 <!-- Her yeni karar aşağıdaki formatta en üste eklenir (en yeni en üstte) -->
 
+### 2026-07-03 — canonical/hreflang **fail-safe** mimarisi: ortak helper + alternates layout→sayfa (Faz 13, TB-1)
+
+**Bağlam:** Faz 13 TB-1 (v0.3 versiyon-sonu teknik borç). `alternates` (canonical + hreflang) yalnız `layout.tsx` `generateMetadata`'sında tanımlıydı → App Router metadata **sığ-merge**'i ile `alternates` set etmeyen 5 alt sayfa layout'unkini aynen miras alıyordu → her alt sayfa yanlış `canonical="/"` + hreflang'leri ana sayfaya işaret ediyordu ("kanonik'im ana sayfa").
+
+**Karar:** (1) Ortak `localizedAlternates(locale, path)` helper'ı (`src/i18n/metadata.ts`) — self-canonical + 5-dil `languages` + `x-default`, `routing.locales` tek kaynak; locale→prefix eşlemesi sitemap.ts ile ortak util. (2) `alternates` **layout'tan kaldırıldı**, **ana sayfa dahil** her sayfa kendi path'iyle helper'ı çağırıyor (13.01 helper → 13.02 alt sayfalar → 13.03 layout→home taşıma).
+
+**Gerekçe (fail-safe default):** Kritik seçim `alternates`'in nerede default olacağıydı. Layout'ta kalsaydı, alternates set etmeyi unutan gelecekteki bir sayfa **yanlış** `/`'a canonicalize olurdu = **zararlı** (SEO'da sayfa yok sayılır). Layout'tan kaldırınca unutan sayfa **canonical'sız** olur → Google URL'in kendisini self-referans alır = **zararsız**. Kalıcılık ilkesi (ILKELER) → zararlı-varsayılan yerine zararsız-varsayılan. Modülerlik: 6 sayfaya kopya-kod yerine tek helper (Faz 10 `<Logo>` dersi). Layout `title`/`description`/`openGraph`/`metadataBase` **korundu** (home `generateMetadata` yalnız `alternates` döndürür → sığ-merge ile title/desc layout'tan gelir, drift yok). Reddedilen C (layout-seviyesi pathname'den dinamik canonical): App Router `generateMetadata`'ya tam pathname geçmez, middleware header enjeksiyonu gerektirir = kırılgan.
+
+**İlgili Task/Faz:** Faz 13 (TASK-13.01/13.02/13.03; TB-1 kapandı). Kanıt: prerender `<head>` — `/`'a canonicalize olan tek route home TR, 5 alt sayfa self-canonical, 23 test yeşil. Redirect denetimi (TB-2) → TASK-13.04. Detay → `phases/PHASE-13.md` Araştırma Bulguları.
+
+---
+
 ### 2026-07-03 — B1 Living Flow aşağı-taşıma: karar-gate **uygula-onayla** (+ light-veil craft ince-ayarı); üç gate geçti (Faz 12)
 
 **Bağlam:** Faz 12 (v0.3, B1 Living Flow nabız kapsamı) karar-gate'i (TASK-12.03). 12.01 (fixed viewport canvas + Hero koordinasyon) + 12.02 (adaptif okunabilirlik veil'i) uygulandıktan sonra, fazın üç korunan-taban kriteri **shipped kod üzerinde** ölçüldü ve uygula/iptal-kaydet kararı verildi (P2/Faz 6 emsali). Ölçüm ortamı: node 20.20.2 + Chrome 150 + Lighthouse 13.3.0 + axe-core 4.12.1 + SwiftShader; taze prod build; TR `/` (`NEXT_LOCALE=tr`); loadavg ≤2.5; full-motion (alan gerçekten render ederken — reduced-motion tohumu alanı gizler, onun kontrast etkisini ölçmez).

@@ -1,6 +1,6 @@
 # TASK-13.03: alternates'i layout'tan ana sayfaya taşı (fail-safe default)
 
-**Durum:** ⬜ Bekliyor
+**Durum:** ✅ Tamamlandı
 **Modül:** M6 SEO & Deploy (modules/M6-SEO-Deploy.md) + M2 (ana sayfa)
 **Feature:** TB-1 — Alt-sayfa self-canonical + 5-locale hreflang alternates (page-wiring, layout→home + fail-safe)
 **Faz:** Phase 13 (phases/PHASE-13.md)
@@ -99,9 +99,24 @@ src/app/[locale]/
 
 ## Oturum Kayıtları
 
-### Oturum — [TARİH]
+### Oturum — 2026-07-03
 
-**Durum:** ⬜ Bekliyor
+**Durum:** ✅ Tamamlandı
+
+**Yapılanlar:**
+- `src/app/[locale]/layout.tsx` `generateMetadata`'sından `alternates: { canonical, languages }` bloğu **kaldırıldı**; yerine fail-safe mimarisini açıklayan yorum kondu. `title` / `description` / `metadataBase` / `openGraph` **korundu**.
+- `src/app/[locale]/page.tsx`'e `generateMetadata` **eklendi** (yeni): `import type { Metadata }` + `import { localizedAlternates } from "@/i18n/metadata"` → `return { alternates: localizedAlternates(locale, "") }`. `Home` default export ve render **değişmedi**. `title`/`description`/`openGraph` layout'tan sığ-merge ile geliyor (home yalnız `alternates` döndürür → drift yok).
+
+**Test / Kanıt (build ground-truth):**
+- `npm run test` → **23/23 ✅** (4 dosya, regresyonsuz).
+- `npm run build` → **temiz**; `grep MISSING_MESSAGE .next/server/app` → **0**.
+- Home prerender `<head>` (`.next/server/app/{tr,en,ar}.html`): `tr`→`canonical https://kiwiailab.com` (root); `en`→`/en`; `ar`→`/ar`; her birinde `hrefLang` tr/en/ar/de/es + **x-default** (root); `<title>` + `<meta name="description">` **dolu** (layout'tan miras — boş değil).
+- Alt sayfa regresyon (13.02): `tr/crew-os`→`/crew-os`, `en/crew-os`→`/en/crew-os`, `tr/spor-salonu-yazilimi`→`/spor-salonu-yazilimi`, `ar/vaka-calismalari`→`/ar/vaka-calismalari`, `tr/bulten/ai-sdr-araclari`→`/bulten/ai-sdr-araclari` — hepsi **kendi path'inde** (layout kaldırma bozmadı).
+- `grep -rl 'canonical href="https://kiwiailab.com"/>' .next/server/app` → **yalnız `tr.html`** (home TR). `/`'a canonicalize olan tek route home TR; başka hiçbir sayfa `/`'a düşmüyor. Toplam 30 canonical'lı HTML (5 locale × 6 route).
+
+**Son Yaklaşım:** TB-1 tamamlandı (13.01 helper → 13.02 alt sayfalar → 13.03 layout→home fail-safe). Fail-safe kilidi devrede: layout artık canonical miras ettirmiyor.
+
+**Sonraki Adım Detayı:** `run-task` → **TASK-13.04** (TB-2: `/forum`→`/` locale-twin + config redirect denetimi + redirect regresyon tohumu). Faz 13'ün son task'ı; sonra `verify-phase 13`.
 
 ---
 

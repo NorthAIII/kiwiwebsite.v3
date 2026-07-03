@@ -136,7 +136,7 @@
 |---|------|-------|----------|
 | 13.01 | TASK-13.01 | ✅ Tamamlandı | TB-1: ortak `localizedAlternates` helper + locale-path util + sitemap refactor + helper unit testi |
 | 13.02 | TASK-13.02 | ✅ Tamamlandı | TB-1: 5 alt sayfaya self-canonical + 5-locale hreflang alternates (helper çağrısı) |
-| 13.03 | TASK-13.03 | ⬜ Bekliyor | TB-1: alternates'i layout'tan ana sayfaya taşı (fail-safe default; layout artık canonical miras ettirmez) |
+| 13.03 | TASK-13.03 | ✅ Tamamlandı | TB-1: alternates'i layout'tan ana sayfaya taşı (fail-safe default; layout artık canonical miras ettirmez) |
 | 13.04 | TASK-13.04 | ⬜ Bekliyor | TB-2: `/forum` locale-gap + config redirect denetimi (`/forum`→`/`) + redirect regresyon tohumu |
 
 **Durum simgeleri:** ⬜ Bekliyor | 🔄 Devam ediyor | ⏸️ Duraklatıldı | ✅ Tamamlandı | 🔴 Bloke | ❌ İptal
@@ -197,4 +197,4 @@
 ---
 
 **Oluşturulma:** 2026-07-03 (discuss-phase 13)
-**Son Güncelleme:** 2026-07-03 — plan-phase 13: 4 task dokümanı oluşturuldu. TB-1 üç task'a bölündü (13.01 helper+util+sitemap+unit test → 13.02 5 alt sayfa wiring → 13.03 layout→home fail-safe; sıra regresyon penceresi bırakmaz); TB-2 tek task (13.04 `/forum` locale-gap + config denetim + redirect tohumu). Sıradaki adım: verify-plan 13.
+**Son Güncelleme:** 2026-07-03 — run-task 13.03 ✅: alternates layout→ana sayfa taşındı (fail-safe). `layout.tsx` `generateMetadata`'dan `alternates` bloğu kaldırıldı (title/desc/og/metadataBase korundu); `page.tsx`'e `generateMetadata` eklendi (yalnız `alternates: localizedAlternates(locale, "")` → title/desc layout'tan sığ-merge). Prerender kanıt: home tr→canonical root, en/ar→prefixli + 5-dil hreflang+x-default; 5 alt sayfa canonical kendi path'inde (regresyonsuz); `/`'a canonicalize olan tek route = home TR. 23 test✅ · build temiz (0 MISSING_MESSAGE). TB-1 tamamlandı. Sıradaki adım: run-task → TASK-13.04 (TB-2).

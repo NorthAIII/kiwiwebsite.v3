@@ -1,4 +1,6 @@
+import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
+import { localizedAlternates } from "@/i18n/metadata";
 import SmoothScroll from "@/components/SmoothScroll";
 import CustomCursor from "@/components/CustomCursor";
 import Nav from "@/components/Nav";
@@ -12,6 +14,17 @@ import Forum from "@/components/Forum";
 import Chatbot from "@/components/Chatbot";
 import Credibility from "@/components/Credibility";
 import Footer from "@/components/Footer";
+
+// Ana sayfa self-canonical + 5-dil hreflang alternates. title/description/openGraph
+// layout'tan sığ-merge ile gelir (burada yalnız alternates döndürülür → drift yok).
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  return { alternates: localizedAlternates(locale, "") };
+}
 
 export default async function Home({
   params,

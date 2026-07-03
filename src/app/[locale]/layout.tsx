@@ -39,10 +39,11 @@ export async function generateMetadata({
       type: "website",
       locale,
     },
-    alternates: {
-      canonical: locale === "tr" ? "/" : `/${locale}`,
-      languages: { tr: "/", en: "/en", ar: "/ar", de: "/de", es: "/es" },
-    },
+    // NOT: alternates (canonical/hreflang) burada DEĞİL. Fail-safe mimari (Faz 13,
+    // TB-1): layout hiçbir sayfaya canonical miras ETTİRMEZ → alternates set etmeyi
+    // unutan bir sayfa "canonical yok" (zararsız) alır, yanlış `/`'a canonicalize
+    // (zararlı) değil. Her sayfa kendi `localizedAlternates(locale, path)`'ini verir
+    // (ana sayfa dahil → page.tsx generateMetadata).
   };
 }
 
