@@ -1,6 +1,6 @@
 # TASK-13.01: Ortak `localizedAlternates` helper + locale-path util + sitemap refactor
 
-**Durum:** ⬜ Bekliyor
+**Durum:** ✅ Tamamlandı
 **Modül:** M6 SEO & Deploy (modules/M6-SEO-Deploy.md) + M4 i18n (routing kaynağı)
 **Feature:** TB-1 — Alt-sayfa self-canonical + 5-locale hreflang alternates (temel/altyapı parçası)
 **Faz:** Phase 13 (phases/PHASE-13.md)
@@ -117,9 +117,23 @@ tests/
 
 ## Oturum Kayıtları
 
-### Oturum — [TARİH]
+### Oturum — 2026-07-03
 
-**Durum:** ⬜ Bekliyor
+**Durum:** ✅ Tamamlandı
+
+**Yapılanlar:**
+- `src/i18n/metadata.ts` oluşturuldu (YENİ): iki saf fonksiyon — `localePath(locale, path)` (locale→prefix eşlemesi, `routing.defaultLocale` tek kaynak) + `localizedAlternates(locale, path)` (Next Metadata `alternates`: self-canonical + 5-dil `languages` `routing.locales` üzerinden türetilir + `x-default` = varsayılan locale prefixsiz).
+- `src/app/sitemap.ts` refactor: elle `${prefix}${path || "/"}` mantığı `localePath(locale, path)` çağrısıyla değiştirildi. `PATHS` + priority/changeFreq korundu. Non-TR home `/en/`→`/en` (slashsiz) normalize oldu (kasıtlı — layout canonical ile hizalı).
+- `tests/seo-metadata.test.ts` oluşturuldu (YENİ, Vitest node): `localePath` deterministik çıktı tablosu (10 case + döngü assertion'ları) + `localizedAlternates` self-canonical / 5-dil+x-default / x-default=defaultLocale / canonical-değişken-languages-sabit testleri; döngüler `routing.locales` üzerinden (yeni dil oto-kapsar).
+
+**Test Sonucu:**
+- `npm run test` → 4 dosya, 23 test yeşil (yeni `seo-metadata` dahil; i18n-parity regresyonsuz).
+- `next build` temiz (0 hata, 0 `MISSING_MESSAGE`); sitemap route derlendi.
+- Kanıt-artefaktı `.next/server/app/sitemap.xml.body`: 30 `<loc>` (5 locale × 6 path); home URL'leri `/`, `/en`, `/ar`, `/de`, `/es` (non-TR slashsiz — normalizasyon teyitli).
+
+**Son Yaklaşım:** TB-1 mimari B'nin altyapı katmanı tamam — helper + util + sitemap tüketimi + unit tohum. Hiçbir sayfa metadata'sı değişmedi (bu task'ın sınırı); page-wiring 13.02/13.03'e devrediyor.
+
+**Sonraki Adım Detayı:** TASK-13.02 — 5 alt sayfanın (`crew-os`, `spor-salonu-yazilimi`, `vaka-calismalari`, `bulten/ai-sdr-araclari`, `bulten/claude-opus-4-8-fable-5`) `generateMetadata`'sında `alternates: localizedAlternates(locale, path)` çağrısı (tam obje — yalnız canonical yazma yasağı). Helper `@/i18n/metadata`'dan import edilir.
 
 ---
 
