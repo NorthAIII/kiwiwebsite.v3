@@ -3,6 +3,7 @@ import SmoothScroll from "@/components/SmoothScroll";
 import CustomCursor from "@/components/CustomCursor";
 import Nav from "@/components/Nav";
 import FlowBackdrop from "@/components/living-flow/FlowBackdrop";
+import FlowVeil from "@/components/living-flow/FlowVeil";
 import Hero from "@/components/Hero";
 import HowItWorks from "@/components/HowItWorks";
 import SectorSolutions from "@/components/SectorSolutions";
@@ -29,12 +30,21 @@ export default async function Home({
       <FlowBackdrop />
       <main className="relative z-10">
         <Hero />
-        <HowItWorks />
-        <SectorSolutions />
-        <Bunker />
-        <Forum />
-        <Chatbot />
-        <Credibility />
+        {/* Below-hero sections share one readability veil that scrolls with the
+            content, washing the fixed Living Flow back so body copy always wins
+            while the field stays visible (B1 / TK3). Hero stays unveiled = full
+            intensity. Sections keep their own backgrounds for per-section lift. */}
+        <div className="relative isolate">
+          <FlowVeil />
+          <div className="relative z-10">
+            <HowItWorks />
+            <SectorSolutions />
+            <Bunker />
+            <Forum />
+            <Chatbot />
+            <Credibility />
+          </div>
+        </div>
       </main>
       <div className="relative z-10">
         <Footer />

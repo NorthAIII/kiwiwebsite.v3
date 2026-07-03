@@ -111,7 +111,7 @@ Sürekli iplik şunlardan **birini** koruyamıyorsa → P2 (Faz 6) emsali gibi *
 | # | Task | Durum | Açıklama |
 |---|------|-------|----------|
 | 12.01 | TASK-12.01 | ✅ Tamamlandı | Fixed viewport Living Flow katmanı + Hero koordinasyon (TK1/TK2): desktop-high-power'da alan sayfa-seviyesi fixed katmana taşınır, tek WebGL context, Hero görsel birebir aynı, mobil/reduced/no-WebGL fallback aynen |
-| 12.02 | TASK-12.02 | ⬜ Bekliyor | Bölüme-uyarlanan okunabilirlik / adaptif scrim (TK3): metin-yoğun bölümlerde alan soluk, nefes alan bölümde görünür, opak bölümler doğal örter; metin her zaman kazanır (kontrast korunur) |
+| 12.02 | TASK-12.02 | ✅ Tamamlandı | Bölüme-uyarlanan okunabilirlik / adaptif scrim (TK3): `FlowVeil` (YENİ, token-bazlı %56 canvas washi, içerikle scroll eden main-içi wrapper — fixed backdrop hero/bölüm ayrımı yapamaz); adaptasyon emergent (transparent görünür / `/40` soluk / opak örter); bölüm dosyalarına dokunulmadı; build+a11y+i18n yeşil |
 | 12.03 | TASK-12.03 | ⬜ Bekliyor | Karar-gate: kontrast=100 çift-tema (full-motion) + desktop perf 100/CLS 0 + craft inceleme → **uygula-onayla VEYA iptal-kaydet** (DECISIONS + perf artefaktı) |
 
 **Durum simgeleri:** ⬜ Bekliyor | 🔄 Devam ediyor | ⏸️ Duraklatıldı | ✅ Tamamlandı | 🔴 Bloke | ❌ İptal
@@ -171,4 +171,4 @@ Sürekli iplik şunlardan **birini** koruyamıyorsa → P2 (Faz 6) emsali gibi *
 ---
 
 **Oluşturulma:** 2026-07-02
-**Son Güncelleme:** 2026-07-03 — run-task 12.01 ✅: fixed viewport backdrop + Hero koordinasyon uygulandı (paylaşılan `useFlowMode` hook, `FlowBackdrop` YENİ, `high` modda tek fixed canvas — çift-context riski elendi; build temiz, a11y tohumu regresyonsuz).
+**Son Güncelleme:** 2026-07-03 — run-task 12.02 ✅: adaptif okunabilirlik veil'i (`FlowVeil` YENİ, token-bazlı %56 canvas washi, içerikle scroll eden main-içi wrapper; fixed backdrop hero/bölüm ayrımı yapamadığı için veil fixed katmanda DEĞİL). Adaptasyon emergent (transparent görünür / `/40` soluk / opak örter); bölüm dosyalarına dokunulmadı. Test: build temiz + a11y tohumu light+dark 0 ihlal + i18n parite 5/5 + iki-tema SwiftShader görsel (metin okunur, imza korunur). Kesin kontrast=100 + craft son-hakemliği → 12.03 gate.
