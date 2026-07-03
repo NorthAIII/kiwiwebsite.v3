@@ -40,11 +40,11 @@
 
 ### F6.3: Next config & build → Faz —
 
-**Açıklama:** `next.config.ts` — `createNextIntlPlugin` wrap, `images.formats` AVIF/WebP, `transpilePackages: ["three"]`, redirects (`/forum`→`/bulten`, `/forum/:slug*`→`/bulten/:slug*` kalıcı). `tsconfig.json` strict, `@/*` path alias. `postcss.config.mjs` Tailwind v4 plugin.
+**Açıklama:** `next.config.ts` — `createNextIntlPlugin` wrap, `images.formats` AVIF/WebP, `transpilePackages: ["three"]`, redirects (kalıcı 308, her biri **çıplak + `/:locale(en|ar|de|es)/…` twin**): `/forum`→`/` (`/bulten` index yok, bülten içeriği ana sayfada `#forum` — Faz 13), `/forum/:slug*`→`/bulten/:slug*` (makale slug'ları geçerli), `/bunker-os`→`/crew-os` (Faz 11). `tsconfig.json` strict, `@/*` path alias. `postcss.config.mjs` Tailwind v4 plugin.
 
 **Kabul Kriterleri:**
 - `next build` temiz geçer; three transpile edilir.
-- Eski forum linkleri kalıcı redirect ile çalışır.
+- Eski forum + bunker-os linkleri 5 locale'de (çıplak + prefixli) kalıcı 308 ile çalışır (sessiz `/en/forum`→404 gap yok). Çıplak `/forum` `/`'a gider (slug `:slug*` boş-segment eşlemesine düşmez — çıplak giriş sırada önce). Regresyon tohumu: `tests/seo-redirects.test.ts` (`routes-manifest.json` assertion).
 
 **Bağımlılık:** M4 (intl plugin)
 

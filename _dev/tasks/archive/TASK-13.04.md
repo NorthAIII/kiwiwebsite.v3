@@ -1,6 +1,6 @@
 # TASK-13.04: `/forum` locale-gap düzelt + tüm config redirect denetimi + redirect regresyon tohumu
 
-**Durum:** ⬜ Bekliyor
+**Durum:** ✅ Tamamlandı
 **Modül:** M6 SEO & Deploy (modules/M6-SEO-Deploy.md — F6.3 next config redirects)
 **Feature:** TB-2 — `/forum` locale-prefix gap + config redirect denetimi
 **Faz:** Phase 13 (phases/PHASE-13.md)
@@ -42,7 +42,7 @@ Araştırma denetimi 4 redirect'in tümünü taradı: `/bunker-os` çifti ✅ sa
 
 ## Alt Görevler
 
-- [ ] **1. `next.config.ts` `redirects()` — `/forum` gap'i kapat**
+- [x] **1. `next.config.ts` `redirects()` — `/forum` gap'i kapat**
   - `/forum` → `/` (index; `/bulten` 404 olduğu için ana sayfa — kullanıcı kararı).
   - `/:locale(en|ar|de|es)/forum` → `/:locale` (locale twin).
   - `/forum/:slug*` → `/bulten/:slug*` (mevcut, korunur).
@@ -50,13 +50,13 @@ Araştırma denetimi 4 redirect'in tümünü taradı: `/bunker-os` çifti ✅ sa
   - Tümü `permanent: true` (308). `/bunker-os` çifti **korunur** (değiştirme).
   - Sıra: spesifik (`:slug*`) vs genel giriş sırasına dikkat — Next redirect'leri sırayla eşler; `/forum/:slug*` `/forum`'dan önce gelsin ki slug yakalansın (mevcut sıra zaten böyle; koru).
 
-- [ ] **2. `tests/seo-redirects.test.ts` oluştur (YENİ) — redirect locale-kapsam assertion (Vitest node)**
+- [x] **2. `tests/seo-redirects.test.ts` oluştur (YENİ) — redirect locale-kapsam assertion (Vitest node)**
   - `.next/routes-manifest.json` oku → `redirects[]`.
   - Assertion: her mantıksal redirect kaynağı için **çıplak + `/:locale(...)`** girişi var; `statusCode === 308`.
   - Beklenen kaynaklar: `/forum`, `/forum/:slug*`, `/bunker-os` (+ hepsinin locale-twin'i).
   - Manifest yoksa **açık hata** (silent skip yok — build önce koşmalı; CI fast job build→test sırası bunu sağlar; yerelde `next build` gerekli).
 
-- [ ] **3. Build ground-truth ile doğrula**
+- [x] **3. Build ground-truth ile doğrula**
   - `.next/routes-manifest.json` redirect regex'leri: `/forum`, `/en/forum` (+ 4 dil), `/forum/x`, `/en/forum/x` hepsi 308; hedefler doğru (`/`, `/:locale`, `/bulten/:slug*`, `/:locale/bulten/:slug*`).
   - Çift-redirect yok (config middleware'den önce edge'de tek atlama).
 
@@ -86,10 +86,10 @@ tests/
 
 ## Test Kriterleri
 
-- [ ] `next build` temiz; `.next/routes-manifest.json` üretilir.
-- [ ] `npm run test` (build sonrası) → `tests/seo-redirects.test.ts` yeşil: `/forum`, `/forum/:slug*`, `/bunker-os` + locale-twin'leri 308.
-- [ ] Manifest doğrulama (kanıt): `/en/forum`→`/en` 308, `/forum`→`/` 308, `/en/forum/x`→`/en/bulten/x` 308, `/forum/x`→`/bulten/x` 308; `/bunker-os` çifti korunmuş.
-- [ ] i18n-parity + helper unit testi (varsa) hâlâ yeşil.
+- [x] `next build` temiz; `.next/routes-manifest.json` üretilir.
+- [x] `npm run test` (build sonrası) → `tests/seo-redirects.test.ts` yeşil: `/forum`, `/forum/:slug*`, `/bunker-os` + locale-twin'leri 308.
+- [x] Manifest doğrulama (kanıt): `/en/forum`→`/en` 308, `/forum`→`/` 308, `/en/forum/x`→`/en/bulten/x` 308, `/forum/x`→`/bulten/x` 308; `/bunker-os` çifti korunmuş.
+- [x] i18n-parity + helper unit testi (varsa) hâlâ yeşil.
 
 ---
 
@@ -101,19 +101,37 @@ tests/
 
 ## Tamamlanma Kriterleri
 
-- [ ] Tüm alt görevler tamamlandı
-- [ ] Tüm test kriterleri karşılandı
-- [ ] Git commit & push yapıldı (`fix(TASK-13.04): ...`)
-- [ ] Bu doküman güncellendi (oturum kaydı)
-- [ ] DURUM.md + PHASE-13 task tablosu güncellendi
+- [x] Tüm alt görevler tamamlandı
+- [x] Tüm test kriterleri karşılandı
+- [x] Git commit & push yapıldı (`fix(TASK-13.04): ...`)
+- [x] Bu doküman güncellendi (oturum kaydı)
+- [x] DURUM.md + PHASE-13 task tablosu güncellendi
 
 ---
 
 ## Oturum Kayıtları
 
-### Oturum — [TARİH]
+### Oturum — 2026-07-03
 
-**Durum:** ⬜ Bekliyor
+**Durum:** ✅ Tamamlandı
+
+**Yapılanlar:**
+- `next.config.ts` `redirects()` — `/forum` locale-gap kapatıldı ve hedef `/`'a çevrildi: `/forum`→`/` + `/:locale(en|ar|de|es)/forum`→`/:locale` (YENİ twin); `/forum/:slug*`→`/bulten/:slug*` + `/:locale(en|ar|de|es)/forum/:slug*`→`/:locale/bulten/:slug*` (YENİ twin). `/bunker-os` çifti (Faz 11) korundu. Yorum bloğu iki-giriş deseni + sıra gerekçesiyle güncellendi.
+- `tests/seo-redirects.test.ts` (YENİ, Vitest node) — `.next/routes-manifest.json` üzerinden: her mantıksal redirect için çıplak+twin varlığı + 308; twin regex'i tüm non-default locale'leri (`routing.locales` tek kaynak) eşler; efektif ilk-eşleşen hedef doğru; "çıplak `/forum` slug'a düşmez" sıra mührü. Manifest yoksa açık hata (silent skip yok).
+- Doküman: M6 F6.3 (redirect açıklaması + kabul kriteri), DECISIONS (`/forum`→`/` + sıra tuzağı kararı), memory `next-config-redirect-locale-prefix` (`:slug*` sıra tuzağı + gap kapanışı) güncellendi.
+
+**Son Yaklaşım:** Redirect config + `routes-manifest.json` build-artefaktı assertion (araştırma kararı). Doğrulama build ground-truth ile (cloud devcontainer'da `next start` sandbox riski — kanıt-artefaktına bağlı, sahte-geçmiş yok).
+
+**İcra Bulgusu (planı düzeltti):** Task planı "`/forum/:slug*` girişi `/forum`'dan önce gelsin" diyordu ("mevcut sıra zaten böyle"). Ampirik ground-truth (`routes-manifest.json` regex testi) bunu **çürüttü**: `:slug*` opsiyonel gruba derlenir → `/forum/:slug*` çıplak `/forum`'u da eşler (sıfır segment). Hedefler ıraksadığı için (çıplak→`/`, slug→`/bulten`) slug-önce sırası çıplak `/forum`'u yanlışlıkla `/bulten`'e (404) yönlendiriyordu. Düzeltme: **çıplak giriş slug'dan önce** (`$`-anchor'lı bare regex = gerçek spesifik eşleşme). Bu bulgu DECISIONS + memory'ye taşındı.
+
+**Sonraki Adım Detayı:** Faz 13'ün tüm task'ları (13.01–13.04) ✅ → sıradaki adım `verify-phase 13` (UAT).
+
+**Kanıt:**
+- `next build` temiz (exit 0), 0 hata, 0 `MISSING_MESSAGE`.
+- `.next/routes-manifest.json` — 6 uygulama redirect'i (internal hariç), hepsi `statusCode 308`. Regex ground-truth: `/forum`→`/`, `/en|ar|de|es/forum`→`/:locale`, `/forum/x`→`/bulten/:slug*`, `/en/forum/x`→`/:locale/bulten/:slug*`, `/bunker-os`+twin→`/crew-os` korundu.
+- `npm run test` → 5 dosya / **39 test** yeşil (önceki 23 + yeni 16 seo-redirects). i18n-parity + seo-metadata (13.01 helper) regresyonsuz.
+
+**Sınır korundu:** İçerik/kopya/tasarım/DOM/route path değişmedi; `/bulten` index oluşturulmadı (kapsam dışı) — yalnız redirect hedefi geçerli kılındı. `next.config.ts`'te yalnız `redirects()` bloğu değişti (transpilePackages/images/intl-plugin dokunulmadı).
 
 ---
 

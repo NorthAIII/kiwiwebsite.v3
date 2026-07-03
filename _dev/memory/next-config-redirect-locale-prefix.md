@@ -17,6 +17,8 @@
 
 **Çakışma uyarısı:** Redirect'in kaynağıyla aynı yolda fiziksel route klasörü kalırsa route **200 kazanır**, redirect hiç fire etmez → eski route klasörünü sil (redirect config'e taşındığında).
 
-**Bilinen açık borç:** `/forum` locale-prefix gap (`/en/forum`→404) bu desenle kapatılmadı (kapsam-dışı, kullanıcı kararı Faz 11) — gelecek SEO fazı adayı. Yeni redirect eklerken bu iki-giriş desenini baştan uygula ki aynı gap doğmasın.
+**Sıra tuzağı — `:slug*` opsiyonel gruba derlenir (AMPİRİK, Faz 13):** `/foo/:slug*` regex'i çıplak `/foo`'yu da eşler (sıfır segment; manifest'te slug grubu `(?:…)?` opsiyonel). Çıplak `/foo` ile `/foo/:slug*` **aynı hedefe** gidiyorsa sorun yok (eski `/forum`→`/bulten` çifti böyleydi). Ama hedefler **ıraksıyorsa** (`/forum`→`/` ama `/forum/:slug*`→`/bulten/:slug*`), Next **ilk-eşleşen** redirect'i uygular → çıplak giriş slug'dan **ÖNCE** gelmeli; yoksa çıplak `/forum` slug regex'ine düşüp yanlış hedefe (`/bulten`) gider. `$`-anchor'lı bare regex gerçek spesifik eşleşmedir; "spesifik önce" sezgisi burada yanıltıcı (slug `*` boş segmenti yuttuğu için bare daha spesifik). Doğrulama: `.next/routes-manifest.json` regex'lerini örnek path'lere karşı test et (`new RegExp(r.regex).test("/forum")` → ilk eşleşenin `destination`'ına bak).
 
-İlgili: `docs/DECISIONS.md` 2026-07-02 (Faz 11 redirect kararı), `phases/PHASE-11.md` Araştırma Bulguları.
+**Kapanış durumu:** `/forum` gap Faz 13'te kapatıldı — `/forum`→`/` (+ locale twin), `/forum/:slug*`→`/bulten/:slug*` (+ locale twin); `/bunker-os` çifti korundu. Tüm config redirect'leri artık iki-girişli (çıplak+twin). Regresyon tohumu: `tests/seo-redirects.test.ts` (`routes-manifest.json` locale-kapsam + sıra assertion). Yeni redirect eklerken iki-giriş desenini + (ıraksak hedefte) çıplak-önce sırasını baştan uygula.
+
+İlgili: `docs/DECISIONS.md` 2026-07-02 (Faz 11 redirect kararı) + 2026-07-03 (Faz 13 `/forum`→`/` + sıra tuzağı), `phases/PHASE-11.md` / `phases/PHASE-13.md` Araştırma Bulguları.

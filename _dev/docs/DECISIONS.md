@@ -9,6 +9,18 @@
 
 <!-- Her yeni karar aşağıdaki formatta en üste eklenir (en yeni en üstte) -->
 
+### 2026-07-03 — `/forum` index hedefi `/` + redirect sırası çıplak-önce (`:slug*` boş-segment tuzağı) (Faz 13, TB-2)
+
+**Bağlam:** Faz 13 TB-2. `next.config.ts` redirect denetimi iki açık buldu: (1) `/forum` + `/forum/:slug*` locale-twin'siz → `/en/forum` vb. sessiz 404 (AMPİRİK memory `next-config-redirect-locale-prefix`); (2) mevcut `/forum`→`/bulten` hedefi zaten **404'e iniyordu** — `src/app/[locale]/bulten/` altında index `page.tsx` yok (yalnız 2 makale klasörü), bülten içeriği ana sayfada `id="forum"` bölümünde.
+
+**Karar:** (1) Her redirect **iki giriş** (çıplak + `/:locale(en|ar|de|es)/…`): `/forum`→`/`, `/forum/:slug*`→`/bulten/:slug*`, `/bunker-os`→`/crew-os` (korundu). (2) `/forum` index hedefi **`/bulten` değil `/`** (bülten içeriği zaten ana sayfada; `/bulten` index oluşturmak kapsam dışı — içerik/route üretimi). (3) Regresyon tohumu `tests/seo-redirects.test.ts` (Vitest node, `routes-manifest.json` assertion).
+
+**Gerekçe (sıra tuzağı — icrada bulundu):** Next `:slug*` **opsiyonel gruba** derlenir → `/forum/:slug*` regex'i çıplak `/forum`'u da eşler (sıfır segment). Çıplak `/forum` (→`/`) ile slug (→`/bulten`) hedefleri **ıraksadığı** için, task planındaki "slug girişi önce" sırası çıplak `/forum`'u yanlışlıkla `/bulten`'e (404) yönlendiriyordu. Next ilk-eşleşen redirect'i uygular → **çıplak giriş slug'dan ÖNCE** gelmeli (`$`-anchor'lı bare regex = gerçek spesifik eşleşme). Ampirik ground-truth (`routes-manifest.json` regex test) planı düzeltti; test bu sırayı da mühürler ("çıplak /forum slug'a düşmez").
+
+**İlgili Task/Faz:** Faz 13 (TASK-13.04; TB-2 kapandı → faz tamam). Kanıt: `next build` temiz + 0 `MISSING_MESSAGE`; 6 redirect 308; `npm run test` 39 yeşil (5 dosya; +16 seo-redirects). Detay → `phases/PHASE-13.md`, memory `next-config-redirect-locale-prefix` (sıra-tuzağı eklendi).
+
+---
+
 ### 2026-07-03 — canonical/hreflang **fail-safe** mimarisi: ortak helper + alternates layout→sayfa (Faz 13, TB-1)
 
 **Bağlam:** Faz 13 TB-1 (v0.3 versiyon-sonu teknik borç). `alternates` (canonical + hreflang) yalnız `layout.tsx` `generateMetadata`'sında tanımlıydı → App Router metadata **sığ-merge**'i ile `alternates` set etmeyen 5 alt sayfa layout'unkini aynen miras alıyordu → her alt sayfa yanlış `canonical="/"` + hreflang'leri ana sayfaya işaret ediyordu ("kanonik'im ana sayfa").

@@ -137,7 +137,7 @@
 | 13.01 | TASK-13.01 | ✅ Tamamlandı | TB-1: ortak `localizedAlternates` helper + locale-path util + sitemap refactor + helper unit testi |
 | 13.02 | TASK-13.02 | ✅ Tamamlandı | TB-1: 5 alt sayfaya self-canonical + 5-locale hreflang alternates (helper çağrısı) |
 | 13.03 | TASK-13.03 | ✅ Tamamlandı | TB-1: alternates'i layout'tan ana sayfaya taşı (fail-safe default; layout artık canonical miras ettirmez) |
-| 13.04 | TASK-13.04 | ⬜ Bekliyor | TB-2: `/forum` locale-gap + config redirect denetimi (`/forum`→`/`) + redirect regresyon tohumu |
+| 13.04 | TASK-13.04 | ✅ Tamamlandı | TB-2: `/forum` locale-gap + config redirect denetimi (`/forum`→`/`) + redirect regresyon tohumu |
 
 **Durum simgeleri:** ⬜ Bekliyor | 🔄 Devam ediyor | ⏸️ Duraklatıldı | ✅ Tamamlandı | 🔴 Bloke | ❌ İptal
 
@@ -197,4 +197,4 @@
 ---
 
 **Oluşturulma:** 2026-07-03 (discuss-phase 13)
-**Son Güncelleme:** 2026-07-03 — run-task 13.03 ✅: alternates layout→ana sayfa taşındı (fail-safe). `layout.tsx` `generateMetadata`'dan `alternates` bloğu kaldırıldı (title/desc/og/metadataBase korundu); `page.tsx`'e `generateMetadata` eklendi (yalnız `alternates: localizedAlternates(locale, "")` → title/desc layout'tan sığ-merge). Prerender kanıt: home tr→canonical root, en/ar→prefixli + 5-dil hreflang+x-default; 5 alt sayfa canonical kendi path'inde (regresyonsuz); `/`'a canonicalize olan tek route = home TR. 23 test✅ · build temiz (0 MISSING_MESSAGE). TB-1 tamamlandı. Sıradaki adım: run-task → TASK-13.04 (TB-2).
+**Son Güncelleme:** 2026-07-03 — run-task 13.04 ✅: `/forum` locale-gap + tüm config redirect denetimi + regresyon tohumu (TB-2). `next.config.ts` `redirects()`: `/forum`→`/`, `/forum/:slug*`→`/bulten/:slug*`, `/bunker-os`→`/crew-os`; her biri çıplak+`/:locale(en|ar|de|es)/…` twin, 6 redirect 308. İcra bulgusu (planı düzeltti): `:slug*` opsiyonel gruba derlenir → çıplak `/forum`'u da eşler; ıraksak hedefte (çıplak→`/`, slug→`/bulten`) çıplak giriş slug'dan ÖNCE sıralandı (yoksa `/forum`→`/bulten` 404) → DECISIONS+memory'ye taşındı. `tests/seo-redirects.test.ts` (YENİ) locale-kapsam+sıra assertion. 39 test✅ (5 dosya, +16) · build temiz (0 MISSING_MESSAGE). **TB-1 + TB-2 tamamlandı → Faz 13 icra bitti.** Sıradaki adım: verify-phase 13 (UAT).
