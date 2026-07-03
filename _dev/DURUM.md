@@ -1,6 +1,6 @@
 # DURUM — Proje Dashboard
 
-**Son Güncelleme:** 2026-07-03 — **review-phase 12 ✅: Faz 12 (B1 Living Flow nabız kapsamı) tamamlandı.** Karar-gate uygula-onayla (üç gate geçti); milestone karşılandı (imza güçlendi, fallback/a11y=100 çift-tema/perf tabanı regresyonsuz); UAT 16/16; 8 kalite ekseni (7 ✅ + 1 ⚠️ test kapsamı boşluğu — fixed-backdrop full-motion invariant tohumu yok, kayıtlı); 0 düzeltme task'ı. v0.3 içerik fazları (10,11,12) tamam → **sıradaki `discuss-phase 13`** (versiyon-sonu teknik borç; içerik_fazları→teknik_borç geçişini damgalar).
+**Son Güncelleme:** 2026-07-03 — **discuss-phase 13 ✅: Faz 13 (v0.3 versiyon-sonu teknik borç — SEO-metadata hijyeni) girildi.** Versiyon Sonu Durumu `içerik_fazları`→`teknik_borç` damgalandı; kapsam TB-1 (alt-sayfa self-canonical + 5-locale hreflang alternates) + TB-2 (`/forum` locale gap + **tüm** config redirect denetimi) + hafif regresyon tohumu (WebGL-flaky değil). TB-3/TB-4/TB-5 kayıtlı sahipli açık; B grubu (non-TR tazelik / AR-dil stratejisi / brief mobil perf) → prd-review. Sıradaki adım **`research-phase 13`**.
 
 <!-- KURAL: Bu satır her oturum sonunda ÜZERİNE YAZILIR — tek satır, tek cümle. "Önceki:" / "Eski:" prefix ile kümülatif yığma YASAK; HTML comment'e sarma da yasak (CLAUDE.md → Doküman Disiplini). Tarih + kısa özet yeterli; detay için git log + ilgili PHASE/TASK dokümanları. -->
 
@@ -8,10 +8,10 @@
 
 ## Aktif Faz
 
-**Faz:** 13 (geçici ad: **v0.3 versiyon-sonu teknik borç** — henüz girilmedi; discuss-phase 13 damgalar). **Faz 12 ✅** (B1 Living Flow nabız kapsamı — karar-gate uygula-onayla, üç gate geçti, UAT 16/16, 0 düzeltme). Faz 11 ✅ (v0.3 URL taksonomisi/SEO). Faz 10 ✅ (v0.3 görsel cila). v0.2 tamamen ✅ (Faz 4–9 + prd-review + production release).
-**Adım:** discuss (v0.3 içerik fazları (10,11,12) bitti → sıradaki `discuss-phase 13`; Versiyon Sonu Durumu = `içerik_fazları`, discuss-phase 13 `teknik_borç`'a çeker). ✅ **v0.2 production release tamamlandı (2026-07-02)** — revize `main`'de, canlı deploy `a71adbc`, Umami canlı +1 doğrulandı (`docs/RELEASE-v0.2.md`). Açık takip: chatbot canlı `ANTHROPIC_API_KEY` env (release engeli değil).
-**İlerleme:** review-phase 12 (2026-07-03) ✅ — Faz 12 tamamlandı; retrospektif + 8 kalite ekseni (7 ✅ + 1 ⚠️ test kapsamı boşluğu) faz dokümanına yazıldı, kullanıcı yolculuğu tutarlı. Karar-gate uygula-onayla (a11y=100 çift-tema full-motion / desktop perf 100·CLS 0 / craft light-bleed `--flow-veil` token'ıyla çözüldü); tek WebGL context (shared `useFlowMode`) + emergent adaptif veil (0 bölüm-dosyası dokunuşu). **Sahipli açıklar (record, faz-dışı):** **fixed-backdrop full-motion invariant tohumu yok (test kapsamı boşluğu, WebGL runtime flaky diye ertelendi, gelecek faz)**, non-TR alt-sayfa stale (4 sayfa ar/de/es, versiyon-sınırı), **alt-sayfa canonical=`/` (layout miras, latent SEO, gelecek faz)**, **`/forum` locale-prefix gap (`/en/forum`→404, gelecek faz)**, brief mobil perf (gerçek-cihaz duvarı), site-geneli logical-ok (RTL, ayrı iş), dil-seti/AR stratejisi, TB-C npm audit (3 moderate).
-**Son Faz Dokümanı:** `phases/PHASE-12.md` (✅ Tamamlandı — 12.01/12.02/12.03 ✅, UAT 16/16, retrospektif + kalite kontrol yazıldı). Faz 11 ✅ `phases/PHASE-11.md`.
+**Faz:** 13 — **v0.3 versiyon-sonu teknik borç (SEO-metadata hijyeni)** 🔄 (discuss-phase 13 damgaladı). **Faz 12 ✅** (B1 Living Flow nabız kapsamı). Faz 11 ✅ (v0.3 URL taksonomisi/SEO). Faz 10 ✅ (v0.3 görsel cila). v0.2 tamamen ✅ (Faz 4–9 + prd-review + production release).
+**Adım:** research (discuss-phase 13 kapsam tartışması tamam → sıradaki `research-phase 13`; Versiyon Sonu Durumu = `teknik_borç`). ✅ **v0.2 production release tamamlandı (2026-07-02)** — revize `main`'de, canlı deploy `a71adbc`, Umami canlı +1 doğrulandı (`docs/RELEASE-v0.2.md`). Açık takip: chatbot canlı `ANTHROPIC_API_KEY` env (release engeli değil).
+**İlerleme:** discuss-phase 13 (2026-07-03) ✅ — Faz 13 kapsamı damgalandı: **TB-1** (alt-sayfa self-canonical + 5-locale hreflang alternates, kalıcılık) + **TB-2** (`/forum` locale gap + tüm config redirect denetimi, kök çözüm) + hafif regresyon tohumu (metadata/routes-manifest assertion, WebGL-flaky değil). **Kapsam-dışı/kayıtlı sahipli açıklar:** **TB-3 fixed-backdrop full-motion invariant tohumu (WebGL flaky, gelecek faz)**, **TB-4 site-geneli logical-ok (RTL, geniş yüzey)**, **TB-5 npm audit (3 moderate, next downgrade breaking)**, non-TR alt-sayfa stale + AR/dil-seti stratejisi + brief mobil perf (**B grubu → prd-review**).
+**Son Faz Dokümanı:** `phases/PHASE-13.md` (🔄 Devam ediyor — Kapsam Tartışması yazıldı; research/plan bekliyor). Faz 12 ✅ `phases/PHASE-12.md`.
 
 ---
 
@@ -19,7 +19,7 @@
 
 **Versiyon:** v0.3 — Görsel & Etkileşim Cilası (+ URL taksonomisi/SEO) (re-kickoff 2026-07-02'de sabitlendi; Craft en üst eksen — ILKELER)
 **Hedef:** A1 logo hizalama + A3 CTA kartı affordance & scroll göstergesi ölçekleme + B1 Living Flow nabız kapsamı (**karar-gate'li**, imza riski) + SEO `/bunker-os`→`/crew-os` redirect (i18n namespace 5-dil rename) & `/forum`→404; guardrail: a11y=100 çift-tema/perf tabanı/CLS≈0/i18n parite regresyonsuz. Kesin faz kapsamı/sırası discuss-phase'de
-**Versiyon Sonu Durumu:** içerik_fazları
+**Versiyon Sonu Durumu:** teknik_borç
 
 <!-- Versiyon geçişlerinde güncellenir. discuss-phase versiyon sonu tespitinde bu alanı okur. -->
 <!-- Değerler: içerik_fazları | teknik_borç | senaryo_testi | prd_review_bekliyor -->
@@ -28,17 +28,17 @@
 
 ## Aktif Task
 
-**Task:** — (Faz 12 ✅ tamamlandı; yeni faz henüz girilmedi, task yok). Sıradaki adım **`discuss-phase 13`** (versiyon-sonu teknik borç kapsam tartışması — yeni oturum).
-**Durum:** Faz 12 ✅ → Adım **discuss** (sıradaki faz). Versiyon Sonu Durumu = `içerik_fazları` (discuss-phase 13 `teknik_borç`'a çeker); Aktif Versiyon v0.3.
-**İlerleme:** review-phase 12 (2026-07-03) ✅ — Faz 12 tamamlandı, milestone karşılandı, 0 düzeltme task'ı. Sıradaki = `discuss-phase 13`.
+**Task:** — (Faz 13 girildi, kapsam tartışıldı; task'lar `plan-phase 13`'te oluşturulacak). Sıradaki adım **`research-phase 13`** (teknik araştırma — yeni oturum).
+**Durum:** Faz 13 🔄 → Adım **research**. Versiyon Sonu Durumu = `teknik_borç`; Aktif Versiyon v0.3.
+**İlerleme:** discuss-phase 13 (2026-07-03) ✅ — kapsam damgalandı (TB-1 canonical+alternates + TB-2 `/forum` gap + tüm redirect denetimi + hafif tohum). Sıradaki = `research-phase 13`.
 
 ---
 
 ## Task Durumu (Aktif Faz)
 
-> **Faz 13 henüz girilmedi** — `discuss-phase 13` kapsam tartışmasını, `plan-phase 13` task'ları oluşturur. Faz 12 ✅ detayı → `phases/PHASE-12.md` + `tasks/archive/`. Faz 4–12 ✅.
+> **Faz 13 🔄 girildi** — kapsam tartışması tamam (`phases/PHASE-13.md` → Kapsam Tartışması). Task'lar `plan-phase 13`'te oluşturulur (research-phase 13 sonrası). Faz 4–12 ✅.
 
-_(Aktif task yok — faz henüz planlanmadı.)_
+_(Aktif task yok — faz planlaması research-phase 13 → plan-phase 13'te.)_
 
 ---
 
@@ -60,8 +60,8 @@ _(Henüz yok — Faz 13 task'ları çalışılmadı.)_
 
 ## Hızlı Erişim
 
-**Aktif Task:** Aktif task yok (Faz 12 ✅ kapandı; Faz 13 henüz girilmedi). Sıradaki adım **discuss-phase 13** (versiyon-sonu teknik borç, yeni oturum). Açık takip: chatbot canlı env key.
-**Aktif Faz:** Sıradaki = 13 (v0.3 versiyon-sonu teknik borç, geçici ad — discuss-phase 13 damgalar). **Faz 12 ✅** — v0.3 Living Flow nabız kapsamı (B1): tek fixed viewport canvas + parallax (Yaklaşım C), karar-gate uygula-onayla; 3 task (12.01 fixed katman → 12.02 adaptif veil → 12.03 karar-gate) + UAT 16/16 + review ✅. Faz 11 ✅ (URL taksonomisi/SEO). Faz 10 ✅ (görsel cila). v0.2 Faz 4–9 ✅ + prd-review ✅ + production release ✅. **Aktif Versiyon v0.3**, Versiyon Sonu Durumu: **içerik_fazları** → sıradaki komut `discuss-phase 13`.
+**Aktif Task:** Aktif task yok (Faz 13 🔄 girildi, kapsam tartışıldı; task'lar plan-phase 13'te). Sıradaki adım **research-phase 13** (teknik araştırma, yeni oturum). Açık takip: chatbot canlı env key.
+**Aktif Faz:** **13 🔄** — v0.3 versiyon-sonu teknik borç (SEO-metadata hijyeni): TB-1 alt-sayfa self-canonical + 5-locale hreflang alternates + TB-2 `/forum` locale gap + tüm config redirect denetimi + hafif regresyon tohumu. Faz 12 ✅ (B1 Living Flow nabız). Faz 11 ✅ (URL taksonomisi/SEO). Faz 10 ✅ (görsel cila). v0.2 Faz 4–9 ✅ + prd-review ✅ + production release ✅. **Aktif Versiyon v0.3**, Versiyon Sonu Durumu: **teknik_borç** → sıradaki komut `research-phase 13`.
 **Task Sistemi:** `tasks/TASKS-README.md`
 **PRD (karar kaynağı):** `PRD/VIZYON.md` · `PRD/VERSIONS.md` · `PRD/features/`
 **Revize Backlog (bilinen sorunlar):** `docs/REVIZE-BACKLOG.md`
@@ -69,4 +69,4 @@ _(Henüz yok — Faz 13 task'ları çalışılmadı.)_
 
 ---
 
-**Son Güncelleme:** 2026-07-03 — **review-phase 12 ✅: Faz 12 (B1 Living Flow nabız kapsamı) tamamlandı.** Karar-gate **uygula-onayla** (üç gate geçti: a11y kontrast=100 çift-tema full-motion / desktop perf 100·CLS≈0·LCP 625ms regresyonsuz / craft — light başlık bleed'i `--flow-veil` tema-flip token'ıyla çözüldü). Milestone karşılandı: nabız kapsamı uygulandı, imza güçlendi (aşağı kayan sürekli alan), reduced-motion/no-WebGL fallback + a11y=100 çift-tema + perf tabanı korundu (regresyonsuz). Mimari: tek WebGL context (shared `useFlowMode` hook = tek gerçek kaynak) + emergent adaptif veil (`FlowVeil`, 0 bölüm-dosyası dokunuşu, token-bazlı). UAT 16/16, **8 kalite ekseni (7 ✅ + 1 ⚠️ test kapsamı boşluğu** — fixed-backdrop full-motion invariant tohumu yok; WebGL runtime flaky diye bilinçle ertelendi, gelecek faz önerisi**)**, 0 düzeltme task'ı. Yeni bağımlılık/i18n anahtarı yok. v0.3 içerik fazları (10,11,12) tamam → versiyon-sonu sabit fazları gelir; Versiyon Sonu Durumu `içerik_fazları` (değişmez — discuss-phase 13 `teknik_borç`'a çeker). **Sıradaki DevFlow komutu: `discuss-phase 13`.**
+**Son Güncelleme:** 2026-07-03 — **discuss-phase 13 ✅: Faz 13 (v0.3 versiyon-sonu teknik borç — SEO-metadata hijyeni) girildi.** Adım 0 versiyon-sonu tespiti: v0.3 içerik fazları (10/11/12) ✅ + Aktif Faz/Adım dolu → Versiyon Sonu Durumu `içerik_fazları`→`teknik_borç` damgalandı. v0.3 fazlarının retrospektifleri + kayıtlı sahipli açıklar sistematik tarandı; kullanıcı "borç listesi tam" onayı verdi. **Kapsam (kullanıcı kararı):** TB-1 alt-sayfa self-canonical + 5-locale hreflang alternates (kalıcılık — tam SEO, yarım değil) + TB-2 `/forum` locale gap düzelt + **tüm** config redirect'leri locale-gap için denetle (kök çözüm) + hafif regresyon tohumu (metadata/routes-manifest assertion, WebGL-flaky değil, kümülatif test). **Kapsam-dışı/kayıtlı:** TB-3 (full-motion tohumu, WebGL flaky) · TB-4 (logical-ok RTL, geniş yüzey) · TB-5 (npm audit, next downgrade breaking); **B grubu → prd-review** (non-TR tazelik / AR-dil stratejisi / brief mobil perf — strateji/ölçüm, kod borç değil). Faz dokümanı `phases/PHASE-13.md` (Kapsam Tartışması yazıldı). **Sıradaki DevFlow komutu: `research-phase 13`.**

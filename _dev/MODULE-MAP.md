@@ -155,6 +155,9 @@ M6 (SEO/Deploy) ─────────────────────>
 | SEO3: İç link temizliği (`/bunker-os` → `/crew-os`; kırık link/çift-redirect yok) | M2 (Hero/Bunker + tüketiciler) | v0.3 | 11 | ✅ |
 | **— v0.3 Living Flow nabız kapsamı (Faz 12 — karar-gate'li imza işi; içerik/davranış değişmez) —** | | | | |
 | B1: Living Flow nabız kapsamı — kontrollü aşağı-taşıma (sürekli soluk iplik, desktop-öncelik, bölüme-uyarlanan opaklık) VEYA iptal-kaydet; imza/reduced-motion/a11y kontrast=100/perf tabanı korunur | M1 (+M2) | v0.3 | 12 | ✅ |
+| **— v0.3 versiyon-sonu teknik borç iş birimleri (Faz 13 — SEO-metadata hijyeni; içerik/tasarım/davranış/DOM değişmez) —** | | | | |
+| TB-1: Alt-sayfa self-canonical + 5-locale hreflang alternates (layout-miras `canonical="/"` giderilir; ana sayfa self-canonical korunur) | M6 (+M2) | v0.3 | 13 | 🔄 |
+| TB-2: `/forum` locale-prefix gap (`/en/forum`→404) + tüm config redirect denetimi (çıplak+prefixli iki-giriş, sessiz 404 gap yok) | M6 | v0.3 | 13 | 🔄 |
 
 **Durum simgeleri:**
 - ⬜ **Bekliyor** — Fazı henüz başlamadı
@@ -173,4 +176,4 @@ M6 (SEO/Deploy) ─────────────────────>
 
 ---
 
-**Son Güncelleme:** 2026-07-03 — review-phase 12: B1 (Living Flow nabız kapsamı) Durum 🔄→**✅** (karar-gate uygula-onayla; üç gate geçti, milestone karşılandı, UAT 16/16, 0 düzeltme). v0.3 içerik fazları bitti; sıradaki versiyon-sonu teknik borç fazı (discuss-phase 13).
+**Son Güncelleme:** 2026-07-03 — discuss-phase 13: v0.3 versiyon-sonu teknik borç iş birimleri eklendi — TB-1 (alt-sayfa self-canonical + 5-locale hreflang alternates) + TB-2 (`/forum` locale gap + tüm config redirect denetimi), Faz 13, Durum 🔄. SEO-metadata hijyeni; içerik/tasarım/davranış/DOM değişmez.
