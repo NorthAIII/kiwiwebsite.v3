@@ -1,6 +1,6 @@
 # TASK-14.02: S5 + S6-render — Taksonomi/Dürüstlük & non-TR Render Bütünlüğü
 
-**Durum:** ⬜ Bekliyor
+**Durum:** ✅ Tamamlandı
 **Modül:** M2 Sayfalar (+M4 i18n) (modules/M2-Sayfalar-Bolumler.md, M4-i18n.md)
 **Feature:** S5 (taksonomi & dürüstlük) + S6-render (non-TR render bütünlüğü) senaryo grupları — doğrulama
 **Faz:** Phase 14 (phases/PHASE-14.md)
@@ -29,22 +29,22 @@ Prerender HTML (`.next/server/app/**/*.html`) üzerinde **görünür metni** gre
 
 ## Alt Görevler
 
-- [ ] **1. Prerender çıktısını topla**
+- [x] **1. Prerender çıktısını topla**
   - `.next/server/app/**/*.html` (TASK-14.01 build'inden); yoksa `npm run build`. Görünür metin için script/style/SVG-attr strip et (grep öncesi ham HTML yanıltır)
   - 6 sayfa × 5 dil = 30 prerender dosyasını konumla (TR prefixsiz app dizininde, EN/AR/DE/ES `[locale]` altında)
 
-- [ ] **2. S5 — Taksonomi tutarlılığı**
+- [x] **2. S5 — Taksonomi tutarlılığı**
   - **"Crew OS"** görünür metinde var mı (ana sayfa teaser + `/crew-os` showcase, 5 dil)
   - **"Bunker"** görünür metinde/URL'de **0 kez** (kod-adı kalıntısı `#bunker` anchor `id`/`href` sızıntısı hariç değil — render edilen **görünür metni** denetle; `id="bunker"` görünür değil, ama görünür başlık/CTA'da "Bunker" olmamalı)
   - Yasak metafor (doktor/teşhis/hekim/reçete), uydurma sonuç-sayısı, sahte "● online/canlı" presence-tiyatrosu yok (gerçek-canlı ürün dürüst göstergesi meşru — niyet-bazlı)
 
-- [ ] **3. S6-render — non-TR bütünlük**
+- [x] **3. S6-render — non-TR bütünlük**
   - 30 sayfa-locale prerender'da **0 `MISSING_MESSAGE`** (next-intl eksik anahtar render'da bu string'i basar)
   - AR sayfalarında `dir="rtl"` + gerçek Arapça glif (mojibake/boş değil)
   - namespace `bunker`→`crew` 5-dil senkron (Faz 11 SEO2): crew namespace anahtarları 5 dilde render ediliyor, eski `bunker` namespace kalıntısı render'a sızmıyor
   - Bilinçli-stale non-TR (ar/de/es İngilizce/eski-metin kopya) **görünür kopukluk** (yarım cümle, boş alan, karışık-dil paragraf) yaratıyor mu — yaratıyorsa triyaj; *kalite* (stale'in kendisi) out-of-scope
 
-- [ ] **4. Triyaj & kayıt**
+- [x] **4. Triyaj & kayıt**
   - Kapsam-içi bug (görünür "Bunker" sızıntısı, MISSING_MESSAGE, kopuk non-TR render) → düzeltme task'ı önerisi
   - Kapsam-dışı: non-TR içerik tazeliği (ar/de/es stale) → sahipli record-not-fix (versiyon-sınırı, prd-review B grubu). Leak metriği (non-TR sayfa TR%'i) kaydedilir ama TR-leak yoksa bug değil
 
@@ -74,35 +74,47 @@ _dev/
 
 ## Test Kriterleri
 
-- [ ] 30 sayfa-locale prerender tarandı (görünür metin strip'li)
-- [ ] "Crew OS" görünür metinde var (home + /crew-os, 5 dil); "Bunker" görünür metin/URL'de **0**
-- [ ] Yasak metafor / uydurma-sayı / sahte-online **yok**
-- [ ] 30/30 sayfa-locale **0 MISSING_MESSAGE**; AR `dir=rtl` + Arapça glif; namespace crew senkron
-- [ ] Bilinçli-stale non-TR görünür kopukluk yaratmıyor (yaratıyorsa triyaj); bulgular PHASE-14 + task doc'a yazıldı
+- [x] 30 sayfa-locale prerender tarandı (görünür metin strip'li)
+- [x] "Crew OS" görünür metinde var (home + /crew-os, 5 dil); "Bunker" görünür metin/URL'de **0**
+- [x] Yasak metafor / uydurma-sayı / sahte-online **yok**
+- [x] 30/30 sayfa-locale **0 MISSING_MESSAGE**; AR `dir=rtl` + Arapça glif; namespace crew senkron
+- [x] Bilinçli-stale non-TR görünür kopukluk yaratmıyor (yaratıyorsa triyaj); bulgular PHASE-14 + task doc'a yazıldı
 
 ---
 
 ## Tamamlanma Kriterleri
 
-- [ ] Tüm alt görevler tamamlandı
-- [ ] Tüm test kriterleri karşılandı
-- [ ] Git commit & push yapıldı
-- [ ] Bu doküman güncellendi (oturum kaydı)
-- [ ] DURUM.md güncellendi
+- [x] Tüm alt görevler tamamlandı
+- [x] Tüm test kriterleri karşılandı
+- [x] Git commit & push yapıldı
+- [x] Bu doküman güncellendi (oturum kaydı)
+- [x] DURUM.md güncellendi
 
 ---
 
 ## Oturum Kayıtları
 
-### Oturum — [TARİH]
+### Oturum — 2026-07-03
 
-**Durum:** [✅/🔄/⏸️]
+**Durum:** ✅ Tamamlandı
 
 **Yapılanlar:**
-- [doldur]
+- TASK-14.01 build çıktısı (`.next/server/app/**`, BUILD_ID `Im6OiYfj`) kullanıldı — 30 prerender HTML (6 sayfa × 5 dil) konumlandı; ayrıca `_not-found.html`. Python görünür-metin çıkarıcı (`<script>`/`<style>` blokları söküldü, tüm tag'ler kaldırıldı → yalnız text node'lar; attribute'lar — `id`/`href`/`class` — tag içinde kaldığı için otomatik düştü).
+- **S5.1** "Crew OS" görünür metin: home ×7 + `/crew-os` ×5, **5 dilin hepsinde** var (10/10 sayfa).
+- **S5.2** "Bunker" görünür metin: **30 sayfada 0**. href taraması: yalnız `#bunker` anchor (5 home sayfası) — kod-adı kalıntısı, kapsam izin veriyor (Kapsam Dışı: `#bunker` anchor iç ad); eski `/bunker-os` route href'i **0**.
+- **S5.3** Yasak metafor (doktor/teşhis/hekim/reçete + EN/DE/ES çevirileri): **0**.
+- **S5.4** online/canlı/live sinyalleri: yalnız **dürüst canlı göstergeler** (Alpfit gerçekten canlı → "Canlı — Alpfit", "Canlı demo", "Crew OS canlı", "live occupancy" ürün-özelliği; 5 dil). Sahte "● online" presence-tiyatrosu **yok** (niyet-bazlı meşru, DECISIONS 2026-06-28).
+- **S6.1** `MISSING_MESSAGE` (ham HTML, 30 sayfa-locale): **0**.
+- **S6.2** AR: 6 sayfanın hepsinde `dir="rtl"` + `lang="ar"` + gerçek Arapça glif (home 2441, crew-os 807, alt-sayfalar 76–97 = çevrilmiş chrome/nav; mojibake yok).
+- **S6.3** namespace `bunker`→`crew` 5-dil senkron: Crew OS 5 dilde render + 0 MISSING → crew namespace senkron, eski bunker namespace render'a sızmıyor.
+- **S6.4** non-TR TR-leak: **0** (TR-marker taraması hiçbir non-TR sayfada >2 vermedi). Stale non-TR alt sayfalar (ar/de/es × spor/vaka/2-bülten) örneklendi → **tutarlı İngilizce-stale** (çevrilmiş chrome + İngilizce gövde), yarım cümle/boş alan/karışık-kopuk paragraf **yok**.
+- `/tr/` iç-link sızıntısı: 30 sayfada **0** (TR prefixsiz — Dikkat Notu teyidi).
 
 **Bulgular / Triyaj:**
-- [Kapsam-içi bug: var/yok; sahipli kayıtlar]
+- **Kapsam-içi bug: YOK.** Taksonomi (S5) tutarlı, non-TR render bütünlüğü (S6) sağlam.
+- **Sahipli kayıt (record-not-fix, versiyon-sınırı → prd-review B grubu):** ar/de/es 4 alt sayfa (spor/vaka/2 bülten) İngilizce-stale — görünür kopukluk yaratmıyor (chrome yerelleştirilmiş, gövde tutarlı İngilizce). Faz 9 emsali birebir korunur, yeniden litige edilmedi. Kalite (stale'in kendisi) kapsam-dışı.
+
+**Test:** görünür-metin denetim scripti 30/30 sayfa-locale (tüm test kriterleri ✅). `next build` gerekmedi (TASK-14.01 çıktısı taze/geçerli).
 
 **Kaynak kod değişmedi** (doğrulama fazı).
 
