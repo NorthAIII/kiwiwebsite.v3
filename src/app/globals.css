@@ -25,6 +25,13 @@
 
 :root {
   color-scheme: light;
+  /* FlowVeil readability wash over the fixed Living Flow field (B1 / TK3).
+     Stronger in light: dark ink headings compete with the mid-green pulses over
+     cream, so the below-hero heading bands need a firmer wash to keep "text always
+     wins". Flips via html.dark below (NOT a `dark:` variant — that binds to
+     prefers-color-scheme, which desyncs from the app toggle; memory:
+     tema-fix-html-dark-token-flip). Resolves against the per-theme --color-canvas. */
+  --flow-veil: color-mix(in srgb, var(--color-canvas) 70%, transparent);
 }
 
 /* Dark theme — light is default; this is the opt-in alternative.
@@ -41,6 +48,9 @@ html.dark {
   --color-pulse: #8af28a;
   --color-pulse-ink: #1f7a3d;
   --color-line: rgba(242, 241, 232, 0.12);
+  /* Dark keeps the lighter wash: the glowing pulses read as ambient depth over the
+     near-black ground (no heading bleed), so 56% preserves the premium look. */
+  --flow-veil: color-mix(in srgb, var(--color-canvas) 56%, transparent);
 }
 
 body {

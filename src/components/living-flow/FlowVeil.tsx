@@ -9,9 +9,14 @@
 // Adaptive by construction: this uniform wash is the baseline; sections that already
 // carry a translucent background (`bg-canvas-deep/40` — Sektörler, Forum, Credibility)
 // dim the field further where the copy is densest, while the "breathing" transparent
-// sections keep more of it. Opaque panels (`bg-ink`) cover it outright. Uses the same
-// token-based `color-mix(--color-canvas)` pattern as `FlowScrim`, so it flips with the
-// theme automatically — no `dark:` variant (project themes via `html.dark` + token flip).
+// sections keep more of it. Opaque panels (`bg-ink`) cover it outright.
+//
+// Strength is theme-aware via the `--flow-veil` token (globals.css): firmer in light
+// (dark headings compete with mid-green pulses over cream), lighter in dark (pulses
+// read as ambient depth, no bleed). The token flips with `html.dark` + resolves the
+// per-theme `--color-canvas` — no `dark:` variant (memory: tema-fix-html-dark-token-flip).
+// Fades in from transparent over the first 160px so there is no hard brightness seam
+// where the hero (full intensity, unveiled) meets the first section.
 export default function FlowVeil() {
   return (
     <div
@@ -19,7 +24,7 @@ export default function FlowVeil() {
       className="pointer-events-none absolute inset-0 z-0"
       style={{
         background:
-          "linear-gradient(to bottom, transparent 0, color-mix(in srgb, var(--color-canvas) 56%, transparent) 160px, color-mix(in srgb, var(--color-canvas) 56%, transparent) 100%)",
+          "linear-gradient(to bottom, transparent 0, var(--flow-veil) 160px, var(--flow-veil) 100%)",
       }}
     />
   );

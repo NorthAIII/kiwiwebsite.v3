@@ -1,6 +1,6 @@
 # TASK-12.03: Karar-gate doğrulama — kontrast=100 + desktop perf 100/CLS 0 + craft → uygula VEYA iptal-kaydet
 
-**Durum:** ⬜ Bekliyor
+**Durum:** ✅ Tamamlandı — **uygula-onayla** (+ light-veil craft ince-ayarı)
 **Modül:** M1 (+M6 perf ölçüm) — Living Flow & Tasarım Sistemi
 **Feature:** B1 — Living Flow nabız kapsamı (aşağı-taşıma) — kabul gate'i
 **Faz:** Phase 12 (phases/PHASE-12.md)
@@ -138,9 +138,25 @@ src/components/living-flow/   # YALNIZCA iptal-kaydet ise: 12.01/12.02 rollback;
 
 ## Oturum Kayıtları
 
-### Oturum — [TARİH]
+### Oturum — 2026-07-03
 
-**Durum:** [doldurulacak]
+**Durum:** ✅ Tamamlandı — karar: **uygula-onayla + light-veil craft ince-ayarı**
+
+**Yapılanlar:**
+- **Ortam:** taze devcontainer'da node 20.20.2 + Chrome 150 + LH 13.3.0 + axe-core 4.12.1 hazır (kurulum gerekmedi), loadavg ≤2.5 (düşük). Taze prod build (`rm -rf .next && next build`, temiz) → `next start -p 4173` (listening-PID teyit). TR `/` (`NEXT_LOCALE=tr`), full-motion.
+- **Gate-1 (a11y kontrast full-motion çift-tema):** `channel:'chrome'`+swiftshader Playwright/axe script'i (bundled chromium WebGL vermez → memory) — alan **iki temada da live** (fixed z-0 canvas mount teyitli), **0 WCAG-AA ihlali** (light+dark). Lighthouse a11y **100** (dark, full-motion). Caveat: alan-üstü ~15 öğe axe `color-contrast` *incomplete* (WebGL pikseli okunamaz → craft görsel teyidi devreye girer). Fallback: reduced-motion axe 0 ihlal (static teyitli). → **PASS**
+- **Gate-2 (desktop perf/CLS):** çok-koşu Lighthouse — perf **100** (tümü), CLS **≈3.75e-6 (≈0)**, LCP **~625ms**. Baseline `home-desktop-20260628` (100/689/0) ile **regresyonsuz**. Perf hipotezi (fixed = ~sıfır artımlı, tek context) doğrulandı; deterministik LCP/CLS baseline'la birebir → aynı-ortam before/after gerekmedi. → **PASS**
+- **Gate-3 (craft son hakem):** full-motion kareler (light/dark × 5 bölüm) çekildi, artifact kontak-sayfası kullanıcıya sunuldu. Dark kusursuz; light Hero-altı başlık bantlarında bleed (restraint sınırı). Kullanıcı kararı: **uygula + light-veil ince-ayar.**
+- **Craft ince-ayar (uygulandı):** `FlowVeil` sabit `color-mix(--color-canvas 56%)` → tema-flip eden `--flow-veil` token'ı (`globals.css` `:root` %70 / `html.dark` %56). `dark:` variant DEĞİL (memory `tema-fix-html-dark-token-flip`). Rebuild + re-ölçüm: light bleed görsel azaldı, dark birebir aynı, Gate-1 axe 0 ihlal + Gate-2 perf 100 tuned build üzerinde re-teyit.
+- **Kayıt:** `DECISIONS.md` (B1 uygula-onayla + ölçümler), `docs/perf/home-desktop-20260703-faz12.{html,json}` + `perf/README.md` Faz 12 bölümü.
+
+**Değişen dosyalar:** `src/app/globals.css` (`--flow-veil` token, light %70 / dark %56), `src/components/living-flow/FlowVeil.tsx` (token kullanımı) + doküman/artefakt.
+
+**Son Yaklaşım:** Karar-gate iki hard gate (a11y, perf) temiz geçince, tek craft gerilimini (light başlık bleed'i) tema-özel CSS-only token ile çözdü; iptal yerine kontrollü uygulama.
+
+**Sonraki Adım Detayı:** Fazdaki tüm task'lar (12.01/12.02/12.03) ✅ → sıradaki adım **`/devflow:verify-phase 12`** (uçtan-uca senaryo UAT: reduced-motion, mobil Hero-only, 5-dil, chatbot). MODULE-MAP B1 satırı review-phase'de ✅'ye döner.
+
+**Test Kriterleri:** Tümü karşılandı — Gate-1/2/3 ölçüldü+kaydedildi, karar `DECISIONS.md`'de, perf artefaktı + README güncel, uygula tarafı için `home-a11y` reduced-motion 0 ihlal + `i18n-parity` (vitest 7/7) + build temiz.
 
 ---
 

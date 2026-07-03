@@ -112,7 +112,7 @@ Sürekli iplik şunlardan **birini** koruyamıyorsa → P2 (Faz 6) emsali gibi *
 |---|------|-------|----------|
 | 12.01 | TASK-12.01 | ✅ Tamamlandı | Fixed viewport Living Flow katmanı + Hero koordinasyon (TK1/TK2): desktop-high-power'da alan sayfa-seviyesi fixed katmana taşınır, tek WebGL context, Hero görsel birebir aynı, mobil/reduced/no-WebGL fallback aynen |
 | 12.02 | TASK-12.02 | ✅ Tamamlandı | Bölüme-uyarlanan okunabilirlik / adaptif scrim (TK3): `FlowVeil` (YENİ, token-bazlı %56 canvas washi, içerikle scroll eden main-içi wrapper — fixed backdrop hero/bölüm ayrımı yapamaz); adaptasyon emergent (transparent görünür / `/40` soluk / opak örter); bölüm dosyalarına dokunulmadı; build+a11y+i18n yeşil |
-| 12.03 | TASK-12.03 | ⬜ Bekliyor | Karar-gate: kontrast=100 çift-tema (full-motion) + desktop perf 100/CLS 0 + craft inceleme → **uygula-onayla VEYA iptal-kaydet** (DECISIONS + perf artefaktı) |
+| 12.03 | TASK-12.03 | ✅ Tamamlandı | Karar-gate → **uygula-onayla** (+ light-veil craft ince-ayarı): Gate-1 a11y 0 ihlal çift-tema full-motion · Gate-2 desktop perf 100/CLS 0 regresyonsuz · Gate-3 craft (dark kusursuz, light bleed `--flow-veil` %70 ile çözüldü). DECISIONS 2026-07-03 + `perf/home-desktop-20260703-faz12` |
 
 **Durum simgeleri:** ⬜ Bekliyor | 🔄 Devam ediyor | ⏸️ Duraklatıldı | ✅ Tamamlandı | 🔴 Bloke | ❌ İptal
 
@@ -171,4 +171,4 @@ Sürekli iplik şunlardan **birini** koruyamıyorsa → P2 (Faz 6) emsali gibi *
 ---
 
 **Oluşturulma:** 2026-07-02
-**Son Güncelleme:** 2026-07-03 — run-task 12.02 ✅: adaptif okunabilirlik veil'i (`FlowVeil` YENİ, token-bazlı %56 canvas washi, içerikle scroll eden main-içi wrapper; fixed backdrop hero/bölüm ayrımı yapamadığı için veil fixed katmanda DEĞİL). Adaptasyon emergent (transparent görünür / `/40` soluk / opak örter); bölüm dosyalarına dokunulmadı. Test: build temiz + a11y tohumu light+dark 0 ihlal + i18n parite 5/5 + iki-tema SwiftShader görsel (metin okunur, imza korunur). Kesin kontrast=100 + craft son-hakemliği → 12.03 gate.
+**Son Güncelleme:** 2026-07-03 — run-task 12.03 ✅: karar-gate **uygula-onayla** (+ light-veil craft ince-ayarı). Üç gate: Gate-1 full-motion a11y 0 WCAG-AA ihlali çift-tema (alan live teyitli) + LH a11y 100 dark; Gate-2 desktop perf 100 / CLS ≈0 / LCP ~625ms regresyonsuz (perf hipotezi doğrulandı, tek context); Gate-3 craft (dark kusursuz; light başlık bleed'i `--flow-veil` tema-flip token'ıyla çözüldü — light %70/dark %56, `dark:` değil `html.dark` flip). Fazdaki tüm task'lar ✅ → sıradaki **verify-phase 12**. Detay → DECISIONS 2026-07-03, `docs/perf/README.md` Faz 12.

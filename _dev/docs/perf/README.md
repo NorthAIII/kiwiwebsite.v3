@@ -1,6 +1,6 @@
 # Perf Taban Kayıtları — Ana Sayfa Lighthouse
 
-Ana sayfa Lighthouse perf/a11y tabanları. Ölçüm **yerel production build** üzerinde (`next build && next start`); revize branch canlıya deploy olmuyor (kiwiailab.com eski kodu yansıtır) → bu "yerel taban". İlk taban: **v0.1, 2026-06-28** (TASK-2.03 / Phase 2). En güncel ölçüm: **v0.2 / Faz 9, 2026-07-02** (TASK-9.04; versiyon-sonu senaryo testi S8-Lighthouse re-teyit — kaynak kod değişmedi, 6/6 dark kanonik Lighthouse a11y=100 + 12/12 gerçek light/dark axe 0 ihlal + perf korunan taban regresyonsuz; aşağıda **Faz 9 / TASK-9.04** bölümü). Bir önceki: v0.2 / Faz 7 (TASK-7.02; Umami before/after, regresyon yok).
+Ana sayfa Lighthouse perf/a11y tabanları. Ölçüm **yerel production build** üzerinde (`next build && next start`); revize branch canlıya deploy olmuyor (kiwiailab.com eski kodu yansıtır) → bu "yerel taban". İlk taban: **v0.1, 2026-06-28** (TASK-2.03 / Phase 2). En güncel ölçüm: **v0.3 / Faz 12, 2026-07-03** (TASK-12.03; B1 Living Flow aşağı-taşıma karar-gate — desktop perf 100 / CLS 0 regresyonsuz + full-motion a11y 0 ihlal çift-tema; aşağıda **Faz 12 / TASK-12.03** bölümü). Bir önceki: v0.2 / Faz 9, 2026-07-02 (TASK-9.04; versiyon-sonu senaryo testi S8-Lighthouse re-teyit — 6/6 dark kanonik a11y=100 + 12/12 light/dark axe 0 ihlal + perf korunan taban regresyonsuz).
 
 > ⚠️ **İki kanonik-koşu tuzağı (Faz 4 TASK-4.01/4.08 düzeltmeleri — okumadan ölçme):**
 > 1. **Ölçülen-locale:** Cookie'siz kanonik koşu Chrome `Accept-Language` ile `/` → **`/en`**'e redirect olur (next-intl `localeDetection`). v0.1 tabanı bu yüzden "TR `/`" değil, aslında **`/en`**'i ölçtü (artifact `finalUrl=/en` ile kanıtlı). **TR varsayılan** sayfasını ölçmek için `NEXT_LOCALE=tr` cookie şart (Lighthouse `--extra-headers='{"Cookie":"NEXT_LOCALE=tr"}'`). TR `/` sayfası `/en`'den **ağırdır** (hero metni daha uzun) — perf/LCP/FCP farkı buradan gelir, regresyon değil.
@@ -12,6 +12,7 @@ Kanonik artefaktlar:
 - **v0.2/Faz 6 TASK-6.01 (2026-06-30)** — `home-mobile-20260630-lcp.json` (TR `/`, **element-denetimli**: LCP elementi `lcp-breakdown-insight`'tan okunabilir). Ölçüm ortamı Chrome 150 + **ağır** SwiftShader → perf/TBT şişkin (perf 62 / TBT 1842ms), LCP/FCP/CLS yine deterministik. **Bu ortam anomaliydi** (TASK-6.07 temsilî ortamı baseline'ı perf 84 / TBT 261ms ile ölçtü, Faz-4 ile birebir — 6.01/6.04 SwiftShader yükü 6.07'de tekrarlanmadı).
 - **v0.2/Faz 6 final TASK-6.07 (2026-06-30)** — **kanonik:** `home-{mobile,desktop}-20260630-faz6.{html,json}` (TR `/`, L1+L2+L3, element-denetimli, median-LCP koşu). Attribution kanıtı (json): `home-mobile-20260630-faz6-baseline.json` (aynı-ortam lever-öncesi baseline = Faz-4 birebir) + `home-mobile-20260630-faz6-l1l2only.json` (L1+L2 tek başına = delta yok). Bu artefaktlar Faz-4 kanonik `home-*-20260630.{html,json}` dosyalarını **korur** (üzerine yazmaz).
 - **v0.2/Faz 7 TASK-7.02 (2026-07-01)** — **kanonik (after=Umami'li):** `home-{mobile,desktop}-20260701-faz7.{html,json}` (TR `/`, Umami entegrasyonu HEAD, temsilî-median koşu; network-requests audit'inde `umami.kiwiailab.com` isteği **var** = script fiilen yüklendi). Attribution kanıtı (json, aynı-ortam before=Umami'siz): `home-{mobile,desktop}-20260701-faz7-before.json` (`layout.tsx` f065700'e döndürülüp yeniden build; umami isteği **yok**). Faz-6 kanonik dosyalarını korur.
+- **v0.3/Faz 12 TASK-12.03 (2026-07-03)** — **kanonik:** `home-desktop-20260703-faz12.{html,json}` (TR `/`, B1 aşağı-taşıma shipped kod = fixed viewport canvas + adaptif veil + light-veil ince-ayarı, full-motion, çok-koşu). Karar-gate: desktop perf 100 / CLS ≈0 / LCP ~625ms — v0.1 desktop tabanı (`home-desktop-20260628`) ile regresyonsuz. Faz-7 kanonik dosyalarını korur.
 
 ---
 
@@ -295,6 +296,40 @@ v0.2 versiyon-sonu **senaryo testi** guardrail'i (S8): kaynak kod **değişmedi*
 - **LCP/FCP/CLS (Lantern-deterministik, ortamlar arası kıyaslanabilir) korunan tabanla eşit:** mobil LCP 3171 ≈ Faz-6/7 taban 3164 ms; FCP 1516 ≈ 1506 ms; masaüstü LCP 629 ≤ 0.69 s; CLS=0 her yerde. LCP elementleri değişmedi (hero metni her iki preset). **Regresyon yok.**
 - **perf 65 / TBT ~2000ms = ağır-SwiftShader ortam anomalisi** (TASK-6.01 perf 62/TBT 1842 ile birebir; software-GL main-thread şişkinliği) — memory gereği **ortamlar arası kıyaslanamaz, regresyon sinyali değil**. Bu devcontainer 6.01'in ağır-SwiftShader varyantı (6.07 temsilî ortamın perf 90'ı değil).
 - **Brief mobil perf açığı record-not-fix (TK7):** mobil LCP 3171ms > brief <2.5s; kök neden CPU-bound WebGL (gerçek-cihaz duvarı, DECISIONS 2026-06-30). Senaryo testte kaydedildi, düzeltilmedi.
+
+---
+
+## v0.3 / Faz 12 — TASK-12.03: B1 Living Flow aşağı-taşıma karar-gate (2026-07-03)
+
+Living Flow'un fixed viewport canvas'a taşınması (12.01) + adaptif veil (12.02) + light-veil craft ince-ayarı (12.03) **shipped kod** üzerinde karar-gate ölçümü. Ortam: node 20.20.2 + Chrome 150 + LH 13.3.0 + axe-core 4.12.1, flags `--headless=new --no-sandbox --disable-dev-shm-usage --enable-unsafe-swiftshader`. Taze prod build (`rm -rf .next && next build` → `next start -p 4173`, listening-PID teyit), düşük yük (load 1.3–2.5), TR `/` (`NEXT_LOCALE=tr`, finalUrl `/` teyit), **full-motion** (alan gerçekten render ederken — reduced-motion tohumu alanı gizler → onun kontrast etkisini ölçmez, karar-gate full-motion şart).
+
+### Gate-2 — desktop perf 100 / CLS 0 (tuned build, çok-koşu)
+
+| Preset (TR `/`) | perf (koşular → temsilî) | a11y | LCP | FCP | CLS | TBT | Verdi |
+|---|---|---|---|---|---|---|---|
+| Masaüstü | 100/100/100/100 → **100** | 100 (dark) | ~625 ms (620–631) | ~334 ms | **≈3.75e-6 (≈0)** | ~0–12 ms | taban ✓ regresyonsuz |
+
+- **Baseline kıyası:** `home-desktop-20260628` (v0.1) = perf 100 / LCP 689ms / CLS 0. Tuned build = perf 100 / LCP ~625ms / CLS ≈0 → **regresyon yok** (LCP hafif daha iyi, gürültü bandında). LCP/CLS Lantern-deterministik → ortamlar arası kıyaslanabilir; desktop perf tarihsel olarak her ortamda stabil 100.
+- **Perf hipotezi doğrulandı:** araştırma "canvas zaten `frameloop=always` render ettiğinden fixed'e almak artımlı GPU maliyetini ~sıfıra yaklaştırır" dedi → tek WebGL context korundu (Hero `high`'da canvas suppress, FlowBackdrop tek fixed canvas), deterministik metrikler baseline'a eşit → **aynı-ortam before/after gerekmedi**. Light-veil ince-ayarı CSS-only (`--flow-veil` token) → ince-ayar öncesi/sonrası desktop perf 100 birebir (sıfır perf maliyeti).
+- **Mobil kapsam-dışı (tasarım gereği):** aşağı-taşınan alan yalnız `high` modda mount eder; mobil/low-power (`low`) Hero-contained kalır → fixed alan mobilde hiç render etmez, mobil taban değişmez (discuss: perf tabanına sıfır risk). Ölçülmedi (alan yok + SwiftShader mobil env-anomali).
+
+### Gate-1 — a11y kontrast çift-tema (full-motion, alan render ederken)
+
+`channel:'chrome'`+swiftshader Playwright/axe (bundled chromium WebGL vermez → memory `playwright-bundled-chromium-webgl-yok`); desktop viewport (1350px → `high` mod), `localStorage.theme` seed (FOUC), full-motion.
+
+| Koşu | Alan live | WCAG-AA ihlal | color-contrast ihlal | Not |
+|---|---|---|---|---|
+| Light full-motion | ✓ (fixed z-0 canvas) | **0** | 0 | ~82 öğe `color-contrast` *incomplete* |
+| Dark full-motion | ✓ | **0** | 0 | ~81 öğe *incomplete* |
+| Light reduced (fallback) | — (static) | **0** | 0 | 67 *incomplete* (alan yok) |
+| Dark reduced (fallback) | — (static) | **0** | 0 | 67 *incomplete* |
+
+- **Lighthouse a11y 100** (dark kanonik, full-motion) — alan mount ederken bile.
+- **`incomplete` nüansı (dürüst kayıt):** full-motion'da alan-üstü ~15 fazla öğe axe `color-contrast` *incomplete* verir (WebGL piksellerini axe algoritması **okuyamaz** → ne pass ne violation, "manuel incele"). Bu, otomatik aracın WebGL-arkası-metin için **yapısal sınırı**; ihlal değil (Lighthouse `incomplete`'i skora saymaz → a11y=100). Gerçek okunabilirlik teyidi bu yüzden **craft görsel** (Gate-3) işidir; FlowVeil washi tam bunu güvenceye alır. reduced-motion tabanında (67) da mevcut → gradient/translucent tasarımın önceki sınırı, Faz 12'ye özgü değil.
+
+### Gate-3 — craft (karar: uygula + light-veil ince-ayarı)
+
+Full-motion kareler (light/dark × 5 bölüm, SwiftShader) incelendi. Dark: parlayan yeşil = koyu zeminde ambient derinlik, premium (bleed yok). Light: Hero-altı başlık bantlarında en parlak nabız karelerinde metinle yarışma (restraint sınırı). **Craft ince-ayar:** `FlowVeil` tema-flip `--flow-veil` token'ı — light %70 (başlık okunabilirliği netleşir), dark %56 korunur. İnce-ayar sonrası görsel doğrulandı: light bleed azaldı (nabızlar soluklaştı, süreklilik korundu), dark birebir aynı. **Karar: uygula-onayla** (DECISIONS 2026-07-03).
 
 ---
 

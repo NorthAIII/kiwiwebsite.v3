@@ -9,6 +9,25 @@
 
 <!-- Her yeni karar aşağıdaki formatta en üste eklenir (en yeni en üstte) -->
 
+### 2026-07-03 — B1 Living Flow aşağı-taşıma: karar-gate **uygula-onayla** (+ light-veil craft ince-ayarı); üç gate geçti (Faz 12)
+
+**Bağlam:** Faz 12 (v0.3, B1 Living Flow nabız kapsamı) karar-gate'i (TASK-12.03). 12.01 (fixed viewport canvas + Hero koordinasyon) + 12.02 (adaptif okunabilirlik veil'i) uygulandıktan sonra, fazın üç korunan-taban kriteri **shipped kod üzerinde** ölçüldü ve uygula/iptal-kaydet kararı verildi (P2/Faz 6 emsali). Ölçüm ortamı: node 20.20.2 + Chrome 150 + Lighthouse 13.3.0 + axe-core 4.12.1 + SwiftShader; taze prod build; TR `/` (`NEXT_LOCALE=tr`); loadavg ≤2.5; full-motion (alan gerçekten render ederken — reduced-motion tohumu alanı gizler, onun kontrast etkisini ölçmez).
+
+**Gate ölçümleri:**
+1. **a11y kontrast=100 çift-tema (full-motion):** `channel:'chrome'`+swiftshader Playwright/axe — alan **iki temada da live** (fixed z-0 canvas mount teyitli), **0 WCAG-AA ihlali** (light+dark). Lighthouse a11y **100** (dark kanonik, full-motion). Dürüst caveat: alan-üstü ~15 metin öğesi axe `color-contrast` **incomplete** (WebGL piksellerini algoritma okuyamaz → otomatik sertifika değil, ihlal de değil) → bu tam da craft görsel-teyidin (Gate-3) devreye girdiği yer; FlowVeil washi bu yüzden var. Fallback: reduced-motion axe 0 ihlal (static fallback teyitli).
+2. **desktop perf 100 / CLS 0:** perf **100** (çok-koşu, shipped tuned build), CLS **≈3.75e-6 (≈0)**, LCP **~625ms**, TBT ~0-12ms. Baseline `home-desktop-20260628` (perf 100 / LCP 689ms / CLS 0) ile **regresyonsuz**. Araştırma hipotezi ("canvas zaten `frameloop=always` render ettiğinden fixed'e almak artımlı GPU maliyetini ~sıfıra yaklaştırır") **doğrulandı**: tek WebGL context korundu, LCP/CLS (Lantern-deterministik, ortamlar arası kıyaslanabilir) baseline'la birebir → aynı-ortam before/after gerekmedi (desktop perf tarihsel olarak her ortamda stabil 100 + deterministik metrikler baseline'a eşit). Artefakt: `docs/perf/home-desktop-20260703-faz12.{html,json}`.
+3. **craft görsel inceleme (son hakem):** full-motion kareler (light/dark × 5 bölüm) incelendi. **Dark: kusursuz** (parlayan yeşil = koyu zeminde ambient derinlik, premium imza). **Light:** Hero-altı **başlık bantlarında** (Sektörler / Crew OS) en parlak nabız karelerinde metinle görsel yarışma (restraint sınırında; gövde metni temiz, metin okunur). Bu, plan'ın craft'a bıraktığı **açık uç** (bölüm-başı opaklık tavanı).
+
+**Seçenekler (craft son hakem, kullanıcıya getirildi):** (1) uygula-onayla olduğu gibi · (2) **uygula + light-veil craft ince-ayarı** · (3) iptal-kaydet (rollback).
+
+**Karar:** Seçenek 2 — **uygula-onayla + light-veil ince-ayarı.** `FlowVeil` sabit `color-mix(--color-canvas 56%)` yerine tema-flip eden `--flow-veil` token'ı: **light %70** (Hero-altı başlık bandı okunabilirliği netleşir), **dark %56 korunur** (premium görünüm dokunulmaz). Token `html.dark` ile flip eder (`dark:` variant DEĞİL — o `prefers-color-scheme`'e bağlı, app toggle'ıyla desync; `memory/tema-fix-html-dark-token-flip`). Değişiklik CSS-only, sıfır perf maliyeti (tuned build perf 100 birebir).
+
+**Gerekçe:** İki hard gate (a11y, perf) temiz geçti; craft üst eksen (ILKELER #1) ve etki kullanıcının discuss-phase'de seçtiği "beğenilen etki" (aşağı kayan yeşil nabızlar) — iptal gerektirmiyor. Tek gerilim (light başlık bleed'i) düşük-riskli, tema-özel, CSS-only bir craft dokunuşuyla çözüldü: light'ta metin daha kararlı kazanır, süreklilik/imza korunur, dark'ın premium görünümü hiç değişmez. İnce-ayar sonrası görsel doğrulandı (light bleed azaldı, dark birebir aynı), Gate-1 axe 0 ihlal + Gate-2 perf 100 tuned build üzerinde re-teyit edildi. iptal-kaydet yerine kontrollü uygulama = kalıcılık + craft dengesi.
+
+**İlgili Task/Faz:** Faz 12 (TASK-12.01–12.03); milestone "uygulandı VEYA iptal-kaydedildi → **uygulandı**" tarafıyla kapandı. Uçtan-uca senaryo UAT'ı (reduced-motion, mobil Hero-only, 5-dil, chatbot) → `verify-phase 12`. MODULE-MAP B1 satırı review-phase'de ✅. Detay/ölçüm metodolojisi → `phases/PHASE-12.md`, `docs/perf/README.md` (Faz 12 bölümü).
+
+---
+
 ### 2026-07-02 — `/bunker-os` → public `/crew-os` route rename + kalıcı 308 redirect; `next.config.ts` config-redirect + açık 5-locale pattern; `/forum`→404 reddedildi; kod-adı iç kalır (Faz 11)
 
 **Bağlam:** Faz 11 (v0.3 URL taksonomisi/SEO). Taksonomi kararının (2026-06-27: public Crew OS / iç ad Bunker OS) son açık ucu — iç kod adının kullanıcıya sızdığı **tek** yüzey olan `/bunker-os` route'u — kapatıldı. research-phase ampirik kanıt topladı (`next build` + curl): Next config `redirects()` `source`'u locale prefix'ini **otomatik kapsamaz** (`/forum`→308 ama `/en/forum`→404).
