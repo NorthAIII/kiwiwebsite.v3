@@ -145,14 +145,34 @@
 
 ## UAT Sonuçları
 
-> Bu bölüm `/devflow:verify-phase 13` oturumunda doldurulur.
+> Bu bölüm `/devflow:verify-phase 13` oturumunda dolduruldu (2026-07-03). Otonom test (build ground-truth: `routes-manifest.json` + prerender `<head>` + Vitest). Otomatik kontroller: CI yeşil (fast+a11y job); npm audit 3 moderate = kayıtlı TB-5 (kapsam dışı); security temiz (saf metadata/redirect, runtime girdi/secret/auth yok).
 
-**Tarih:** [tarih]
-**Toplam Senaryo:** X | **Geçen:** Y | **Kalan:** Z
+**Tarih:** 2026-07-03
+**Toplam Senaryo:** 16 | **Geçen:** 16 | **Kalan:** 0
 
 | # | Senaryo | Sonuç | Not |
 |---|---------|-------|-----|
-| 1 | [Senaryo 1] | ✅/❌ | [not] |
+| 1 | **TB-1** Ana sayfa TR self-canonical `/` + 5-dil hreflang + x-default (`<head>`) | ✅ Geçti | `tr.html`: canonical=`kiwiailab.com`; 5 hreflang + x-default |
+| 2 | **TB-1** Ana sayfa non-TR (EN/AR) self-canonical prefixli (`/en`,`/ar`) + hreflang seti | ✅ Geçti | EN canonical=`/en`, AR=`/ar`; hreflang seti tam |
+| 3 | **TB-1** 5 alt sayfa TR her biri kendi path'ine canonical (crew-os/spor-salonu/vaka/2 bülten), 6 hreflang link | ✅ Geçti | Her sayfa self-canonical; 6 hreflang link/sayfa |
+| 4 | **TB-1** Alt sayfa non-TR (EN `/en/crew-os`, AR bülten) self-canonical prefixli + hreflang | ✅ Geçti | EN crew-os tam 6 hreflang doğru prefix'li |
+| 5 | **TB-1 adversarial** Hiçbir alt sayfa `/`'a canonicalize olmuyor — yalnız home TR çıplak-kök (sayı=1) | ✅ Geçti | Çıplak-kök canonical taşıyan sayfa sayısı=1 (`tr.html`) |
+| 6 | **TB-1 fail-safe** layout `generateMetadata` alternates miras ETTİRMEZ → unutan sayfa canonical-yok (zararsız), yanlış-`/` değil | ✅ Geçti | layout `generateMetadata`'da alternates yok (yalnız yorum) |
+| 7 | **TB-1** hreflang doğruluğu: AR=`ar` kodu; x-default = varsayılan locale prefixsiz URL | ✅ Geçti | AR=`ar`; x-default = TR prefixsiz URL (helper+prerender) |
+| 8 | **TB-2** `/forum` → `/` 308 (çıplak index; hedef `/bulten` değil — `/bulten` index yok) | ✅ Geçti | manifest: `/forum`→`/` 308 |
+| 9 | **TB-2** Locale gap kapandı: `/en/forum`,`/ar/forum`,`/de/forum`,`/es/forum` → `/:locale` 308 | ✅ Geçti | twin regex 4 non-default prefix eşler; `/tr/forum` eşleşmez |
+| 10 | **TB-2** `/forum/:slug*` → `/bulten/:slug*` 308 + tüm non-default locale twin | ✅ Geçti | çıplak+twin manifest'te 308 |
+| 11 | **TB-2 sıra mührü** çıplak `/forum` slug redirect'ine DÜŞMEZ (→ `/`, `/bulten` değil) | ✅ Geçti | firstMatch(`/forum`).dest=`/` (test mührü) |
+| 12 | **TB-2 regresyon** `/bunker-os` çifti korundu (Faz 11): çıplak+twin → `/crew-os` 308 | ✅ Geçti | manifest: çıplak+twin `/crew-os` 308 |
+| 13 | **Tohum** Test suite yeşil: 39 test (seo-metadata + seo-redirects tohumları dahil), manifest ground-truth | ✅ Geçti | 5 dosya/39 test; i18n-parity 5·seo-redirects 16·seo-metadata 16·umami 1·smoke 1 |
+| 14 | **Guardrail** i18n 5-dil parite regresyonsuz + `next build` 0 `MISSING_MESSAGE` | ✅ Geçti | parite testi yeşil; build temiz, 0 MISSING_MESSAGE |
+| 15 | **Guardrail** Sitemap ↔ canonical tutarlılığı: 30 URL, her biri sayfa self-canonical'ıyla birebir (non-TR home `/en` slashsiz) | ✅ Geçti | sitemap 30 URL (5×6); canonical'larla birebir |
+| 16 | **Guardrail** Yapısal regresyonsuz: yalnız `<head>`+config değişti, DOM/asset/görsel değişmedi → a11y (CI axe home light+dark yeşil) / perf taban / CLS≈0 korunur | ✅ Geçti | CI a11y job yeşil; render surface değişmedi (yapısal emsal Faz 11) |
+
+**Otomatik kontroller (Adım 1):**
+- **CI (GitHub Actions):** HEAD `80570d8` — `fast (build+vitest)` ✅ + `a11y (playwright+axe)` ✅ (her iki job, tüm adımlar `success`).
+- **npm audit:** 3 moderate (postcss→next→next-intl transitif) = kayıtlı **TB-5** (kapsam dışı: fix=next downgrade breaking, Dokunulmazlar; statik-site istismar-edilemez). Yeni bulgu değil, düzeltme task'ı üretmez.
+- **Security (odaklı faz-13 diff incelemesi):** Temiz. Saf metadata/redirect config; runtime kullanıcı girdisi yok (redirect kaynak/hedef statik iç path; helper girdileri locale=whitelist-doğrulanmış + path=hardcoded literal, çıktı `<link href>`'e Next-escape). Secret/auth yüzeyi yok. (Tam-branch `/security-review` skill'i koşulmadı — tüm revize branch'ini tarar, faz-dışı/off-target.)
 
 ---
 
@@ -197,4 +217,4 @@
 ---
 
 **Oluşturulma:** 2026-07-03 (discuss-phase 13)
-**Son Güncelleme:** 2026-07-03 — run-task 13.04 ✅: `/forum` locale-gap + tüm config redirect denetimi + regresyon tohumu (TB-2). `next.config.ts` `redirects()`: `/forum`→`/`, `/forum/:slug*`→`/bulten/:slug*`, `/bunker-os`→`/crew-os`; her biri çıplak+`/:locale(en|ar|de|es)/…` twin, 6 redirect 308. İcra bulgusu (planı düzeltti): `:slug*` opsiyonel gruba derlenir → çıplak `/forum`'u da eşler; ıraksak hedefte (çıplak→`/`, slug→`/bulten`) çıplak giriş slug'dan ÖNCE sıralandı (yoksa `/forum`→`/bulten` 404) → DECISIONS+memory'ye taşındı. `tests/seo-redirects.test.ts` (YENİ) locale-kapsam+sıra assertion. 39 test✅ (5 dosya, +16) · build temiz (0 MISSING_MESSAGE). **TB-1 + TB-2 tamamlandı → Faz 13 icra bitti.** Sıradaki adım: verify-phase 13 (UAT).
+**Son Güncelleme:** 2026-07-03 — verify-phase 13 ✅: UAT 16/16 senaryo geçti (otonom, build ground-truth: `routes-manifest.json` + prerender `<head>` + Vitest) + otomatik kontroller temiz (CI fast+a11y yeşil; npm audit 3 moderate=kayıtlı TB-5 kapsam dışı; security temiz) → **düzeltme task'ı YOK**. TB-1 (her sayfa self-canonical + 5-dil hreflang/x-default; yalnız home TR çıplak-kök; layout fail-safe) + TB-2 (6 redirect 308, `/forum`→`/` locale-gap kapalı, sıra mührü) + guardrail'ler (i18n parite, 0 MISSING_MESSAGE, sitemap 30 URL canonical-tutarlı, yapısal regresyonsuz) doğrulandı. Faz dokümanı boyut kontrolü ✅ (~6.4k token, tek-okunabilir). **Faz 13 icra+UAT bitti → Adım review.** Sıradaki adım: review-phase 13.
