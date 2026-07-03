@@ -65,20 +65,40 @@ Sürekli iplik şunlardan **birini** koruyamıyorsa → P2 (Faz 6) emsali gibi *
 
 ## Araştırma Bulguları
 
-> Bu bölüm `/devflow:research-phase 12` oturumunda doldurulur.
+> `/devflow:research-phase 12` oturumunda dolduruldu (2026-07-03). Odak: kapsam tartışmasının bıraktığı tek açık teknik soru — "sürekli soluk iplik"in teknik biçimi (perf ölçümü belirleyecek).
+
+**Mevcut durum (kaynak teyidi):** `LivingFlow` şu an `Hero.tsx` içinde `absolute inset-0`, Hero `<section>`'da `overflow-hidden` (`src/components/Hero.tsx:34,36`) → alan Hero viewport'una **kırpılı**. Aşağı taşımak = alanı bu kırpma sınırından çıkarmak. Canvas `frameloop=always` (default; `FlowCanvas.tsx`'te frameloop prop'u ve in-view unmount **yok**) → Hero dışına scroll edilince bile render etmeye devam ediyor.
 
 ### Değerlendirilen Yaklaşımlar
-- [Yaklaşım 1]: [Açıklama, artılar, eksiler]
-- **Seçilen:** [Hangisi ve neden]
+
+- **A — Tek büyük (belge-boyu) canvas:** Tüm sayfa yüksekliğinde tek canvas. **Eksi (elendi):** belge-boyu backing store = viewport'un N katı bellek/fillrate; pratikte uygulanamaz, zaten "fixed viewport + parallax"a çöker (= C). Saf haliyle geçersiz.
+- **B — Bölüm-başı instance:** Her bölüm arkasına ayrı hafif `FlowCanvas`. **Artı:** bölüm-bazlı opaklık trivial, in-view mount/unmount. **Eksi:** her R3F `Canvas` = ayrı **WebGL context** (tarayıcı limiti ~16; Hero + 5 bölüm riskli) + ayrı rAF döngüsü (batarya/CPU); en kritiği **süreklilik illüzyon** — alanlar bölüm sınırında bağlanmaz → discuss'taki "tek bütün alan" kararıyla **çelişir**, sınırlarda dikiş.
+- **C — Sabit viewport canvas + parallax:** Tek canvas `position: fixed`, viewport-boyu; içerik üstünden akar, nabızlar mevcut scroll-parallax'la (`FlowCanvas.tsx` `groupRef.position.y = scrollY*...`) aşağı sürüklenir. **Artı:** tek alan = en güçlü "tek bütün alan"/imza sürekliliği (beğenilen etkiye en yakın); tek WebGL context; backing store viewport-boyu (sayfa uzunluğundan bağımsız sınırlı); mevcut `FlowCanvas` mimarisini yeniden kullanır (yeni paket yok). **Perf hipotezi:** canvas bugün de sürekli render ettiğinden (yukarıda), fixed'e almak artımlı GPU maliyetini ~sıfıra yaklaştırır (aynı piksel/frame, sadece artık görünür). **Eksi:** bölüm-bazlı opaklık canvas'tan gelemez (tek uniform alan) → adaptif scrim gerektirir; Hero alanının mount noktası taşınmalı (aşağıda karar).
+- **Seçilen: C** (fixed viewport canvas + parallax). Gerekçe: perf-sınırlı (viewport-boyu, ~sıfır artımlı maliyet), en güçlü süreklilik/imza (ILKELER craft üst eksen), mevcut mimariyi yeniden kullanır (kalıcılık ilkesi, yeni bağımlılık yok). Bölüme-uyarlanan opaklık **bölüm-başı adaptif scrim** ile (mevcut `FlowScrim` deseni + zaten var olan `bg-canvas-deep/40` bölüm arkaplanları), canvas'tan değil.
 
 ### Kullanılacak Araçlar/Kütüphaneler
-- [Araç 1]: [Versiyon, ne için]
+
+- **three + @react-three/fiber (mevcut):** Yeni sürüm/paket **yok** — mevcut `FlowCanvas` yeniden kullanılır/parametrize edilir (opaklık/extent prop'u). `package.json` dokunulmaz (dokunulmazlar kuralı — paket eklemek onay ister; gerek yok).
+- **CSS `position: fixed` + adaptif scrim (mevcut `FlowScrim` deseni):** Yeni kütüphane değil; token-bazlı (`--color-canvas`, `--color-canvas-deep`).
 
 ### Dikkat Edilecekler
-- [Tuzak/Risk 1]: [Nasıl kaçınılacak]
+
+- **Belge-boyu canvas tuzağı:** Alan **asla** belge yüksekliğinde boyutlandırılmaz (bellek/fillrate patlar) — `fixed` viewport-boyu + parallax ile "aşağı akıyor" hissi verilir. (Yaklaşım A'nın elenme sebebi.)
+- **WebGL context limiti:** Çoklu instance (B) context tüketir → tek canvas'ta kal. Tek alan (C) = tek context.
+- **Desktop perf 100 / CLS 0 tabanı = gate:** Artımlı-sıfır maliyet bir **hipotez**; plan/task'ta Lighthouse çift-tema ile ölçülüp doğrulanır. Regres ederse → karar-gate iptal-kaydet. Kaynak: `_dev/docs/perf/` (`home-desktop-20260628.{html,json}` — masaüstü perf 100 / CLS 0, yük altında bile stabil; **dış/bu-faz-öncesi baseline artefaktı**).
+- **a11y kontrast=100 (çift-tema):** İplik dekoratif `aria-hidden` ama bu **color-contrast'tan muaf tutmaz** (→ `_dev/memory/aria-hidden-color-contrast-muafiyeti-degil.md`); nabız/iplik metin arkasından geçerse metnin efektif arkaplanını değiştirir → **adaptif scrim metni her iki temada WCAG-AA'da tutmalı** (verify'de ölçülür). Metin her zaman kazanır.
+- **Opak bölüm örtmesi (kendiliğinden doğru):** Footer `bg-ink` (`Footer.tsx:48`, opak) ve Crew OS teaser iç paneli `bg-ink` (`Bunker.tsx:54`) fixed alanı doğal olarak örter → ekstra kesme koduna gerek yok; alan o bölgelerde zaten görünmez.
+- **Hero LCP-defer korunur:** rAF/idle defer mantığı `LivingFlow.tsx`'te; mount taşınırken bu mantık birlikte taşınır (LCP koruması bozulmaz).
+- **Reduced-motion / no-WebGL fallback:** Aşağı-taşınan alan bu modlarda **eklenmez** (yalnız mevcut Hero statik tabanı kalır) → fallback güvence altında, yeni kırılma yüzeyi yok.
+- **Mobil/low-power gate:** Aşağı-taşıma yalnız desktop/high-power. Mevcut `lowPower` tespiti (`LivingFlow.tsx:38-40`, `hardwareConcurrency<=4 || max-width:768px`) yeniden kullanılır — mobilde alan Hero'da kalır (discuss: perf tabanına sıfır risk).
 
 ### Teknik Kararlar
-- [Karar 1]: [Gerekçe]
+
+- **TK1 — Tek fixed viewport canvas (Yaklaşım C):** Bölüm-başı instance (B) ve belge-boyu canvas (A) yerine. Gerekçe: süreklilik + tek context + sınırlı backing store + mevcut mimari yeniden kullanımı.
+- **TK2 — Hero alanı sayfa-seviyesi `fixed` katmana taşınır (görsel birebir aynı):** Tek-alan sürekliliği için Hero'nun `overflow-hidden` kırpmasından çıkılır; Hero üstünde scrim yok → tam yoğunluk korunur, Hero **görsel olarak aynı** görünür ("Hero çekirdek efekti dokunulmaz" sınırı görsel düzeyde onurlandırılır). Alternatif (Hero'ya hiç dokunma + ikinci sönük alan) iki WebGL context + sınır dikişi getirdiği için **elendi**. *Not: mount noktası taşınması icra detayı; craft son hakem verify-phase'de — imzayı zayıflatırsa karar-gate iptal-kaydet.*
+- **TK3 — Bölüme-uyarlanan opaklık = adaptif scrim, canvas değil:** Tek uniform alan bölüm-bazlı opaklık veremez → her bölüm kendi scrim'ini taşır (mevcut `FlowScrim` deseni). Metin-yoğun (HowItWorks/Sektörler) güçlü scrim, nefes alan bölüm zayıf; opak bölüm doğal örter. Metin her zaman kazanır.
+- **TK4 — Yeni bağımlılık / yeni i18n anahtarı yok:** Saf görsel + mevcut three/R3F. `package.json` ve `messages/*` dokunulmaz (5-dil parite riski yok — discuss teyitli).
+- **Açık uç (plan/craft'a bırakıldı):** İpliğin tam kesim noktası (Credibility'de mi sönümlenir, Footer'a kadar mı) ve bölüm-başı opaklık tavanları — düşük-riskli craft ayarı; Footer opak zaten örttüğü için zorunlu kesme kodu gerekmiyor. Plan-phase'de somutlaşır.
 
 ---
 
