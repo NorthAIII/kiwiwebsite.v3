@@ -154,7 +154,7 @@ M6 (SEO/Deploy) ─────────────────────>
 | SEO2: i18n namespace `bunkerOs`/`bunker` → crew rename (5-dil eşzamanlı; değer stale kalabilir) | M4 (+M2) | v0.3 | 11 | ✅ |
 | SEO3: İç link temizliği (`/bunker-os` → `/crew-os`; kırık link/çift-redirect yok) | M2 (Hero/Bunker + tüketiciler) | v0.3 | 11 | ✅ |
 | **— v0.3 Living Flow nabız kapsamı (Faz 12 — karar-gate'li imza işi; içerik/davranış değişmez) —** | | | | |
-| B1: Living Flow nabız kapsamı — kontrollü aşağı-taşıma (sürekli soluk iplik, desktop-öncelik, bölüme-uyarlanan opaklık) VEYA iptal-kaydet; imza/reduced-motion/a11y kontrast=100/perf tabanı korunur | M1 (+M2) | v0.3 | 12 | 🔄 |
+| B1: Living Flow nabız kapsamı — kontrollü aşağı-taşıma (sürekli soluk iplik, desktop-öncelik, bölüme-uyarlanan opaklık) VEYA iptal-kaydet; imza/reduced-motion/a11y kontrast=100/perf tabanı korunur | M1 (+M2) | v0.3 | 12 | ✅ |
 
 **Durum simgeleri:**
 - ⬜ **Bekliyor** — Fazı henüz başlamadı
@@ -173,4 +173,4 @@ M6 (SEO/Deploy) ─────────────────────>
 
 ---
 
-**Son Güncelleme:** 2026-07-02 — discuss-phase 12: B1 (Living Flow nabız kapsamı) feature satırı eklendi ve **Faz 12**'ye atandı (🔄); kapsam kontrollü aşağı-taşıma (sürekli soluk iplik / desktop-öncelik / bölüme-uyarlanan opaklık) veya iptal-kaydet — karar-gate'li. v0.3 içerik faz konusu kalmadı; Faz 12 bitince versiyon-sonu sabit fazları gelir.
+**Son Güncelleme:** 2026-07-03 — review-phase 12: B1 (Living Flow nabız kapsamı) Durum 🔄→**✅** (karar-gate uygula-onayla; üç gate geçti, milestone karşılandı, UAT 16/16, 0 düzeltme). v0.3 içerik fazları bitti; sıradaki versiyon-sonu teknik borç fazı (discuss-phase 13).

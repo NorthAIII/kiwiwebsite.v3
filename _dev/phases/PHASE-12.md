@@ -1,6 +1,6 @@
 # Phase 12: v0.3 Living Flow Nabız Kapsamı (B1)
 
-**Durum:** 🔄 Devam ediyor
+**Durum:** ✅ Tamamlandı
 
 <!-- Bu doküman faza girince (discuss-phase) oluşur; durum 🔄 ile başlar. -->
 <!-- KURAL: Bu doküman tek-okunabilir kalmalı (CLAUDE.md → Boyut ve Bölünme). Bir bölüm ~20k token'a yaklaşırsa faz HÂLÂ AKTİFKEN `PHASE-12-<slug>.md`'ye bölünür. Tamamlandıktan (✅) sonra bölme yasaktır. -->
@@ -150,42 +150,57 @@ Sürekli iplik şunlardan **birini** koruyamıyorsa → P2 (Faz 6) emsali gibi *
 
 ## Retrospektif
 
-> Bu bölüm `/devflow:review-phase 12` oturumunda doldurulur.
+> `/devflow:review-phase 12` oturumunda dolduruldu (2026-07-03).
 
 ### Ne İyi Gitti?
-- [Tekrarlanması gereken pratikler]
+- **Karar-gate disiplini tam işledi.** İki hard gate (a11y kontrast=100 çift-tema / desktop perf 100·CLS 0) otomatik + ampirik ölçüldü; tek craft gerilimi (light başlık bleed'i) kullanıcıya getirildi. Sonuç iptal değil, **kontrollü CSS-only ince-ayar** (tema-flip `--flow-veil` token) — craft üst eksen ile kalıcılık dengesi. İmza-riskli faz gate'i tasarlandığı gibi çalıştı (P2/Faz 6 emsali canlı).
+- **Shared hook refactor kök-nedeni kapattı.** `useFlowMode` (12.01) mod-tespiti tek gerçek kaynağa çıkardı → `LivingFlow` ve `FlowBackdrop` asla ayrışmaz; "tek WebGL context" bir **mimari invariant** oldu (kopya-kod + çift-context riski aynı anda elendi, QUALITY §5).
+- **Emergent adaptasyon = sıfır bölüm-dosyası dokunuşu.** Bölüme-uyarlanan okunabilirlik (TK3), mevcut `bg-canvas-deep/40` bölüm arkaplanları + kartlar lokal lift verdiği için tek global veil ile sağlandı; 6 bölüm dosyasının hiçbirine dokunulmadı (minimum yüzey, minimum regresyon riski).
+- **Araştırma hipotezi ölçümle doğrulandı.** "Canvas zaten `frameloop=always` render ediyor → fixed'e almak artımlı GPU'yu ~sıfıra yaklaştırır" hipotezi Gate-2'de birebir çıktı (perf 100 regresyonsuz). A/B/C yaklaşım elemesi net gerekçeliydi ve icra C'yi birebir izledi — research→plan→icra hizası yüksek.
 
 ### Ne Kötü Gitti?
-- [Sorunlar ve darboğazlar]
+- **Plan'ın Karar Noktası A stacking nüansını atladı.** 12.02 "veil'i `FlowBackdrop`'a koy" öneriyordu; ama `FlowBackdrop` **fixed** olduğu için içine konan veil hero/bölüm ayrımı yapamaz (aynı viewport, farklı scroll anları). İcra sırasında fark edilip veil içerikle scroll eden `<main>`-içi wrapper'a taşındı (A'nın ruhu korundu, yeri düzeltildi). Küçük ve doğru yerde çözüldü ama araştırma bu koordinat-uzayı ayrımını önden yakalayabilirdi.
+- **Craft açık-ucu (light bleed) ancak gate'te göründü.** 12.02'de "ön-inceleme OK" denen şey, full-motion görsel inceleme yalnız 12.03 gate'inde yapıldığı için restraint sınırında çıktı. Doğru yerde (gate, craft son hakem) yakalandı ve çözüldü — ama craft-riskli işte full-motion görsel kontrol daha erken (build task'ında) yapılsa açık-uç erken belirirdi.
 
 ### Sonraki Faz İçin Öneriler
-- [Alınan dersler, tavsiyeler]
+- **v0.3 içerik fazları bitti → versiyon-sonu sabit fazları gelir** (teknik borç → senaryo testi → prd-review). Versiyon Sonu Durumu `içerik_fazları` (değişmez); `içerik_fazları`→`teknik_borç` geçişini `discuss-phase 13` yapar.
+- **Craft-riskli görsel/WebGL işte full-motion görsel kontrolü build task'ında yap** (gate'i bekleme) — açık-uçlar (opaklık tavanı, bleed) erken görünür. Bu projede full-motion WebGL-arkası kontrast zaten craft son hakemdir (memory `axe-webgl-contrast-incomplete`); kontrolü öne çekmek gate'e sürpriz bırakmaz.
+- **Test kapsamı boşluğu kayıtlı:** fixed-backdrop full-motion davranışı (tek-context invariant + veil okunabilirliği) otomatik regresyon tohumuyla korunmuyor — mevcut a11y tohumu `reducedMotion:"reduce"` koşar, bu dalı atlar. WebGL runtime testi flaky (memory `playwright-bundled-chromium-webgl-yok`) diye bilinçle ertelendi; gelecekte `channel:'chrome'` tek-context invariant testi kümülatif değer taşır (maliyet/flakiness tartılarak).
+- **Kayıtlı SEO açıkları hâlâ açık:** alt-sayfa canonical=`/` (latent) + `/forum` locale-prefix gap (`/en/forum`→404) — gelecek SEO fazı adayı (Faz 11 retrosundan devralındı, bu faz kapsamı değildi).
+
+### Task-Spesifik Teknik Öğrenimler
+- **Fixed katmana konan veil scroll-koordinatlı ayrım yapamaz.** Okunabilirlik veil'i içerikle **scroll etmeli** → `<main>`-içi `relative isolate` wrapper + `absolute inset-0` veil + `relative z-10` içerik. Stacking: fixed flow (z-0, main dışı) < veil (z-0, isolate tabanı) < içerik (z-10). `isolate` yeni stacking context açtığı için veil fixed backdrop'la z-savaşına girmez.
+- **Opak `body` bg → katmanlama pozitif-z ile yapılır** (backdrop `z-0` / içerik `relative z-10`), negatif-z ile değil. Negatif-z, background-propagation'a bağımlı ve kırılgan; body bg opak olduğunda (`globals.css:60`) pozitif-z robust.
+- **`frameloop=always` canvas fixed'e alınınca artımlı GPU ~sıfır** — aynı piksel/frame üretiliyor, fark yalnız "artık scroll boyunca görünür". Zaten-render-eden bir alanı görünür kılmak yeni maliyet değildir (Gate-2 doğruladı).
+
+<!-- DevFlow'a Öneri: bu fazda DevFlow yönteminin geneline dair (proje-özel olmayan) bir iyileştirme çıkmadı — alt bölüm silindi. -->
 
 ---
 
 ## Kalite Kontrol Sonuçları
 
-> Bu bölüm `/devflow:review-phase 12` oturumunda doldurulur.
-
 | Eksen | Durum | Not |
 |-------|-------|-----|
-| Modülerlik | ✅ / ⚠️ / ❌ | ... |
-| Güvenlik | ✅ / ⚠️ / ❌ | ... |
-| Bakım Maliyeti | ✅ / ⚠️ / ❌ | ... |
-| Performans | ✅ / ⚠️ / ❌ | ... |
-| Hata Yönetimi | ✅ / ⚠️ / ❌ | ... |
-| Test Kapsamı | ✅ / ⚠️ / ❌ | ... |
-| Erişilebilirlik | ✅ / N/A | ... |
+| Marka & Craft (imza) | ✅ | Craft son hakem gate'te devrede; dark kusursuz (parlayan yeşil = ambient derinlik), light bleed `--flow-veil` %70 token'ıyla çözüldü. "Tek bütün alan" sürekliliği imzayı **güçlendirdi** (aşağı kayan nabızlar = beğenilen etki); şablon-kokusu yok, tek güçlü fikir öne çıktı. |
+| Erişilebilirlik | ✅ | a11y kontrast=100 çift-tema **full-motion** (alan live), 0 WCAG-AA ihlali; LH a11y 100. Dürüst caveat: ~15 alan-üstü öğe axe `color-contrast` *incomplete* (WebGL okunamaz) → craft görsel son hakem + FlowVeil washi güvence (memory `axe-webgl-contrast-incomplete`). reduced/no-WebGL fallback korundu. |
+| Performans | ✅ | desktop perf **100** / CLS ≈3.75e-6 (≈0) / LCP ~625ms — baseline `home-desktop-20260628` regresyonsuz. Tek WebGL context; artımlı-sıfır maliyet hipotezi ölçümle doğrulandı. Mobil bilinçle korundu (aşağı-taşıma desktop-only). |
+| Yerelleştirme & RTL | ✅ | Yeni i18n anahtarı yok (TK4) → 5-dil parite riski yok (vitest 7/7). Veil dikey gradient RTL-agnostik; `/ar` `dir=rtl` 200, bozulma yok. |
+| Modülerlik & Bakım | ✅ | `useFlowMode` shared hook = tek gerçek kaynak (kopya-kod yok); `FlowBackdrop`/`FlowVeil` tek-sorumluluk; veil tek token'dan (`--flow-veil`) ayarlanır; bölüm dosyalarına 0 dokunuş (emergent adaptasyon). Cerrahi, izole, geri-alınabilir. |
+| Hata Yönetimi & Degradasyon | ✅ | Fallback korundu: reduced/no-WebGL → `StaticFlow` SVG (aynı kod dalı); low-power → Hero-contained; `idle`/`low`/`static` modda backdrop `null` (yeni kırılma yüzeyi yok). Tema toggle scroll ortasında flash'sız (MutationObserver). |
+| Güvenlik (hafif) | ✅ | Saf görsel/WebGL/CSS katmanı — yeni girdi/auth/secret yüzeyi yok; security-review 0 bulgu; `package.json`/`.env` dokunulmadı (npm audit değişmedi). |
+| Test Kapsamı (kümülatif) | ⚠️ | Mevcut tohumlar yeşil (a11y reduced-motion + i18n parite); build temiz; gate ölçümleri kaydedildi. **Boşluk:** fixed-backdrop full-motion davranışı otomatik regresyon tohumuyla korunmuyor (tohum reduced-motion koşar, bu dalı atlar) — WebGL runtime flaky (memory) diye bilinçle ertelendi; gate manuel + kayıtlı. Sonraki-faz önerisi. |
+
+**Kullanıcı yolculuğu & boşluk tespiti:** Deneyim tutarlı — desktop/high-power kullanıcı zenginleştirilmiş sürekli akışı görür, mobil/low-power/reduced-motion/no-WebGL kullanıcı korunmuş tabanı (Hero-contained veya statik) görür. Sahipsiz durum yok; fixed backdrop yalnız ana sayfada mount olur (alt sayfaların kendi Living Flow'ları var, kapsam dışı — doğru). Faz 11'den devralınan SEO açıkları (canonical/`/forum`) bu faz kapsamı değildi, kayıtlı kaldı.
 
 ---
 
 ## Sonuç
 
-- **Tamamlanma Tarihi:** [Tarih]
-- **Toplam Task:** [Sayı]
-- **Notlar:** [Önemli kararlar, sonraki faza aktarılanlar]
+- **Tamamlanma Tarihi:** 2026-07-03
+- **Toplam Task:** 3 (12.01 fixed viewport katman + Hero koordinasyon · 12.02 adaptif okunabilirlik veil · 12.03 karar-gate → uygula-onayla + light-veil ince-ayar)
+- **Notlar:** Karar-gate'li/imza-riskli faz **uygula** tarafıyla kapandı (üç gate geçti; DECISIONS 2026-07-03). Milestone karşılandı: nabız kapsamı kararı verildi+uygulandı, imza/reduced-motion-no-WebGL fallback/a11y kontrast=100 çift-tema/perf tabanı korundu (regresyonsuz). UAT 16/16, 8 kalite ekseni (7 ✅ + 1 ⚠️ test kapsamı boşluğu, kayıtlı). 0 düzeltme task'ı. Yeni bağımlılık/i18n anahtarı yok. Sonraki faza aktarılan: test kapsamı boşluğu (full-motion invariant tohumu) + kayıtlı SEO açıkları. v0.3 içerik fazları bitti → versiyon-sonu sabit fazları (discuss-phase 13 içerik_fazları→teknik_borç geçişini yapar).
 
 ---
 
 **Oluşturulma:** 2026-07-02
-**Son Güncelleme:** 2026-07-03 — verify-phase 12 ✅: **UAT 16/16 senaryo geçti, 0 düzeltme task'ı.** Otomatik kontroller: CI (fast+a11y) 3 kod commit'inde yeşil · security-review 0 bulgu · npm audit değişmedi (`package.json` dokunulmadı). 11 senaryo otonom (runtime harness tek-context/fallback · full-motion axe 0 ihlal çift-tema · perf artefakt 100/CLS≈0/LCP 620ms regresyonsuz · vitest 7/7 · RTL/chatbot yapısal), 5 görsel/craft senaryo kullanıcı onayıyla (shipped build ekran görüntüleri, 12.03 craft onayıyla tutarlı). Sıradaki **review-phase 12**. Detay → UAT Sonuçları tablosu.
+**Son Güncelleme:** 2026-07-03 — **review-phase 12 ✅: Faz tamamlandı.** Retrospektif + 8 kalite ekseni (7 ✅ + 1 ⚠️ test kapsamı boşluğu, kayıtlı) faz dokümanına yazıldı; kullanıcı yolculuğu tutarlı, boşluk yok. Milestone karşılandı (nabız kapsamı uygulandı, imza/fallback/a11y=100 çift-tema/perf tabanı korundu). 0 düzeltme task'ı. Durum 🔄→✅. v0.3 içerik fazları bitti → sıradaki `discuss-phase 13` (versiyon-sonu teknik borç; içerik_fazları→teknik_borç geçişini damgalar). Detay → Retrospektif + Kalite Kontrol Sonuçları.
