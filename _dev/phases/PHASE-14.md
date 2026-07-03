@@ -172,9 +172,19 @@ Discuss-phase'in araştırmaya bıraktığı soru: bu cloud devcontainer'da runt
 
 <!-- KURAL: Task Listesi yalnızca özet tablodur (#, Task, Durum, kısa açıklama). Task'ın icra detayı / oturum kaydı / çalışma notu buraya değil `tasks/TASK-N.md`'ye yazılır — bu bölüme sızan detay şişmedir, temizlenir (bölme değil). -->
 
+> **Yapı (Faz 9 emsali):** S1–S9 senaryo grupları → 9 task; build-ground-truth katmanı önce (deterministik) → runtime katmanı (system Chrome/WebGL) → adversarial en son. Sıra = kanonik prod-serve kurulumu (14.01) → deterministik grep/suite → runtime → holistik. Doğrulama fazı: kaynak kod değişmez (kapsam-içi bug → reaktif düzeltme task'ı istisnası).
+
 | # | Task | Durum | Açıklama |
 |---|------|-------|----------|
-| 14.01 | TASK-14.01 | ⬜ Bekliyor | [plan-phase'de doldurulur] |
+| 14.01 | TASK-14.01 | ⬜ Bekliyor | S1 — giriş/yönlendirme matrisi (curl + routes-manifest, katman A): 6 sayfa × 5 locale 200; `/crew-os` yeni public, `/bunker-os`→`/crew-os` 308 (çıplak+5-locale twin), `/forum`→`/` 308, `/forum/:slug*`→`/bulten/:slug*` 308; kanonik prod-serve kurar |
+| 14.02 | TASK-14.02 | ⬜ Bekliyor | S5 + S6-render (prerender grep, katman A): "Crew OS" görünür / "Bunker" görünür metin+URL'de yok; yasak metafor/sahte-online yok; 30 sayfa-locale 0 MISSING_MESSAGE; namespace crew senkron; AR-RTL; bilinçli-stale non-TR görünür kopukluk yok |
+| 14.03 | TASK-14.03 | ⬜ Bekliyor | S8-suite + S6-parite (katman A/B): Vitest 39 (i18n-parite + seo-metadata/seo-redirects Faz-13 + smoke/umami) + `test:e2e` axe (home+subpages WCAG-AA 0) + CI `fast`+`a11y` success |
+| 14.04 | TASK-14.04 | ⬜ Bekliyor | S8-Lighthouse (katman C): a11y=100 çift-tema 6 sayfa × light/dark + Living Flow sayfa-boyu nabız perf tabanı (desktop 100/CLS 0) + perf korunan taban; LH 12.8.2 LCP-anahtar teyit; ölç+kaydet+karar |
+| 14.05 | TASK-14.05 | ⬜ Bekliyor | S3 — mod kombinasyonları / **sayfa-boyu nabız (EN BÜYÜK v0.3 delta)** (system Chrome WebGL ŞART): light/dark FOUC yok, reduced→StaticFlow **tüm sayfa**, no-WebGL, mobil-low nabız yok (desktop-only), AR-RTL×dark×reduced, taşma/CLS, `--flow-veil` washi okunabilirlik |
+| 14.06 | TASK-14.06 | ⬜ Bekliyor | S4 — kontroller & kalıcılık (system Chrome): tema toggle localStorage+reload+uniform sayfa-boyu; dil-switcher path korur (`/crew-os` dahil, Escape/dış-tık); klavye-only focus-visible |
+| 14.07 | TASK-14.07 | ⬜ Bekliyor | S2 — tam TR yolculuğu (system Chrome + prerender): Hero→CTA→sektörler→4-adım→**Crew OS `/crew-os`**→Forum→Footer; alt sayfa çıkış/history-back dönüş; `<Logo>` tutarlı; `/tr/`-sızıntı/kopuk link yok |
+| 14.08 | TASK-14.08 | ⬜ Bekliyor | S7 — chatbot 0-token (kod-inceleme + bundled offline): key-yok offline UI (sahte-dot yok) + sanitizasyon + malformed kısa-devre (400/503 Anthropic öncesi); **toplam API çağrısı=0** |
+| 14.09 | TASK-14.09 | ⬜ Bekliyor | S9 — adversarial/holistik (`next build` A + system Chrome race C): JS-kapalı SSG okunur, hızlı tema/dil toggle race, hızlı scroll/anchor storm (**sayfa-boyu nabız + ScrollTrigger kararlılığı**), build temiz + 0 MISSING_MESSAGE |
 
 **Durum simgeleri:** ⬜ Bekliyor | 🔄 Devam ediyor | ⏸️ Duraklatıldı | ✅ Tamamlandı | 🔴 Bloke | ❌ İptal
 
@@ -234,4 +244,4 @@ Discuss-phase'in araştırmaya bıraktığı soru: bu cloud devcontainer'da runt
 ---
 
 **Oluşturulma:** 2026-07-03 (discuss-phase 14)
-**Son Güncelleme:** 2026-07-03 — discuss-phase 14: Kapsam Tartışması yazıldı (ana sayfa + 5 alt sayfa uçtan-uca, TR birincil + non-TR tutarlılık, chatbot 0-token, keşfet+kaydet+triyaj, otonom; S1–S9 kataloğu v0.3 deltasına uyarlandı — crew-os route + sayfa-boyu nabız + SEO metadata + logo). Sıradaki adım: research-phase 14.
+**Son Güncelleme:** 2026-07-03 — plan-phase 14: 9 task dokümanı oluşturuldu (S1–S9 → 14.01–14.09; Faz 9 emsali, build-ground-truth önce → runtime → adversarial). Task Listesi + araç eşlemesi yazıldı; kaynak değişmez (doğrulama fazı). Sıradaki adım: verify-plan 14.
