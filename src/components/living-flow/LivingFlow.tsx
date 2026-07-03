@@ -1,78 +1,25 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { useEffect, useState } from "react";
+import { useFlowMode } from "./useFlowMode";
 
 const FlowCanvas = dynamic(() => import("./FlowCanvas"), { ssr: false });
 
-function supportsWebGL() {
-  try {
-    const c = document.createElement("canvas");
-    return Boolean(
-      window.WebGLRenderingContext &&
-        (c.getContext("webgl2") || c.getContext("webgl"))
-    );
-  } catch {
-    return false;
-  }
-}
-
 /**
  * The Living Flow (§4). Full-bleed WebGL field of translucent ink lines with
- * green automation pulses. Inits after first paint so it never blocks LCP — one
- * frame past paint on desktop, deferred to idle/post-load on low-power/mobile
- * (where the Three.js + GLSL compile is CPU-heavy and would block the LCP
- * window). Degrades to a lighter particle count on low-power devices, and falls
- * back to a static gradient field under reduced-motion / no-WebGL. The static
- * base wash is always present, so the hero is never blank during the defer.
+ * green automation pulses. Inits after first paint so it never blocks LCP (see
+ * `useFlowMode`), degrades to a lighter particle count on low-power devices, and
+ * falls back to a static gradient field under reduced-motion / no-WebGL. The
+ * static base wash is always present, so the hero is never blank during the defer.
+ *
+ * On desktop/high-power the animated field is rendered page-level by
+ * `FlowBackdrop` (fixed viewport layer, flows past the hero on scroll), so this
+ * hero-contained instance mounts NO canvas in `high` mode — only the base wash.
+ * `low` (mobile/low-power) stays hero-contained here; `static` is the SVG
+ * fallback. This keeps a single WebGL context live in every mode.
  */
 export default function LivingFlow({ className = "" }: { className?: string }) {
-  const [mode, setMode] = useState<"idle" | "high" | "low" | "static">("idle");
-
-  useEffect(() => {
-    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduce || !supportsWebGL()) {
-      setMode("static");
-      return;
-    }
-    const lowPower =
-      (navigator.hardwareConcurrency ?? 8) <= 4 ||
-      window.matchMedia("(max-width: 768px)").matches;
-
-    // Desktop / high-power: defer one frame past first paint (already in budget,
-    // no regression — keep the existing rAF behaviour).
-    if (!lowPower) {
-      const id = requestAnimationFrame(() => setMode("high"));
-      return () => cancelAnimationFrame(id);
-    }
-
-    // Mobile / low-power: the WebGL init blocks the main thread during the LCP
-    // window under CPU throttle, so push it out to idle (with a 2s timeout cap
-    // so it still runs on a busy thread). Flow appears ~0.5-1s late but the
-    // static base wash covers the hero meanwhile.
-    const start = () => setMode("low");
-
-    if (typeof window.requestIdleCallback === "function") {
-      const idleId = window.requestIdleCallback(start, { timeout: 2000 });
-      return () => window.cancelIdleCallback(idleId);
-    }
-
-    // Safari has no requestIdleCallback → fall back to post-load (or a short
-    // timeout if `load` already fired). Without this, the flow would never init.
-    let timeoutId: ReturnType<typeof setTimeout> | undefined;
-    if (document.readyState === "complete") {
-      timeoutId = setTimeout(start, 200);
-      return () => clearTimeout(timeoutId);
-    }
-    const onLoad = () => {
-      timeoutId = setTimeout(start, 200);
-    };
-    window.addEventListener("load", onLoad, { once: true });
-    return () => {
-      window.removeEventListener("load", onLoad);
-      clearTimeout(timeoutId);
-    };
-  }, []);
+  const mode = useFlowMode();
 
   return (
     <div className={`pointer-events-none absolute inset-0 overflow-hidden ${className}`} aria-hidden>
@@ -86,9 +33,8 @@ export default function LivingFlow({ className = "" }: { className?: string }) {
         }}
       />
       {mode === "static" && <StaticFlow />}
-      {(mode === "high" || mode === "low") && (
-        <FlowCanvas quality={mode === "high" ? "high" : "low"} />
-      )}
+      {/* `high` → animated field lives in <FlowBackdrop>; only `low` renders here */}
+      {mode === "low" && <FlowCanvas quality="low" />}
     </div>
   );
 }

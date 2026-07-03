@@ -1,6 +1,6 @@
 # DURUM — Proje Dashboard
 
-**Son Güncelleme:** 2026-07-03 — **verify-plan 12 tamamlandı: plan review temiz geçti** (3 task fresh context'te doğrulandı; 0 mekanik düzeltme, 0 yapısal değişiklik). Tüm somut kod referansları gerçekle tutarlı (Hero/globals/LivingFlow/FlowCanvas/bölüm bg'leri + perf tabanı + test tohumları + memory dosyaları ✓); `FlowBackdrop.tsx` doğru YENİ. Milestone tam kapsanıyor (12.01 yapısal → 12.02 okunabilirlik → 12.03 karar-gate); çakışma/boşluk yok, sıra=bağımlılık doğru. **Sıradaki adım: `run-task 12.01`.**
+**Son Güncelleme:** 2026-07-03 — **run-task 12.01 ✅: fixed viewport Living Flow katmanı + Hero koordinasyon uygulandı.** Paylaşılan `useFlowMode` hook (YENİ) + `FlowBackdrop` (YENİ) → `high` modda alan sayfa-seviyesi `fixed z-0` katmanda, Hero `high`'da canvas mount etmez → **tek WebGL context** (Chrome+SwiftShader script: desktop tek fixed canvas/scroll'da kalıcı · mobil hero-contained+backdrop yok · reduced-motion 0 canvas+StaticFlow → ALL PASS). `page.tsx` main/Footer `relative z-10`. Build temiz (7.6s, 0 hata); a11y tohumu 2 passed (regresyonsuz). **Sıradaki adım: `run-task 12.02`.**
 
 <!-- KURAL: Bu satır her oturum sonunda ÜZERİNE YAZILIR — tek satır, tek cümle. "Önceki:" / "Eski:" prefix ile kümülatif yığma YASAK; HTML comment'e sarma da yasak (CLAUDE.md → Doküman Disiplini). Tarih + kısa özet yeterli; detay için git log + ilgili PHASE/TASK dokümanları. -->
 
@@ -9,9 +9,9 @@
 ## Aktif Faz
 
 **Faz:** 12 🔄 (**B1 Living Flow nabız kapsamı** — karar-gate'li, imza-riskli) — discuss-phase 12 ile girildi; kapsam damgalandı. **Faz 11 ✅** (v0.3 URL taksonomisi/SEO). Faz 10 ✅ (v0.3 görsel cila). v0.2 tamamen ✅ (Faz 4–9 + prd-review + production release).
-**Adım:** task (verify-plan 12 ✅ → sıradaki `run-task 12.01`; v0.3 içerik fazı, Versiyon Sonu Durumu = `içerik_fazları`, değişmez). ✅ **v0.2 production release tamamlandı (2026-07-02)** — revize `main`'de, canlı deploy `a71adbc`, Umami canlı +1 doğrulandı (`docs/RELEASE-v0.2.md`). Açık takip: chatbot canlı `ANTHROPIC_API_KEY` env (release engeli değil).
-**İlerleme:** plan-phase 12 (2026-07-03) ✅ — 3 task: 12.01 fixed katman + Hero koordinasyon / 12.02 adaptif scrim / 12.03 karar-gate. research-phase 12 (2026-07-03) ✅ — teknik biçim: tek fixed viewport canvas + parallax (C); Hero fixed-katman taşıma (TK2); adaptif scrim (TK3); yeni paket/i18n yok; perf gate 12.03'te ölçülür. discuss-phase 12 (2026-07-02) ✅ — kapsam: kontrollü aşağı-taşıma / desktop-öncelik (mobil Hero-only/statik) / karar-gate (kontrast=100/perf/craft korunamıyorsa iptal-kaydet). **Sahipli açıklar (record, faz-dışı):** non-TR alt-sayfa stale (4 sayfa ar/de/es, versiyon-sınırı), **alt-sayfa canonical=`/` (layout miras, latent SEO, gelecek faz)**, **`/forum` locale-prefix gap (`/en/forum`→404, gelecek faz)**, brief mobil perf (gerçek-cihaz duvarı), site-geneli logical-ok (RTL, ayrı iş), dil-seti/AR stratejisi, TB-C npm audit (3 moderate).
-**Son Faz Dokümanı:** `phases/PHASE-12.md` (🔄 Devam ediyor — Kapsam Tartışması yazıldı). Faz 11 ✅ `phases/PHASE-11.md`.
+**Adım:** task (12.01 ✅ → sıradaki `run-task 12.02`; v0.3 içerik fazı, Versiyon Sonu Durumu = `içerik_fazları`, değişmez). ✅ **v0.2 production release tamamlandı (2026-07-02)** — revize `main`'de, canlı deploy `a71adbc`, Umami canlı +1 doğrulandı (`docs/RELEASE-v0.2.md`). Açık takip: chatbot canlı `ANTHROPIC_API_KEY` env (release engeli değil).
+**İlerleme:** run-task 12.01 (2026-07-03) ✅ — `useFlowMode` hook + `FlowBackdrop` (fixed z-0 katman, yalnız `high`); Hero `high`'da canvas suppress → tek WebGL context (runtime script ALL PASS); build temiz, a11y regresyonsuz. plan-phase 12 (2026-07-03) ✅ — 3 task: 12.01 fixed katman / 12.02 adaptif scrim / 12.03 karar-gate. research-phase 12 (2026-07-03) ✅ — tek fixed viewport canvas + parallax (C); yeni paket/i18n yok; perf gate 12.03'te. discuss-phase 12 (2026-07-02) ✅ — kontrollü aşağı-taşıma / desktop-öncelik / karar-gate. **Sahipli açıklar (record, faz-dışı):** non-TR alt-sayfa stale (4 sayfa ar/de/es, versiyon-sınırı), **alt-sayfa canonical=`/` (layout miras, latent SEO, gelecek faz)**, **`/forum` locale-prefix gap (`/en/forum`→404, gelecek faz)**, brief mobil perf (gerçek-cihaz duvarı), site-geneli logical-ok (RTL, ayrı iş), dil-seti/AR stratejisi, TB-C npm audit (3 moderate).
+**Son Faz Dokümanı:** `phases/PHASE-12.md` (🔄 Devam ediyor — 12.01 ✅, 12.02/12.03 bekliyor). Faz 11 ✅ `phases/PHASE-11.md`.
 
 ---
 
@@ -28,9 +28,9 @@
 
 ## Aktif Task
 
-**Task:** TASK-12.01 (⬜ Bekliyor — fazın ilk task'i, aktif) — Fixed viewport Living Flow katmanı + Hero koordinasyon (TK1/TK2). Plan review ✅ geçti; `run-task 12.01` ile başlanır.
-**Durum:** Faz 12 🔄 → Adım **task** (verify-plan ✅). Versiyon Sonu Durumu = `içerik_fazları`; Aktif Versiyon v0.3.
-**İlerleme:** verify-plan 12 (2026-07-03) ✅ — 3 task fresh context'te doğrulandı, sorun yok. Sıradaki = `run-task 12.01`.
+**Task:** TASK-12.02 (⬜ Bekliyor — aktif) — Bölüme-uyarlanan adaptif scrim (TK3, kontrast korunur). 12.01 ✅ (fixed katman kuruldu); `run-task 12.02` ile başlanır.
+**Durum:** Faz 12 🔄 → Adım **task** (12.01 ✅). Versiyon Sonu Durumu = `içerik_fazları`; Aktif Versiyon v0.3.
+**İlerleme:** run-task 12.01 (2026-07-03) ✅ — fixed viewport backdrop + tek WebGL context (runtime ALL PASS), build temiz, a11y regresyonsuz. Sıradaki = `run-task 12.02`.
 
 ---
 
@@ -40,7 +40,7 @@
 
 | # | Task | Durum | Açıklama |
 |---|------|-------|----------|
-| 12.01 | TASK-12.01 | ⬜ Bekliyor | Fixed viewport katman + Hero koordinasyon (TK1/TK2) |
+| 12.01 | TASK-12.01 | ✅ Tamamlandı | Fixed viewport katman + Hero koordinasyon (TK1/TK2) |
 | 12.02 | TASK-12.02 | ⬜ Bekliyor | Bölüme-uyarlanan adaptif scrim (TK3, kontrast korunur) |
 | 12.03 | TASK-12.03 | ⬜ Bekliyor | Karar-gate: kontrast=100 + desktop perf 100/CLS 0 + craft → uygula/iptal-kaydet |
 
@@ -50,7 +50,10 @@
 
 > **KURAL:** Sadece son 2 task özeti tutulur, daha eskileri **gerçekten silinir** (HTML comment'e sarma, "Önceki:" prefix, üstü çizili etiket yasak — detay için git log + arşivlenmiş task dokümanı). Her özet kısa formatlı: paragraf yasak, **bullet zorunlu**, "Özet" alanı max 3 bullet. **Yeni faza geçildi → Faz 11 task özetleri sıfırlandı** (Faz 11 detayları `phases/PHASE-11.md` + `tasks/archive/`).
 
-_(Faz 12 task'ı henüz çalışmadı — task özeti yok. İlk task tamamlanınca burası dolar.)_
+**TASK-12.01** — Fixed viewport Living Flow katmanı + Hero koordinasyon ✅
+- `useFlowMode` hook (YENİ, paylaşılan mod-tespit+LCP-defer) + `FlowBackdrop` (YENİ, `fixed z-0`, yalnız `high`); Hero `high`'da canvas suppress → **tek WebGL context**.
+- `page.tsx`: backdrop mount + main/Footer `relative z-10` (opak body bg üstünde/içerik altında).
+- Test: build temiz (7.6s) · a11y tohumu 2 passed · runtime script (Chrome+SwiftShader) desktop/mobil/reduced ALL PASS.
 
 <!-- KURAL: Sadece son 2 task özeti tutulur, daha eskileri silinir (gerçek silme — HTML comment yasak). -->
 <!-- KURAL: Sadece aktif fazın task'leri gösterilir. Geçmiş fazların bilgileri phases/ klasöründedir. -->
@@ -64,8 +67,8 @@ _(Faz 12 task'ı henüz çalışmadı — task özeti yok. İlk task tamamlanın
 
 ## Hızlı Erişim
 
-**Aktif Task:** Faz 12 🔄 plan review ✅ (verify-plan 12: 0 düzeltme). Aktif task **TASK-12.01** (⬜ Bekliyor). Sıradaki adım **run-task 12.01** (yeni oturum). Açık takip: chatbot canlı env key.
-**Aktif Faz:** 12 🔄 — v0.3 Living Flow nabız kapsamı (B1, karar-gate'li): kontrollü aşağı-taşıma / sürekli soluk iplik / desktop-öncelik / bölüme-uyarlanan opaklık. **Teknik biçim:** tek fixed viewport canvas + parallax (C); plan = 3 task (fixed katman → adaptif scrim → karar-gate). Faz 11 ✅ (URL taksonomisi/SEO). Faz 10 ✅ (görsel cila). v0.2 Faz 4–9 ✅ + prd-review ✅ + production release ✅. **Aktif Versiyon v0.3**, Versiyon Sonu Durumu: **içerik_fazları** → sıradaki komut `verify-plan 12`.
+**Aktif Task:** Faz 12 🔄 — 12.01 ✅ (fixed katman kuruldu). Aktif task **TASK-12.02** (⬜ Bekliyor — adaptif scrim). Sıradaki adım **run-task 12.02** (yeni oturum). Açık takip: chatbot canlı env key.
+**Aktif Faz:** 12 🔄 — v0.3 Living Flow nabız kapsamı (B1, karar-gate'li): kontrollü aşağı-taşıma / sürekli soluk iplik / desktop-öncelik / bölüme-uyarlanan opaklık. **Teknik biçim:** tek fixed viewport canvas + parallax (C); plan = 3 task (12.01 fixed katman ✅ → 12.02 adaptif scrim → 12.03 karar-gate). Faz 11 ✅ (URL taksonomisi/SEO). Faz 10 ✅ (görsel cila). v0.2 Faz 4–9 ✅ + prd-review ✅ + production release ✅. **Aktif Versiyon v0.3**, Versiyon Sonu Durumu: **içerik_fazları** → sıradaki komut `run-task 12.02`.
 **Task Sistemi:** `tasks/TASKS-README.md`
 **PRD (karar kaynağı):** `PRD/VIZYON.md` · `PRD/VERSIONS.md` · `PRD/features/`
 **Revize Backlog (bilinen sorunlar):** `docs/REVIZE-BACKLOG.md`
@@ -73,4 +76,4 @@ _(Faz 12 task'ı henüz çalışmadı — task özeti yok. İlk task tamamlanın
 
 ---
 
-**Son Güncelleme:** 2026-07-03 — **verify-plan 12 ✅: plan review temiz geçti** (3 task fresh context'te baştan okundu; **0 mekanik düzeltme, 0 yapısal değişiklik**). Referans gerçeklik-kontrolü: tüm somut kod referansları gerçekle birebir tutarlı — `Hero.tsx:34` overflow-hidden/:36-37 LivingFlow+FlowScrim, `globals.css:60` body opak, `LivingFlow.tsx:38-40` lowPower+LCP-defer, `FlowCanvas` parallax + `frameloop=always` (in-view unmount yok → perf hipotezi temeli sağlam), `Footer.tsx:48`/`Bunker.tsx:54` `bg-ink`, Sektörler/Forum/Credibility `bg-canvas-deep/40`, `FlowScrim` token `color-mix`; perf tabanı `home-desktop-20260628.{html,json}` + test tohumları (`home-a11y.spec.ts`/`i18n-parity.test.ts`) + 6 memory dosyası mevcut; `FlowBackdrop.tsx` doğru YENİ. İçerik: milestone tam kapsanıyor (12.01 yapısal → 12.02 okunabilirlik → 12.03 karar-gate), çakışma/boşluk yok, sıra=bağımlılık doğru, yaklaşım tutarlı (tek fixed canvas + token scrim, yeni paket/i18n yok). **Sıradaki DevFlow komutu: `run-task 12.01`.**
+**Son Güncelleme:** 2026-07-03 — **run-task 12.01 ✅: fixed viewport Living Flow katmanı + Hero koordinasyon.** Uygulama: `useFlowMode.ts` (YENİ, paylaşılan degradasyon+LCP-defer hook — `LivingFlow`/`FlowBackdrop` tek gerçek kaynak), `FlowBackdrop.tsx` (YENİ, `fixed inset-0 z-0` yalnız `high` modda `FlowCanvas`), `LivingFlow.tsx` (`high` modda canvas suppress; `low`/`static` aynen), `page.tsx` (backdrop mount + main/Footer `relative z-10`). Karar: mod-tespit paylaşılan hook'a çıkarıldı (QUALITY §5); katmanlama pozitif-z (body opak → negatif-z kırılgan). Test: `next build` temiz (7.6s, TS strict) · `home-a11y.spec.ts` light+dark 2 passed 0 ihlal · standalone Chrome+SwiftShader runtime script (desktop tek fixed canvas/scroll'da kalıcı · mobil ≤768 hero-contained+backdrop yok · reduced-motion 0 canvas+StaticFlow) → **ALL PASS** (çift-context riski elendi). **Sıradaki DevFlow komutu: `run-task 12.02`.**

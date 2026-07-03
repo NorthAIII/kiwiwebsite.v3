@@ -2,6 +2,7 @@ import { setRequestLocale } from "next-intl/server";
 import SmoothScroll from "@/components/SmoothScroll";
 import CustomCursor from "@/components/CustomCursor";
 import Nav from "@/components/Nav";
+import FlowBackdrop from "@/components/living-flow/FlowBackdrop";
 import Hero from "@/components/Hero";
 import HowItWorks from "@/components/HowItWorks";
 import SectorSolutions from "@/components/SectorSolutions";
@@ -23,7 +24,10 @@ export default async function Home({
     <SmoothScroll>
       <CustomCursor />
       <Nav />
-      <main>
+      {/* Page-level Living Flow layer (desktop/high-power) — sits behind the
+          content (main/Footer are relative z-10) and above the opaque body bg. */}
+      <FlowBackdrop />
+      <main className="relative z-10">
         <Hero />
         <HowItWorks />
         <SectorSolutions />
@@ -32,7 +36,9 @@ export default async function Home({
         <Chatbot />
         <Credibility />
       </main>
-      <Footer />
+      <div className="relative z-10">
+        <Footer />
+      </div>
     </SmoothScroll>
   );
 }

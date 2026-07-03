@@ -110,7 +110,7 @@ Sürekli iplik şunlardan **birini** koruyamıyorsa → P2 (Faz 6) emsali gibi *
 
 | # | Task | Durum | Açıklama |
 |---|------|-------|----------|
-| 12.01 | TASK-12.01 | ⬜ Bekliyor | Fixed viewport Living Flow katmanı + Hero koordinasyon (TK1/TK2): desktop-high-power'da alan sayfa-seviyesi fixed katmana taşınır, tek WebGL context, Hero görsel birebir aynı, mobil/reduced/no-WebGL fallback aynen |
+| 12.01 | TASK-12.01 | ✅ Tamamlandı | Fixed viewport Living Flow katmanı + Hero koordinasyon (TK1/TK2): desktop-high-power'da alan sayfa-seviyesi fixed katmana taşınır, tek WebGL context, Hero görsel birebir aynı, mobil/reduced/no-WebGL fallback aynen |
 | 12.02 | TASK-12.02 | ⬜ Bekliyor | Bölüme-uyarlanan okunabilirlik / adaptif scrim (TK3): metin-yoğun bölümlerde alan soluk, nefes alan bölümde görünür, opak bölümler doğal örter; metin her zaman kazanır (kontrast korunur) |
 | 12.03 | TASK-12.03 | ⬜ Bekliyor | Karar-gate: kontrast=100 çift-tema (full-motion) + desktop perf 100/CLS 0 + craft inceleme → **uygula-onayla VEYA iptal-kaydet** (DECISIONS + perf artefaktı) |
 
@@ -171,4 +171,4 @@ Sürekli iplik şunlardan **birini** koruyamıyorsa → P2 (Faz 6) emsali gibi *
 ---
 
 **Oluşturulma:** 2026-07-02
-**Son Güncelleme:** 2026-07-03 — plan-phase 12: 3 task oluşturuldu (12.01 fixed katman + Hero koordinasyon / 12.02 adaptif scrim / 12.03 karar-gate).
+**Son Güncelleme:** 2026-07-03 — run-task 12.01 ✅: fixed viewport backdrop + Hero koordinasyon uygulandı (paylaşılan `useFlowMode` hook, `FlowBackdrop` YENİ, `high` modda tek fixed canvas — çift-context riski elendi; build temiz, a11y tohumu regresyonsuz).
