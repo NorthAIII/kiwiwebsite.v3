@@ -135,7 +135,7 @@
 | # | Task | Durum | Açıklama |
 |---|------|-------|----------|
 | 13.01 | TASK-13.01 | ✅ Tamamlandı | TB-1: ortak `localizedAlternates` helper + locale-path util + sitemap refactor + helper unit testi |
-| 13.02 | TASK-13.02 | ⬜ Bekliyor | TB-1: 5 alt sayfaya self-canonical + 5-locale hreflang alternates (helper çağrısı) |
+| 13.02 | TASK-13.02 | ✅ Tamamlandı | TB-1: 5 alt sayfaya self-canonical + 5-locale hreflang alternates (helper çağrısı) |
 | 13.03 | TASK-13.03 | ⬜ Bekliyor | TB-1: alternates'i layout'tan ana sayfaya taşı (fail-safe default; layout artık canonical miras ettirmez) |
 | 13.04 | TASK-13.04 | ⬜ Bekliyor | TB-2: `/forum` locale-gap + config redirect denetimi (`/forum`→`/`) + redirect regresyon tohumu |
 

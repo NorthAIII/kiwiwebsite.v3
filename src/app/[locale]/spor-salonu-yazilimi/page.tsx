@@ -5,6 +5,7 @@ import CustomCursor from "@/components/CustomCursor";
 import PageHeader from "@/components/PageHeader";
 import Footer from "@/components/Footer";
 import GymSoftwareShowcase from "@/components/gym/GymSoftwareShowcase";
+import { localizedAlternates } from "@/i18n/metadata";
 
 export async function generateMetadata({
   params,
@@ -14,7 +15,7 @@ export async function generateMetadata({
   const { locale } = await params;
   const title =
     locale === "tr" ? "Spor Salonu Yönetim Yazılımı — Kiwi AI Lab" : "Gym Management Software — Kiwi AI Lab";
-  return { title };
+  return { title, alternates: localizedAlternates(locale, "/spor-salonu-yazilimi") };
 }
 
 export default async function GymSoftwarePage({

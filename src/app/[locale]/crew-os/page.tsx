@@ -5,6 +5,7 @@ import CustomCursor from "@/components/CustomCursor";
 import PageHeader from "@/components/PageHeader";
 import Footer from "@/components/Footer";
 import BunkerShowcase from "@/components/bunker-os/BunkerShowcase";
+import { localizedAlternates } from "@/i18n/metadata";
 
 export async function generateMetadata({
   params,
@@ -13,7 +14,11 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "crewOs" });
-  return { title: `${t("title")} — Kiwi AI Lab`, description: t("lead") };
+  return {
+    title: `${t("title")} — Kiwi AI Lab`,
+    description: t("lead"),
+    alternates: localizedAlternates(locale, "/crew-os"),
+  };
 }
 
 export default async function BunkerOsPage({

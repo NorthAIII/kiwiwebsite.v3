@@ -1,6 +1,6 @@
 # TASK-13.02: 5 alt sayfaya self-canonical + 5-locale hreflang alternates
 
-**Durum:** ⬜ Bekliyor
+**Durum:** ✅ Tamamlandı
 **Modül:** M2 Sayfalar & Bölümler (modules/M2-Sayfalar-Bolumler.md) + M6 (metadata)
 **Feature:** TB-1 — Alt-sayfa self-canonical + 5-locale hreflang alternates (page-wiring, alt sayfalar)
 **Faz:** Phase 13 (phases/PHASE-13.md)
@@ -98,9 +98,25 @@ src/app/[locale]/
 
 ## Oturum Kayıtları
 
-### Oturum — [TARİH]
+### Oturum — 2026-07-03
 
-**Durum:** ⬜ Bekliyor
+**Durum:** ✅ Tamamlandı
+
+**Yapılanlar:**
+- 5 alt sayfanın `generateMetadata`'sına `import { localizedAlternates } from "@/i18n/metadata";` + dönüş objesine `alternates: localizedAlternates(locale, "<path>")` eklendi. `title`/`description` korundu. Path'ler sitemap `PATHS` ile birebir:
+  - `crew-os` → `/crew-os` · `spor-salonu-yazilimi` → `/spor-salonu-yazilimi` · `vaka-calismalari` → `/vaka-calismalari` · `bulten/ai-sdr-araclari` → `/bulten/ai-sdr-araclari` · `bulten/claude-opus-4-8-fable-5` → `/bulten/claude-opus-4-8-fable-5`
+- Helper bütün-obje döndürdüğü için (canonical + languages + x-default) sığ-merge tuzağına düşülmedi; elle canonical yazılmadı.
+
+**Test / Kanıt:**
+- `npm run test` → 4 dosya / 23 test ✅ (helper unit + i18n-parity regresyonsuz).
+- `next build` temiz — 0 hata, 0 `MISSING_MESSAGE`.
+- Prerender `<head>` grep (`.next/server/app/**.html`): 5 alt sayfa (TR + non-TR örnekleri: `tr/crew-os`, `en/crew-os`, `tr/vaka-calismalari`, `en/spor-salonu-yazilimi`, `ar/bulten/ai-sdr-araclari`) `canonical` **kendi path'ine** (TR prefixsiz, non-TR prefixli); `hreflang` tr/en/ar/de/es + `x-default`; **hiçbiri `/`'a canonicalize olmuyor**.
+- Regresyon: home `tr` canonical `https://kiwiailab.com`, `en` canonical `https://kiwiailab.com/en` — layout üzerinden değişmedi.
+
+**Sınır:** Ana sayfa/layout değişmedi (layout→home taşıma 13.03); içerik/title/description/DOM/route path aynı.
+
+**Son Yaklaşım:** Tamamlandı — mekanik tek-tip 5 sayfa wiring, helper çağrısı.
+**Sonraki Adım Detayı:** Faz kalan → `run-task` TASK-13.03 (alternates layout'tan ana sayfaya taşı, fail-safe default; layout artık canonical miras ettirmez).
 
 ---
 
