@@ -1,6 +1,6 @@
 # DURUM — Proje Dashboard
 
-**Son Güncelleme:** 2026-07-03 — **run-task 12.03 ✅: karar-gate → uygula-onayla (+ light-veil craft ince-ayarı). Faz 12'nin tüm task'ları ✅.** Üç gate: Gate-1 full-motion a11y **0 WCAG-AA ihlali** çift-tema (alan live teyitli, chrome-channel/swiftshader axe) + LH a11y 100 dark; Gate-2 **desktop perf 100 / CLS ≈0 / LCP ~625ms regresyonsuz** (baseline `home-desktop-20260628`; perf hipotezi doğrulandı, tek WebGL context); Gate-3 craft — dark kusursuz, light başlık bleed'i `--flow-veil` tema-flip token'ıyla çözüldü (light %70/dark %56, `dark:` değil `html.dark` flip). DECISIONS 2026-07-03 + `perf/home-desktop-20260703-faz12`. **Sıradaki adım `verify-phase 12`.**
+**Son Güncelleme:** 2026-07-03 — **verify-phase 12 ✅: UAT 16/16 senaryo geçti, 0 düzeltme task'ı.** Otomatik: CI (fast+a11y) yeşil · security-review 0 bulgu · npm audit değişmedi (`package.json` dokunulmadı). 11 senaryo otonom (runtime harness tek-context/fallback · full-motion axe 0 WCAG-AA ihlali çift-tema · perf artefakt 100/CLS≈0/LCP 620ms regresyonsuz · vitest 7/7 · RTL/chatbot yapısal), 5 görsel/craft kullanıcı onayıyla. Faz 12 UAT geçti → **Adım review. Sıradaki `review-phase 12`.**
 
 <!-- KURAL: Bu satır her oturum sonunda ÜZERİNE YAZILIR — tek satır, tek cümle. "Önceki:" / "Eski:" prefix ile kümülatif yığma YASAK; HTML comment'e sarma da yasak (CLAUDE.md → Doküman Disiplini). Tarih + kısa özet yeterli; detay için git log + ilgili PHASE/TASK dokümanları. -->
 
@@ -8,10 +8,10 @@
 
 ## Aktif Faz
 
-**Faz:** 12 🔄 (**B1 Living Flow nabız kapsamı** — karar-gate'li, imza-riskli) — tüm task'lar ✅ (12.01/12.02/12.03); karar **uygula-onayla**. UAT (verify-phase) bekliyor. **Faz 11 ✅** (v0.3 URL taksonomisi/SEO). Faz 10 ✅ (v0.3 görsel cila). v0.2 tamamen ✅ (Faz 4–9 + prd-review + production release).
-**Adım:** verify (12.01/12.02/12.03 ✅ → sıradaki `verify-phase 12`; v0.3 içerik fazı, Versiyon Sonu Durumu = `içerik_fazları`, değişmez). ✅ **v0.2 production release tamamlandı (2026-07-02)** — revize `main`'de, canlı deploy `a71adbc`, Umami canlı +1 doğrulandı (`docs/RELEASE-v0.2.md`). Açık takip: chatbot canlı `ANTHROPIC_API_KEY` env (release engeli değil).
-**İlerleme:** run-task 12.03 (2026-07-03) ✅ — karar-gate **uygula-onayla** (+ light-veil craft ince-ayarı `--flow-veil` token, light %70/dark %56): Gate-1 full-motion a11y 0 ihlal çift-tema (alan live) + LH a11y 100 dark; Gate-2 desktop perf 100/CLS ≈0/LCP ~625ms regresyonsuz (perf hipotezi ✓); Gate-3 craft (dark kusursuz, light bleed çözüldü). DECISIONS 2026-07-03 + perf artefaktı. run-task 12.02 (2026-07-03) ✅ — `FlowVeil` (token-bazlı canvas washi, main-içi wrapper); adaptasyon emergent. run-task 12.01 (2026-07-03) ✅ — `useFlowMode` + `FlowBackdrop` (fixed z-0, yalnız `high`); tek WebGL context. plan/research/discuss-phase 12 ✅. **Sahipli açıklar (record, faz-dışı):** non-TR alt-sayfa stale (4 sayfa ar/de/es, versiyon-sınırı), **alt-sayfa canonical=`/` (layout miras, latent SEO, gelecek faz)**, **`/forum` locale-prefix gap (`/en/forum`→404, gelecek faz)**, brief mobil perf (gerçek-cihaz duvarı), site-geneli logical-ok (RTL, ayrı iş), dil-seti/AR stratejisi, TB-C npm audit (3 moderate).
-**Son Faz Dokümanı:** `phases/PHASE-12.md` (🔄 Devam ediyor — 12.01 ✅, 12.02 ✅, 12.03 ✅; UAT bekliyor). Faz 11 ✅ `phases/PHASE-11.md`.
+**Faz:** 12 🔄 (**B1 Living Flow nabız kapsamı** — karar-gate'li, imza-riskli) — tüm task'lar ✅ (12.01/12.02/12.03); karar **uygula-onayla**; **UAT ✅ (16/16, 0 düzeltme)**. review-phase bekliyor. **Faz 11 ✅** (v0.3 URL taksonomisi/SEO). Faz 10 ✅ (v0.3 görsel cila). v0.2 tamamen ✅ (Faz 4–9 + prd-review + production release).
+**Adım:** review (12.01/12.02/12.03 ✅ + UAT ✅ → sıradaki `review-phase 12`; v0.3 içerik fazı, Versiyon Sonu Durumu = `içerik_fazları`, değişmez). ✅ **v0.2 production release tamamlandı (2026-07-02)** — revize `main`'de, canlı deploy `a71adbc`, Umami canlı +1 doğrulandı (`docs/RELEASE-v0.2.md`). Açık takip: chatbot canlı `ANTHROPIC_API_KEY` env (release engeli değil).
+**İlerleme:** verify-phase 12 (2026-07-03) ✅ — UAT 16/16 senaryo geçti, 0 düzeltme task'ı; CI yeşil + security-review 0 bulgu. 11 otonom (tek-context/fallback runtime harness · full-motion axe 0 ihlal çift-tema · perf 100/CLS≈0/LCP 620ms regresyonsuz · vitest 7/7 · RTL/chatbot) + 5 görsel/craft kullanıcı onayı. run-task 12.03 (2026-07-03) ✅ — karar-gate **uygula-onayla** (+ light-veil `--flow-veil` token, light %70/dark %56). run-task 12.02 ✅ — `FlowVeil` (adaptasyon emergent). run-task 12.01 ✅ — `useFlowMode` + `FlowBackdrop` (tek WebGL context). **Sahipli açıklar (record, faz-dışı):** non-TR alt-sayfa stale (4 sayfa ar/de/es, versiyon-sınırı), **alt-sayfa canonical=`/` (layout miras, latent SEO, gelecek faz)**, **`/forum` locale-prefix gap (`/en/forum`→404, gelecek faz)**, brief mobil perf (gerçek-cihaz duvarı), site-geneli logical-ok (RTL, ayrı iş), dil-seti/AR stratejisi, TB-C npm audit (3 moderate).
+**Son Faz Dokümanı:** `phases/PHASE-12.md` (🔄 Devam ediyor — 12.01/12.02/12.03 ✅, UAT ✅ 16/16; review bekliyor). Faz 11 ✅ `phases/PHASE-11.md`.
 
 ---
 
@@ -28,9 +28,9 @@
 
 ## Aktif Task
 
-**Task:** — (Faz 12'nin tüm task'ları ✅; aktif task yok). Sıradaki adım **`verify-phase 12`** (UAT).
-**Durum:** Faz 12 🔄 → Adım **verify** (12.01 ✅, 12.02 ✅, 12.03 ✅). Versiyon Sonu Durumu = `içerik_fazları`; Aktif Versiyon v0.3.
-**İlerleme:** run-task 12.03 (2026-07-03) ✅ — karar-gate **uygula-onayla** (+ light-veil ince-ayarı); üç gate geçti (a11y 0 ihlal full-motion çift-tema · desktop perf 100/CLS 0 regresyonsuz · craft light bleed `--flow-veil` %70 ile çözüldü). Sıradaki = `verify-phase 12`.
+**Task:** — (Faz 12'nin tüm task'ları ✅ + UAT ✅; aktif task yok). Sıradaki adım **`review-phase 12`** (retrospektif + kalite kontrol).
+**Durum:** Faz 12 🔄 → Adım **review** (12.01/12.02/12.03 ✅ + UAT 16/16 ✅, 0 düzeltme). Versiyon Sonu Durumu = `içerik_fazları`; Aktif Versiyon v0.3.
+**İlerleme:** verify-phase 12 (2026-07-03) ✅ — UAT 16/16 geçti, 0 düzeltme task'ı; CI yeşil + security-review 0 bulgu. 11 otonom + 5 görsel/craft kullanıcı onayı. Sıradaki = `review-phase 12`.
 
 ---
 
@@ -72,8 +72,8 @@
 
 ## Hızlı Erişim
 
-**Aktif Task:** Faz 12 🔄 — 12.01 ✅ (fixed katman), 12.02 ✅ (adaptif veil), 12.03 ✅ (karar-gate → uygula-onayla). Aktif task yok. Sıradaki adım **verify-phase 12** (UAT, yeni oturum). Açık takip: chatbot canlı env key.
-**Aktif Faz:** 12 🔄 — v0.3 Living Flow nabız kapsamı (B1): kontrollü aşağı-taşıma / sürekli soluk iplik / desktop-öncelik / bölüme-uyarlanan opaklık. **Teknik biçim:** tek fixed viewport canvas + parallax (C); plan = 3 task (12.01 ✅ → 12.02 ✅ → 12.03 ✅ karar-gate uygula-onayla). Tüm task'lar ✅ → UAT bekliyor. Faz 11 ✅ (URL taksonomisi/SEO). Faz 10 ✅ (görsel cila). v0.2 Faz 4–9 ✅ + prd-review ✅ + production release ✅. **Aktif Versiyon v0.3**, Versiyon Sonu Durumu: **içerik_fazları** → sıradaki komut `verify-phase 12`.
+**Aktif Task:** Faz 12 🔄 — 12.01 ✅ (fixed katman), 12.02 ✅ (adaptif veil), 12.03 ✅ (karar-gate → uygula-onayla) + UAT ✅ (16/16). Aktif task yok. Sıradaki adım **review-phase 12** (yeni oturum). Açık takip: chatbot canlı env key.
+**Aktif Faz:** 12 🔄 — v0.3 Living Flow nabız kapsamı (B1): kontrollü aşağı-taşıma / sürekli soluk iplik / desktop-öncelik / bölüme-uyarlanan opaklık. **Teknik biçim:** tek fixed viewport canvas + parallax (C); plan = 3 task (12.01 ✅ → 12.02 ✅ → 12.03 ✅ karar-gate uygula-onayla) + UAT ✅ 16/16. Tüm task'lar + UAT ✅ → review bekliyor. Faz 11 ✅ (URL taksonomisi/SEO). Faz 10 ✅ (görsel cila). v0.2 Faz 4–9 ✅ + prd-review ✅ + production release ✅. **Aktif Versiyon v0.3**, Versiyon Sonu Durumu: **içerik_fazları** → sıradaki komut `review-phase 12`.
 **Task Sistemi:** `tasks/TASKS-README.md`
 **PRD (karar kaynağı):** `PRD/VIZYON.md` · `PRD/VERSIONS.md` · `PRD/features/`
 **Revize Backlog (bilinen sorunlar):** `docs/REVIZE-BACKLOG.md`
@@ -81,4 +81,4 @@
 
 ---
 
-**Son Güncelleme:** 2026-07-03 — **run-task 12.03 ✅: karar-gate → uygula-onayla (+ light-veil craft ince-ayarı). Faz 12'nin tüm task'ları tamamlandı.** Üç gate shipped kod üzerinde ölçüldü: **Gate-1** (a11y kontrast full-motion çift-tema) — `channel:'chrome'`+swiftshader Playwright/axe, alan iki temada live (fixed z-0 canvas teyitli), **0 WCAG-AA ihlali**, LH a11y 100 dark; caveat ~15 alan-üstü öğe axe `color-contrast` *incomplete* (WebGL pikseli okunamaz → craft görsel teyidi); fallback reduced-motion 0 ihlal. **Gate-2** (desktop perf/CLS) — perf **100** / CLS **≈3.75e-6** / LCP **~625ms**, baseline `home-desktop-20260628` (100/689/0) regresyonsuz; perf hipotezi (fixed=~sıfır artımlı, tek WebGL context) doğrulandı. **Gate-3** (craft son hakem) — dark kusursuz; light Hero-altı başlık bleed'i **tema-flip `--flow-veil` token**'ıyla çözüldü (`globals.css` light %70 / dark %56; `dark:` variant DEĞİL — `html.dark` flip, memory `tema-fix-html-dark-token-flip`); `FlowVeil.tsx` token kullanır. Değişen: `globals.css`, `FlowVeil.tsx` + DECISIONS 2026-07-03 + `docs/perf/home-desktop-20260703-faz12.{html,json}` + `perf/README.md`. **Sıradaki DevFlow komutu: `verify-phase 12`.**
+**Son Güncelleme:** 2026-07-03 — **verify-phase 12 ✅: UAT 16/16 senaryo geçti, 0 düzeltme task'ı; Faz 12 review'a hazır.** Otomatik kontroller: CI (fast+a11y) her 3 kod commit'inde yeşil (REST API job-conclusion=success); security-review **0 bulgu** (saf görsel/WebGL/CSS katmanı, yeni girdi/auth/secret yüzeyi yok); npm audit değişmedi (`package.json` dokunulmadı — TK4; 3 moderate = faz-dışı sahipli TB-C). **11 senaryo otonom** (channel:'chrome'+swiftshader runtime harness: desktop tek fixed canvas/mobil hero-contained/reduced+no-WebGL StaticFlow · full-motion axe **0 WCAG-AA ihlali** light+dark, alan live · perf artefakt `home-desktop-20260703-faz12` perf 100/CLS≈3.75e-6/LCP 620ms baseline regresyonsuz · vitest 7/7 · RTL `dir=rtl`/chatbot `#chat` yapısal) + **5 görsel/craft senaryo kullanıcı onayı** (shipped build ekran görüntüleri, 12.03 craft onayıyla tutarlı). Düzeltme task'ı doğuran bulgu yok → Adım **review**. **Sıradaki DevFlow komutu: `review-phase 12`.**

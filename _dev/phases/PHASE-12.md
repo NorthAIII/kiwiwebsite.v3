@@ -120,14 +120,31 @@ Sürekli iplik şunlardan **birini** koruyamıyorsa → P2 (Faz 6) emsali gibi *
 
 ## UAT Sonuçları
 
-> Bu bölüm `/devflow:verify-phase 12` oturumunda doldurulur.
+**Tarih:** 2026-07-03
+**Toplam Senaryo:** 16 | **Geçen:** 16 | **Kalan:** 0
 
-**Tarih:** [tarih]
-**Toplam Senaryo:** X | **Geçen:** Y | **Kalan:** Z
+**Test modu:** Otonom (11 kod/ölçüm-doğrulanabilir senaryo otonom koşuldu) + kullanıcı craft onayı (5 görsel/craft senaryo, shipped build ekran görüntüleriyle — 12.03 karar-gate onayıyla tutarlı).
+
+**Otomatik kontroller (Adım 1):** CI (fast+a11y) her 3 kod commit'inde ✅ yeşil · security-review **0 bulgu** (saf görsel/WebGL katmanı) · npm audit değişmedi (`package.json` dokunulmadı — TK4; 3 moderate = faz-dışı sahipli TB-C). Düzeltme task'ı doğuran bulgu yok.
 
 | # | Senaryo | Sonuç | Not |
 |---|---------|-------|-----|
-| 1 | [Senaryo 1] | ✅/❌ | [not] |
+| 1 | **Desktop/high-power — aşağı-taşıma:** full-motion, yeşil nabızlar Hero'nun altına akıyor (tek fixed viewport alan) | ✅ Geçti | otonom — runtime harness: 1 canvas fixed, scroll'da kalıcı |
+| 2 | **Tek WebGL context:** sayfada yalnız 1 `<canvas>`, fixed backdrop içinde, Hero-contained değil | ✅ Geçti | otonom — `inFixed=true, inHero=false`; çift-context yok |
+| 3 | **Hero görsel parite (TK2):** scroll=0'da Hero görsel birebir aynı (imza zayıflamadı) | ✅ Geçti | craft onayı — full-intensity, unveiled; kullanıcı onayladı |
+| 4 | **Mobil/low-power (≤768px) Hero-only:** alan Hero'da kalır, backdrop yok | ✅ Geçti | otonom — `inHero=true`, backdrop mount olmadı |
+| 5 | **reduced-motion fallback:** WebGL yok, `StaticFlow` SVG + baz wash | ✅ Geçti | otonom — 0 canvas + StaticFlow SVG |
+| 6 | **no-WebGL fallback:** statik fallback'e düşer, hata/çökme yok | ✅ Geçti | otonom — webgl=false → 0 canvas + StaticFlow (reduced-motion ile aynı dal) |
+| 7 | **Okunabilirlik — light tema:** tüm Hero-altı bölümlerde metin alan üstünde net okunur | ✅ Geçti | craft onayı — light veil %70; başlık bandı hafif nabız var ama metin kazanıyor |
+| 8 | **Okunabilirlik — dark tema:** aynı bölümlerde metin okunur (panel renkleri krem'e döner) | ✅ Geçti | craft onayı — dark kusursuz |
+| 9 | **Adaptif veil:** metin-yoğun/`bg-canvas-deep/40` bölümlerde alan soluk; transparent bölümde daha görünür | ✅ Geçti | craft onayı — adaptif dimleme görünür (emergent) |
+| 10 | **Opak bölüm örtmesi:** Footer + Crew OS teaser iç paneli (`bg-ink`) fixed alanı doğal örter | ✅ Geçti | otonom — `bg-ink` sınıfları mevcut (Footer.tsx:48, Bunker.tsx:54) |
+| 11 | **Gate-1 a11y kontrast=100 çift-tema (full-motion):** alan render ederken 0 WCAG-AA ihlali + LH a11y 100 | ✅ Geçti | otonom — chrome+swiftshader axe, alan live, 0 ihlal light+dark; 34 incomplete=WebGL-arkası (memory `axe-webgl-contrast-incomplete`, craft son hakem) |
+| 12 | **Gate-2 desktop perf 100 / CLS≈0:** `home-desktop-20260628` tabanı regresyonsuz | ✅ Geçti | otonom — artefakt: perf 100 / CLS≈3.75e-6 / LCP 620ms (baseline 100/0/689 regresyonsuz) |
+| 13 | **i18n 5-dil parite:** yeni anahtar yok, eksik anahtar yok | ✅ Geçti | otonom — vitest 7/7 |
+| 14 | **RTL (AR):** `/ar` aşağı-taşıma + veil RTL'de bozulmuyor | ✅ Geçti | otonom — `<html dir="rtl">`, 200; veil dikey gradient RTL-agnostik |
+| 15 | **Chatbot bölümü:** aşağı-taşıma sonrası `#chat` etkileşimi/okunabilirliği bozulmadı | ✅ Geçti | otonom — `id="chat"` render, bozulma yok |
+| 16 | **Adversarial — tema toggle + scroll ortasında:** light↔dark geçişinde alan/veil rengi anında uyar, flash yok | ✅ Geçti | mekanizma otonom teyitli (FlowCanvas MutationObserver `html.dark` satır 259/266) + craft onayı |
 
 ---
 
@@ -171,4 +188,4 @@ Sürekli iplik şunlardan **birini** koruyamıyorsa → P2 (Faz 6) emsali gibi *
 ---
 
 **Oluşturulma:** 2026-07-02
-**Son Güncelleme:** 2026-07-03 — run-task 12.03 ✅: karar-gate **uygula-onayla** (+ light-veil craft ince-ayarı). Üç gate: Gate-1 full-motion a11y 0 WCAG-AA ihlali çift-tema (alan live teyitli) + LH a11y 100 dark; Gate-2 desktop perf 100 / CLS ≈0 / LCP ~625ms regresyonsuz (perf hipotezi doğrulandı, tek context); Gate-3 craft (dark kusursuz; light başlık bleed'i `--flow-veil` tema-flip token'ıyla çözüldü — light %70/dark %56, `dark:` değil `html.dark` flip). Fazdaki tüm task'lar ✅ → sıradaki **verify-phase 12**. Detay → DECISIONS 2026-07-03, `docs/perf/README.md` Faz 12.
+**Son Güncelleme:** 2026-07-03 — verify-phase 12 ✅: **UAT 16/16 senaryo geçti, 0 düzeltme task'ı.** Otomatik kontroller: CI (fast+a11y) 3 kod commit'inde yeşil · security-review 0 bulgu · npm audit değişmedi (`package.json` dokunulmadı). 11 senaryo otonom (runtime harness tek-context/fallback · full-motion axe 0 ihlal çift-tema · perf artefakt 100/CLS≈0/LCP 620ms regresyonsuz · vitest 7/7 · RTL/chatbot yapısal), 5 görsel/craft senaryo kullanıcı onayıyla (shipped build ekran görüntüleri, 12.03 craft onayıyla tutarlı). Sıradaki **review-phase 12**. Detay → UAT Sonuçları tablosu.
