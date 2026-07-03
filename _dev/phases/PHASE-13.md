@@ -128,13 +128,16 @@
 
 ## Task Listesi
 
-> Bu bölüm `/devflow:plan-phase 13` oturumunda doldurulur.
+> Bu bölüm `/devflow:plan-phase 13` oturumunda dolduruldu (2026-07-03). 4 task; bağımlılık zinciri 13.01→13.02→13.03 (TB-1), 13.04 bağımsız (TB-2). Sıra 13.02→13.03 (alt sayfalar önce, layout→home sonra) regresyon penceresi bırakmaz.
 
 <!-- KURAL: Task Listesi yalnızca özet tablodur (#, Task, Durum, kısa açıklama). Task'ın icra detayı / oturum kaydı / çalışma notu buraya değil `tasks/TASK-N.md`'ye yazılır — bu bölüme sızan detay şişmedir, temizlenir (bölme değil). -->
 
 | # | Task | Durum | Açıklama |
 |---|------|-------|----------|
-| 13.01 | TASK-13.01 | ⬜ Bekliyor | (plan-phase belirler) |
+| 13.01 | TASK-13.01 | ⬜ Bekliyor | TB-1: ortak `localizedAlternates` helper + locale-path util + sitemap refactor + helper unit testi |
+| 13.02 | TASK-13.02 | ⬜ Bekliyor | TB-1: 5 alt sayfaya self-canonical + 5-locale hreflang alternates (helper çağrısı) |
+| 13.03 | TASK-13.03 | ⬜ Bekliyor | TB-1: alternates'i layout'tan ana sayfaya taşı (fail-safe default; layout artık canonical miras ettirmez) |
+| 13.04 | TASK-13.04 | ⬜ Bekliyor | TB-2: `/forum` locale-gap + config redirect denetimi (`/forum`→`/`) + redirect regresyon tohumu |
 
 **Durum simgeleri:** ⬜ Bekliyor | 🔄 Devam ediyor | ⏸️ Duraklatıldı | ✅ Tamamlandı | 🔴 Bloke | ❌ İptal
 
@@ -194,4 +197,4 @@
 ---
 
 **Oluşturulma:** 2026-07-03 (discuss-phase 13)
-**Son Güncelleme:** 2026-07-03 — research-phase 13: Araştırma Bulguları yazıldı. TB-1 kök: alt sayfalar `alternates` set etmiyor → layout'un `canonical="/"`'ını sığ-merge ile miras alıyor; çözüm ortak `localizedAlternates` helper + alternates layout'tan sayfalara taşınır (fail-safe). TB-2 denetim: `/forum`+`/forum/:slug*` locale-twin'siz; **beklenmedik bulgu** `/bulten` index 404 → kullanıcı kararı `/forum`→`/`. x-default eklenir (kullanıcı kararı). Regresyon tohumu = Vitest node (helper unit + routes-manifest assertion). Sıradaki adım: plan-phase 13.
+**Son Güncelleme:** 2026-07-03 — plan-phase 13: 4 task dokümanı oluşturuldu. TB-1 üç task'a bölündü (13.01 helper+util+sitemap+unit test → 13.02 5 alt sayfa wiring → 13.03 layout→home fail-safe; sıra regresyon penceresi bırakmaz); TB-2 tek task (13.04 `/forum` locale-gap + config denetim + redirect tohumu). Sıradaki adım: verify-plan 13.
