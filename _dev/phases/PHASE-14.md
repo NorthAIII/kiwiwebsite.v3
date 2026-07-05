@@ -1,6 +1,6 @@
 # Phase 14: v0.3 Versiyon-Sonu Senaryo Testi (ana sayfa + 5 alt sayfa uçtan-uca)
 
-**Durum:** 🔄 Devam ediyor
+**Durum:** ✅ Tamamlandı
 
 <!-- Bu doküman faza girince (discuss-phase) oluşur; durum 🔄 ile başlar. Henüz girilmemiş fazların dokümanı/numarası olmaz — PHASES.md → Sıradaki Fazlar'da numarasız konu olarak durur. -->
 <!-- KURAL: Bu doküman tek-okunabilir kalmalı (CLAUDE.md → Boyut ve Bölünme). Bir bölüm büyüyüp kırmızı çizgiye (~20k token) yaklaşırsa faz HÂLÂ AKTİFKEN `PHASE-14-<slug>.md`'ye bölünür — parent'ta self-yeten özet + pointer kalır, içerik taşınıp silinir, parent o fazın mini-index'i olur. Tamamlandıktan (✅) sonra bölme yasaktır; verify-phase ve review-phase fazı dondurmadan önce boyutu kontrol eder. -->
@@ -231,43 +231,58 @@ Kapsam-içi bug **sıfır**. Aşağıdakiler zaten-kayıtlı sahipli kalemler; s
 
 ## Retrospektif
 
-> Bu bölüm `/devflow:review-phase 14` oturumunda doldurulur.
+> `/devflow:review-phase 14` oturumunda dolduruldu (2026-07-05).
 
 ### Ne İyi Gitti?
-- [Tekrarlanması gereken pratikler]
+- **Katmanlı/hibrit araç eşlemesi (research-phase'de belirlendi) her senaryoyu en sağlam kanıtlayan araca eşledi.** Build-ground-truth (curl/routes-manifest/prerender-grep/Vitest) deterministik ve ortam-bağımsız kaldı; runtime WebGL yalnız gerçekten gerektiği yerde (S3 sayfa-boyu nabız). Bu ayrım senaryo testinin çoğunu ortam öngörülemezliğinden bağımsız kıldı → kaynak-değişmez doğrulama fazında ILKELER kalıcılığıyla hizalı.
+- **Sandbox `exit 144` sorununa yeniden-kullanılabilir çözüm bulundu ve memory'ye kaydedildi.** 14.08/14.09'da `next start`/`next dev` + arka-plan-server+Chrome kombinasyonu signal-16 ile öldü → **tek-process Playwright `page.route` interception** (diskten `.next` prerender+static byte-for-byte servis) ile runtime-tarayıcı doğrulaması server'sız koşuldu. Build-ground-truth'a mecburi düşüş olmadı; çözüm `memory/sandbox-runtime-browser-page-route.md`'de kanonikleşti (gelecek runtime fazlarında ilk tercih).
+- **v0.3'ün iki çapraz deltası bütünsel doğrulandı.** Route rename: `/bunker-os` href sızıntısı 0 (S2), dil-switcher `/crew-os`→`/en/crew-os` eski URL'ye düşmüyor (S4), "Bunker OS" görünür yüzeyde 31 dosyada 0 (S5). Sayfa-boyu nabız: desktop-only korundu (mobil-low pageLevel=0), reduced-motion tüm sayfayı static'e düşürdü, tek shared WebGL context 1→1 (S3/S9). Dar task-UAT'ların göremeyeceği dikişler burada kapandı.
+- **0 kaynak değişimi / 0 kapsam-içi bug / 0 düzeltme task'ı — Faz 3/9 emsali sürdü.** Suite-first hibrit + bağımsız deterministik re-teyit; milestone "ölç+kaydet+karar ver" disiplini (Faz 2/3/8/9 dersi) geçişi peşinen varsaymadı, ölçtü.
+- **Otomatik kontrol katmanı (CI + security-review + Dependabot) ilk adımda tarandı.** CI HEAD `fast`+`a11y` success, security-review HIGH/MEDIUM bulgu yok (tek `dangerouslySetInnerHTML` statik FOUC script) — insan-UAT'ından önce makine güvencesi.
 
 ### Ne Kötü Gitti?
-- [Sorunlar ve darboğazlar]
+- **`next start` ortam kararlılığı per-session flaky çıktı — research-phase'in "kararlı" ölçümü sonraki task'larda geçerli kalmadı.** research-phase 14 `next start`'ı ampirik kararlı ölçtü (Faz 13 kötümser notunu çürüttü); orta task grubu (14.05–14.07) system Chrome + start ile koştu, ama 14.08/14.09'da `exit 144` geri geldi → `page.route`'a düşüldü. Ortam durumu oturumdan oturuma değişiyor; artık `page.route` interception kanonik çözüm olarak memory'de → sürtünme kalıcı olarak eritildi.
+- **Runtime WebGL doğrulaması ortam-bağımlı kaldı → verify-phase re-koşu yerine task-kanıtına dayandı.** S2/S3/S4/S9-race runtime katmanı task 14.05–14.09'da koşuldu; verify-phase bunları yeniden koşmak yerine task-kanıtı + CI a11y + deterministik katman yeşiline dayandırdı. Kabul edilebilir (kaynak değişmedi, CI deterministik yeşil) ama runtime katmanının tek-nokta re-teyidi ideal olmazdı — ortam-bağımlılığının doğal sonucu.
 
 ### Sonraki Faz İçin Öneriler
-- [Alınan dersler, tavsiyeler]
+- **Faz 14 = v0.3 versiyon-sonu senaryo testi fazı → zorunlu `prd-review`.** Versiyon Sonu Durumu `senaryo_testi`→`prd_review_bekliyor` (bu review damgaladı); v0.3'ün versiyon-sonu fazları (13 teknik borç + 14 senaryo testi) tamam. Sıradaki adım **`/devflow:prd-review`** (faz döngüsü dışı — Aktif Faz/Adım boşaltıldı).
+- **prd-review'da B grubu sahipli kalemler ele alınır:** brief mobil perf açığı (CPU-bound WebGL, gerçek-cihaz/Vercel field gerekir) · chatbot per-mesaj max-byte cap yok · non-TR (ar/de/es) 4 alt sayfa İngilizce-stale + AR-dil stratejisi · TB-3 (full-motion test tohumu, WebGL-flaky) · TB-4 (site-geneli logical-ok RTL) · TB-5 (npm audit 3 moderate).
+- **Runtime-tarayıcı doğrulaması için `page.route` interception artık ilk tercih** (`memory/sandbox-runtime-browser-page-route.md`) — gelecek senaryo/runtime fazlarında `next start` denemeden doğrudan bununla başla; ortam flakiliğini tümüyle atlar.
+
+### Task-Spesifik Teknik Öğrenimler
+<!-- Bu fazdaki task'larda öğrenilen ama proje genelinde geçerli olmayan teknik nüanslar. Proje-geneli olan (page.route interception) memory'de kanonikleşti — burada faza-özgü gözlemler. -->
+- **`next start`/`next dev` per-session flaky (kararlılık oturuma bağlı).** research-phase 14 ampirik "kararlı" ölçtü ama aynı ortamda 14.08/14.09 `exit 144` verdi. Ortam durumuna bağlı öngörülemezlik → runtime katmanı için ayrı server yerine tek-process `page.route` interception ortam-bağımsız (memory `sandbox-runtime-browser-page-route`).
+- **Sayfa-boyu nabız tek fixed `FlowBackdrop` canvas'ıdır; `high` modda Hero kendi canvas'ını render etmez** (14.05: pageLevel canvas=1, Hero-contained değil). Degradasyon ayırt-ediciliği: mobil-low → pageLevel=0 ama hero-contained canvas=1 (nabız aşağı-taşınmadı, hero efekti korundu).
+- **`page.route` harness'te dış/app-router asset'leri 404 verir (harness artefaktı, bug değil):** `/script.js` (Umami dış host) + `/icon.svg` (app-router dinamik route, prerender `.html` değil) diskten servis edilemez → 404; render/okunabilirlik/WebGL etkilenmez (14.09).
 
 ---
 
 ## Kalite Kontrol Sonuçları
 
-> Bu bölüm `/devflow:review-phase 14` oturumunda doldurulur.
+> `/devflow:review-phase 14` oturumunda dolduruldu (2026-07-05). **Doğrulama fazı — kaynak kod 0 değişim** (Faz 13'ten HEAD'e `_dev/` dışı 0 dosya); eksenler yapısal olarak korundu ama senaryo testinde tema/dil/motion kombinasyonlu yolculukta re-teyit edildi (Faz 9 emsali).
 
 | Eksen | Durum | Not |
 |-------|-------|-----|
-| Marka & Craft (imza) | ✅ / ⚠️ / ❌ | ... |
-| Erişilebilirlik | ✅ / ⚠️ / ❌ | ... |
-| Performans | ✅ / ⚠️ / ❌ | ... |
-| Yerelleştirme & RTL | ✅ / ⚠️ / ❌ | ... |
-| Modülerlik & Bakım | ✅ / ⚠️ / ❌ | ... |
-| Hata Yönetimi & Degradasyon | ✅ / ⚠️ / ❌ | ... |
-| Güvenlik | ✅ / ⚠️ / ❌ | ... |
-| Test Kapsamı | ✅ / ⚠️ / ❌ | ... |
+| Marka & Craft (imza) | ✅ | Sayfa-boyu nabız imzası S3'te canlı doğrulandı: `--flow-veil` washi hero-ötesi metin okunabilirliğini koruyor, nabız breathing-zone'da görünür, CLS=0.0000; 0 render/DOM değişimi → imza dokunulmadı. |
+| Erişilebilirlik | ✅ | a11y=100 çift-tema 6 sayfa (LH dark 6/6 + standalone axe light+dark 12/12) + `test:e2e` 52 axe WCAG-AA 0 ihlal + focus-visible yeşil 12/12; CI `a11y` job yeşil. |
+| Performans | ✅ | Masaüstü full-motion perf 100/LCP 624ms/CLS 0 = Faz 12 birebir (nabız regresyonsuz); mobil LCP ~3010ms ≤ korunan taban 3164-3171ms/CLS 0. Sahipli: brief mobil açık (rep-env ~90/LCP>2.5s, CPU-bound WebGL) → prd-review B. |
+| Yerelleştirme & RTL | ✅ | 0 `MISSING_MESSAGE` (6 sayfa×5 dil, build log + 31 prerender) + Vitest parite 39/39; namespace `bunker`→`crew` senkron; AR `dir=rtl`+`lang=ar`. Sahipli: non-TR ar/de/es 4 alt sayfa stale ama görünür kopukluk yok → prd-review B. |
+| Modülerlik & Bakım | ✅ | Doğrulama fazı → yeni kod/kopya yüzeyi yok; kümülatif test harness'i (Vitest 39 + e2e 52 + CI) ve araç-katmanları yeniden kullanıldı, yeni bağımlılık yok. |
+| Hata Yönetimi & Degradasyon | ✅ | Living Flow: reduced-motion→tüm sayfa StaticFlow, no-WebGL→static, mobil-low→nabız yok (desktop-only); chatbot key-yok→offline UI dürüst (sahte online-dot yok), stream takılmaz. |
+| Güvenlik | ✅ | security-review HIGH/MEDIUM **bulgu yok** (tek `dangerouslySetInnerHTML` statik FOUC script, kullanıcı girdisi yok); chatbot sanitizasyon hepsi `new Anthropic()` öncesi + malformed 6× 400 + **0 API çağrısı**. Sahipli: per-mesaj max-byte cap yok → prd-review B. |
+| Test Kapsamı | ✅ | Vitest 39/39 (parite + seo-metadata 16 + seo-redirects 16 + smoke + umami) + `test:e2e` 52 axe + CI `fast`+`a11y` success; katmanlı araç eşlemesi (build-ground-truth + runtime WebGL) her senaryoyu en sağlam kanıtlayan araca eşledi. |
+
+**Kullanıcı yolculuğu / boşluk:** v0.3 sonrası uçtan-uca akış tutarlı — TR yolculuğu (Hero→CTA→sektörler→4-adım→Crew OS→Forum→Footer + 4 alt sayfaya SPA-nav çıkış/dönüş) kopukluksuz; `<Logo>` her yüzeyde tutarlı (Faz 10 ortak bileşen); route rename kullanıcıya sızmıyor (`/crew-os` doğrudan 200, eski `/bunker-os` 308). Sahipsiz boşluk yok. Bilinçli-stale non-TR değerler görünür kopukluk yaratmıyor (S6). Tek latent yüzey `/bulten` index (kod tabanında link yok + `/forum`→`/` kapıyı kapatır, bilinçle kapsam dışı — Faz 13 kaydı).
 
 ---
 
 ## Sonuç
 
-- **Tamamlanma Tarihi:** [Tarih]
-- **Toplam Task:** [Sayı]
-- **Notlar:** [Önemli kararlar, sonraki faza aktarılanlar]
+- **Tamamlanma Tarihi:** 2026-07-05
+- **Toplam Task:** 9 (TASK-14.01→14.09; S1–S9 senaryo grupları) — hepsi ✅, düzeltme task'ı gerekmedi
+- **Notlar:** v0.3 versiyon-sonu senaryo testi tamamlandı — **UAT 11/11 GEÇTİ (S1–S9 + 2 milestone-çapraz), kapsam-içi bug 0, kaynak kod 0 değişim.** v0.3'ün iki çapraz deltası (route rename `/bunker-os`→`/crew-os` + Living Flow sayfa-boyu nabız) bütünsel doğrulandı; guardrail'ler (a11y=100 çift-tema, SEO metadata katmanı, nabız imzası, perf taban, i18n parite, CI) regresyonsuz. Katmanlı hibrit araç eşlemesi + sandbox `exit 144` için `page.route` interception çözümü (memory'de kanonikleşti). v0.3 versiyon-sonu fazları (13+14) tamam → Versiyon Sonu Durumu `senaryo_testi`→`prd_review_bekliyor`; sıradaki zorunlu adım **`/devflow:prd-review`**. Sahipli kalemler (brief mobil perf · chatbot max-byte cap · non-TR stale · TB-3/4/5) prd-review B grubuna aktarıldı.
 
 ---
 
 **Oluşturulma:** 2026-07-03 (discuss-phase 14)
-**Son Güncelleme:** 2026-07-05 — **verify-phase 14 ✅: UAT 11/11 GEÇTİ, kapsam-içi bug YOK → faz review'a hazır.** Otomatik kontroller: CI HEAD run 28727534357 `fast`+`a11y` **success** · security-review **bulgu YOK** (kaynak Faz 13'ten değişmedi; tek `dangerouslySetInnerHTML` statik tema-script) · Dependabot/Renovate yok. Bu oturum deterministik re-teyit: taze `next build` 37/37 SSG temiz + **0 MISSING_MESSAGE** (build log + 31 prerender) + Vitest **39/39** + routes-manifest 7 redirect 308 doğru + "Crew OS" 5-dil var / görünür "Bunker OS" 31 dosyada 0 + AR `dir=rtl`. Runtime WebGL senaryoları (S2/S3/S4/S9-race) task 14.05–14.09'da system Chrome ile otonom koşuldu (kaynak değişmedi → task-kanıtı + CI yeşili roll-up). Düzeltme task'ı **gerekmedi**; sahipli kalemler (brief mobil perf · chatbot max-byte cap · non-TR stale · TB-3/4/5) prd-review B'ye. **Adım = review.** Sıradaki komut: `review-phase 14`.
+**Son Güncelleme:** 2026-07-05 — **review-phase 14 ✅: faz TAMAMLANDI.** Retrospektif + kalite kontrol (8 eksen: 7 ✅ + Modülerlik ✅ doğrulama-fazı) + sonuç yazıldı. UAT 11/11 GEÇTİ, kapsam-içi bug 0, kaynak kod 0 değişim, düzeltme task'ı gerekmedi. v0.3'ün iki çapraz deltası (route rename + sayfa-boyu nabız) bütünsel doğrulandı; guardrail'ler regresyonsuz. Boyut kontrolü (Adım 5b): ~13k token `token-rahat` → bölme gerekmedi. v0.3 versiyon-sonu fazları (13+14) tamam → Versiyon Sonu Durumu `senaryo_testi`→`prd_review_bekliyor`; sıradaki zorunlu adım **`/devflow:prd-review`** (faz döngüsü dışı). Sahipli kalemler (brief mobil perf · chatbot max-byte cap · non-TR stale · TB-3/4/5) prd-review B'ye.

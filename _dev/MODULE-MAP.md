@@ -158,6 +158,8 @@ M6 (SEO/Deploy) ─────────────────────>
 | **— v0.3 versiyon-sonu teknik borç iş birimleri (Faz 13 — SEO-metadata hijyeni; içerik/tasarım/davranış/DOM değişmez) —** | | | | |
 | TB-1: Alt-sayfa self-canonical + 5-locale hreflang alternates (layout-miras `canonical="/"` giderilir; ana sayfa self-canonical korunur) | M6 (+M2) | v0.3 | 13 | ✅ |
 | TB-2: `/forum` locale-prefix gap (`/en/forum`→404) + tüm config redirect denetimi (çıplak+prefixli iki-giriş, sessiz 404 gap yok) | M6 | v0.3 | 13 | ✅ |
+| **— v0.3 versiyon-sonu senaryo testi (Faz 14 — çapraz doğrulama, yeni feature üretmez) —** | | | | |
+| S1–S9: v0.3 ana sayfa + 5 alt sayfa uçtan-uca senaryo doğrulaması (giriş/yolculuk/mod/kontrol/taksonomi/5-dil/chatbot/v0.3-guardrail/adversarial; delta: crew-os route + sayfa-boyu nabız + SEO metadata + logo) | tümü | v0.3 | 14 | ✅ |
 
 **Durum simgeleri:**
 - ⬜ **Bekliyor** — Fazı henüz başlamadı
@@ -176,4 +178,4 @@ M6 (SEO/Deploy) ─────────────────────>
 
 ---
 
-**Son Güncelleme:** 2026-07-03 — review-phase 13: TB-1 (alt-sayfa self-canonical + 5-locale hreflang alternates) + TB-2 (`/forum` locale gap + tüm config redirect denetimi) Durum 🔄→✅ (UAT 16/16, 8 kalite ekseni ✅, tüm kabul kriterleri karşılandı). Faz 13 tamamlandı.
+**Son Güncelleme:** 2026-07-05 — review-phase 14: v0.3 versiyon-sonu senaryo testi (S1–S9, Faz 14) satırı ✅ eklendi (UAT 11/11, 0 kaynak değişimi, 0 kapsam-içi bug, 8 kalite ekseni ✅); v0.3'ün iki çapraz deltası (route rename + sayfa-boyu nabız) bütünsel doğrulandı. v0.3 versiyon-sonu fazları tamam → prd-review.
