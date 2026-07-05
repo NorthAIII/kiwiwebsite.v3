@@ -9,7 +9,7 @@
 - **v0.3 tamamlandı** (Faz 10–14: görsel cila [A1 logo + A3 CTA/scroll] + URL taksonomisi/SEO [`/bunker-os`→`/crew-os`] + Living Flow nabız [B1] + versiyon-sonu teknik borç [SEO-metadata hijyeni] + senaryo testi). **prd-review (2026-07-05):** vizyon/taksonomi/feature'lar sağlam — vizyon değişikliği yok; yalnız v0.3'ün kapattığı kararlara **PRD drift hizalaması** yapıldı (VIZYON §3 açık konu kapatıldı, crew-os feature namespace `bunker`→`crew` + `/crew-os` güncellendi, VERSIONS v0.3 "Tamamlanan" oldu).
 - **v0.3'ün öne çıkan dersi:** B1 Living Flow nabız karar-gate'li/imza-riskli girildi ama risk gerçekleşmedi — tek WebGL context + adaptif veil ile imza *güçlendi* (iptal değil, uygula-onayla). Craft en üst eksenin (ILKELER) doğrulandığı faz.
 - Site **canlı ve mimari olarak sağlam**; revize v3'te yerinde + `revize/...` branch'le yürür (`main` canlı kalır). **v0.2 canlıda** (deploy `a71adbc`, 2026-07-02).
-- ⏳ **v0.3 production release henüz yapılmadı:** v0.3 kodu `revize/devflow-kurulum` branch'inde, `main`'e merge edilmedi. Release v0.2 emsalindeki gibi ayrı operasyonel oturumda (temiz build → PR/merge → canlı duman testi). Açık takip: chatbot canlı `ANTHROPIC_API_KEY` env.
+- 🚀 **v0.3 production release tamamlandı (2026-07-05):** `revize/devflow-kurulum`→`main` merge (`2ea09b7`) + Vercel deploy `success`; clean build 37/37 SSG; canlı duman testi ✅ (crew-os/redirect/locale/alt sayfalar). **⚠️ Açık takip: canlı `ANTHROPIC_API_KEY` env ayarlı DEĞİL** (`/api/chat` 503 → chatbot canlıda "offline"; zarif düşüş, regresyon değil; Vercel env'e eklenince açılır).
 
 ---
 

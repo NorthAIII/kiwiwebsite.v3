@@ -43,7 +43,7 @@
 
 **v0.3 guardrail'leri regresyonsuz korundu:** a11y=100 çift-tema (ana sayfa + 5 alt sayfa) · perf tabanı (masaüstü 100 / LCP 0.69s / CLS 0 · mobil 90 / LCP ~2.7s) · CLS≈0 · i18n 5-dil parite · marka sesi yasakları.
 
-> ⏳ **v0.3 production release henüz yapılmadı** — v0.3 kodu `revize/devflow-kurulum` branch'inde, `main`'e (canlı) merge edilmedi. Release v0.2 emsalindeki gibi ayrı operasyonel oturumda yapılır (temiz build → PR/merge → canlı duman testi). Açık takip: chatbot canlı `ANTHROPIC_API_KEY` env.
+> 🚀 **v0.3 production release tamamlandı (2026-07-05):** `revize/devflow-kurulum`→`main` merge (`2ea09b7`) + Vercel deploy `success`; canlı duman testi ✅ (`/crew-os` 200, `/bunker-os`→`/crew-os` 308, `/forum`→`/` 308, "Crew OS" görünür / "Bunker OS" 0×). **⚠️ Açık takip: canlı `ANTHROPIC_API_KEY` env ayarlı değil** (`/api/chat` 503 → chatbot "offline"; Vercel env'e eklenince açılır — regresyon değil, v0.2'den beri açık).
 
 ## Sonraki Aday Versiyonlar (henüz planlanmadı)
 
@@ -54,4 +54,4 @@
 
 ---
 
-**Son Güncelleme:** 2026-07-05 — prd-review (v0.3): v0.3 "Sıradaki"→"Tamamlanan Versiyon ✅" (Faz 10–14 özeti); sıradaki versiyon henüz planlanmadı (aday konular). v0.3 production release ⏳ bekliyor (kod `revize/devflow-kurulum`'da, `main`'e merge edilmedi).
+**Son Güncelleme:** 2026-07-05 — prd-review (v0.3): v0.3 "Sıradaki"→"Tamamlanan Versiyon ✅" (Faz 10–14 özeti); sıradaki versiyon henüz planlanmadı (aday konular). 🚀 **v0.3 production release tamamlandı** (`main` `2ea09b7`, Vercel `success`, canlı duman testi ✅; açık takip: canlı `ANTHROPIC_API_KEY` env).
