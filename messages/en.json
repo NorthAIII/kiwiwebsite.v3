@@ -128,7 +128,7 @@
     },
     "allCases": "All case studies"
   },
-  "bunker": {
+  "crew": {
     "label": "Crew OS",
     "title": "Where your automations live and run.",
     "body": "Every flow we ship runs inside one operating layer — observable, measurable, always on. You see what ran, what it saved, and what's next.",
@@ -149,7 +149,7 @@
     },
     "explore": "Explore Crew OS"
   },
-  "bunkerOs": {
+  "crewOs": {
     "back": "Home",
     "eyebrow": "Operating layer",
     "title": "Crew OS",

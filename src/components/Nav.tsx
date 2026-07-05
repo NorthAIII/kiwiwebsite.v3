@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import LanguageSwitcher from "./LanguageSwitcher";
 import ThemeToggle from "./ThemeToggle";
-import KiwiMark from "./KiwiMark";
+import Logo from "./Logo";
 
 export default function Nav() {
   const t = useTranslations("nav");
@@ -33,9 +33,8 @@ export default function Nav() {
       }`}
     >
       <nav className="mx-auto flex h-16 max-w-[1400px] items-center justify-between px-6 lg:px-10">
-        <a href="#top" data-cursor="hover" className="group flex items-center gap-2.5">
-          <KiwiMark size={22} className="text-green" />
-          <span className="text-[15px] font-semibold tracking-tight">Kiwi AI Lab</span>
+        <a href="#top" data-cursor="hover" className="group flex items-center">
+          <Logo wordmarkClassName="text-[15px] font-semibold" />
         </a>
 
         <div className="hidden items-center gap-8 md:flex">

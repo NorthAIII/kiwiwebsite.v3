@@ -5,6 +5,7 @@ import CustomCursor from "@/components/CustomCursor";
 import PageHeader from "@/components/PageHeader";
 import Footer from "@/components/Footer";
 import CaseStudies from "@/components/CaseStudies";
+import { localizedAlternates } from "@/i18n/metadata";
 
 export async function generateMetadata({
   params,
@@ -18,6 +19,7 @@ export async function generateMetadata({
     description: tr
       ? "Sektör sektör kurduğumuz otomasyonlar: durum, akış ve getirdiği sonuç. Spor salonu yazılımı Alpfit canlıda."
       : "The automations we ship, sector by sector: situation, flow, and the outcome it drives. The gym software, Alpfit, is live.",
+    alternates: localizedAlternates(locale, "/vaka-calismalari"),
   };
 }
 
@@ -28,7 +30,7 @@ export default async function CaseStudiesPage({
 }) {
   const { locale } = await params;
   setRequestLocale(locale);
-  const t = await getTranslations({ locale, namespace: "bunkerOs" });
+  const t = await getTranslations({ locale, namespace: "crewOs" });
 
   return (
     <SmoothScroll>

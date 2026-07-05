@@ -5,7 +5,7 @@ import { Link } from "@/i18n/navigation";
 import Reveal from "./Reveal";
 
 export default function Bunker() {
-  const t = useTranslations("bunker");
+  const t = useTranslations("crew");
   const points = ["one", "two", "three"] as const;
 
   const running = [
@@ -38,7 +38,7 @@ export default function Bunker() {
           </ul>
           <Link
             data-reveal
-            href="/bunker-os"
+            href="/crew-os"
             data-cursor="hover"
             className="group mt-8 inline-flex items-center gap-2 text-[15px] font-medium text-green"
           >

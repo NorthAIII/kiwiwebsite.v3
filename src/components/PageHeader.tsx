@@ -3,16 +3,15 @@
 import { Link } from "@/i18n/navigation";
 import LanguageSwitcher from "./LanguageSwitcher";
 import ThemeToggle from "./ThemeToggle";
-import KiwiMark from "./KiwiMark";
+import Logo from "./Logo";
 
 /** Lightweight header for sub-pages (logo → home, language, CTA). */
 export default function PageHeader({ back, cta }: { back: string; cta: string }) {
   return (
     <header className="fixed inset-x-0 top-0 z-50 border-b border-line bg-canvas/80 backdrop-blur-md">
       <nav className="mx-auto flex h-16 max-w-[1400px] items-center justify-between px-6 lg:px-10">
-        <Link href="/" data-cursor="hover" className="group flex items-center gap-2.5">
-          <KiwiMark size={22} className="text-green" />
-          <span className="text-[15px] font-semibold tracking-tight">Kiwi AI Lab</span>
+        <Link href="/" data-cursor="hover" className="group flex items-center">
+          <Logo wordmarkClassName="text-[15px] font-semibold" />
         </Link>
 
         <div className="flex items-center gap-4">

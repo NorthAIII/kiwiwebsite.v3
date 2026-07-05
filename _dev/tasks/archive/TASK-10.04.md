@@ -1,6 +1,6 @@
 # TASK-10.04: Hero scroll göstergesi ölçekleme
 
-**Durum:** ⬜ Bekliyor
+**Durum:** ✅ Tamamlandı
 **Modül:** M2 — Sayfalar & Bölümler (Hero) + M1 (token)
 **Feature:** A3b — Hero scroll göstergesi ölçekleme
 **Faz:** Phase 10 (phases/PHASE-10.md)
@@ -34,12 +34,12 @@ Research-phase 10: Merkez-alt gösterge `Hero.tsx:140-143` — `absolute bottom-
 
 ## Alt Görevler
 
-- [ ] **1. Gösterge çizgisini ve etiketini orantıla**
+- [x] **1. Gösterge çizgisini ve etiketini orantıla**
   - Dosya: `src/components/Hero.tsx` (satır 140-143)
   - Çizgiyi uzat (`h-10` → hero ölçeğine orantılı, örn. `h-14`/`h-16`; görsel doğrulamayla kesinleştir) ve/veya etiketi biraz daha okunur yap (`text-[11px]` → hafif büyütme veya ağırlık/opaklık). Merkez-alt + desktop-only (`hidden md:flex`) + `bottom-7 left-1/2 -translate-x-1/2` konumu korunur.
   - **Hairline sağlamlaştırma:** `w-px` + `bg-ink-faint/40` DPR'de kırılgan — çizgiyi biraz daha sağlam yap (örn. opaklığı artır veya token'la net görünür kıl). Çizgi rengi **adaptif token** kalır (`--color-ink-faint`; `dark:` variant YOK).
 
-- [ ] **2. animate-pulse & konum kontrolü**
+- [x] **2. animate-pulse & konum kontrolü**
   - Mevcut `animate-pulse` korunur (reduced-motion global catch-all'da susar). Gösterge `absolute` (akış-dışı) → hero flex'ini kaydırmaz.
 
 ---
@@ -67,33 +67,51 @@ src/components/
 
 ## Test Kriterleri
 
-- [ ] `npm run build` temiz geçer.
-- [ ] Scroll göstergesi çizgi/etiket hero başlığına **orantılı** görünür — artık "çok küçük" değil (light + dark iki tema, desktop viewport gözle).
-- [ ] Merkez-alt konum korundu; mobilde (< md) gösterge **hâlâ gizli** (`hidden md:flex`).
-- [ ] Hairline çizgi DPR'de net görünür (büyütme/opaklık sonrası kırılgan değil).
-- [ ] Ölçek büyütmesi hero kompozisyonunu/istatistik şeridini kaydırmadı (CLS yok — akış-dışı absolute).
-- [ ] `/` a11y regresyon tohumu (`home-a11y.spec.ts`, axe WCAG-AA) light+dark 0 ihlal (araç zinciri mevcutsa koş).
+- [x] `npm run build` temiz geçer.
+- [x] Scroll göstergesi çizgi/etiket hero başlığına **orantılı** görünür — artık "çok küçük" değil (light + dark iki tema, desktop viewport gözle: 64px çizgi + 12px etiket).
+- [x] Merkez-alt konum korundu; mobilde (< md) gösterge **hâlâ gizli** (`hidden md:flex` → mobil `display:none`).
+- [x] Hairline çizgi DPR'de net görünür (opaklık /40→/60; `w-px` crisp korundu).
+- [x] Ölçek büyütmesi hero kompozisyonunu/istatistik şeridini kaydırmadı (CLS yok — akış-dışı absolute; cluster gap 28px sabit).
+- [x] `/` a11y regresyon tohumu (`home-a11y.spec.ts`, axe WCAG-AA) light+dark 0 ihlal — **2/2 geçti**.
 
 ---
 
 ## Tamamlanma Kriterleri
 
-- [ ] Tüm alt görevler tamamlandı
-- [ ] Tüm test kriterleri karşılandı
-- [ ] Git commit & push yapıldı (conventional commits formatı)
-- [ ] Bu doküman güncellendi (oturum kaydı)
-- [ ] DURUM.md güncellendi
+- [x] Tüm alt görevler tamamlandı
+- [x] Tüm test kriterleri karşılandı
+- [x] Git commit & push yapıldı (conventional commits formatı)
+- [x] Bu doküman güncellendi (oturum kaydı)
+- [x] DURUM.md güncellendi
 
 ---
 
 ## Oturum Kayıtları
 
-### Oturum — [TARİH]
+### Oturum — 2026-07-02
 
-**Durum:** [✅/🔄/⏸️]
+**Durum:** ✅ Tamamlandı
 
 **Yapılanlar:**
-- [doldurulacak]
+- `Hero.tsx` merkez-alt scroll göstergesi (satır 146-149) anıtsal hero'ya orantılandı:
+  - Çizgi: `h-10` (40px) → `h-16` (64px); `w-px` crisp hairline **korundu** (kalın border değil, zarif kalır).
+  - Robustness: `bg-ink-faint/40` → `bg-ink-faint/60` — DPR'de daha net; adaptif token (`--color-ink-faint`, `dark:` YOK).
+  - Etiket: `text-[11px]` → `text-xs` (12px) — hafif okunurluk artışı; ağırlık default (restraint korundu).
+  - Gap: `gap-2` → `gap-3` — büyüyen ölçeğe nefes.
+  - **Korunan:** `bottom-7 left-1/2 -translate-x-1/2 hidden md:flex` + `animate-pulse` aynen.
+
+**Son Yaklaşım:** Cerrahi CSS ölçek düzeltmesi; renk token'ına dokunulmadı, yeni öğe/i18n anahtarı yok. Gösterge `absolute` (akış-dışı) → CLS güvenli.
+
+**Sonraki Adım Detayı:** Task tamam — faza kalan task yok (10.01–10.04 ✅). Sıradaki DevFlow adımı `verify-phase 10` (UAT).
+
+**Test Sonuçları:**
+- `npm run build` temiz geçti ✓
+- Playwright a11y (`home-a11y.spec.ts`) **2/2** — WCAG-AA 0 ihlal, light+dark ✓
+- Görsel doğrulama (Chrome, `channel:'chrome'` + swiftshader, `NEXT_LOCALE=tr`, reduced-motion):
+  - light+dark: gösterge görünür, etiket "KAYDIR" fontSize=**12px**, çizgi yüksekliği=**64px**, genişlik=**1.00px** (crisp), opaklık=**0.6**; renk token light↔dark **flip** ediyor (oklab farklı).
+  - Konum: cluster viewport-alt gap = **28px** (`bottom-7` korundu); element yukarı doğru büyüdü, alt taşma yok.
+  - Mobil (375px): `display:none` — `hidden md:flex` (desktop-only) korundu ✓
+  - Screenshot'lar (light+dark): orantılı, crisp hairline; template klişesi (chevron/mouse) yok, imza korundu.
 
 ---
 

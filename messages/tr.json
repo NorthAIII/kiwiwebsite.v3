@@ -128,7 +128,7 @@
     },
     "allCases": "Tüm vaka çalışmaları"
   },
-  "bunker": {
+  "crew": {
     "label": "Crew OS",
     "title": "Otomasyonlarınızın yaşadığı ve çalıştığı yer.",
     "body": "Kurduğumuz her akış tek bir operasyon katmanında çalışır — gözlemlenebilir, ölçülebilir, hep açık. Neyin çalıştığını, ne kazandırdığını ve sıradakini görürsünüz.",
@@ -149,7 +149,7 @@
     },
     "explore": "Crew OS’u keşfet"
   },
-  "bunkerOs": {
+  "crewOs": {
     "back": "Ana sayfa",
     "eyebrow": "İşletim katmanı",
     "title": "Crew OS",

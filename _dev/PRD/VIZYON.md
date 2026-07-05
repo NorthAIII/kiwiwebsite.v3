@@ -38,7 +38,7 @@ Bu taksonomi revizenin en kritik içerik hatasının köküdür; net tutulması 
 - Ana sayfadaki **Crew OS bölümü platformun kendisini** anlatır (ne olduğu + gözlemlenebilir/ölçülebilir/hep-açık kanıtı) — bir sektörün örneklerini değil. Sektör örnekleri **Sektörler bölümüne** aittir.
 - Alpfit, Crew OS ile karıştırılmaz; spor-salonu örnekleri Crew OS'u tanımlamaz.
 
-> **Açık konu (M6):** Crew OS sayfasının URL'i hâlâ `/bunker-os` ve i18n namespace'i `bunker` — iç ad URL'de sızıyor. Public URL `/crew-os` olmalı mı? (SEO + kalıcı redirect kararı — SESSION-NOTES.)
+> **Çözüldü (v0.3, Faz 11):** Crew OS sayfasının public URL'i artık `/crew-os` (i18n içerik namespace `bunker`→`crew` 5-dil eşzamanlı rename + eski `/bunker-os` kalıcı 308 redirect + sitemap/canonical/alternates). İç ad URL'de sızmıyor; yalnız kod-seviyesi tanımlayıcılar (nav id, dosya adı) taksonomi gereği iç-ad kalabilir. (Karar → `docs/DECISIONS.md`.)
 
 ---
 
@@ -82,4 +82,4 @@ Bu taksonomi revizenin en kritik içerik hatasının köküdür; net tutulması 
 
 ---
 
-**Son Güncelleme:** 2026-06-28 — prd-refine: §4'e dürüstlük konvansiyonu + "canlı noktası" yasağının niyet-bazlı yorumu eklendi.
+**Son Güncelleme:** 2026-07-05 — prd-review (v0.3): §3 "Açık konu (M6)" kapatıldı — Crew OS public URL'i v0.3 Faz 11'de `/crew-os`'a taşındı (namespace `bunker`→`crew` 5-dil rename + kalıcı redirect). Vizyon/taksonomi değişmedi.

@@ -5,6 +5,7 @@ import CustomCursor from "@/components/CustomCursor";
 import PageHeader from "@/components/PageHeader";
 import Footer from "@/components/Footer";
 import ArticleClaude from "@/components/forum/ArticleClaude";
+import { localizedAlternates } from "@/i18n/metadata";
 
 export async function generateMetadata({
   params,
@@ -19,7 +20,11 @@ export async function generateMetadata({
   const description = tr
     ? "Claude Opus 4.8 ve Fable 5 ne getiriyor ve otomasyon için ne anlama geliyor — modeller, bağlam pencereleri, fiyatlar."
     : "What Claude Opus 4.8 and Fable 5 bring and what they mean for automation — models, context windows, pricing.";
-  return { title, description };
+  return {
+    title,
+    description,
+    alternates: localizedAlternates(locale, "/bulten/claude-opus-4-8-fable-5"),
+  };
 }
 
 export default async function ClaudeModelsArticlePage({
@@ -29,7 +34,7 @@ export default async function ClaudeModelsArticlePage({
 }) {
   const { locale } = await params;
   setRequestLocale(locale);
-  const t = await getTranslations({ locale, namespace: "bunkerOs" });
+  const t = await getTranslations({ locale, namespace: "crewOs" });
 
   return (
     <SmoothScroll>

@@ -104,12 +104,15 @@ export default function Hero() {
                   {t("stats.liveLabel")}
                 </span>
               </span>
+              <span className="text-ink-faint transition-[translate,color] duration-300 group-hover:translate-x-1 group-hover:text-green">
+                →
+              </span>
             </Link>
 
             <span className="h-8 w-px bg-line" />
 
             <Link
-              href="/bunker-os"
+              href="/crew-os"
               data-cursor="hover"
               className="group flex items-center gap-2.5"
             >
@@ -132,14 +135,17 @@ export default function Hero() {
                   {t("stats.crewOsLabel")}
                 </span>
               </span>
+              <span className="text-ink-faint transition-[translate,color] duration-300 group-hover:translate-x-1 group-hover:text-green">
+                →
+              </span>
             </Link>
           </div>
         </div>
       </div>
 
-      <div className="absolute bottom-7 left-1/2 z-10 hidden -translate-x-1/2 flex-col items-center gap-2 text-ink-faint md:flex">
-        <span className="text-[11px] uppercase tracking-[0.2em]">{t("scroll")}</span>
-        <span className="h-10 w-px animate-pulse bg-ink-faint/40" />
+      <div className="absolute bottom-7 left-1/2 z-10 hidden -translate-x-1/2 flex-col items-center gap-3 text-ink-faint md:flex">
+        <span className="text-xs uppercase tracking-[0.2em]">{t("scroll")}</span>
+        <span className="h-16 w-px animate-pulse bg-ink-faint/60" />
       </div>
     </section>
   );

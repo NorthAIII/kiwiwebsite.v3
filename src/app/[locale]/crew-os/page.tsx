@@ -5,6 +5,7 @@ import CustomCursor from "@/components/CustomCursor";
 import PageHeader from "@/components/PageHeader";
 import Footer from "@/components/Footer";
 import BunkerShowcase from "@/components/bunker-os/BunkerShowcase";
+import { localizedAlternates } from "@/i18n/metadata";
 
 export async function generateMetadata({
   params,
@@ -12,8 +13,12 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
   const { locale } = await params;
-  const t = await getTranslations({ locale, namespace: "bunkerOs" });
-  return { title: `${t("title")} — Kiwi AI Lab`, description: t("lead") };
+  const t = await getTranslations({ locale, namespace: "crewOs" });
+  return {
+    title: `${t("title")} — Kiwi AI Lab`,
+    description: t("lead"),
+    alternates: localizedAlternates(locale, "/crew-os"),
+  };
 }
 
 export default async function BunkerOsPage({
@@ -23,7 +28,7 @@ export default async function BunkerOsPage({
 }) {
   const { locale } = await params;
   setRequestLocale(locale);
-  const t = await getTranslations({ locale, namespace: "bunkerOs" });
+  const t = await getTranslations({ locale, namespace: "crewOs" });
 
   return (
     <SmoothScroll>

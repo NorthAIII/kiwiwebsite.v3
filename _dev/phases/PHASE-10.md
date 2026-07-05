@@ -1,6 +1,6 @@
 # Phase 10: Görsel Cila (A1 logo + A3 CTA affordance & scroll göstergesi)
 
-**Durum:** 🔄 Devam ediyor
+**Durum:** ✅ Tamamlandı
 
 <!-- Bu doküman faza girince (discuss-phase) oluşur; durum 🔄 ile başlar. Henüz girilmemiş fazların dokümanı/numarası olmaz — PHASES.md → Sıradaki Fazlar'da numarasız konu olarak durur. -->
 <!-- KURAL: Bu doküman tek-okunabilir kalmalı (CLAUDE.md → Boyut ve Bölünme). Bir bölüm büyüyüp kırmızı çizgiye (~20k token) yaklaşırsa faz HÂLÂ AKTİFKEN `PHASE-N-<slug>.md`'ye bölünür — parent'ta self-yeten özet + pointer kalır, içerik taşınıp silinir, parent o fazın mini-index'i olur. Tamamlandıktan (✅) sonra bölme yasaktır; verify-phase ve review-phase fazı dondurmadan önce boyutu kontrol eder. -->
@@ -121,10 +121,10 @@
 
 | # | Task | Durum | Açıklama |
 |---|------|-------|----------|
-| 10.01 | TASK-10.01 | ⬜ Bekliyor | A1 — Ortak `<Logo>` bileşeni + Nav & PageHeader benimseme (optik dikey hiza tek yerde) |
-| 10.02 | TASK-10.02 | ⬜ Bekliyor | A1 — Footer'da `<Logo>` benimseme (size 18, non-link, `text-canvas` koyu zemin); 10.01'e bağlı |
-| 10.03 | TASK-10.03 | ⬜ Bekliyor | A3a — Hero iki stat Link'ine site-standart ok idiomu + durağan ipucu |
-| 10.04 | TASK-10.04 | ⬜ Bekliyor | A3b — Hero merkez-alt scroll göstergesi ölçekleme (desktop-only korunur) |
+| 10.01 | TASK-10.01 | ✅ Tamamlandı | A1 — Ortak `<Logo>` bileşeni + Nav & PageHeader benimseme (optik dikey hiza tek yerde) |
+| 10.02 | TASK-10.02 | ✅ Tamamlandı | A1 — Footer'da `<Logo>` benimseme (size 18, non-link, `text-canvas` koyu zemin); 10.01'e bağlı |
+| 10.03 | TASK-10.03 | ✅ Tamamlandı | A3a — Hero iki stat Link'ine site-standart ok idiomu + durağan ipucu |
+| 10.04 | TASK-10.04 | ✅ Tamamlandı | A3b — Hero merkez-alt scroll göstergesi ölçekleme (desktop-only korunur) |
 
 **Durum simgeleri:** ⬜ Bekliyor | 🔄 Devam ediyor | ⏸️ Duraklatıldı | ✅ Tamamlandı | 🔴 Bloke | ❌ İptal
 
@@ -132,29 +132,87 @@
 
 ## UAT Sonuçları
 
-> Bu bölüm `/devflow:verify-phase 10` oturumunda doldurulacak.
+**Tarih:** 2026-07-02 (verify-phase 10)
+**Toplam Senaryo:** 17 | **Geçen:** 17 | **Kalan:** 0
+
+**Test modu:** Otonom + görsel onay (kullanıcı tercihi) — ölçülebilir senaryolar Playwright (`channel:'chrome'` + swiftshader, `NEXT_LOCALE=tr`, deviceScaleFactor 2) ile otonom; hiza/orantı/estetik görsel yargı kullanıcı onayıyla (screenshot). Tüm görsel/craft senaryoları kullanıcı onayladı.
+
+**Otomatik kontroller (Adım 1):** CI 4/4 commit yeşil (`fast` build+vitest ✅ + `a11y` playwright+axe ✅); yerel build temiz + vitest 7/7 + i18n 5-dil parite; security-review 0 bulgu (saf sunum, yeni yüzey yok); npm audit 3 moderate (postcss transitive — kayıtlı sahipli açık TB-C, faz-dışı). Düzeltme task'ı doğuran bulgu yok.
+
+| # | Senaryo | Sonuç | Not |
+|---|---------|-------|-----|
+| 1 | A1 — Nav logosu `/` çift-tema: mark ↔ "Kiwi AI Lab" dikey hizalı (light+dark) | ✅ Geçti | vcenter Δ=0px; mark yeşil token flip (light `rgb(31,122,61)` / dark `rgb(79,176,106)`) |
+| 2 | A1 — PageHeader logosu alt-sayfada (`/spor-salonu-yazilimi`) Nav ile aynı hiza (light+dark) | ✅ Geçti | vcenter Δ=0px, Nav ile identik render (tek `<Logo>`) |
+| 3 | A1 — Footer logosu koyu `bg-ink` üstünde hizalı+okunur (mark yeşil / wordmark text-canvas), light+dark | ✅ Geçti | vcenter Δ=0px; wordmark **tam opaklık** (`rgb(247,246,241)`/`rgb(19,21,16)` ink-panel flip), non-link teyitli. (Harness ilk ölçümü dış-wrapper'ı seçip 0.6 alpha gösterdi — selector artefaktı, iç span tam opaklık) |
+| 4 | A1 — Üç yüzey tutarlı (aynı lockup, drift yok); tek `<Logo>` kaynağından | ✅ Geçti | Nav/PageHeader/Footer hepsi `<Logo>` tüketiyor; kopya-kod kök nedeni kapandı |
+| 5 | A1 — Davranış: Nav logo → `#top`, PageHeader logo → `/`, Footer logo tıklanabilir DEĞİL (non-link) | ✅ Geçti | href'ler değişmedi; Footer wordmark `closest('a')===null` |
+| 6 | A1 — a11y: lockup tek tab-stop + focus-visible 2px yeşil outline; mark `aria-hidden`, ad wordmark'tan | ✅ Geçti | 0 nested focusable; svg `aria-hidden="true"` |
+| 7 | A3a — İki stat Link'inde ok dinlenmede soluk-görünür (hover'sız / dokunmatik / reduced-motion okunur) | ✅ Geçti | rest `rgb(103,105,95)`/`rgb(138,140,128)` = `text-ink-faint` (kontrast-geçer, dinlenmede görünür) |
+| 8 | A3a — Hover'da ok yeşilleşir + 4px animasyonlu kayar (zıplamaz, `transition-[translate,color]`) | ✅ Geçti | `transitionProperty="translate, color"`, hover translate 4px, `text-green` |
+| 9 | A3a — Link hedefleri değişmedi (Alpfit → `/spor-salonu-yazilimi`, Crew OS → `/bunker-os`); hover'da CLS=0 | ✅ Geçti | hedefler aynı; link genişliği rest=hover (Δ=0px) |
+| 10 | A3b — Scroll göstergesi hero'ya orantılı (64px çizgi + 12px etiket), "çok küçük" değil (light+dark) | ✅ Geçti | çizgi 64px, etiket "Kaydır" 12px, gap 28px; görsel onaylı orantı |
+| 11 | A3b — Desktop-only korundu: mobilde (<md) gizli (`display:none`), desktop'ta görünür | ✅ Geçti | 375px → `display:none`; 1440px → `flex` |
+| 12 | A3b — Hairline DPR'de net (opaklık `/60`, `w-px` crisp); `animate-pulse` + reduced-motion statik okunur | ✅ Geçti | width 1px crisp, opacity 0.6, `animationName=pulse` |
+| 13 | Guardrail — a11y çift-tema: axe WCAG-AA 0 ihlal (CI+tohum) + Lighthouse a11y=100 light+dark | ✅ Geçti | Lighthouse a11y=100 (0 başarısız audit) + axe 0 ihlal light **ve** dark |
+| 14 | Guardrail — i18n 5-dil parite: `hero.scroll` + `hero.stats.*` tr/en/ar/de/es tam (eksik anahtar yok) | ✅ Geçti | 5 dilde scroll+liveProduct/liveLabel/crewOs/crewOsLabel tam |
+| 15 | Guardrail — CLS≈0 korundu (sayfa geneli; gösterge `absolute` akış-dışı, hero flex kaymaz) | ✅ Geçti | PerformanceObserver CLS=0.0000 (load+scroll) |
+| 16 | RTL (AR) — Footer logo + ok idiomu AR'de tutarlı (fiziksel ok korundu, lockup hizalı) | ✅ Geçti | `dir=rtl`; footer vcenter Δ=0px; fiziksel `→` glyph ×2 (site-idiomuyla tutarlı, lone-flip yok) |
+| 17 | Adversarial — uzun DE metni / dar viewport: Logo wordmark + Footer meta satırı taşma/bozulma yok | ✅ Geçti | 360px & 768px'te yatay taşma yok (scrollW=clientW); Logo wordmark tek satır |
 
 ---
 
 ## Retrospektif
 
-> Bu bölüm `/devflow:review-phase 10` oturumunda doldurulacak.
+> Bu bölüm `/devflow:review-phase 10` oturumunda dolduruldu (2026-07-02).
 
----
+### Ne İyi Gitti?
+- **Kök-neden düzeltmesi, pansuman değil.** A1 tutarsızlığı "her yüzeyde ayrı optik nudge" ile değil, üç kopya-kod lockup'ı tek `<Logo>` bileşenine çıkararak çözüldü. Drift bir daha inşa gereği olamaz (QUALITY §5 modülerlik + ILKELER kalıcılık). Optik dikey hiza tek yerde (`leading-none` + `items-center`) — ekstra nudge bile gerekmedi.
+- **Kurulu imzayı yeniden kullanma.** A3a affordance için yeni bir UI icadı yerine sitenin 10+ yerinde zaten olan `→ group-hover:translate-x-1` idiomu benimsendi → zero template smell korundu (Craft en üst eksen). "Durağan ipucu" eklemesi hover-only/dokunmatik tuzağını kapadı.
+- **Araştırma yanlış-fix'i önledi.** research-phase, REVIZE-BACKLOG'daki "sağdaki scroll göstergesi" ifadesinin bir **algı artefaktı** olduğunu (ayrı sağ öğe yok, merkez-alt gösterge var) tüm bileşenleri tarayarak damgaladı → var olmayan bir öğeyi düzeltmeye çalışmak engellendi.
+- **Dar faz disiplini.** v0.3'ün üç near-term konusundan (Görsel cila / B1 Living Flow nabız / SEO redirect) yalnız en güvenlisi alındı; imza-riskli B1 ve çapraz-modül SEO işi bilinçle ayrı fazlara bırakıldı → faz bulanıklaşmadı, 4 küçük task tek oturumlarda bitti.
+
+### Ne Kötü Gitti?
+- **Tailwind v4 translate-transition tuzağı bir re-fix'e mal oldu (10.03).** İlk yazım `transition-[transform,color]` idi; v4'te `translate-x-*` `transform` değil ayrı `translate` property'sini set ettiği için ok **zıpladı** (animasyonsuz). Ampirik doğrulamada yakalandı, `transition-[translate,color]`'a çevrildi. Ders proje-geneli memory'ye alındı.
+- **Stale-server yanlış-negatifi (10.03 doğrulaması).** Port 3000'de önceki oturumdan kalan stale `next-server` eski HTML'i sundu → sayfa stilsiz okundu. Listening-PID + CSS 200/400 teyidiyle teşhis edilip taze port'la çözüldü. Bu disiplin zaten memory'de kayıtlı; tekrar tetiklendi ama hızlı çözüldü.
+
+### Sonraki Faz İçin Öneriler
+- **Sıradaki = v0.3 sonraki içerik fazı** (Versiyon Sonu Durumu `içerik_fazları` değişmez). Sıradaki Fazlar'da iki numarasız konu: **B1 Living Flow nabız kapsamı** (karar-gate'li, imza-riskli) ve **URL taksonomisi/SEO redirect** (`/bunker-os`→`/crew-os` + `/forum`→404, i18n namespace `bunker`→`crew` 5-dil rename). Sıra/kapsam discuss-phase 11'de damgalanır.
+- **Site-geneli logical-ok işi bekliyor (kayıtlı borç, bu fazın kararı).** Hero'daki iki ok RTL'de bilinçle **fiziksel** bırakıldı (site-geneli 10+ okla tutarlılık; lone-flip yaratmamak için). AR'de tüm ok idiomunu logical yapmak ayrı, tutarlı bir iş — bir faza girerse hepsi birlikte ele alınmalı (tek tek flip = tutarsızlık).
+- **SEO fazı A1'i tamamlar.** `<Logo>` artık tek kaynak; `/crew-os` rename fazı yeni bir yüzey (Crew OS showcase başlığı) getirirse `<Logo>` yeniden kullanılmalı — kopya-kod refleksine dönme.
+
+### Task-Spesifik Teknik Öğrenimler
+<!-- Bu fazdaki task'larda öğrenilen ama proje genelinde geçerli olmayan teknik nüanslar. -->
+- **`<Logo>` link'i içermez — tek focusable tüketiciden gelir.** Lockup'ı saran `<a>`/`<Link>` bileşen dışında bırakıldı (Nav→`#top`, PageHeader→`/`, Footer=non-link). Böylece aynı görsel lockup üç farklı davranış bağlamında tek tab-stop kalır; wordmark rengi `currentColor` mirası → Footer'ın `text-canvas` koyu zemini otomatik uyar (`wordmarkClassName` passthrough).
+- **Tek-çocuklu flex'te dış `gap` inert.** 10.01'de gap `<Logo>` içine taşınınca saran link'teki `gap-2.5` ölü kod olurdu → kaldırıldı (görsel sonuç birebir aynı). Refactor'da "eski className'i koru" refleksi ölü-kod bırakabilir; tek-çocuk olunca kontrol et.
+- **Anıtsal hero hairline'ı DPR-kırılganı.** A3b'de `w-px` + `/40` opaklık yüksek-DPR'de kayboluyordu; ölçek işiyle birlikte opaklık `/60`'a çekildi (`w-px` crisp korundu, kalın border'a kaçılmadı).
 
 ## Kalite Kontrol Sonuçları
 
-> Bu bölüm `/devflow:review-phase 10` oturumunda doldurulacak.
+> Bu bölüm `/devflow:review-phase 10` oturumunda dolduruldu (2026-07-02). Faz saf CSS/görsel craft (3 bileşen + 1 yeni `<Logo>`); imza/davranış/içerik değişmedi. Eksenler yeni görsel katmanın kalitesini + guardrail regresyonsuzluğunu ölçer.
 
----
+| Eksen | Durum | Not |
+|-------|-------|-----|
+| Marka & Craft (imza) | ✅ | Site-standart ok idiomu yeniden kullanıldı (zero template smell); kart-border/dolgu-kart yaklaşımı bilinçle elendi. Anıtsal hero'ya orantılı 64px gösterge. Living Flow/imza dokunulmadı. |
+| Erişilebilirlik | ✅ | Lighthouse a11y=100 çift-tema (0 başarısız audit) + axe WCAG-AA 0 ihlal light+dark (UAT 13). Lockup tek tab-stop, focus-visible 2px yeşil outline korundu; mark `aria-hidden`, ad wordmark'tan. Ok dinlenmede kontrast-geçer (`text-ink-faint`), hover'a bağlı değil. |
+| Performans | ✅ | CLS=0.0000 (load+scroll, UAT 15); gösterge `absolute` akış-dışı → hero flex kaymaz; ok için yer rezerve (genişlik rest=hover, Δ=0px). Yeni bağımlılık/asset YOK, perf tabanı regresyonsuz. |
+| Yerelleştirme & RTL | ✅ | Yeni i18n anahtarı YOK (`hero.scroll` + `hero.stats.*` 5 dilde mevcut, parite otomatik). RTL: fiziksel ok idiomuyla tutarlı (lone-flip yok, bilinçli — DECISIONS); Footer lockup AR'de hizalı (UAT 16). |
+| Modülerlik & Bakım | ✅ | A1 kök nedeni (3 kopya-kod lockup) tek `<Logo>` kaynağına indirildi → drift inşa gereği kapandı. Ölü `gap` kaldırıldı. Nav/PageHeader/Footer artık tek lockup tüketicisi. |
+| Hata Yönetimi & Degradasyon | ✅ | Saf sunum — yeni failure surface yok. Reduced-motion global catch-all yeni ok `transition`'ını + `animate-pulse`'ı susturur; durağan ipucu sayesinde reduced-motion/dokunmatikte de okunur. |
+| Güvenlik | N/A | Yeni girdi/endpoint/3rd-party yüzey yok; `security-review` 0 bulgu (saf CSS/JSX sunum). npm audit 3 moderate = kayıtlı sahipli TB-C (postcss transitif, statik-site istismar-edilemez, faz-dışı). |
+| Test Kapsamı | ✅ | Yeni davranış yok → yeni test gerekmez; kümülatif suite regresyonsuz: CI `fast`+`a11y` 4/4 yeşil, yerel build temiz + Vitest 7/7 + i18n 5-dil parite + a11y tohumu 52/52. |
+
+### Kullanıcı Yolculuğu & Boşluk Tespiti
+
+- **Görsel yolculuk artık tutarlı.** Kullanıcı Nav→PageHeader→Footer boyunca aynı hizalı lockup görür (drift yok); Hero stat kartları "tıklanabilir" okunur (dinlenme ipucu + hover); scroll göstergesi anıtsal hero'ya orantılı. Faz üç algısal kusuru da kapadı, yeni kopukluk yaratmadı.
+- **Boşluk (sahipli, yeni değil):** `/bunker-os` iç-ad URL sızıntısı + `/forum`→404 hâlâ açık — SEO fazına ertelendi (v0.3, ayrı faz). Non-TR alt-sayfa içerik-tazeliği (ar/de/es stale) versiyon-sınırı, dil stratejisi (prd-review). Bu faz saf görsel; ikisine de dokunmadı (kapsam-dışı, bilinçli).
 
 ## Sonuç
 
-- **Tamamlanma Tarihi:** [review-phase]
-- **Toplam Task:** [plan-phase]
-- **Notlar:** [review-phase]
+- **Tamamlanma Tarihi:** 2026-07-02 (review-phase 10)
+- **Toplam Task:** 4 (10.01 ortak `<Logo>` + Nav/PageHeader · 10.02 Footer `<Logo>` · 10.03 A3a ok affordance · 10.04 A3b scroll göstergesi ölçekleme)
+- **Notlar:** v0.3'ün ilk içerik fazı. Saf CSS/görsel craft — imza/davranış/içerik değişmedi. Milestone 5/5 (logo hizalı ×3 yüzey + CTA affordance + scroll göstergesi orantılı + guardrail'ler regresyonsuz). UAT 17/17, 8 kalite ekseni değerlendirildi (7 ✅ + 1 N/A güvenlik). A1 kök nedeni (3 kopya-kod) kalıcı kapandı. Sıradaki = v0.3 sonraki içerik fazı (discuss-phase 11: B1 nabız veya SEO redirect).
 
 ---
 
 **Oluşturulma:** 2026-07-02 (discuss-phase 10)
-**Son Güncelleme:** 2026-07-02 — plan-phase 10: 4 task yazıldı (10.01–10.04, Task Listesi tablosu dolduruldu).
+**Son Güncelleme:** 2026-07-02 — review-phase 10 ✅: retrospektif + kalite kontrol (8 eksen: 7 ✅ + 1 N/A güvenlik) + kullanıcı yolculuğu yazıldı. Faz **✅ Tamamlandı** (milestone 5/5, UAT 17/17). A1 kök nedeni (3 kopya-kod lockup) ortak `<Logo>` ile kalıcı kapandı; A3a/A3b guardrail'ler regresyonsuz. Doc-scan 5436 token (eşik-altı, bölme gerekmedi). Versiyon Sonu Durumu `içerik_fazları` (değişmez) → sıradaki v0.3 içerik fazı (discuss-phase 11).

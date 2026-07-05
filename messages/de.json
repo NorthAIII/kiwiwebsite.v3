@@ -128,7 +128,7 @@
     "flowLabel": "Der Ablauf",
     "seeLive": "Live-Produkt ansehen"
   },
-  "bunker": {
+  "crew": {
     "label": "Crew OS",
     "title": "Wo Ihre Automatisierungen leben und laufen.",
     "body": "Jeder Flow, den wir liefern, läuft in einer einzigen Betriebsschicht — beobachtbar, messbar, immer an. Sie sehen, was lief, was es gespart hat und was als Nächstes kommt.",
@@ -149,7 +149,7 @@
     },
     "explore": "Crew OS entdecken"
   },
-  "bunkerOs": {
+  "crewOs": {
     "back": "Startseite",
     "eyebrow": "Betriebsschicht",
     "title": "Crew OS",

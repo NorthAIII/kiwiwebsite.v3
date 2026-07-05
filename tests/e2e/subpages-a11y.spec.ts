@@ -20,7 +20,7 @@ const LOCALES = ["tr", "en", "ar", "de", "es"] as const;
 // Mühürlenmiş alt sayfalar. `path` = TR prefixsiz yol (locale prefix'i helper ekler).
 // Fix task'ları buraya sayfa ekler: { label, path }.
 const PAGES: { label: string; path: string }[] = [
-  { label: "bunker-os", path: "/bunker-os" },
+  { label: "crew-os", path: "/crew-os" },
   { label: "spor-salonu-yazilimi", path: "/spor-salonu-yazilimi" },
   { label: "vaka-calismalari", path: "/vaka-calismalari" },
   { label: "bulten/ai-sdr-araclari", path: "/bulten/ai-sdr-araclari" },

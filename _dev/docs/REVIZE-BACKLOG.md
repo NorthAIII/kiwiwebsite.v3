@@ -6,7 +6,7 @@
 
 **PRD'ye bağlananlar (v0.1):** A2 (kopya) → `PRD/features/kopya-revizesi.md`; A4 (nasıl çalışır 3→4) → `PRD/features/nasil-calisir-4-adim.md`; A5 (sektörler) → `PRD/features/sektorler-derinlestirme.md`; A6 (Crew OS içerik) → `PRD/features/crew-os-bolumu.md`. (Satırlar execution detayı için duruyor; faza girince silinir.) Ürün taksonomisi (Bunker/Crew OS/Alpfit) ve dil stratejisi → `docs/DECISIONS.md` + `PRD/VIZYON.md`.
 
-**v0.3'e bağlananlar (re-kickoff 2026-07-02):** **A1** (logo hizalama) + **A3** (CTA kartı affordance + scroll göstergesi ölçekleme) + **B1** (Living Flow nabız kapsamı, karar-gate'li) + **SEO** `/bunker-os`→`/crew-os` redirect (i18n namespace 5-dil rename) & çıplak `/forum`→404 → **v0.3 = Görsel & Etkileşim Cilası + URL taksonomisi/SEO** (VERSIONS.md). **Faza girenler (MODULE-MAP'e damgalandı):** A1 + A3 → **Faz 10** görsel cila (discuss-phase 10, 2026-07-02). **Henüz atanmadı:** B1 (Living Flow nabız, ayrı gate'li faz) + SEO redirect (ayrı çapraz-modül faz). Satırlar execution detayı için duruyor.
+**v0.3'e bağlananlar (re-kickoff 2026-07-02):** **A1** (logo hizalama) + **A3** (CTA kartı affordance + scroll göstergesi ölçekleme) + **B1** (Living Flow nabız kapsamı, karar-gate'li) + **SEO** `/bunker-os`→`/crew-os` redirect (i18n namespace 5-dil rename) & çıplak `/forum`→404 → **v0.3 = Görsel & Etkileşim Cilası + URL taksonomisi/SEO** (VERSIONS.md). **Faza girenler (MODULE-MAP'e damgalandı):** A1 + A3 → **Faz 10** görsel cila (discuss-phase 10, 2026-07-02); **SEO** `/bunker-os`→`/crew-os` rename+redirect+namespace 5-dil+SEO metadata → **Faz 11** (discuss-phase 11, 2026-07-02); **B1** (Living Flow nabız kapsamı, karar-gate'li) → **Faz 12** (discuss-phase 12, 2026-07-02): kontrollü aşağı-taşıma (sürekli soluk iplik / desktop-öncelik / bölüme-uyarlanan opaklık) VEYA iptal-kaydet. **`/forum`→404 REDDEDİLDİ** (discuss-phase 11): mevcut `/forum`→`/bulten` kalıcı 301 çalışıyor/zararsız, bozmak için gerekçe yok → korunur. **Tüm v0.3 backlog kalemleri faza girdi.** Satırlar execution detayı için duruyor.
 
 **prd-refine doğrulaması (2026-06-28, kodla teyit edildi):** A2 premise *"genel kopya zayıf"* abartılı — canlı TR kopya büyük ölçüde güçlü; v0.1 cerrahi (ana sayfa, F1–F6). **A5** *"hepsi sığ"* abartılı — 5 sektör güçlü, asıl sorun gym paneli desen-dışı. **A6** büyük ölçüde **çözülmüş** — Crew OS ana metni doğru; kalan tek kalem panel akış adları (bırakıldı). **A3** kopya değil **görsel** (kartlar zaten `<Link>`) → görsel cila versiyonu.
 
@@ -56,4 +56,4 @@
 
 ---
 
-**Son Güncelleme:** 2026-07-02 — discuss-phase 10: A1 + A3 Faz 10'a (v0.3 görsel cila) damgalandı; B1 + SEO redirect henüz atanmadı (ayrı fazlar).
+**Son Güncelleme:** 2026-07-02 — discuss-phase 12: B1 (Living Flow nabız kapsamı, gate'li) Faz 12'ye damgalandı (kontrollü aşağı-taşıma veya iptal-kaydet). Tüm v0.3 backlog kalemleri (A1/A3/SEO/B1) faza girdi.
