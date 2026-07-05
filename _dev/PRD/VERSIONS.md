@@ -2,7 +2,7 @@
 
 **Amaç:** Hangi feature'ın hangi versiyona dahil olduğunu tutan tek kaynak. (MODULE-MAP'in Versiyon sütunu buradan beslenir.)
 
-> **Bağlam:** Mevcut site = "v3 (mevcut canlı)". Güçlü revize, **v0.1**'den başlayan kümülatif versiyonlarla yürür. **v0.1 tamamlandı** (3 faz: içerik + teknik borç + senaryo testi; prd-review 2026-06-29 — değişiklik yok). **v0.2 tamamlandı** (Faz 4–9: a11y + test altyapısı + mobil perf + Umami + versiyon-sonu teknik borç + senaryo testi; prd-review 2026-07-02 — PRD değişikliği yok). Sıradaki aktif versiyon **v0.3** (aşağıda). Aşağıdaki feature'lar revizenin *yeni* iş birimleridir; mevcut çalışan feature'lar `_dev/MODULE-MAP.md`'de listelenir.
+> **Bağlam:** Mevcut site = "v3 (mevcut canlı)". Güçlü revize, **v0.1**'den başlayan kümülatif versiyonlarla yürür. **v0.1 tamamlandı** (3 faz: içerik + teknik borç + senaryo testi; prd-review 2026-06-29 — değişiklik yok). **v0.2 tamamlandı** (Faz 4–9: a11y + test altyapısı + mobil perf + Umami + versiyon-sonu teknik borç + senaryo testi; prd-review 2026-07-02 — PRD değişikliği yok). **v0.3 tamamlandı** (Faz 10–14: görsel cila + URL taksonomisi/SEO + Living Flow nabız + versiyon-sonu teknik borç + senaryo testi; prd-review 2026-07-05 — PRD drift düzeltmesi, vizyon değişikliği yok). **Sıradaki versiyon henüz planlanmadı** (aday konular aşağıda). Aşağıdaki feature'lar revizenin *yeni* iş birimleridir; mevcut çalışan feature'lar `_dev/MODULE-MAP.md`'de listelenir.
 
 ---
 
@@ -30,19 +30,20 @@
 - **Test altyapısı (D1)** ✅ — 3 katman (Vitest + Playwright/axe) + ilk CI (Faz 5).
 - **Umami analytics (E1)** ✅ — kod Faz 7'de; canlı +1 **v0.2 production release**'te (2026-07-02) panel ekran görüntüsüyle doğrulandı (`umami.kiwiailab.com` realtime "1 Online" + Views 1). Detay → `docs/UMAMI-ANALYTICS.md`, `docs/RELEASE-v0.2.md`.
 
-## Sıradaki Versiyon: v0.3 — Görsel & Etkileşim Cilası (+ URL taksonomisi/SEO)
+## Tamamlanan Versiyon: v0.3 — Görsel & Etkileşim Cilası (+ URL taksonomisi/SEO) ✅
 
-> Re-kickoff (2026-07-02) ile sabitlendi (kullanıcı onayı). Gerekçe: Craft en üst eksen (ILKELER); adaylar arasında en çok işaretlenen; v0.1 (içerik) → v0.2 (a11y/perf/teknik) → v0.3 (görsel cila) doğal ilerleme. Kesin faz kapsamı/sırası discuss-phase'de netleşir.
+> Re-kickoff (2026-07-02) ile sabitlendi; Faz 10–14 ile tamamlandı (prd-review 2026-07-05 — vizyon değişikliği yok, yalnız v0.3'ün kapattığı kararlara PRD drift hizalaması). Gerekçe: Craft en üst eksen (ILKELER); v0.1 (içerik) → v0.2 (a11y/perf/teknik) → v0.3 (görsel cila) doğal ilerleme.
 
-> ✅ **v0.2 production release tamamlandı (2026-07-02):** tüm revize `main`'e merge edildi + canlı deploy (`a71adbc`); Umami canlı +1 + §3 duman testi kapandı (`docs/RELEASE-v0.2.md`). v0.3 run-task artık serbest. (Açık takip: chatbot canlı `ANTHROPIC_API_KEY` env — release engeli değil.)
+- **A1 — Logo hizalama** ✅ — kök neden (3 kopya-kod lockup) ortak `<Logo>` bileşeniyle her yüzeyde kalıcı çözüldü (Faz 10). M3.
+- **A3 — CTA kartı affordance + scroll göstergesi** ✅ — ince ok affordance + scroll göstergesi orantı (Faz 10, saf CSS/görsel). M2 + M3.
+- **B1 — Living Flow yeşil nabız kapsamı** ✅ — karar-gate **uygula-onayla** (imza riski gerçekleşmedi; tek WebGL context + adaptif `--flow-veil` ile imza güçlendi, 3 gate geçti) (Faz 12). M1.
+- **SEO — URL taksonomisi** ✅ — public `/crew-os` 5-locale SSG + `/bunker-os` kalıcı 308 redirect + i18n namespace `bunker`→`crew` 5-dil senkron + sitemap/canonical/alternates + iç linkler temiz (Faz 11); `/forum`→404 reddedildi, mevcut redirect korundu + Faz 13'te `/forum` locale gap kök-çözümle kapandı. VIZYON §3 açık konusu kapandı. M6 + M2 + M4.
+- **Versiyon-sonu teknik borç (SEO-metadata hijyeni)** ✅ — alt-sayfa self-canonical + 5-locale hreflang + config redirect denetimi (Faz 13).
+- **Versiyon-sonu senaryo testi** ✅ — S1–S9 uçtan-uca, UAT 11/11, 0 kaynak değişimi, 0 kapsam-içi bug (Faz 14).
 
-**v0.3 çekirdeği:**
-- **A1 — Logo hizalama** (sol-üst düzgün oturmuyor; saf görsel/CSS). M3.
-- **A3 — CTA kartı affordance** (Alpfit/Crew OS kartları — zaten `<Link>`, sorun görsel) + scroll/"kaydır" göstergesi ölçekleme. M2 + M3.
-- **B1 — Living Flow yeşil nabız kapsamı** (sayfanın aşağısına taşıma). ⚠️ **Craft-duyarlı, imza riski → karar-gate'li**: discuss/research'te değerlendirilir, imza/okunabilirlik/reduced-motion/perf riski kanıtlanırsa iptal edilebilir. M1.
-- **SEO — URL taksonomisi:** `/bunker-os`→public `/crew-os` (route + i18n namespace `bunker`→`crew` yapısal rename **5 dil eşzamanlı** + kalıcı redirect + sitemap/canonical/alternates + iç linkler) & çıplak `/forum`→404. VIZYON §3 açık konusu burada kapanır. M6 + M2 + M4.
+**v0.3 guardrail'leri regresyonsuz korundu:** a11y=100 çift-tema (ana sayfa + 5 alt sayfa) · perf tabanı (masaüstü 100 / LCP 0.69s / CLS 0 · mobil 90 / LCP ~2.7s) · CLS≈0 · i18n 5-dil parite · marka sesi yasakları.
 
-**v0.3 korunan guardrail'ler (regresyon yasağı):** a11y=100 çift-tema (ana sayfa + 5 alt sayfa) · perf tabanı (masaüstü 100 / LCP 0.69s / CLS 0 · mobil 90 / LCP ~2.7s) · CLS≈0 · i18n 5-dil parite (eksik anahtar yasak) · marka sesi yasakları.
+> ⏳ **v0.3 production release henüz yapılmadı** — v0.3 kodu `revize/devflow-kurulum` branch'inde, `main`'e (canlı) merge edilmedi. Release v0.2 emsalindeki gibi ayrı operasyonel oturumda yapılır (temiz build → PR/merge → canlı duman testi). Açık takip: chatbot canlı `ANTHROPIC_API_KEY` env.
 
 ## Sonraki Aday Versiyonlar (henüz planlanmadı)
 
@@ -53,4 +54,4 @@
 
 ---
 
-**Son Güncelleme:** 2026-07-02 — v0.2 production release tamamlandı: revize `main`'e merge + canlı deploy (`a71adbc`), Umami canlı +1 ✅ (panel doğrulandı), §3 duman testi ✓. v0.3 run-task serbest. (Açık takip: chatbot canlı env key.)
+**Son Güncelleme:** 2026-07-05 — prd-review (v0.3): v0.3 "Sıradaki"→"Tamamlanan Versiyon ✅" (Faz 10–14 özeti); sıradaki versiyon henüz planlanmadı (aday konular). v0.3 production release ⏳ bekliyor (kod `revize/devflow-kurulum`'da, `main`'e merge edilmedi).

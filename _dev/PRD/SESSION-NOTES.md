@@ -6,20 +6,22 @@
 
 ## Mevcut Durum Analizi (sonraki oturum için bağlam)
 
-- **v0.2 tamamlandı** (içerik fazları 4–7: a11y / test altyapısı / mobil perf / Umami + versiyon-sonu fazları 8–9: teknik borç / senaryo testi). prd-review (2026-07-02): PRD değişikliği yok — vizyon/taksonomi/feature'lar doğrulandı → PRD sağlam. Tek yön/öncelik çıktısı: ILKELER #2(b) gerçekliğe hizalandı (a11y ≥100 ulaşıldı = yeni taban; perf/LCP brief bütçesi lab'da açık → gerçek-cihaz/Vercel field'a bağlandı, hedef düşmedi).
-- **v0.2'nin en önemli keşfi:** brief mobil perf hedefi (≥95/<2.5s) lab'da adanmış perf işi sonrası bile **ulaşılamıyor** — Lighthouse mobil skoru Lantern-simüle, CPU/render-zamanlama kazanımları lab skorunda görünmez → nihai doğrulama gerçek-cihaz gerektirir (a11y ise ≥100 tam kapandı).
-- **re-kickoff (2026-07-02) → sıradaki versiyon v0.3 = Görsel & Etkileşim Cilası (+ URL taksonomisi/SEO)** sabitlendi (kullanıcı onayı). Kapsam: A1 logo hizalama · A3 CTA kartı affordance & scroll göstergesi · B1 Living Flow nabız kapsamı (karar-gate'li, imza riski) · SEO `/bunker-os`→`/crew-os` redirect + `/forum`→404. Kesin faz ayrımı/sırası discuss-phase'de.
-- Site **canlı ve mimari olarak sağlam**; revize v3'te yerinde + `revize/...` branch'le yürür (`main` canlı kalır).
-- ✅ **v0.2 production release tamamlandı (2026-07-02):** tüm revize `main`'e merge + canlı deploy (`a71adbc`); Umami canlı +1 panel görüntüsüyle doğrulandı + §3 duman testi ✓ (`docs/RELEASE-v0.2.md`). v0.3 run-task serbest. Açık takip: chatbot canlı `ANTHROPIC_API_KEY` env (release engeli değil).
+- **v0.3 tamamlandı** (Faz 10–14: görsel cila [A1 logo + A3 CTA/scroll] + URL taksonomisi/SEO [`/bunker-os`→`/crew-os`] + Living Flow nabız [B1] + versiyon-sonu teknik borç [SEO-metadata hijyeni] + senaryo testi). **prd-review (2026-07-05):** vizyon/taksonomi/feature'lar sağlam — vizyon değişikliği yok; yalnız v0.3'ün kapattığı kararlara **PRD drift hizalaması** yapıldı (VIZYON §3 açık konu kapatıldı, crew-os feature namespace `bunker`→`crew` + `/crew-os` güncellendi, VERSIONS v0.3 "Tamamlanan" oldu).
+- **v0.3'ün öne çıkan dersi:** B1 Living Flow nabız karar-gate'li/imza-riskli girildi ama risk gerçekleşmedi — tek WebGL context + adaptif veil ile imza *güçlendi* (iptal değil, uygula-onayla). Craft en üst eksenin (ILKELER) doğrulandığı faz.
+- Site **canlı ve mimari olarak sağlam**; revize v3'te yerinde + `revize/...` branch'le yürür (`main` canlı kalır). **v0.2 canlıda** (deploy `a71adbc`, 2026-07-02).
+- ⏳ **v0.3 production release henüz yapılmadı:** v0.3 kodu `revize/devflow-kurulum` branch'inde, `main`'e merge edilmedi. Release v0.2 emsalindeki gibi ayrı operasyonel oturumda (temiz build → PR/merge → canlı duman testi). Açık takip: chatbot canlı `ANTHROPIC_API_KEY` env.
 
 ---
 
-## Açık Sorular (v0.3 discuss/research'te karara bağlanacak)
+## Sahipli Açık Kalemler (sonraki versiyon adayları — prd-review B grubu)
 
-> Bu iki kalem artık v0.3 kapsamında (REVIZE-BACKLOG'da v0.3'e bağlandı) — "açık versiyon sorusu" değil, v0.3 discuss/research kararı.
+> v0.3 boyunca kaydedilen, kapsam-dışı bırakılmış ama kaybedilmemesi gereken kalemler. Bir sonraki versiyon planlanırken (prd-refine) değerlendirilir.
 
-- **Crew OS URL'i (SEO):** Sayfa `/bunker-os` (i18n namespace `bunker`) iç adı URL'de sızdırıyor → public `/crew-os` + kalıcı redirect + i18n namespace `bunker`→`crew` **5-dil eşzamanlı rename** (yapısal anahtar; eksik anahtar yasak) + sitemap/canonical/alternates + iç linkler (M6+M2+M4). Çıplak `/forum`→404 aynı SEO kovada. VIZYON §3 açık konusu v0.3'te kapanır. → **discuss/research kararı.**
-- **Living Flow yeşil nabız kapsamı (B1):** Nabızlar sayfanın daha aşağısına taşınsın mı? Göz yorgunluğu/okunabilirlik riski (yoğunluk/opaklık, scrim, reduced-motion, mobil perf). → **karar-gate'li** (imza riski kanıtlanırsa iptal edilebilir); discuss/research'te değerlendirilir.
+- **Brief mobil perf** — ≥95/<2.5s lab'da açık (Lantern render-timing körlüğü); nihai doğrulama gerçek-cihaz/Vercel field. ILKELER #2b'de zaten hizalı (hedef düşmedi).
+- **Chatbot per-mesaj max-byte cap yok** — güvenlik-hardening adayı (min-length + geçmiş-sayısı var; per-mesaj uzunluk sınırı yok).
+- **non-TR çeviri tazeliği** — ar/de/es 4 alt sayfa İngilizce-stale; bilinçli (TR tek kaynak, çeviri versiyon-sınırı — VIZYON §5). Çeviri senkronu ayrı versiyon adayı.
+- **AR-dil stratejisi** — Arapça içerik yaklaşımı açık kalem.
+- **TB-3** (full-motion invariant tohumu) / **TB-4** (logical-ok RTL denetimi) / **TB-5** (npm audit) — Faz 13'te kayıtlı sahipli teknik açıklar.
 
 ## Keşfedilmemiş Alanlar
 
@@ -28,4 +30,4 @@
 
 ---
 
-**Son Güncelleme:** 2026-07-02 — re-kickoff (v0.2→v0.3): mevcut durum v0.3 bağlamına güncellendi (v0.2 tamam + prd-review PRD değişikliği yok → v0.3 = Görsel & Etkileşim Cilası + URL/SEO sabitlendi); açık sorular (Crew OS URL, Living Flow nabız) v0.3 kapsamına alındı (artık versiyon sorusu değil, v0.3 discuss/research kararı). v0.2 mezun bağlamı v0.3 ile değiştirildi.
+**Son Güncelleme:** 2026-07-05 — prd-review (v0.3): mevcut durum v0.3-tamam + prd-review bağlamına güncellendi; çözülmüş açık sorular (Crew OS URL, Living Flow nabız — ikisi de v0.3'te kapandı) mezun edildi/silindi; sahipli açık kalemler (B grubu) sonraki-versiyon adayı olarak toplandı. Vizyon değişikliği yok, yalnız PRD drift hizalaması.
