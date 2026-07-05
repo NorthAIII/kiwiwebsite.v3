@@ -1,6 +1,6 @@
 # Perf Taban Kayıtları — Ana Sayfa Lighthouse
 
-Ana sayfa Lighthouse perf/a11y tabanları. Ölçüm **yerel production build** üzerinde (`next build && next start`); revize branch canlıya deploy olmuyor (kiwiailab.com eski kodu yansıtır) → bu "yerel taban". İlk taban: **v0.1, 2026-06-28** (TASK-2.03 / Phase 2). En güncel ölçüm: **v0.3 / Faz 12, 2026-07-03** (TASK-12.03; B1 Living Flow aşağı-taşıma karar-gate — desktop perf 100 / CLS 0 regresyonsuz + full-motion a11y 0 ihlal çift-tema; aşağıda **Faz 12 / TASK-12.03** bölümü). Bir önceki: v0.2 / Faz 9, 2026-07-02 (TASK-9.04; versiyon-sonu senaryo testi S8-Lighthouse re-teyit — 6/6 dark kanonik a11y=100 + 12/12 light/dark axe 0 ihlal + perf korunan taban regresyonsuz).
+Ana sayfa Lighthouse perf/a11y tabanları. Ölçüm **yerel production build** üzerinde (`next build && next start`); revize branch canlıya deploy olmuyor (kiwiailab.com eski kodu yansıtır) → bu "yerel taban". İlk taban: **v0.1, 2026-06-28** (TASK-2.03 / Phase 2). En güncel ölçüm: **v0.3 / Faz 14, 2026-07-05** (TASK-14.04; versiyon-sonu senaryo testi S8-Lighthouse re-teyit — 6/6 dark kanonik a11y=100 + 12/12 light/dark axe 0 LH-ilgili ihlal + desktop perf 100/CLS 0 Faz-12 birebir + mobil LCP korunan taban regresyonsuz; aşağıda **Faz 14 / TASK-14.04** bölümü). Bir önceki: v0.3 / Faz 12, 2026-07-03 (TASK-12.03; B1 Living Flow aşağı-taşıma karar-gate — desktop perf 100 / CLS 0 regresyonsuz + full-motion a11y 0 ihlal çift-tema).
 
 > ⚠️ **İki kanonik-koşu tuzağı (Faz 4 TASK-4.01/4.08 düzeltmeleri — okumadan ölçme):**
 > 1. **Ölçülen-locale:** Cookie'siz kanonik koşu Chrome `Accept-Language` ile `/` → **`/en`**'e redirect olur (next-intl `localeDetection`). v0.1 tabanı bu yüzden "TR `/`" değil, aslında **`/en`**'i ölçtü (artifact `finalUrl=/en` ile kanıtlı). **TR varsayılan** sayfasını ölçmek için `NEXT_LOCALE=tr` cookie şart (Lighthouse `--extra-headers='{"Cookie":"NEXT_LOCALE=tr"}'`). TR `/` sayfası `/en`'den **ağırdır** (hero metni daha uzun) — perf/LCP/FCP farkı buradan gelir, regresyon değil.
@@ -330,6 +330,29 @@ Living Flow'un fixed viewport canvas'a taşınması (12.01) + adaptif veil (12.0
 ### Gate-3 — craft (karar: uygula + light-veil ince-ayarı)
 
 Full-motion kareler (light/dark × 5 bölüm, SwiftShader) incelendi. Dark: parlayan yeşil = koyu zeminde ambient derinlik, premium (bleed yok). Light: Hero-altı başlık bantlarında en parlak nabız karelerinde metinle yarışma (restraint sınırı). **Craft ince-ayar:** `FlowVeil` tema-flip `--flow-veil` token'ı — light %70 (başlık okunabilirliği netleşir), dark %56 korunur. İnce-ayar sonrası görsel doğrulandı: light bleed azaldı (nabızlar soluklaştı, süreklilik korundu), dark birebir aynı. **Karar: uygula-onayla** (DECISIONS 2026-07-03).
+
+---
+
+## v0.3 / Faz 14 — TASK-14.04: S8-Lighthouse versiyon-sonu re-teyit (a11y=100 çift-tema + Living Flow perf tabanı) (2026-07-05)
+
+v0.3 versiyon-sonu **senaryo testi** guardrail'i (S8 Lighthouse skor gate tarafı): kaynak kod **değişmedi** (doğrulama fazı) → yeni artefakt kaydedilmedi; skorlar korunan tabanla kıyaslandı, kayıt buraya. Ortam: node 20.20.2 + Chrome 150 + **Lighthouse 13.3.0** (npx-cache; 12.8.2 de mevcuttu ama Faz 12 desktop tabanı 13.3.0 → apples-to-apples için 13.3.0), flags `--headless=new --no-sandbox --disable-dev-shm-usage --enable-unsafe-swiftshader`. Fresh-prod-serve (`rm -rf .next && next build` temiz → `next start -p 4173`, listening-PID 8846 teyit), düşük yük (load ~1.0-3.0), TR `/` (`NEXT_LOCALE=tr`, finalUrl `/` teyit). İki-gate disiplini: TASK-14.03 axe WCAG-AA suite gate'ini kapattı; bu task LH **structural skor gate**'ini kapatır.
+
+### a11y=100 çift-tema (iki-gate, S8 skor gate tarafı)
+
+- **Lighthouse kanonik (dark), 6 sayfa:** `/`·`/crew-os`·`/spor-salonu-yazilimi`·`/vaka-calismalari`·`/bulten/ai-sdr-araclari`·`/bulten/claude-opus-4-8-fable-5` → **6/6 a11y=100**, 0 düşen audit, `runtimeError=none`. Structural audit'ler (`landmark-one-main`/`heading-order`/`color-contrast`/`list`/`document-title`/`html-has-lang`/`meta-viewport`) hepsi pass → tema-bağımsız, light'a da geçerli. Bülten sayfalarında `<main>` var (Faz 8 fix korunuyor).
+- **Gerçek light+dark axe, 6 sayfa × 2 tema = 12 koşu:** standalone Playwright (`channel:'chrome'`+swiftshader; `localStorage.theme` seed FOUC öncesi + `html.dark` themeOk teyit + `reducedMotion:'reduce'`+uçtan-uca scroll) + axe-core **4.12.1** (LH bundle motoru), violation'lar LH a11y audit-id kümesine filtreli → **12/12 koşuda 0 LH-ilgili ihlal, 0 tema-uyumsuzluk**. color-contrast çift-temada (dark-panel inversiyonu dahil) temiz → a11y=100 çift-tema doğrulandı.
+
+### Perf korunan taban (home, full-motion, çok-koşu median)
+
+| Preset (TR `/`) | perf | LCP | FCP | CLS | TBT | LCP elementi | Verdi |
+|---|---|---|---|---|---|---|---|
+| Masaüstü | **100** (100/100/100) | 624 ms (624/624/699) | ~512 ms | **0.000** | ~30 ms | hero metni | taban ✓ (Faz 12 birebir) |
+| Mobil | 66 (env) | **~3010 ms** (3010/3009/3173) | ~1514 ms | **0.000** | ~2000 ms (env) | `<p data-hero="sub">` | comparable metrikler ✓ |
+
+- **Masaüstü perf 100 / CLS 0 / LCP 624ms** = Faz 12 kanonik (`home-desktop-20260703-faz12`: perf 100 / LCP ~625ms / CLS≈0) ile **birebir** → Living Flow sayfa-boyu nabız imzası regresyonsuz.
+- **LCP/FCP/CLS (Lantern-deterministik) korunan tabanla eşit/altında:** mobil LCP ~3010ms ≤ Faz-6/7 taban 3164ms / Faz-9 3171ms; FCP ~1514 ≈ 1506-1516ms; masaüstü LCP 624 ≤ 0.69s; CLS=0 her yerde. LCP elementleri değişmedi (hero metni). **Regresyon yok.**
+- **perf 66 / TBT ~2000ms = ağır-SwiftShader ortam anomalisi** (Faz 9 perf 65/TBT 2000 + TASK-6.01 perf 62/TBT 1842 ile birebir; software-GL main-thread şişkinliği) — memory gereği **ortamlar arası kıyaslanamaz, regresyon sinyali değil**. Bu devcontainer 6.01/9.04'ün ağır-SwiftShader varyantı.
+- **Brief mobil perf açığı record-not-fix:** mobil LCP ~3010ms > brief <2.5s; rep-env perf ~90 < 95. Kök neden CPU-bound WebGL (gerçek-cihaz duvarı, DECISIONS 2026-06-30). Senaryo testte kaydedildi, düzeltilmedi → prd-review B grubu.
 
 ---
 
