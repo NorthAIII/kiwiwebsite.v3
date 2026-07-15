@@ -160,6 +160,10 @@ M6 (SEO/Deploy) ─────────────────────>
 | TB-2: `/forum` locale-prefix gap (`/en/forum`→404) + tüm config redirect denetimi (çıplak+prefixli iki-giriş, sessiz 404 gap yok) | M6 | v0.3 | 13 | ✅ |
 | **— v0.3 versiyon-sonu senaryo testi (Faz 14 — çapraz doğrulama, yeni feature üretmez) —** | | | | |
 | S1–S9: v0.3 ana sayfa + 5 alt sayfa uçtan-uca senaryo doğrulaması (giriş/yolculuk/mod/kontrol/taksonomi/5-dil/chatbot/v0.3-guardrail/adversarial; delta: crew-os route + sayfa-boyu nabız + SEO metadata + logo) | tümü | v0.3 | 14 | ✅ |
+| **— v0.4 Alpfit Plus ürün vitrini iş birimleri (F2.8 zengin yeniden tasarım; faz/iş-birimi bölünmesi discuss-phase 15'te damgalanır) —** | | | | |
+| AP1: Alpfit Plus sayfası port + yeni bölümler (Hero/before-after · Sorun · 4 Rol · Mobil uygulama mockup'ları · 9 Özellik · Neden/rekabet · Fiyat · Yol haritası+Store · Kapanış) → React + Tailwind v4 token; primitive'ler (Reveal/PageHeader/Footer) yeniden kullanılır | M2 (+M1/M3) | v0.4 | — | ⬜ |
+| AP2: 5-dil i18n namespace (yeni içerik `messages/*.json`; TR birincil, non-TR versiyon-sınırı; component-içi TR/EN deseni terk edilir) | M4 (+M2) | v0.4 | — | ⬜ |
+| AP3: SEO/metadata (ürün konumuna göre başlık/description; route `/spor-salonu-yazilimi` korunur) | M6 (+M2) | v0.4 | — | ⬜ |
 
 **Durum simgeleri:**
 - ⬜ **Bekliyor** — Fazı henüz başlamadı
@@ -178,4 +182,4 @@ M6 (SEO/Deploy) ─────────────────────>
 
 ---
 
-**Son Güncelleme:** 2026-07-05 — review-phase 14: v0.3 versiyon-sonu senaryo testi (S1–S9, Faz 14) satırı ✅ eklendi (UAT 11/11, 0 kaynak değişimi, 0 kapsam-içi bug, 8 kalite ekseni ✅); v0.3'ün iki çapraz deltası (route rename + sayfa-boyu nabız) bütünsel doğrulandı. v0.3 versiyon-sonu fazları tamam → prd-review.
+**Son Güncelleme:** 2026-07-16 — re-kickoff (kickoff-docs): v0.4 Alpfit Plus ürün vitrini iş birimleri (AP1 sayfa port + yeni bölümler, AP2 5-dil i18n namespace, AP3 SEO/metadata) matrise eklendi (M2 merkez + M4/M1/M6; Faz "—", discuss-phase 15 damgalar). Feature: `PRD/features/alpfit-plus.md`; tasarım referansı `docs/alpfit-plus-artifact.html`.

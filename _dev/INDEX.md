@@ -44,6 +44,7 @@
 | `PRD/features/sektorler-derinlestirme.md` | Sektörler: gym paneli tek-otomasyona; diğer 5 sektör güçlü/korunur — R2. |
 | `PRD/features/crew-os-bolumu.md` | Crew OS bölümü: ana metin doğru, panel akışları bırakıldı — R3. |
 | `PRD/features/kopya-revizesi.md` | Site-geneli TR ses/ton + F5 dürüstlük konvansiyonu + F6 hero ikincil CTA — R4. |
+| `PRD/features/alpfit-plus.md` | **v0.4** — Alpfit (F2.8) sayfası "Alpfit Plus" zengin ürün vitrini yeniden tasarımı: bölümler + dürüstlük 4/4 gerçek + 5-dil namespace + kabul kriterleri (AP1–AP3). |
 | `PRD/SESSION-NOTES.md` | PRD çalışma kanvası: anlık durum, açık sorular (Crew OS URL, Living Flow kapsamı), keşfedilmemiş alanlar. |
 
 ### Modül Dokümanları (İlgili Modül Gerektiğinde OKU)
@@ -78,6 +79,7 @@
 | `docs/UMAMI-ANALYTICS.md` | Umami analytics entegrasyon spec'i (bekliyor — kod, değerler, uyarılar) |
 | `docs/RELEASE-v0.2.md` | v0.2 production release runbook & checklist (hafif operasyonel oturum: temiz pencere → PR/merge → canlı duman testi → Umami +1). run-task 10'dan önce. |
 | `docs/perf/` | Ana sayfa Lighthouse perf/a11y tabanları (`README.md` = metodoloji+koşu tablosu+a11y kırılımı; `home-{mobile,desktop}-<tarih>.{html,json}` kanonik artefaktlar). İlk taban: v0.1 2026-06-28 (TD3). |
+| `docs/alpfit-plus-artifact.html` | **v0.4** — Alpfit Plus tasarım referansı (kullanıcı artifact'i v2, saf HTML/CSS; nihai hedef düzen). Port kaynağı; feature `PRD/features/alpfit-plus.md`. |
 
 ---
 
@@ -196,7 +198,7 @@ kiwiwebsite.v3/
 
 ---
 
-**Son Güncelleme:** 2026-06-30 — run-task TASK-5.05: `docs/TESTING.md` (test convention notu) Bilgi Havuzu'na eklendi.
+**Son Güncelleme:** 2026-07-16 — re-kickoff (kickoff-docs): v0.4 içerik dokümanları eklendi — `PRD/features/alpfit-plus.md` (Alpfit Plus feature) + `docs/alpfit-plus-artifact.html` (tasarım referansı).
 
 <!-- KURAL: Bu satır her güncellemede ÜZERİNE YAZILIR. "Önceki:" prefix ile kümülatif yığma YASAK (CLAUDE.md → Doküman Disiplini). -->
 <!-- KURAL: Tamamlanmış fazların task arşiv listesini INDEX'e ekleme — `ls _dev/tasks/archive/` zaten görür. INDEX yalnızca aktif klasör konumlarını gösterir; statik liste dokümanı değildir. -->

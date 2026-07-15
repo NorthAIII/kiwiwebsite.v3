@@ -2,7 +2,7 @@
 
 **Amaç:** Hangi feature'ın hangi versiyona dahil olduğunu tutan tek kaynak. (MODULE-MAP'in Versiyon sütunu buradan beslenir.)
 
-> **Bağlam:** Mevcut site = "v3 (mevcut canlı)". Güçlü revize, **v0.1**'den başlayan kümülatif versiyonlarla yürür. **v0.1 tamamlandı** (3 faz: içerik + teknik borç + senaryo testi; prd-review 2026-06-29 — değişiklik yok). **v0.2 tamamlandı** (Faz 4–9: a11y + test altyapısı + mobil perf + Umami + versiyon-sonu teknik borç + senaryo testi; prd-review 2026-07-02 — PRD değişikliği yok). **v0.3 tamamlandı** (Faz 10–14: görsel cila + URL taksonomisi/SEO + Living Flow nabız + versiyon-sonu teknik borç + senaryo testi; prd-review 2026-07-05 — PRD drift düzeltmesi, vizyon değişikliği yok). **Sıradaki versiyon henüz planlanmadı** (aday konular aşağıda). Aşağıdaki feature'lar revizenin *yeni* iş birimleridir; mevcut çalışan feature'lar `_dev/MODULE-MAP.md`'de listelenir.
+> **Bağlam:** Mevcut site = "v3 (mevcut canlı)". Güçlü revize, **v0.1**'den başlayan kümülatif versiyonlarla yürür. **v0.1 tamamlandı** (3 faz: içerik + teknik borç + senaryo testi; prd-review 2026-06-29 — değişiklik yok). **v0.2 tamamlandı** (Faz 4–9: a11y + test altyapısı + mobil perf + Umami + versiyon-sonu teknik borç + senaryo testi; prd-review 2026-07-02 — PRD değişikliği yok). **v0.3 tamamlandı** (Faz 10–14: görsel cila + URL taksonomisi/SEO + Living Flow nabız + versiyon-sonu teknik borç + senaryo testi; prd-review 2026-07-05 — PRD drift düzeltmesi, vizyon değişikliği yok). **v0.4 planlandı** (re-kickoff 2026-07-16: Alpfit Plus ürün vitrini — aşağıda). Aşağıdaki feature'lar revizenin *yeni* iş birimleridir; mevcut çalışan feature'lar `_dev/MODULE-MAP.md`'de listelenir.
 
 ---
 
@@ -14,6 +14,7 @@
 | "Nasıl çalışır" 4 adım (Analiz·Çözüm·Otomasyon·Raporlama) | `features/nasil-calisir-4-adim.md` | v0.1 |
 | Sektörler derinleştirme (6 sektör, özgün içerik) | `features/sektorler-derinlestirme.md` | v0.1 |
 | Site geneli TR kopya revizesi (marka sesi) | `features/kopya-revizesi.md` | v0.1 |
+| Alpfit Plus ürün vitrini (F2.8 zengin yeniden tasarım) | `features/alpfit-plus.md` | v0.4 |
 
 **v0.1 teması:** Türkçe içerik & mesaj revizesi — **ana sayfa odaklı, cerrahi** (prd-refine 2026-06-28 reframe: kopya zaten güçlü; baştan-sona rewrite değil, nokta-atışı düzeltmeler + ses taraması). TR tek kaynak; çeviri versiyon-sınırında (bkz. VIZYON §5).
 
@@ -45,6 +46,15 @@
 
 > 🚀 **v0.3 production release tamamlandı (2026-07-05):** `revize/devflow-kurulum`→`main` merge (`2ea09b7`) + Vercel deploy `success`; canlı duman testi ✅ (`/crew-os` 200, `/bunker-os`→`/crew-os` 308, `/forum`→`/` 308, "Crew OS" görünür / "Bunker OS" 0×). **⚠️ Açık takip: canlı `ANTHROPIC_API_KEY` env ayarlı değil** (`/api/chat` 503 → chatbot "offline"; Vercel env'e eklenince açılır — regresyon değil, v0.2'den beri açık).
 
+## Aktif Versiyon: v0.4 — Alpfit Plus ürün vitrini 🔄
+
+> Re-kickoff (2026-07-16) ile planlandı. Tek merkez iş: **Alpfit (F2.8) sayfasının "Alpfit Plus" zengin ürün landing page'ine yeniden tasarımı** (M2 merkez; M4 i18n, M1 token, M6 SEO). Gerekçe: Craft en üst eksen (ILKELER); Alpfit ayrı/bağımsız dikey ürün (VIZYON §3), vitrini güçlendirilir. Tasarım referansı: kullanıcı artifact'i (`docs/alpfit-plus-artifact.html`); feature: `features/alpfit-plus.md`.
+
+- **Alpfit Plus sayfası** — artifact'taki bölümler (Hero+before/after · Sorun · 4 Rol · **Mobil uygulama mockup'ları** · 9 Özellik · Neden/rekabet · **Fiyat** ₺1.500+KDV · Yol haritası+**Store** · Kapanış) React + Tailwind v4 token + next-intl'e port; düzgün 5-dil namespace (TR birincil, non-TR versiyon-sınırı).
+- **Dürüstlük 4/4 gerçek** (kullanıcı teyidi 2026-07-16): canlı pilot / public fiyat / ürün iddiaları mevcut / "18 rakip" gerçek → içerik olduğu gibi korunur.
+- **Faz bölünmesi** (tek mi çok mu) + Living Flow hero akıbeti discuss-phase 15'te netleşir. Ardından versiyon-sonu sabit fazları (teknik borç → senaryo testi → prd-review).
+- **Guardrail regresyonsuz:** a11y=100 çift-tema · perf tabanı · CLS≈0 · i18n 5-dil parite · marka sesi yasakları.
+
 ## Sonraki Aday Versiyonlar (henüz planlanmadı)
 
 > Numara/kesin versiyon atanmaz; sıra prd-refine / discuss-phase'de netleşir.
@@ -54,4 +64,4 @@
 
 ---
 
-**Son Güncelleme:** 2026-07-05 — prd-review (v0.3): v0.3 "Sıradaki"→"Tamamlanan Versiyon ✅" (Faz 10–14 özeti); sıradaki versiyon henüz planlanmadı (aday konular). 🚀 **v0.3 production release tamamlandı** (`main` `2ea09b7`, Vercel `success`, canlı duman testi ✅; açık takip: canlı `ANTHROPIC_API_KEY` env).
+**Son Güncelleme:** 2026-07-16 — re-kickoff (kickoff-docs): v0.4 (Alpfit Plus ürün vitrini) Aktif Versiyon olarak eklendi (F2.8 zengin yeniden tasarım; feature `features/alpfit-plus.md`, tasarım referansı `docs/alpfit-plus-artifact.html`); feature→versiyon tablosuna satır eklendi. Merkez M2; ilk faz no 15 (discuss-phase damgalar).

@@ -1,0 +1,772 @@
+<!-- Alpfit Plus tasarım referansı — kaynak: claude.ai artifact 48b3e9d4-57ac-4f2a-ae5b-68e764561dc9 (v2, 2026-07-16: Mobil uygulama bölümü dahil). frame-runtime iframe scripti ayıklandı; saf tasarım (title + style + bölümler + reveal script). Nihai hedef bu düzendir; port React/Tailwind-token/next-intl ile yapılır. -->
+<title>Alpfit Plus — Kulüp İşletme Yazılımı</title>
+<style>
+  /* ============================================================
+     Kiwi AI Lab brand tokens (kiwiailab.com) — korunuyor
+     Fontlar: yüklenmeyen webfont yerine kasıtlı sistem yığını.
+     ============================================================ */
+  :root {
+    --canvas: #f7f6f1;
+    --canvas-deep: #efede4;
+    --surface: #fffefb;
+    --ink: #12140f;
+    --ink-soft: #474a41;
+    --ink-faint: #6b6d63;
+    --green: #1c7a3b;
+    --green-deep: #185f2f;
+    --pulse: #57d857;
+    --pulse-soft: #bdefbd;
+    --line: rgba(18,20,15,.12);
+    --line-soft: rgba(18,20,15,.055);
+    --band: #101208;
+    --band-surface: #1a1c12;
+    --band-ink: #f3f2e8;
+    --band-soft: #adb0a0;
+    --band-line: rgba(243,242,232,.13);
+    --shadow-sm: 0 1px 2px rgba(18,20,15,.04);
+    --shadow: 0 1px 2px rgba(18,20,15,.05), 0 8px 24px -8px rgba(18,20,15,.10);
+    --shadow-lg: 0 2px 4px rgba(18,20,15,.05), 0 24px 60px -18px rgba(18,20,15,.20);
+    --radius: 18px;
+    --radius-sm: 12px;
+    --maxw: 1140px;
+    --display: "Iowan Old Style", "Palatino Linotype", Palatino, "Charter", "Cambria", Georgia, ui-serif, serif;
+    --sans: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --canvas: #12140e; --canvas-deep: #1b1d14; --surface: #191b12;
+      --ink: #f3f2e8; --ink-soft: #bbbdb0; --ink-faint: #8b8d81;
+      --green: #58bd74; --green-deep: #6fe36f; --pulse: #7dee7d; --pulse-soft: #294a29;
+      --line: rgba(243,242,232,.14); --line-soft: rgba(243,242,232,.07);
+      --band: #0a0c06; --band-surface: #14160d; --band-ink: #f3f2e8; --band-soft: #8b8d81;
+      --band-line: rgba(243,242,232,.12);
+      --shadow-sm: 0 1px 2px rgba(0,0,0,.4);
+      --shadow: 0 1px 2px rgba(0,0,0,.4), 0 12px 32px -10px rgba(0,0,0,.6);
+      --shadow-lg: 0 2px 6px rgba(0,0,0,.5), 0 30px 70px -20px rgba(0,0,0,.7);
+    }
+  }
+  :root[data-theme="dark"] {
+    --canvas: #12140e; --canvas-deep: #1b1d14; --surface: #191b12;
+    --ink: #f3f2e8; --ink-soft: #bbbdb0; --ink-faint: #8b8d81;
+    --green: #58bd74; --green-deep: #6fe36f; --pulse: #7dee7d; --pulse-soft: #294a29;
+    --line: rgba(243,242,232,.14); --line-soft: rgba(243,242,232,.07);
+    --band: #0a0c06; --band-surface: #14160d; --band-ink: #f3f2e8; --band-soft: #8b8d81;
+    --band-line: rgba(243,242,232,.12);
+    --shadow-sm: 0 1px 2px rgba(0,0,0,.4);
+    --shadow: 0 1px 2px rgba(0,0,0,.4), 0 12px 32px -10px rgba(0,0,0,.6);
+    --shadow-lg: 0 2px 6px rgba(0,0,0,.5), 0 30px 70px -20px rgba(0,0,0,.7);
+  }
+  :root[data-theme="light"] {
+    --canvas: #f7f6f1; --canvas-deep: #efede4; --surface: #fffefb;
+    --ink: #12140f; --ink-soft: #474a41; --ink-faint: #6b6d63;
+    --green: #1c7a3b; --green-deep: #185f2f; --pulse: #57d857; --pulse-soft: #bdefbd;
+    --line: rgba(18,20,15,.12); --line-soft: rgba(18,20,15,.055);
+    --band: #101208; --band-surface: #1a1c12; --band-ink: #f3f2e8; --band-soft: #adb0a0;
+    --band-line: rgba(243,242,232,.13);
+    --shadow-sm: 0 1px 2px rgba(18,20,15,.04);
+    --shadow: 0 1px 2px rgba(18,20,15,.05), 0 8px 24px -8px rgba(18,20,15,.10);
+    --shadow-lg: 0 2px 4px rgba(18,20,15,.05), 0 24px 60px -18px rgba(18,20,15,.20);
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+  body {
+    margin: 0; background: var(--canvas); color: var(--ink);
+    font-family: var(--sans); font-size: 17px; line-height: 1.62;
+    font-feature-settings: "kern" 1;
+    -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+  .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 26px; }
+  a { color: inherit; }
+  p { margin: 0; }
+  /* Sabit header çapa-linkte başlığı örtmesin */
+  #roller, #uygulama, #ozellikler, #fiyat { scroll-margin-top: 84px; }
+
+  h1, h2, h3 {
+    font-family: var(--display); font-weight: 600; margin: 0;
+    line-height: 1.08; letter-spacing: -0.021em; text-wrap: balance;
+    font-optical-sizing: auto;
+  }
+
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 10px;
+    font-family: var(--sans); font-size: 12px; font-weight: 700;
+    letter-spacing: 0.15em; text-transform: uppercase; color: var(--green);
+    margin-bottom: 18px;
+  }
+  .eyebrow::before {
+    content: ""; width: 20px; height: 2px; border-radius: 2px;
+    background: currentColor; opacity: .55;
+  }
+
+  /* ---- Header ---- */
+  header {
+    position: sticky; top: 0; z-index: 30;
+    background: color-mix(in srgb, var(--canvas) 82%, transparent);
+    backdrop-filter: saturate(1.4) blur(14px);
+    -webkit-backdrop-filter: saturate(1.4) blur(14px);
+    border-bottom: 1px solid var(--line-soft);
+  }
+  .nav { display: flex; align-items: center; justify-content: space-between; height: 66px; }
+  .brand {
+    font-family: var(--display); font-weight: 600; font-size: 21px; letter-spacing: -0.02em;
+    text-decoration: none; display: inline-flex; align-items: baseline; gap: 1px; color: var(--ink);
+  }
+  .brand .plus { color: var(--green); }
+  .brand small {
+    font-family: var(--sans); font-weight: 500; font-size: 11px; letter-spacing: .01em;
+    color: var(--ink-faint); margin-left: 9px; align-self: center;
+  }
+  .nav-links { display: flex; align-items: center; gap: 30px; }
+  .nav-links a { text-decoration: none; color: var(--ink-soft); font-size: 14.5px; font-weight: 550; transition: color .15s ease; }
+  .nav-links a:hover { color: var(--ink); }
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px; justify-content: center;
+    font-family: var(--sans); font-weight: 600; font-size: 15px; line-height: 1;
+    padding: 12px 20px; border-radius: 11px; border: 1px solid transparent;
+    text-decoration: none; cursor: pointer; white-space: nowrap;
+    transition: transform .12s cubic-bezier(.2,.8,.3,1), background .18s ease, border-color .18s ease, box-shadow .18s ease;
+  }
+  .btn-primary { background: var(--green); color: #fff; box-shadow: 0 1px 1px rgba(18,20,15,.16), 0 8px 20px -8px color-mix(in srgb, var(--green) 70%, transparent); }
+  .btn-primary:hover { background: var(--green-deep); transform: translateY(-1px); }
+  .btn-primary:active { transform: translateY(0); }
+  .btn-ghost { background: color-mix(in srgb, var(--surface) 70%, transparent); color: var(--ink); border-color: var(--line); }
+  .btn-ghost:hover { border-color: var(--ink-faint); transform: translateY(-1px); }
+  .nav .btn { padding: 10px 17px; }
+  a:focus-visible, .btn:focus-visible, .brand:focus-visible { outline: 2px solid var(--green); outline-offset: 3px; border-radius: 9px; }
+  @media (max-width: 720px) { .nav-links a:not(.btn) { display: none; } }
+
+  /* ---- Hero ---- */
+  .hero { position: relative; padding: 104px 0 68px; overflow: hidden; }
+  .hero::before {
+    content: ""; position: absolute; z-index: 0; top: -180px; right: -120px;
+    width: 620px; height: 620px; border-radius: 50%;
+    background: radial-gradient(circle, color-mix(in srgb, var(--pulse) 26%, transparent), transparent 62%);
+    opacity: .5; filter: blur(20px); pointer-events: none;
+  }
+  .hero-grid { position: relative; z-index: 1; display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 60px; align-items: center; }
+  @media (max-width: 920px) { .hero-grid { grid-template-columns: 1fr; gap: 44px; } .hero { padding: 66px 0 48px; } }
+  .pilot-chip {
+    display: inline-flex; align-items: center; gap: 9px; font-family: var(--sans);
+    font-size: 13px; font-weight: 550; color: var(--ink-soft);
+    background: var(--surface); border: 1px solid var(--line); border-radius: 999px;
+    padding: 7px 15px 7px 13px; margin-bottom: 28px; box-shadow: var(--shadow-sm);
+  }
+  .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--green); position: relative; flex: none; }
+  .dot::after { content: ""; position: absolute; inset: -5px; border-radius: 50%; background: var(--pulse); opacity: 0; animation: pulse 2.6s ease-out infinite; }
+  @keyframes pulse { 0% { transform: scale(.55); opacity: .6; } 100% { transform: scale(1.7); opacity: 0; } }
+  @media (prefers-reduced-motion: reduce) { .dot::after { animation: none; } }
+  .hero h1 { font-size: clamp(42px, 6.4vw, 70px); font-weight: 600; letter-spacing: -0.028em; line-height: 1.03; }
+  .hero h1 .mark { position: relative; white-space: nowrap; color: var(--green); }
+  .hero h1 .mark::after {
+    content: ""; position: absolute; left: -3px; right: -3px; bottom: .08em; height: .3em; z-index: -1;
+    background: var(--pulse); opacity: .42; border-radius: 5px;
+  }
+  .hero-sub { font-family: var(--sans); margin-top: 26px; font-size: clamp(17px, 2.1vw, 20px); color: var(--ink-soft); max-width: 40ch; line-height: 1.55; }
+  .hero-cta { display: flex; gap: 12px; margin-top: 34px; flex-wrap: wrap; }
+  .hero-note { font-family: var(--sans); margin-top: 20px; font-size: 13.5px; color: var(--ink-faint); }
+
+  /* Hero visual: before -> after */
+  .compare-wrap { position: relative; }
+  .compare-wrap::before {
+    content: ""; position: absolute; inset: 8px -8px -14px; z-index: 0; border-radius: var(--radius);
+    background: radial-gradient(120% 80% at 70% 20%, color-mix(in srgb, var(--pulse) 30%, transparent), transparent 70%);
+    filter: blur(26px); opacity: .55;
+  }
+  .compare { position: relative; z-index: 1; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow-lg); overflow: hidden; }
+  .compare-head { display: grid; grid-template-columns: 1fr 1px 1fr; }
+  .compare-col { padding: 22px; display: flex; flex-direction: column; gap: 3px; }
+  .compare-col.before { background: var(--canvas-deep); }
+  .compare-col .label { font-family: var(--sans); font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-faint); margin-bottom: 15px; }
+  .compare-col.after .label { color: var(--green); display: inline-flex; align-items: center; gap: 7px; }
+  .compare-col.after .label .plus { font-family: var(--display); font-size: 14px; }
+  .compare-mid { background: var(--line); }
+  .tool, .after-line { font-family: var(--sans); display: flex; align-items: center; gap: 9px; padding: 5.5px 0; font-size: 14px; }
+  .tool { color: var(--ink-faint); }
+  .tool s { text-decoration-color: color-mix(in srgb, var(--green) 60%, transparent); text-decoration-thickness: 2px; }
+  .after-line { color: var(--ink); font-weight: 550; }
+  .after-line .tick { color: var(--green); font-weight: 700; flex: none; }
+
+  /* ---- Sections ---- */
+  section { padding: 84px 0; }
+  .section-head { max-width: 64ch; margin-bottom: 46px; }
+  .section-head h2 { font-size: clamp(30px, 4.2vw, 44px); }
+  .section-head p { font-family: var(--sans); margin-top: 18px; color: var(--ink-soft); font-size: 18.5px; line-height: 1.55; max-width: 58ch; }
+  .divide { border: 0; border-top: 1px solid var(--line-soft); margin: 0; }
+
+  /* ---- Roles ---- */
+  .roles { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
+  @media (max-width: 920px) { .roles { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 520px) { .roles { grid-template-columns: 1fr; } }
+  .role {
+    background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
+    padding: 26px; display: flex; flex-direction: column; gap: 14px; box-shadow: var(--shadow);
+    transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+  }
+  .role:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); border-color: color-mix(in srgb, var(--green) 26%, var(--line)); }
+  .role .ico { width: 44px; height: 44px; border-radius: 12px; background: color-mix(in srgb, var(--green) 13%, var(--surface)); color: var(--green); display: grid; place-items: center; border: 1px solid color-mix(in srgb, var(--green) 20%, transparent); }
+  .role .ico svg { width: 22px; height: 22px; }
+  .role h3 { font-family: var(--display); font-size: 21px; font-weight: 600; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; letter-spacing: -0.015em; }
+  .role .dev { font-family: var(--sans); font-size: 10px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; color: var(--ink-faint); border: 1px solid var(--line); border-radius: 6px; padding: 3px 8px; }
+  .role ul { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 9px; font-family: var(--sans); }
+  .role li { font-size: 14px; color: var(--ink-soft); line-height: 1.45; padding-left: 18px; position: relative; }
+  .role li::before { content: ""; position: absolute; left: 0; top: 8px; width: 6px; height: 6px; border-radius: 50%; background: color-mix(in srgb, var(--green) 55%, var(--line)); }
+
+  /* ---- Features ---- */
+  .features { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
+  @media (max-width: 880px) { .features { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 560px) { .features { grid-template-columns: 1fr; } }
+  .feat { background: var(--surface); padding: 27px 25px; display: flex; flex-direction: column; gap: 9px; transition: background .18s ease; }
+  .feat:hover { background: color-mix(in srgb, var(--green) 5%, var(--surface)); }
+  .feat h3 { font-size: 19px; font-weight: 600; letter-spacing: -0.015em; }
+  .feat p { font-family: var(--sans); font-size: 14px; color: var(--ink-soft); line-height: 1.5; }
+
+  /* ---- Why ---- */
+  .why { display: grid; grid-template-columns: 1.12fr 1fr; gap: 50px; align-items: start; }
+  @media (max-width: 880px) { .why { grid-template-columns: 1fr; gap: 32px; } }
+  .why-list { display: flex; flex-direction: column; }
+  .why-item { padding: 24px 0; border-top: 1px solid var(--line); }
+  .why-item:first-child { border-top: 0; padding-top: 0; }
+  .why-item h3 { font-size: 20px; font-weight: 600; margin-bottom: 8px; letter-spacing: -0.015em; }
+  .why-item p { font-family: var(--sans); font-size: 15px; color: var(--ink-soft); line-height: 1.55; }
+  .why-item.lead {
+    background: color-mix(in srgb, var(--green) 8%, var(--surface));
+    border: 1px solid color-mix(in srgb, var(--green) 24%, transparent);
+    border-radius: 16px; padding: 24px; margin-bottom: 8px;
+  }
+  .badge {
+    font-family: var(--sans); display: inline-flex; align-items: center; gap: 7px;
+    margin-top: 12px; font-size: 12.5px; font-weight: 650; color: var(--green);
+  }
+  .badge::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--green); }
+  .why-aside { background: var(--band); color: var(--band-ink); border-radius: var(--radius); box-shadow: var(--shadow-lg); padding: 34px; position: sticky; top: 92px; overflow: hidden; }
+  .why-aside::before {
+    content: ""; position: absolute; top: -60px; right: -60px; width: 220px; height: 220px; border-radius: 50%;
+    background: radial-gradient(circle, color-mix(in srgb, var(--pulse) 40%, transparent), transparent 65%); opacity: .3; pointer-events: none;
+  }
+  .why-aside .q { position: relative; font-family: var(--display); font-size: 24px; line-height: 1.32; font-weight: 500; letter-spacing: -0.01em; }
+  .why-aside .q b { color: var(--pulse); font-weight: 600; }
+  .why-aside .src { position: relative; font-family: var(--sans); margin-top: 22px; font-size: 13.5px; color: var(--band-soft); border-top: 1px solid var(--band-line); padding-top: 20px; line-height: 1.6; }
+
+  /* ---- Pricing band ---- */
+  .band-sec { position: relative; background: var(--band); color: var(--band-ink); overflow: hidden; }
+  .band-sec::before {
+    content: ""; position: absolute; top: -140px; left: 50%; transform: translateX(-50%); width: 720px; height: 300px;
+    background: radial-gradient(60% 100% at 50% 0%, color-mix(in srgb, var(--pulse) 18%, transparent), transparent 70%); pointer-events: none;
+  }
+  .band-sec > .wrap { position: relative; }
+  .band-sec .eyebrow { color: var(--pulse); }
+  .band-sec h2 { color: var(--band-ink); }
+  .band-sec .section-head p { color: var(--band-soft); }
+  .price-grid { display: grid; grid-template-columns: 1.32fr 1fr; gap: 24px; }
+  @media (max-width: 880px) { .price-grid { grid-template-columns: 1fr; } }
+  .price-card { background: var(--band-surface); border: 1px solid var(--band-line); border-radius: var(--radius); padding: 34px; box-shadow: var(--shadow-lg); }
+  .price-figure { display: flex; align-items: baseline; gap: 8px; }
+  .price-figure .cur { font-family: var(--display); font-size: 30px; font-weight: 600; color: var(--pulse); }
+  .price-figure .amt { font-family: var(--display); font-size: clamp(52px, 9vw, 62px); font-weight: 600; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; line-height: 1; }
+  .price-figure .per { font-family: var(--sans); font-size: 15px; color: var(--band-soft); align-self: flex-end; margin-bottom: 11px; }
+  .price-kvkk { font-family: var(--sans); font-size: 13px; color: var(--band-soft); margin-top: 10px; }
+  .price-rows { margin-top: 28px; }
+  .price-row { font-family: var(--sans); display: flex; justify-content: space-between; gap: 12px; padding: 15px 0; border-top: 1px solid var(--band-line); font-size: 15px; }
+  .price-row span:last-child { color: var(--band-soft); font-variant-numeric: tabular-nums; text-align: right; }
+  .price-row.free span:last-child { color: var(--pulse); font-weight: 650; }
+  .incl .t { font-family: var(--sans); font-size: 12px; font-weight: 700; letter-spacing: .11em; text-transform: uppercase; color: var(--band-soft); margin-bottom: 18px; }
+  .incl ul { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 13px; }
+  .incl li { font-family: var(--sans); font-size: 15px; display: grid; grid-template-columns: auto 1fr; gap: 12px; align-items: start; line-height: 1.4; }
+  .incl li svg { width: 18px; height: 18px; color: var(--pulse); margin-top: 2px; flex: none; }
+  .price-cta { margin-top: 30px; display: flex; gap: 12px; flex-wrap: wrap; }
+  .founder-note { font-family: var(--sans); margin-top: 22px; font-size: 13.5px; color: var(--band-soft); border-left: 2px solid var(--pulse); padding-left: 14px; line-height: 1.6; }
+
+  /* ---- Roadmap ---- */
+  .road { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; padding: 24px 26px; border: 1px dashed var(--line); border-radius: 16px; background: var(--surface); }
+  .road .tag { font-family: var(--sans); font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--green); border: 1px solid color-mix(in srgb, var(--green) 32%, transparent); border-radius: 999px; padding: 6px 12px; white-space: nowrap; }
+  .road p { font-family: var(--sans); font-size: 14.5px; color: var(--ink-soft); line-height: 1.55; }
+  .road b { color: var(--ink); font-weight: 600; }
+
+  /* ---- Close ---- */
+  .close { text-align: center; padding: 104px 0; }
+  .close h2 { font-size: clamp(32px, 5vw, 50px); max-width: 20ch; margin: 0 auto; }
+  .close p { font-family: var(--sans); margin: 22px auto 0; color: var(--ink-soft); max-width: 46ch; font-size: 18px; line-height: 1.55; }
+  .close .hero-cta { justify-content: center; margin-top: 34px; }
+
+  /* ---- Footer ---- */
+  footer { border-top: 1px solid var(--line); padding: 40px 0 56px; }
+  .foot { display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
+  .foot .meta { font-family: var(--sans); font-size: 13.5px; color: var(--ink-faint); }
+  .foot a.mail { color: var(--green); text-decoration: none; font-weight: 600; }
+  .foot a.mail:hover { text-decoration: underline; }
+
+  /* ---- App phone mockups ---- */
+  .phones { display: flex; flex-wrap: wrap; justify-content: center; gap: 30px 20px; }
+  .phone-wrap { display: flex; flex-direction: column; align-items: center; gap: 16px; }
+  .phone {
+    position: relative; width: 256px; flex: none;
+    aspect-ratio: 9 / 19.5; border-radius: 48px; padding: 6px;
+    background: linear-gradient(145deg, #54574a 0%, #181a11 20%, #33362a 48%, #101208 74%, #3d4033 100%);
+    box-shadow: var(--shadow-lg), inset 0 0 0 1.5px rgba(255,255,255,.12), inset 0 0 7px rgba(255,255,255,.10);
+  }
+  .phone::before { content: ""; position: absolute; left: -2.5px; top: 23%; width: 3px; height: 11%; border-radius: 3px; background: linear-gradient(180deg, #43463a, #111309); }
+  .phone::after { content: ""; position: absolute; right: -2.5px; top: 28%; width: 3px; height: 13%; border-radius: 3px; background: linear-gradient(180deg, #43463a, #111309); }
+  .ph-screen {
+    --a-bg: #f4f3ed; --a-surf: #ffffff; --a-ink: #191c14; --a-soft: #6d6f64;
+    --a-green: #1c7a3b; --a-pulse: #4fc76b; --a-line: rgba(20,22,15,.09); --a-deep: #eceae0;
+    position: relative; width: 100%; height: 100%; border-radius: 42px; overflow: hidden;
+    background: var(--a-bg); color: var(--a-ink);
+    display: flex; flex-direction: column;
+    font-family: var(--sans); box-shadow: inset 0 0 0 1px rgba(0,0,0,.4);
+  }
+  /* Dynamic Island */
+  .ph-screen::before { content: ""; position: absolute; z-index: 20; top: 11px; left: 50%; transform: translateX(-50%); width: 84px; height: 25px; background: #07080a; border-radius: 13px; box-shadow: 0 1px 3px rgba(0,0,0,.4); }
+  /* Home indicator */
+  .ph-screen::after { content: ""; position: absolute; z-index: 18; bottom: 8px; left: 50%; transform: translateX(-50%); width: 36%; height: 5px; border-radius: 99px; background: rgba(20,22,15,.3); }
+  .ph-status { position: relative; z-index: 10; display: flex; align-items: center; justify-content: space-between; padding: 16px 22px 7px; font-size: 12.5px; font-weight: 650; color: var(--a-ink); }
+  .ph-status .time { font-variant-numeric: tabular-nums; letter-spacing: .02em; }
+  .ph-status .icons { display: flex; align-items: center; gap: 5px; }
+  .ph-status .icons svg { display: block; }
+  .ph-status .sig { width: 17px; height: 11px; }
+  .ph-status .sig rect { fill: currentColor; }
+  .ph-status .wifi { width: 16px; height: 12px; }
+  .ph-status .wifi path { fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; }
+  .ph-status .wifi circle { fill: currentColor; }
+  .ph-status .batt { width: 25px; height: 12px; }
+  .ph-status .batt .bo { fill: none; stroke: currentColor; stroke-opacity: .4; stroke-width: 1.2; }
+  .ph-status .batt .bf { fill: currentColor; }
+  .ph-status .batt .bn { fill: currentColor; opacity: .4; }
+  .ph-app { flex: 1; padding: 6px 13px 9px; display: flex; flex-direction: column; gap: 10px; overflow: hidden; }
+  .ph-hi { font-family: var(--display); font-size: 17px; font-weight: 600; letter-spacing: -0.01em; margin-top: 2px; }
+  .ph-head { font-family: var(--display); font-size: 16px; font-weight: 600; letter-spacing: -0.01em; margin-top: 2px; display: flex; align-items: baseline; justify-content: space-between; }
+  .ph-head span { font-family: var(--sans); font-size: 11px; font-weight: 600; color: var(--a-soft); }
+  .ph-label { font-size: 10px; font-weight: 700; letter-spacing: .09em; text-transform: uppercase; color: var(--a-soft); }
+  .ph-card { background: var(--a-surf); border: 1px solid var(--a-line); border-radius: 14px; padding: 12px 13px; box-shadow: 0 5px 14px -8px rgba(20,22,15,.18); }
+  .ph-card-t { font-size: 13.5px; font-weight: 650; }
+  .ph-card-s { font-size: 11.5px; color: var(--a-soft); margin-top: 3px; }
+  .ph-mem { background: linear-gradient(135deg, var(--a-green), #124f28); color: #fff; border-radius: 15px; padding: 13px 14px; }
+  .ph-mem-row { display: flex; justify-content: space-between; align-items: center; }
+  .ph-mem-row b { font-size: 13.5px; font-weight: 650; }
+  .ph-pill { font-size: 9px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; background: rgba(255,255,255,.22); padding: 3px 8px; border-radius: 999px; }
+  .ph-mem-bar { height: 6px; background: rgba(255,255,255,.24); border-radius: 99px; margin: 12px 0 6px; overflow: hidden; }
+  .ph-mem-bar i { display: block; height: 100%; background: var(--a-pulse); border-radius: 99px; }
+  .ph-mem-sub { font-size: 11px; opacity: .92; }
+  .ph-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: auto; }
+  .ph-btn { font-size: 12px; font-weight: 650; text-align: center; padding: 11px 8px; border-radius: 12px; background: var(--a-green); color: #fff; }
+  .ph-btn.ghost { background: var(--a-surf); color: var(--a-ink); border: 1px solid var(--a-line); }
+  .ph-btn.full { grid-column: 1 / -1; }
+  .ph-days { display: flex; gap: 5px; }
+  .ph-day { flex: 1; text-align: center; padding: 7px 0; border-radius: 10px; background: var(--a-surf); border: 1px solid var(--a-line); color: var(--a-soft); }
+  .ph-day span { font-size: 8.5px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; }
+  .ph-day b { display: block; font-size: 13px; margin-top: 1px; }
+  .ph-day.on { background: var(--a-green); color: #fff; border-color: transparent; }
+  .ph-slots { display: flex; flex-direction: column; gap: 7px; }
+  .ph-slot { display: flex; align-items: center; justify-content: space-between; padding: 11px 13px; border-radius: 12px; background: var(--a-surf); border: 1px solid var(--a-line); font-size: 13px; font-weight: 650; }
+  .ph-slot .t { font-size: 10.5px; font-weight: 600; color: var(--a-soft); }
+  .ph-slot.on { border-color: var(--a-green); background: color-mix(in srgb, var(--a-green) 9%, #fff); }
+  .ph-slot.on .t { color: var(--a-green); }
+  .ph-slot.off { opacity: .48; }
+  .ph-strip { display: flex; gap: 8px; }
+  .ph-stat { flex: 1; background: var(--a-surf); border: 1px solid var(--a-line); border-radius: 12px; padding: 9px 10px; }
+  .ph-stat b { display: block; font-family: var(--display); font-size: 17px; font-weight: 600; letter-spacing: -0.01em; font-variant-numeric: tabular-nums; }
+  .ph-stat span { font-size: 8.5px; color: var(--a-soft); text-transform: uppercase; letter-spacing: .06em; font-weight: 700; }
+  .ph-att { display: flex; flex-direction: column; gap: 7px; }
+  .ph-att-row { display: flex; align-items: center; gap: 9px; padding: 8px 10px; border-radius: 12px; background: var(--a-surf); border: 1px solid var(--a-line); }
+  .ph-av { width: 27px; height: 27px; border-radius: 50%; background: var(--a-deep); color: var(--a-soft); display: grid; place-items: center; font-size: 10.5px; font-weight: 700; flex: none; }
+  .ph-att-row .nm { font-size: 12.5px; font-weight: 600; flex: 1; }
+  .ph-tick { font-size: 10px; font-weight: 700; padding: 6px 10px; border-radius: 9px; white-space: nowrap; }
+  .ph-tick.yes { background: var(--a-green); color: #fff; }
+  .ph-tick.no { background: var(--a-deep); color: var(--a-soft); }
+  .ph-chart { background: var(--a-surf); border: 1px solid var(--a-line); border-radius: 14px; padding: 13px 12px 10px; }
+  .ph-chart .cap { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 9px; }
+  .ph-chart .cap b { font-family: var(--display); font-size: 20px; font-weight: 600; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+  .ph-chart .cap span { font-size: 10px; font-weight: 650; color: var(--a-green); }
+  .ph-chart svg { width: 100%; height: auto; display: block; }
+  .ph-chart .grid { stroke: var(--a-line); stroke-width: 1; }
+  .ph-chart .ln { fill: none; stroke: var(--a-green); stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
+  .ph-chart .dot { fill: var(--a-green); }
+  .ph-tabs { display: flex; justify-content: space-around; align-items: center; padding: 10px 5px 20px; background: var(--a-surf); border-top: 1px solid var(--a-line); }
+  .ph-tab { display: flex; flex-direction: column; align-items: center; gap: 3px; flex: 1; color: var(--a-soft); font-size: 8.5px; font-weight: 650; }
+  .ph-tab svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+  .ph-tab.on { color: var(--a-green); }
+  .phone-cap { font-family: var(--sans); font-size: 12.5px; font-weight: 600; color: var(--ink-soft); }
+  .phone-cap b { color: var(--green); font-weight: 700; }
+
+  /* ---- Reveal ---- */
+  .reveal { opacity: 0; transform: translateY(16px); transition: opacity .6s ease, transform .6s cubic-bezier(.2,.8,.3,1); }
+  .reveal.in { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; transition: none; } }
+</style>
+
+<header>
+  <div class="wrap nav">
+    <a class="brand" href="#top" aria-label="Alpfit Plus ana sayfa">Alpfit<span class="plus">+</span><small>by Kiwi AI Lab</small></a>
+    <nav class="nav-links">
+      <a href="#roller">Roller</a>
+      <a href="#ozellikler">Özellikler</a>
+      <a href="#fiyat">Fiyat</a>
+      <a class="btn btn-primary" href="mailto:kivanc@kiwiailab.com?subject=Alpfit%20Plus%20demo%20talebi">Demo iste</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+  <!-- HERO -->
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <div class="pilot-chip"><span class="dot" aria-hidden="true"></span> Weekend Training Club'da canlı pilotta</div>
+        <h1>Kulübünüzün tüm işi <span class="mark">tek platformda</span>.</h1>
+        <p class="hero-sub">Randevu, grup dersleri, üyelik, ciro ve diyetisyen — hepsi bir arada. Üye ve antrenör telefondan, siz web panelinden.</p>
+        <div class="hero-cta">
+          <a class="btn btn-primary" href="mailto:kivanc@kiwiailab.com?subject=Alpfit%20Plus%20demo%20talebi">15 dakikalık demo iste</a>
+          <a class="btn btn-ghost" href="#fiyat">Fiyatları gör</a>
+        </div>
+        <p class="hero-note">Reformer &amp; pilates · boks &amp; dövüş · CrossFit · çok şubeli kulüpler için.</p>
+      </div>
+
+      <div class="compare-wrap">
+        <div class="compare" aria-label="Önce ve sonra karşılaştırması">
+          <div class="compare-head">
+            <div class="compare-col before">
+              <div class="label">Bugün</div>
+              <div class="tool"><s>Randevu — WhatsApp</s></div>
+              <div class="tool"><s>Ciro — Excel</s></div>
+              <div class="tool"><s>Ölçüm — defter</s></div>
+              <div class="tool"><s>Takvim — ayrı uygulama</s></div>
+            </div>
+            <div class="compare-mid" aria-hidden="true"></div>
+            <div class="compare-col after">
+              <div class="label">Alpfit<span class="plus">+</span></div>
+              <div class="after-line"><span class="tick" aria-hidden="true">→</span> Randevu &amp; rezervasyon</div>
+              <div class="after-line"><span class="tick" aria-hidden="true">→</span> Ciro &amp; borç, anlık</div>
+              <div class="after-line"><span class="tick" aria-hidden="true">→</span> Üye 360, tek ekran</div>
+              <div class="after-line"><span class="tick" aria-hidden="true">→</span> Çok şube, tek panel</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divide" />
+
+  <!-- PROBLEM -->
+  <section>
+    <div class="wrap section-head reveal">
+      <div class="eyebrow">Sorun</div>
+      <h2>Kulüp dağınık araçlarla yönetiliyor.</h2>
+      <p>Randevu WhatsApp'ta, ciro Excel'de, ölçüm defterde, üye listesi başka yerde. Sonuç: kaçan randevu, ay sonu mutabakatı, görünmeyen boş kapasite ve risk altındaki üyeler. Her araç ayrı çalışıyor — ama hiçbiri birbiriyle konuşmuyor. Alpfit Plus tek doğru veri kaynağı olur.</p>
+    </div>
+  </section>
+
+  <!-- ROLES -->
+  <section id="roller">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="eyebrow">Dört rol</div>
+        <h2>Herkes kendi ekranından.</h2>
+        <p>Üye ve antrenör telefondan; yönetim ve diyetisyen web panelinden. Herkes yalnızca kendi işini görür.</p>
+      </div>
+      <div class="roles">
+        <div class="role reveal">
+          <div class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2.5" width="10" height="19" rx="2.5"/><line x1="11" y1="18.5" x2="13" y2="18.5"/></svg></div>
+          <h3>Üye <span class="dev">Telefon</span></h3>
+          <ul><li>Randevu al, grup dersine kaydol</li><li>Üyelik &amp; paket durumu, kalan hak</li><li>Ölçüm grafiği, diyetisyen programı</li><li>Hatırlatma bildirimleri</li></ul>
+        </div>
+        <div class="role reveal">
+          <div class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2.5" width="10" height="19" rx="2.5"/><line x1="11" y1="18.5" x2="13" y2="18.5"/></svg></div>
+          <h3>Antrenör <span class="dev">Telefon</span></h3>
+          <ul><li>Kendi takvimi ve müsaitliği</li><li>Tek dokunuşla yoklama</li><li>PT planlama, öğrenci gelişimi</li><li>Ölçüm girişi</li></ul>
+        </div>
+        <div class="role reveal">
+          <div class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="2"/><line x1="2" y1="20" x2="22" y2="20"/></svg></div>
+          <h3>Diyetisyen <span class="dev">Web</span></h3>
+          <ul><li>Atanan danışanlar</li><li>Beslenme programı &amp; güncelleme</li><li>PDF yükleme</li><li>Ölçüm &amp; günlük okuma</li></ul>
+        </div>
+        <div class="role reveal">
+          <div class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="2"/><line x1="2" y1="20" x2="22" y2="20"/></svg></div>
+          <h3>Yönetim <span class="dev">Web</span></h3>
+          <ul><li>Tüm üyeler, üyelik &amp; PT satışı</li><li>Şube bazlı rapor, doluluk</li><li>Eğitmen performansı</li><li>Kampanya, modül aç/kapa</li></ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- APP MOCKUPS -->
+  <section id="uygulama">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="eyebrow">Mobil uygulama</div>
+        <h2>Üye ve antrenör, cebinden yönetir.</h2>
+        <p>Üye randevusunu alır, gelişimini görür; antrenör gününü ve yoklamasını tek dokunuşla halleder. Aynı veriye siz web panelinden bakarsınız.</p>
+      </div>
+      <div class="phones reveal">
+
+        <!-- 1 · Üye Ana ekran -->
+        <div class="phone-wrap">
+          <div class="phone"><div class="ph-screen">
+            <div class="ph-status"><span class="time">9:41</span><span class="icons" aria-hidden="true"><svg class="sig" viewBox="0 0 18 12"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5.5" width="3" height="6.5" rx="1"/><rect x="10" y="3" width="3" height="9" rx="1"/><rect x="15" y="0.5" width="3" height="11.5" rx="1"/></svg><svg class="wifi" viewBox="0 0 16 13"><path d="M1 4.3a10 10 0 0 1 14 0"/><path d="M3.6 6.9a6.3 6.3 0 0 1 8.8 0"/><path d="M6.1 9.5a2.7 2.7 0 0 1 3.8 0"/><circle cx="8" cy="11.7" r="1"/></svg><svg class="batt" viewBox="0 0 26 13"><rect class="bo" x="0.6" y="1.2" width="21" height="10.6" rx="3"/><rect class="bf" x="2.2" y="2.8" width="16" height="7.4" rx="1.6"/><rect class="bn" x="23" y="4.4" width="2" height="4.2" rx="1"/></svg></span></div>
+            <div class="ph-app">
+              <div class="ph-hi">Merhaba, Deniz</div>
+              <div class="ph-mem">
+                <div class="ph-mem-row"><b>Aylık Üyelik</b><span class="ph-pill">Aktif</span></div>
+                <div class="ph-mem-bar"><i style="width:62%"></i></div>
+                <div class="ph-mem-sub">12 gün kaldı</div>
+              </div>
+              <div class="ph-label">Sıradaki randevu</div>
+              <div class="ph-card">
+                <div class="ph-card-t">Reformer Pilates</div>
+                <div class="ph-card-s">Bugün · 18:00 · Alper ile</div>
+              </div>
+              <div class="ph-actions">
+                <div class="ph-btn">Randevu Al</div>
+                <div class="ph-btn ghost">Grup Bul</div>
+              </div>
+            </div>
+            <div class="ph-tabs">
+              <div class="ph-tab on"><svg viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg><span>Ana</span></div>
+              <div class="ph-tab"><svg viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15.5" rx="2"/><line x1="3.5" y1="9.5" x2="20.5" y2="9.5"/><line x1="8" y1="3" x2="8" y2="6.5"/><line x1="16" y1="3" x2="16" y2="6.5"/></svg><span>Randevu</span></div>
+              <div class="ph-tab"><svg viewBox="0 0 24 24"><path d="M4 14.5l4.5-5 3.5 3.5 7-8"/></svg><span>Gelişim</span></div>
+              <div class="ph-tab"><svg viewBox="0 0 24 24"><path d="M20 4C9 4 4 10 4 20c10 0 16-5 16-16Z"/><path d="M4 20c3-6 7-9 12-11"/></svg><span>Beslenme</span></div>
+              <div class="ph-tab"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.6"/><path d="M5.5 20c1-4 12-4 13 0"/></svg><span>Profil</span></div>
+            </div>
+          </div></div>
+          <div class="phone-cap"><b>Üye</b> · Ana ekran</div>
+        </div>
+
+        <!-- 2 · Üye Randevu al -->
+        <div class="phone-wrap">
+          <div class="phone"><div class="ph-screen">
+            <div class="ph-status"><span class="time">9:41</span><span class="icons" aria-hidden="true"><svg class="sig" viewBox="0 0 18 12"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5.5" width="3" height="6.5" rx="1"/><rect x="10" y="3" width="3" height="9" rx="1"/><rect x="15" y="0.5" width="3" height="11.5" rx="1"/></svg><svg class="wifi" viewBox="0 0 16 13"><path d="M1 4.3a10 10 0 0 1 14 0"/><path d="M3.6 6.9a6.3 6.3 0 0 1 8.8 0"/><path d="M6.1 9.5a2.7 2.7 0 0 1 3.8 0"/><circle cx="8" cy="11.7" r="1"/></svg><svg class="batt" viewBox="0 0 26 13"><rect class="bo" x="0.6" y="1.2" width="21" height="10.6" rx="3"/><rect class="bf" x="2.2" y="2.8" width="16" height="7.4" rx="1.6"/><rect class="bn" x="23" y="4.4" width="2" height="4.2" rx="1"/></svg></span></div>
+            <div class="ph-app">
+              <div class="ph-head">Randevu Al</div>
+              <div class="ph-days">
+                <div class="ph-day"><span>Pzt</span><b>14</b></div>
+                <div class="ph-day"><span>Sal</span><b>15</b></div>
+                <div class="ph-day on"><span>Çar</span><b>16</b></div>
+                <div class="ph-day"><span>Per</span><b>17</b></div>
+                <div class="ph-day"><span>Cum</span><b>18</b></div>
+              </div>
+              <div class="ph-label">Uygun saatler · Alper</div>
+              <div class="ph-slots">
+                <div class="ph-slot">09:00 <span class="t">Müsait</span></div>
+                <div class="ph-slot off">10:00 <span class="t">Dolu</span></div>
+                <div class="ph-slot">17:00 <span class="t">Müsait</span></div>
+                <div class="ph-slot on">18:00 <span class="t">Seçildi</span></div>
+              </div>
+              <div class="ph-btn full" style="margin-top:auto">18:00'i onayla</div>
+            </div>
+            <div class="ph-tabs">
+              <div class="ph-tab"><svg viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg><span>Ana</span></div>
+              <div class="ph-tab on"><svg viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15.5" rx="2"/><line x1="3.5" y1="9.5" x2="20.5" y2="9.5"/><line x1="8" y1="3" x2="8" y2="6.5"/><line x1="16" y1="3" x2="16" y2="6.5"/></svg><span>Randevu</span></div>
+              <div class="ph-tab"><svg viewBox="0 0 24 24"><path d="M4 14.5l4.5-5 3.5 3.5 7-8"/></svg><span>Gelişim</span></div>
+              <div class="ph-tab"><svg viewBox="0 0 24 24"><path d="M20 4C9 4 4 10 4 20c10 0 16-5 16-16Z"/><path d="M4 20c3-6 7-9 12-11"/></svg><span>Beslenme</span></div>
+              <div class="ph-tab"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.6"/><path d="M5.5 20c1-4 12-4 13 0"/></svg><span>Profil</span></div>
+            </div>
+          </div></div>
+          <div class="phone-cap"><b>Üye</b> · Randevu al</div>
+        </div>
+
+        <!-- 3 · Antrenör Bugün & yoklama -->
+        <div class="phone-wrap">
+          <div class="phone"><div class="ph-screen">
+            <div class="ph-status"><span class="time">9:41</span><span class="icons" aria-hidden="true"><svg class="sig" viewBox="0 0 18 12"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5.5" width="3" height="6.5" rx="1"/><rect x="10" y="3" width="3" height="9" rx="1"/><rect x="15" y="0.5" width="3" height="11.5" rx="1"/></svg><svg class="wifi" viewBox="0 0 16 13"><path d="M1 4.3a10 10 0 0 1 14 0"/><path d="M3.6 6.9a6.3 6.3 0 0 1 8.8 0"/><path d="M6.1 9.5a2.7 2.7 0 0 1 3.8 0"/><circle cx="8" cy="11.7" r="1"/></svg><svg class="batt" viewBox="0 0 26 13"><rect class="bo" x="0.6" y="1.2" width="21" height="10.6" rx="3"/><rect class="bf" x="2.2" y="2.8" width="16" height="7.4" rx="1.6"/><rect class="bn" x="23" y="4.4" width="2" height="4.2" rx="1"/></svg></span></div>
+            <div class="ph-app">
+              <div class="ph-head">Bugün <span>16 Tem</span></div>
+              <div class="ph-strip">
+                <div class="ph-stat"><b>5</b><span>Seans</span></div>
+                <div class="ph-stat"><b>2</b><span>Grup</span></div>
+                <div class="ph-stat"><b>%88</b><span>Doluluk</span></div>
+              </div>
+              <div class="ph-label">18:00 · Reformer — Yoklama</div>
+              <div class="ph-att">
+                <div class="ph-att-row"><div class="ph-av">DY</div><div class="nm">Deniz Y.</div><div class="ph-tick yes">Geldi</div></div>
+                <div class="ph-att-row"><div class="ph-av">SK</div><div class="nm">Selin K.</div><div class="ph-tick yes">Geldi</div></div>
+                <div class="ph-att-row"><div class="ph-av">MA</div><div class="nm">Mert A.</div><div class="ph-tick no">Gelmedi</div></div>
+              </div>
+            </div>
+            <div class="ph-tabs">
+              <div class="ph-tab on"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5 5l1.6 1.6M17.4 17.4 19 19M19 5l-1.6 1.6M6.6 17.4 5 19"/></svg><span>Bugün</span></div>
+              <div class="ph-tab"><svg viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15.5" rx="2"/><line x1="3.5" y1="9.5" x2="20.5" y2="9.5"/><line x1="8" y1="3" x2="8" y2="6.5"/><line x1="16" y1="3" x2="16" y2="6.5"/></svg><span>Takvim</span></div>
+              <div class="ph-tab"><svg viewBox="0 0 24 24"><circle cx="9.5" cy="8.5" r="3.2"/><path d="M3 19.5c1-3.6 11-3.6 12 0"/><path d="M16.5 6.2a3.2 3.2 0 0 1 0 5.6"/></svg><span>Öğrenci</span></div>
+              <div class="ph-tab"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.6"/><path d="M5.5 20c1-4 12-4 13 0"/></svg><span>Profil</span></div>
+            </div>
+          </div></div>
+          <div class="phone-cap"><b>Antrenör</b> · Bugün &amp; yoklama</div>
+        </div>
+
+        <!-- 4 · Üye Gelişim -->
+        <div class="phone-wrap">
+          <div class="phone"><div class="ph-screen">
+            <div class="ph-status"><span class="time">9:41</span><span class="icons" aria-hidden="true"><svg class="sig" viewBox="0 0 18 12"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5.5" width="3" height="6.5" rx="1"/><rect x="10" y="3" width="3" height="9" rx="1"/><rect x="15" y="0.5" width="3" height="11.5" rx="1"/></svg><svg class="wifi" viewBox="0 0 16 13"><path d="M1 4.3a10 10 0 0 1 14 0"/><path d="M3.6 6.9a6.3 6.3 0 0 1 8.8 0"/><path d="M6.1 9.5a2.7 2.7 0 0 1 3.8 0"/><circle cx="8" cy="11.7" r="1"/></svg><svg class="batt" viewBox="0 0 26 13"><rect class="bo" x="0.6" y="1.2" width="21" height="10.6" rx="3"/><rect class="bf" x="2.2" y="2.8" width="16" height="7.4" rx="1.6"/><rect class="bn" x="23" y="4.4" width="2" height="4.2" rx="1"/></svg></span></div>
+            <div class="ph-app">
+              <div class="ph-head">Gelişim</div>
+              <div class="ph-chart">
+                <div class="cap"><b>72,4 kg</b><span>▼ 2,1 kg · 8 hafta</span></div>
+                <svg viewBox="0 0 220 92" role="img" aria-label="Kilo grafiği">
+                  <line class="grid" x1="0" y1="24" x2="220" y2="24"/>
+                  <line class="grid" x1="0" y1="48" x2="220" y2="48"/>
+                  <line class="grid" x1="0" y1="72" x2="220" y2="72"/>
+                  <path d="M8 30 L44 40 L80 36 L116 52 L152 50 L188 64 L212 60 L212 88 L8 88 Z" fill="url(#phg)"/>
+                  <path class="ln" d="M8 30 L44 40 L80 36 L116 52 L152 50 L188 64 L212 60"/>
+                  <circle class="dot" cx="212" cy="60" r="3.6"/>
+                  <defs><linearGradient id="phg" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0" stop-color="#1c7a3b" stop-opacity=".22"/>
+                    <stop offset="1" stop-color="#1c7a3b" stop-opacity="0"/>
+                  </linearGradient></defs>
+                </svg>
+              </div>
+              <div class="ph-strip">
+                <div class="ph-stat"><b>%18</b><span>Yağ</span></div>
+                <div class="ph-stat"><b>34</b><span>Kas kg</span></div>
+                <div class="ph-stat"><b>78</b><span>Bel cm</span></div>
+              </div>
+            </div>
+            <div class="ph-tabs">
+              <div class="ph-tab"><svg viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg><span>Ana</span></div>
+              <div class="ph-tab"><svg viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15.5" rx="2"/><line x1="3.5" y1="9.5" x2="20.5" y2="9.5"/><line x1="8" y1="3" x2="8" y2="6.5"/><line x1="16" y1="3" x2="16" y2="6.5"/></svg><span>Randevu</span></div>
+              <div class="ph-tab on"><svg viewBox="0 0 24 24"><path d="M4 14.5l4.5-5 3.5 3.5 7-8"/></svg><span>Gelişim</span></div>
+              <div class="ph-tab"><svg viewBox="0 0 24 24"><path d="M20 4C9 4 4 10 4 20c10 0 16-5 16-16Z"/><path d="M4 20c3-6 7-9 12-11"/></svg><span>Beslenme</span></div>
+              <div class="ph-tab"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.6"/><path d="M5.5 20c1-4 12-4 13 0"/></svg><span>Profil</span></div>
+            </div>
+          </div></div>
+          <div class="phone-cap"><b>Üye</b> · Gelişim</div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section id="ozellikler">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="eyebrow">Ne yapar</div>
+        <h2>Kulübün tamamını yönetir — sadece takvim değil.</h2>
+      </div>
+      <div class="features reveal">
+        <div class="feat"><h3>Takvim &amp; Rezervasyon</h3><p>Self-servis randevu, bekleme listesi, iptal / no-show adaleti, push hatırlatma.</p></div>
+        <div class="feat"><h3>Grup Dersleri</h3><p>Tekrarlı program, kapasite, yoklama ve doluluk — reformer'dan WOD'a.</p></div>
+        <div class="feat"><h3>Üyelik &amp; Paket</h3><p>Süreli üyelik ve seans paketi, kalan hak, bitişe yaklaşan üyeler.</p></div>
+        <div class="feat"><h3>Üye 360</h3><p>Üyelik, PT, ölçüm, ödeme ve diyetisyen — hepsi tek ekranda.</p></div>
+        <div class="feat"><h3>Finans &amp; Ciro</h3><p>Satış ↔ ödeme, borç takibi, nakit ciro; şube ve eğitmen bazlı kırılım, iade.</p></div>
+        <div class="feat"><h3>Çok-Şube Cockpit</h3><p>Bütün şubeler tek ekranda; tıkla, şubenin detayına in.</p></div>
+        <div class="feat"><h3>Antrenör Performansı</h3><p>Kim kaç seans verdi, kim ne sattı — rakamla.</p></div>
+        <div class="feat"><h3>Raporlar</h3><p>Excel (XLSX/CSV) ve PDF çıktı; ay sonunu beklemeden.</p></div>
+        <div class="feat"><h3>Bildirim &amp; Retention</h3><p>Hatırlatma ve duyurular; risk altındaki üyeyi önceden gör.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY -->
+  <section>
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="eyebrow">Neden Alpfit Plus</div>
+        <h2>Rakip sadece takvim tutarken, biz kulübün tamamını yönetiriz.</h2>
+      </div>
+      <div class="why">
+        <div class="why-list reveal">
+          <div class="why-item lead">
+            <h3>Diyetisyen aynı platformda</h3>
+            <p>Danışan takibi, beslenme programı ve ölçüm okuma tek yerde. Diyetisyeninizle çalışıyorsanız, üye programını telefonundan görür — WhatsApp trafiği biter.</p>
+            <span class="badge">İncelediğimiz 18 rakip üründe yok.</span>
+          </div>
+          <div class="why-item"><h3>Hem üye hem antrenör için mobil uygulama</h3><p>Antrenör kendi telefonundan takvimini yönetir, tek dokunuşla yoklama alır. Yerli rakiplerin çoğunda antrenör uygulaması yok.</p></div>
+          <div class="why-item"><h3>Çok şube, butik fiyatına</h3><p>Şubeleri tek ekrandan yönetin. Büyüyen stüdyo zincirleri için ilk günden tasarlandı.</p></div>
+          <div class="why-item"><h3>Donanımsız, sade</h3><p>Turnike, kart okuyucu ya da ekstra cihaza gerek yok. Bugün kur, bugün kullan.</p></div>
+          <div class="why-item"><h3>Tek doğru veri kaynağı</h3><p>Randevu, üyelik, ciro ve ölçüm aynı yerde — çift kayıt ve ay sonu mutabakatı biter.</p></div>
+        </div>
+        <aside class="why-aside reveal">
+          <p class="q">"Geçen ay <b>kaç randevuya gelinmedi</b>, elinizde rakam var mı?"</p>
+          <p class="src">Çoğu kulüpte bu rakam bilinmiyor. Alpfit Plus'ta ekranda duruyor — boş kapasite görünür olunca kampanyayı da oraya kurarsınız.</p>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRICING -->
+  <section id="fiyat" class="band-sec">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="eyebrow">Fiyatlandırma</div>
+        <h2>Salon başına, sade.</h2>
+        <p>Paket karmaşası yok, eğitmen limiti yok. Diyetisyen ve mobil uygulamalar dahil.</p>
+      </div>
+      <div class="price-grid">
+        <div class="price-card reveal">
+          <div class="price-figure"><span class="cur">₺</span><span class="amt">1.500</span><span class="per">+ KDV / salon / ay</span></div>
+          <p class="price-kvkk">İkinci salondan itibaren %20 indirimli (₺1.200 + KDV).</p>
+          <div class="price-rows">
+            <div class="price-row"><span>Kurulum (salon başına, tek seferlik)</span><span>₺3.000 + KDV</span></div>
+            <div class="price-row free"><span>Yıllık peşin ödemede kurulum</span><span>Ücretsiz</span></div>
+            <div class="price-row free"><span>Ücretsiz deneme</span><span>15 gün</span></div>
+          </div>
+          <div class="price-cta">
+            <a class="btn btn-primary" href="mailto:kivanc@kiwiailab.com?subject=Alpfit%20Plus%20demo%20talebi">Demo iste</a>
+            <a class="btn btn-ghost" href="mailto:kivanc@kiwiailab.com?subject=Alpfit%20Plus%20fiyat%20teklifi" style="border-color:var(--band-line);color:var(--band-ink)">Teklif al</a>
+          </div>
+          <p class="founder-note">Erken kurucu kulüplere özel koşullar sunuyoruz — detay için görüşelim.</p>
+        </div>
+        <div class="price-card incl reveal">
+          <div class="t">Her salonda dahil</div>
+          <ul>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg> Üye mobil uygulaması</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg> Antrenör mobil uygulaması</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg> Diyetisyen modülü</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg> Çok-şube cockpit</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg> Finans, ciro &amp; borç takibi</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg> Raporlar (Excel / PDF)</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg> Kurulum, veri taşıma &amp; eğitim</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ROADMAP -->
+  <section style="padding-top:68px;padding-bottom:68px;">
+    <div class="wrap reveal">
+      <div class="road">
+        <span class="tag">Yol haritası — yakında</span>
+        <p><b>Online ödeme</b> · <b>QR / turnike giriş</b> · <b>Apple Health &amp; Google Fit</b> · <b>AI gelişim &amp; beslenme analizi</b>. Bugün üründe değil; geliştirme yol haritamızda.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CLOSE -->
+  <section class="close">
+    <div class="wrap reveal">
+      <h2>15 dakikada kendi kulübünüzde görün.</h2>
+      <p>Ekran paylaşımıyla gösterelim, kendi kulübünüzde nasıl duracağına siz karar verin.</p>
+      <div class="hero-cta">
+        <a class="btn btn-primary" href="mailto:kivanc@kiwiailab.com?subject=Alpfit%20Plus%20demo%20talebi">Demo iste</a>
+        <a class="btn btn-ghost" href="mailto:kivanc@kiwiailab.com?subject=Alpfit%20Plus%20hakk%C4%B1nda">Soru sor</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <a class="brand" href="#top">Alpfit<span class="plus">+</span><small>bir Kiwi AI Lab ürünüdür</small></a>
+    <div class="meta">İletişim: <a class="mail" href="mailto:kivanc@kiwiailab.com">kivanc@kiwiailab.com</a></div>
+  </div>
+</footer>
+
+<script>
+  (function () {
+    var els = document.querySelectorAll('.reveal');
+    if (!('IntersectionObserver' in window) || matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      els.forEach(function (e) { e.classList.add('in'); });
+      return;
+    }
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+    els.forEach(function (e) { io.observe(e); });
+  })();
+</script>
+
+</body></html>

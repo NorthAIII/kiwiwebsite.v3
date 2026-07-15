@@ -130,6 +130,7 @@
 
 **Edge Case'ler:**
 - Görseller gerçek Alpfit demo'sundan; marka tutarlılığı korunmalı.
+- **v0.4 (AP1–AP3 — "Alpfit Plus" zengin yeniden tasarım):** sayfa sade halden zengin ürün landing page'ine taşınır — Hero/before-after · Sorun · 4 Rol · **Mobil uygulama mockup'ları** (saf CSS iPhone; en yüksek craft maliyeti) · 9 Özellik · Neden/rekabet ("18 rakip üründe yok") · **Fiyat** (₺1.500+KDV, public/kesin) · Yol haritası (+Store) · Kapanış. **i18n değişir:** component-içi `tr?...:...` TR/EN deseni → düzgün 5-dil namespace (`messages/*.json`; TR birincil, non-TR versiyon-sınırı). Dürüstlük 4/4 gerçek (canlı pilot / public fiyat / ürün iddiaları mevcut / 18-rakip) → içerik olduğu gibi. Route `/spor-salonu-yazilimi` korunur. Kabul kriterleri + kopya: `_dev/PRD/features/alpfit-plus.md`; tasarım referansı `_dev/docs/alpfit-plus-artifact.html`. Faz/iş-birimi bölünmesi discuss-phase 15'te.
 
 ---
 
@@ -157,4 +158,4 @@
 
 ---
 
-**Son Güncelleme:** 2026-06-28 — kickoff-docs: PRD v0.1 kararları aktarıldı (R1–R4); taksonomi netleştirildi (Crew OS public / route `/bunker-os`).
+**Son Güncelleme:** 2026-07-16 — re-kickoff (kickoff-docs): F2.8'e v0.4 "Alpfit Plus" zengin yeniden tasarım notu eklendi (AP1–AP3; yeni bölümler + mobil uygulama mockup'ları + 5-dil namespace + dürüstlük 4/4 gerçek; route korunur). Baseline açıklama korundu (merge). Feature: `PRD/features/alpfit-plus.md`.

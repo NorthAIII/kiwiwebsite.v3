@@ -47,12 +47,10 @@ Faz numaraları **global, sürekli ve append-only**'dir — versiyon değişse b
 
 > Yaklaşan faz konuları — **numarasız**. Faza girildiğinde (discuss-phase) buradan çıkar, numara (mevcut en büyük faz no + 1) alıp Faz Durumu tablosuna 🔄 olarak geçer. Aşağıdakiler güçlü revize için aday konulardır; kesin kapsam ve sıra PRD/discuss-phase'de netleşir.
 
-**v0.3 near-term faz konuları** (re-kickoff 2026-07-02; **numarasız** — faza girince discuss-phase damgalar):
-- _(Tümü faza girdi — B1 Living Flow nabız kapsamı Faz 12'ye damgalandı 2026-07-02. v0.3 içerik fazı konusu kalmadı; Faz 12 bitince versiyon-sonu sabit fazları gelir.)_
+**v0.4 near-term faz konusu** (re-kickoff 2026-07-16; **numarasız** — faza girince discuss-phase damgalar, ilk no = 15):
+- **Alpfit Plus sayfası zenginleştirme** (F2.8, M2 merkez) — Alpfit (`/spor-salonu-yazilimi`) sayfasının artifact vizyonuna göre zengin ürün landing page'ine yeniden tasarımı: Hero/before-after · Sorun · 4 Rol · **Mobil uygulama mockup'ları** · 9 Özellik · Neden/rekabet · **Fiyat** · Yol haritası+**Store** · Kapanış. React + Tailwind v4 token + next-intl port; düzgün 5-dil namespace. **Milestone:** sayfa artifact düzeninde 5-dil çalışır + dürüstlük 4/4 gerçek korunur + guardrail (a11y=100 çift-tema/perf tabanı/CLS≈0/i18n parite) regresyonsuz ("kur+kanıtla"). **Bölünme (tek faz mı / yapı-port + içerik-i18n-mockup diye 2+ faz mı) discuss-phase 15'te damgalanır.** Feature: `PRD/features/alpfit-plus.md`; tasarım referansı `docs/alpfit-plus-artifact.html`.
 
-> ✅ **v0.2 production release tamamlandı (2026-07-02):** revize `main`'e merge (PR #6 `4847431`) + canlı deploy `a71adbc`; Umami canlı +1 + §3 duman testi kapandı. Runbook/Sonuç: `docs/RELEASE-v0.2.md`. v0.3 run-task artık serbest. (Açık takip: chatbot canlı `ANTHROPIC_API_KEY` env — release engeli değil.)
-
-> v0.3 içerik fazları bitince versiyon-sonu sabit fazları gelir: teknik borç → senaryo testi → prd-review (dinamik, faza girince doğrudan tabloya eklenir). Faz ayrımı (kaç faz) discuss-phase'de netleşir.
+> v0.4 içerik fazı bitince versiyon-sonu sabit fazları gelir: teknik borç → senaryo testi → prd-review (dinamik, faza girince doğrudan tabloya eklenir). Faz ayrımı (kaç faz) discuss-phase'de netleşir.
 
 <!-- KURAL: Bu liste YAKIN ufku tutar (örn. aktif versiyonun kalan fazları), uzak gelecek değil — uzak ileriye dönük plan PRD/VERSIONS.md'dedir. Numara YAZMA (numara faza girince damgalanır). Bir konu faza girince bu listeden silinir (mezuniyet — soft delete yasak: HTML comment/üstü çizili/"Önceki:" prefix yok). -->
 <!-- NOT: VERSIONS.md feature→versiyon haritasını tekrar etme; burada faz konusu (geliştirme birimi) + milestone tutulur, feature listesi değil. -->
@@ -106,6 +104,6 @@ Faz numaraları **global, sürekli ve append-only**'dir — versiyon değişse b
 
 ---
 
-**Son Güncelleme:** 2026-07-05 — review-phase 14: Faz 14 (v0.3 versiyon-sonu senaryo testi) 🔄→✅; UAT 11/11, 0 kaynak değişimi, 0 kapsam-içi bug, 8 kalite ekseni ✅; v0.3 versiyon-sonu fazları (13+14) tamam → Versiyon Sonu Durumu senaryo_testi→prd_review_bekliyor. Sıradaki adım: zorunlu prd-review.
+**Son Güncelleme:** 2026-07-16 — re-kickoff (kickoff-docs): v0.4 (Alpfit Plus ürün vitrini) planlandı; "Alpfit Plus sayfası zenginleştirme" konusu Sıradaki Fazlar'a numarasız eklendi (ilk no = 15, discuss-phase damgalar); bayat v0.3 near-term notları mezun edildi. Faz Durumu tablosu (1–14 ✅) değişmedi.
 
 <!-- KURAL: Bu satır her güncellemede ÜZERİNE YAZILIR. "Önceki:" prefix ile kümülatif yığma YASAK (CLAUDE.md → Doküman Disiplini). -->
