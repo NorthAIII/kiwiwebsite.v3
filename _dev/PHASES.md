@@ -33,6 +33,7 @@ Faz numaraları **global, sürekli ve append-only**'dir — versiyon değişse b
 | 12 | v0.3 Living Flow nabız kapsamı (B1, karar-gate'li) | Nabız kapsamı kararı uygulandı VEYA iptal-kaydedildi; kontrollü aşağı-taşıma (sürekli soluk iplik, desktop-öncelik, bölüme-uyarlanan opaklık); imza/reduced-motion/a11y kontrast=100 çift-tema/perf tabanı korundu (regresyonsuz) | ✅ |
 | 13 | v0.3 versiyon-sonu teknik borç — SEO-metadata hijyeni | TB-1 alt-sayfa self-canonical + 5-locale hreflang alternates (artık `/`'a canonicalize olmuyor) + TB-2 `/forum` locale gap + tüm config redirect denetimi (sessiz 404 gap yok) + hafif regresyon tohumu; guardrail (a11y=100 çift-tema/perf tabanı/CLS≈0/i18n parite) regresyonsuz | ✅ |
 | 14 | v0.3 versiyon-sonu senaryo testi | v0.3 ana sayfa + 5 alt sayfa uçtan-uca doğrulama (S1–S9: giriş/yolculuk/mod/kontrol/taksonomi/5-dil/chatbot/v0.3-guardrail/adversarial); v0.3 delta odağı (crew-os route rename + Living Flow sayfa-boyu nabız + SEO metadata + logo); TR öncelik, chatbot 0-token, otonom, keşfet+kaydet+triyaj | ✅ |
+| 15 | v0.4 Alpfit Plus ürün vitrini (F2.8 zengin yeniden tasarım) | Alpfit (`/spor-salonu-yazilimi`) sayfası artifact hedef düzenine port (Hero+before/after · Sorun · 4 Rol · Mobil mockup'lar · 9 Özellik · Neden · Fiyat · Yol haritası · Kapanış); React+Tailwind v4 token+next-intl 5-dil namespace; imza Living Flow korunur; dürüstlük 4/4 gerçek; guardrail (a11y=100 çift-tema/perf tabanı/CLS≈0/i18n parite) regresyonsuz | 🔄 |
 
 **Durum simgeleri:**
 - 🔄 **Devam ediyor** — discuss-phase başladı (aktif faz)
@@ -47,10 +48,9 @@ Faz numaraları **global, sürekli ve append-only**'dir — versiyon değişse b
 
 > Yaklaşan faz konuları — **numarasız**. Faza girildiğinde (discuss-phase) buradan çıkar, numara (mevcut en büyük faz no + 1) alıp Faz Durumu tablosuna 🔄 olarak geçer. Aşağıdakiler güçlü revize için aday konulardır; kesin kapsam ve sıra PRD/discuss-phase'de netleşir.
 
-**v0.4 near-term faz konusu** (re-kickoff 2026-07-16; **numarasız** — faza girince discuss-phase damgalar, ilk no = 15):
-- **Alpfit Plus sayfası zenginleştirme** (F2.8, M2 merkez) — Alpfit (`/spor-salonu-yazilimi`) sayfasının artifact vizyonuna göre zengin ürün landing page'ine yeniden tasarımı: Hero/before-after · Sorun · 4 Rol · **Mobil uygulama mockup'ları** · 9 Özellik · Neden/rekabet · **Fiyat** · Yol haritası+**Store** · Kapanış. React + Tailwind v4 token + next-intl port; düzgün 5-dil namespace. **Milestone:** sayfa artifact düzeninde 5-dil çalışır + dürüstlük 4/4 gerçek korunur + guardrail (a11y=100 çift-tema/perf tabanı/CLS≈0/i18n parite) regresyonsuz ("kur+kanıtla"). **Bölünme (tek faz mı / yapı-port + içerik-i18n-mockup diye 2+ faz mı) discuss-phase 15'te damgalanır.** Feature: `PRD/features/alpfit-plus.md`; tasarım referansı `docs/alpfit-plus-artifact.html`.
+**Near-term içerik faz konusu yok** — v0.4'ün tek içerik fazı (Alpfit Plus ürün vitrini) **Faz 15 olarak girildi** (discuss-phase 15, 2026-07-16; tek faz kararı) → Faz Durumu tablosunda 🔄.
 
-> v0.4 içerik fazı bitince versiyon-sonu sabit fazları gelir: teknik borç → senaryo testi → prd-review (dinamik, faza girince doğrudan tabloya eklenir). Faz ayrımı (kaç faz) discuss-phase'de netleşir.
+> Faz 15 (v0.4 içerik fazı) bitince versiyon-sonu sabit fazları gelir: teknik borç → senaryo testi → prd-review (dinamik, faza girince doğrudan tabloya eklenir).
 
 <!-- KURAL: Bu liste YAKIN ufku tutar (örn. aktif versiyonun kalan fazları), uzak gelecek değil — uzak ileriye dönük plan PRD/VERSIONS.md'dedir. Numara YAZMA (numara faza girince damgalanır). Bir konu faza girince bu listeden silinir (mezuniyet — soft delete yasak: HTML comment/üstü çizili/"Önceki:" prefix yok). -->
 <!-- NOT: VERSIONS.md feature→versiyon haritasını tekrar etme; burada faz konusu (geliştirme birimi) + milestone tutulur, feature listesi değil. -->
@@ -99,11 +99,12 @@ Faz numaraları **global, sürekli ve append-only**'dir — versiyon değişse b
 | Faz 13 ✅ (Teknik Borç) → senaryo testi | 2026-07-03 | TB-1 (fail-safe self-canonical + 5-dil hreflang/x-default, tek-kaynak helper) + TB-2 (`/forum`→`/` locale-gap kapalı, 6×308, `:slug*` sıra tuzağı) kapandı; UAT 16/16, 8 kalite ekseni ✅; 0 kaynak-davranış/DOM değişimi, 0 düzeltme task'ı; kök-çözüm denetimi `/bulten` 404-hedefini yakaladı; guardrail (a11y/perf/CLS/i18n parite) yapısal regresyonsuz; Versiyon Sonu Durumu → senaryo_testi (discuss-phase 14 promote eder) |
 | Faz 14 girildi (v0.3 versiyon-sonu senaryo testi) | 2026-07-03 | discuss-phase 14: Adım 0b (Versiyon Sonu Durumu zaten senaryo_testi); kapsam ana sayfa + 5 alt sayfa uçtan-uca (Faz 9'dan v0.3 deltasına uyarlandı — crew-os route rename + Living Flow sayfa-boyu nabız + SEO metadata katmanı + logo), TR birincil + non-TR tutarlılık, chatbot 0-token, keşfet+kaydet+triyaj, otonom; S1–S9 kataloğu onaylandı; dinamik faz doğrudan tabloya 🔄; sıradaki adım research-phase 14 |
 | Faz 14 ✅ (Senaryo Testi) → versiyon sonu | 2026-07-05 | S1–S9 + UAT 11/11; 0 kaynak değişimi, 0 kapsam-içi bug, 0 düzeltme task'ı; v0.3 iki çapraz delta (route rename + sayfa-boyu nabız) bütünsel doğrulandı; katmanlı hibrit araç eşlemesi + `page.route` interception (sandbox exit 144 çözümü, memory'de); milestone 5/5, 8 kalite ekseni ✅; v0.3 versiyon-sonu fazları (13,14) tamam; Versiyon Sonu Durumu → prd_review_bekliyor; sıradaki = zorunlu prd-review |
+| Faz 15 girildi (v0.4 Alpfit Plus ürün vitrini) | 2026-07-16 | discuss-phase 15: içerik_fazları (normal döngü); v0.4'ün tek içerik fazı, **tek faz** kararı (iç bölünme plan-phase task'larına); kapsam Alpfit sayfası artifact düzenine port + imza Living Flow korunur (before/after sağ sütun) + ekran görüntüleri kaldırılır + çapa-nav yok + mailto CTA + dürüstlük 4/4 aynen (pilot adı dahil) + Store=e-ticaret yol-haritası kalemi + route `/spor-salonu-yazilimi` korunur + 5-dil `alpfit` namespace önerisi; Sıradaki Fazlar'dan mezun, tabloya 🔄; sıradaki adım research-phase 15 |
 
 <!-- KURAL: Her geçiş için TEK satır + kısa not. Geçiş gerekçesi/detayı PHASE-N.md retrospektifindedir, burada tekrar edilmez. "Önceki:" prefix veya HTML comment ile detay yığma YASAK (CLAUDE.md → Doküman Disiplini). -->
 
 ---
 
-**Son Güncelleme:** 2026-07-16 — re-kickoff (kickoff-docs): v0.4 (Alpfit Plus ürün vitrini) planlandı; "Alpfit Plus sayfası zenginleştirme" konusu Sıradaki Fazlar'a numarasız eklendi (ilk no = 15, discuss-phase damgalar); bayat v0.3 near-term notları mezun edildi. Faz Durumu tablosu (1–14 ✅) değişmedi.
+**Son Güncelleme:** 2026-07-16 — discuss-phase 15: Faz 15 (v0.4 Alpfit Plus ürün vitrini) Faz Durumu tablosuna 🔄 eklendi (tek faz kararı); "Alpfit Plus sayfası zenginleştirme" konusu Sıradaki Fazlar'dan mezun edildi (liste boş — versiyon-sonu fazları Faz 15 sonrası). Faz geçiş notu eklendi.
 
 <!-- KURAL: Bu satır her güncellemede ÜZERİNE YAZILIR. "Önceki:" prefix ile kümülatif yığma YASAK (CLAUDE.md → Doküman Disiplini). -->
