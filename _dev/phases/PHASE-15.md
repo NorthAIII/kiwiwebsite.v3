@@ -73,20 +73,61 @@
 
 ## Araştırma Bulguları
 
-> Bu bölüm `/devflow:research-phase 15` oturumunda doldurulacak.
+> `/devflow:research-phase 15` oturumunda dolduruldu (2026-07-16). Kaynaklar: artifact `_dev/docs/alpfit-plus-artifact.html` (773 satır, tam okundu), mevcut kaynak (`components/gym/GymSoftwareShowcase.tsx`, `spor-salonu-yazilimi/page.tsx`, `PageHeader`/`Reveal`/`FlowScrim`, `globals.css`, `i18n/metadata.ts`, `messages/tr.json` `crew`/`crewOs` desenleri), testler (`i18n-parity`, `subpages-a11y`).
 
 ### Değerlendirilen Yaklaşımlar
-- [Yaklaşım 1]: [Açıklama, artılar, eksiler]
-- **Seçilen:** [Hangisi ve neden]
+
+**1) Bileşen yapısı (port dekompozisyonu)**
+- **Tek monolit bileşen** (mevcut `GymSoftwareShowcase.tsx` gibi tek dosya): basit, mevcut desene uyar; ama 9 bölüm + 4 telefon mockup'ı tek dosyada ~700+ satır → tek-sorumluluk ihlali (QUALITY §5), bakımı zor, task'a bölmesi güç.
+- **Bölüm-başına bileşen** (`AlpfitHero`, `AlpfitRoles`, …): tam modülerlik; ama çok dosya, koordinasyon yükü.
+- **Seçilen: Hibrit dizin `components/alpfit/`** — bir kompozisyon kabuğu (`AlpfitShowcase.tsx`) + bölüm alt-bileşenleri; en yüksek craft/LOC maliyeti olan **telefon mockup'ları izole bileşene** (`PhoneMockups`). Gerekçe: DevFlow task-küçüklüğü (plan-phase doğal task sınırları — kabuk+hero / orta bölümler / mockup'lar / bant+kapanış / i18n / SEO), modülerlik, mockup'ın kendi task'ı olması. Listeler `crew` namespace desenindeki gibi **sabit anahtar-dizisi + `map`** ile tüketilir (`t(\`roles.${k}.title\`)` — `BunkerShowcase.tsx` deseni; JSON array değil, isimli-anahtar objesi).
+
+**2) Telefon mockup CSS stratejisi (en yüksek craft maliyeti)**
+- **Tailwind arbitrary utilities**: ~90 kural/telefon → okunamaz, semantik sınıf adları (`.ph-mem-bar i`) kaybolur, craft riski. Elendi.
+- **globals.css'e ekleme**: global CSS'e sayfa-özel ~150 satır → globals.css şişer (136→~290), hafif modülerlik kokusu.
+- **Seçilen: Co-located CSS Module** (`components/alpfit/PhoneMockups.module.css`) — artifact `.phone`/`.ph-*` CSS'i **birebir** taşınır (scoped, globals.css yalın kalır). `--a-*` paleti **self-contained/açık** kalır (tema-adaptif değil — scope kararı; gerçek telefon açık ekran). Sayfanın geri kalanı (hero/roller/özellik/bant) **Tailwind utility + marka token** (site standardı). Not: CSS Module bu repoda **yeni desen** — plan-phase teyit eder; başaramazsa globals.css-ekleme fallback.
+
+**3) Fiyat bandı + "Neden" aside teması (KARAR — kullanıcı 2026-07-16)**
+- **Kalıcı koyu bant (artifact birebir)**: yeni `--band-*` token ailesi; çift-tema WCAG doğrulaması şart; site inversion deseninden ayrışma.
+- **Seçilen: Site ink-panel inversion deseni** — bant `bg-ink text-canvas`, iç price-card lifted-surface (`bg-white/[.04]`+`border-white/10`), muted metin `text-canvas/55`, pulse aksanı **`--color-pulse-ink`** (adaptif). Gerekçe: TD4/Faz 8'de **a11y-mühürlü** ve Crew OS bandıyla **tutarlı**; yeni token ailesi + tema-tuzağı yüzeyi doğmaz (MEMORY `tema-fix-html-dark-token-flip`, `a11y-olcum-tema-tuzagi`). Davranış: bant light'ta koyu/krem-metin, **dark temada krem'e döner** (site konvansiyonu).
+
+**4) i18n namespace yapısı**
+- **Seçilen: `alpfit` namespace** (scope önerisi teyit). Yapı `crew`/`crewOs` desenini izler (isimli-anahtar alt-objeler: `roles.{member,trainer,dietitian,management}`, `features.{f1..f9}`, `why.{lead,mobile,multibranch,nohardware,singlesource}`, `pricing.*`, `roadmap.*`, `hero.*`, `problem.*`, `close.*`, `back`, `cta`). Component-içi `tr?...:...` deseni terk edilir. `PageHeader` `back`/`cta` artık `alpfit` namespace'ten (mevcut `crewOs` ödünç deseni bırakılır).
+- **Telefon mockup içi metin (KARAR — kullanıcı 2026-07-16): Sabit TR (ekran-görüntüsü semantiği), telefon `dir="ltr"`.** Telefon içi metinler (`Merhaba, Deniz`, `Reformer Pilates`, `72,4 kg`, tab adları) **i18n'e girmez** — gerçek TR ürün ekranının görüntüsü gibi sabit. Bölüm başlığı/altyazısı/`phone-cap` etiketleri (`Üye · Ana ekran`) **5 dil i18n**. Gerekçe: RTL'de LTR-telefon içinde Arapça bozulmaz, micro-anahtar patlaması yok, örnek proper-noun/rakam çevrilmez (dürüst: gerçek TR ürünü).
+
+**5) Living Flow + before/after hero dengesi**
+- **Seçilen:** Mevcut hero mekanizması korunur (`LivingFlow` + `FlowScrim`), yapı iki-sütuna (`~1.1fr / 0.9fr`) getirilir: sol metin (pilot-chip + H1 + CTA + not), sağ **before/after compare kartı** (opak `--surface` kart, gölge → akış üstünde temiz okunur). Artifact'ın dekoratif radial glow'u (`.hero::before`, `.compare-wrap::before`) **bırakılır** — ambient yeşili Living Flow sağlar (efekt kalabalığı yok, QUALITY §1). FlowScrim sağ-sütun dengesi hero task'ında prototiplenir (kart okunabilirliği vs. akış canlılığı). Yeni WebGL maliyeti yok (tek Living Flow).
 
 ### Kullanılacak Araçlar/Kütüphaneler
-- [Araç 1]: [Versiyon, ne için]
+- **Yeni kütüphane YOK.** Mevcut stack yeterli: React 19 + Tailwind v4 token + next-intl + GSAP (`Reveal`) + Living Flow.
+- **`next/image` bu sayfadan DÜŞER** — yeni tasarımda hiç raster görsel yok (before/after + mockup'lar saf CSS/SVG; roller/checkmark/chart inline SVG). `public/gym/*.png` kullanılmaz (asset silme Kapsam Dışı).
+- **CSS Module** (Next 15 App Router yerleşik desteği) — yalnız `PhoneMockups.module.css` için (yeni desen, plan teyidi).
+- **Yeniden kullanılan primitive'ler:** `Reveal` (`[data-reveal]` sözleşmesi — `src/components/Reveal.tsx`), `PageHeader`/`Footer`/`SmoothScroll`/`CustomCursor` (page shell zaten kablolu), `LivingFlow`/`FlowScrim` (M1). Artifact'ın kendi IntersectionObserver `.reveal.in` scripti **bırakılır** (site `<Reveal>`+GSAP kullanılır).
 
 ### Dikkat Edilecekler
-- [Tuzak/Risk 1]: [Nasıl kaçınılacak]
+
+> Tanımlayıcı kaynağı: **repo** = zaten tanımlı (yol/sembol), **yeni** = bu fazda yaratılır, **dış** = dış sistem. (research kaydeder; verify-plan gerçeklik-kontrolü yapar.)
+
+- **Token boşluğu — `--surface` (yeni, M1):** artifact `--canvas`/`--canvas-deep`/`--ink`/`--green`/`--line` site `@theme` ile **birebir/çok yakın** (site token'ları kullanılır — WCAG-tuned, artifact renkleri değil). Ama kart zemini `--surface` (#fffefb light / #191b12 dark) site'de **yok**. Karar: `--color-surface` **yeni token** olarak `globals.css` `@theme` + `html.dark`'a eklenir (kartlara ince "lift"; craft). Kaynak: artifact `:root`/`@media dark` (`_dev/docs/alpfit-plus-artifact.html` L9-68). `globals.css` M1 → **korumalı doküman değil ama tasarım-token sistemi**, plan/task'ta ele alınır.
+- **Fiyat bandı ink-panel (repo):** `bg-ink` + `--color-pulse-ink` (`globals.css:17,49` — repo-tanımlı, TD4). Dark temada bant **krem'e döner** — bu beklenen davranış (bug değil); pulse aksanı `--color-pulse-ink` ile legible kalır. **axe çift-tema doğrulaması yine şart** (MEMORY `a11y-olcum-tema-tuzagi`).
+- **a11y mührü zaten bağlı (repo):** `tests/e2e/subpages-a11y.spec.ts` `PAGES`'te `/spor-salonu-yazilimi` **zaten var** (5 dil × light+dark, `subpages-a11y.spec.ts:24`) → redesign bu mührü **kırarsa CI fail**. Yeni bölümlerin kontrastı (bant, badge yeşili, compare tick, mockup `--a-*` iç kontrastı) AA geçmeli. `--a-*` paleti tema-invariant → bir kez doğrula ama axe per-tema koşar.
+- **i18n parite otomatik (repo):** `tests/i18n-parity.test.ts` tüm yaprak anahtarları flatten eder → yeni `alpfit` namespace **otomatik kapsanır**; 5 dilde **eşzamanlı** anahtar şart (eksik = fail). Değer non-TR stale kabul (versiyon-sınırı). `phone` içi metin i18n'e girmediği için parite yükü yok.
+- **RTL (AR) — logical prop'lar:** yeni bölümler (before/after grid, roller, özellik grid, bant, roadmap) `ps-/pe-/ms-/me-/text-start/inset-inline-start` ile aynalanır (physical left/right değil — M4 F4.3). Compare `→` tick RTL'de yön çevirir (logical ok / `←`). Bullet `::before` `inset-inline-start`. **Telefon mockup `dir="ltr"` zorlanır** (ekran-görüntüsü — RTL'de bozulmaz; karar 4).
+- **PageHeader dokunulmaz kalır (repo):** `src/components/PageHeader.tsx` CTA'sı hardcoded `/#contact` (prop değil) → değişmez (site-tutarlı, tüm alt sayfalar paylaşır). **Body CTA'ları** (hero/pricing/close) subject'li **mailto** (`mailto:kivanc@kiwiailab.com?subject=...` — email repo/user, subject'li mailto **yeni davranış**). Sadece `back`/`cta` **prop kaynağı** `crewOs`→`alpfit` değişir (bileşen değil).
+- **Orphan bileşen temizliği:** yeni `components/alpfit/` gelince eski `components/gym/GymSoftwareShowcase.tsx` **kullanılmaz kalır** → kod hijyeni gereği **silinir** (kod, kapsam-içi). `public/gym/*.png` **kalır** (asset silme Kapsam Dışı).
+- **Reveal sözleşmesi (repo):** artifact `.reveal` CSS class'ı DEĞİL, site `<Reveal>` + `[data-reveal]` çocukları kullanılır (`Reveal.tsx:29`). Her bölüm `<Reveal>` ile sarılır, animasyonlu çocuklar `data-reveal` işaretlenir; reduced-motion'da `<Reveal>` no-op (görünür kalır).
+- **Perf/CLS pozitifi (guardrail):** görsel yok → LCP muhtemelen h1 (metin), mevcut 4-PNG (~1.7MB) yükü kalkar; tüm kartlar/mockup'lar sabit boyut/`aspect-ratio` → CLS≈0. Pilot `.dot` pulse + reveal reduced-motion-gated. Yeni font yok (Fraunces/Geist zaten yüklü; artifact sistem-font fallback'i port edilmez).
+- **Marka sesi (guardrail):** doktor/teşhis metaforu yok; sahte "online" tiyatrosu yok (pilot nabzı **gerçek** canlı → meşru, ILKELER); lorem/dolgu yok. Dürüstlük 4/4 gerçek aynen (₺1.500 + "Weekend Training Club" pilot adı + "18 rakip" + yol haritası "yakında" öngörü çerçevesi).
 
 ### Teknik Kararlar
-- [Karar 1]: [Gerekçe]
+
+- **Bileşen yapısı:** `components/alpfit/` dizini — `AlpfitShowcase.tsx` kabuk + bölüm alt-bileşenleri + izole `PhoneMockups`. *Gerekçe:* modülerlik + DevFlow task sınırları + mockup'ın kendi craft-task'ı.
+- **Telefon mockup:** CSS Module (`PhoneMockups.module.css`), artifact `.phone`/`.ph-*` **birebir**; `--a-*` self-contained açık palet; `dir="ltr"`; içerik sabit TR. *Gerekçe:* pixel-craft sadakati + globals.css yalın + RTL güvenli.
+- **Fiyat bandı/aside:** site ink-panel inversion (`bg-ink`+`--color-pulse-ink`), yeni `--band-*` yok. *Gerekçe:* TD4 a11y-mühürü + Crew OS tutarlılığı + tema-tuzağı yüzeyi yok.
+- **`--color-surface` yeni token** (`@theme` + `html.dark`) — kart zeminleri. *Gerekçe:* craft "lift"; artifact `--surface` sadakati; tek yeni token (band ailesi eklenmez).
+- **i18n `alpfit` namespace** — `crew` deseni (isimli-anahtar + `map`); telefon içi metin i18n-dışı sabit TR. *Gerekçe:* site standardı + parite yükü minimum + RTL güvenli.
+- **Hero:** iki-sütun, Living Flow+FlowScrim korunur, compare kartı sağ opak surface, artifact dekoratif radial'ları bırakılır. *Gerekçe:* imza korunur (Craft üst eksen) + efekt kalabalığı yok + ek WebGL maliyeti yok.
+- **`next/image` düşer, primitive'ler yeniden kullanılır, artifact reveal-scripti bırakılır** (site `<Reveal>`/GSAP). *Gerekçe:* görsel yok → perf pozitifi; mevcut altyapı yeterli.
 
 ---
 
@@ -157,4 +198,4 @@
 ---
 
 **Oluşturulma:** 2026-07-16 (discuss-phase 15)
-**Son Güncelleme:** 2026-07-16 — discuss-phase 15: Kapsam Tartışması yazıldı (tek faz; imza Living Flow + before/after hero; ekran görüntüleri kaldırılır; çapa-nav yok; mailto CTA; dürüstlük 4/4 aynen; Store = e-ticaret yol-haritası kalemi; route korunur; 5-dil `alpfit` namespace önerisi).
+**Son Güncelleme:** 2026-07-16 — research-phase 15: Araştırma Bulguları yazıldı (5 alan: bileşen yapısı `components/alpfit/` hibrit + izole mockup · telefon CSS Module birebir + `dir=ltr` sabit-TR · fiyat bandı **ink-panel inversion** [kullanıcı kararı] · `alpfit` namespace `crew` deseni + mockup metni i18n-dışı [kullanıcı kararı] · hero iki-sütun Living Flow+compare). Yeni token `--color-surface`; `next/image` düşer; a11y mührü + i18n parite zaten bağlı. Adım = plan.

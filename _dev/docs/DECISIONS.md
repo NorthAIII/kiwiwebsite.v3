@@ -9,6 +9,18 @@
 
 <!-- Her yeni karar aşağıdaki formatta en üste eklenir (en yeni en üstte) -->
 
+### 2026-07-16 — Alpfit Plus port: fiyat bandı ink-panel inversion + mockup metni i18n-dışı sabit-TR (Faz 15, research)
+
+**Bağlam:** Faz 15 (v0.4 Alpfit Plus) araştırması. Artifact (`_dev/docs/alpfit-plus-artifact.html`) React+Tailwind-token+next-intl'e port edilirken iki tasarım kararı task'ları şekillendiriyordu: (1) fiyat bandı + "Neden" aside'ının koyu paneli tema geçişinde nasıl davranacağı; (2) telefon mockup'larının içindeki metinlerin i18n'e girip girmeyeceği. İkisi de kullanıcıya soruldu (research-phase Adım 3).
+
+**Karar:** (1) **Fiyat bandı → site ink-panel inversion deseni** (`bg-ink text-canvas` + `--color-pulse-ink` adaptif aksan; iç price-card lifted-surface). Artifact'ın kalıcı-koyu bandı + yeni `--band-*` token ailesi **reddedildi**. Bant light temada koyu/krem-metin, **dark temada krem'e döner** (site konvansiyonu). (2) **Telefon mockup içi metin i18n-dışı sabit TR** (gerçek TR ürün ekranının görüntüsü semantiği), telefon `dir="ltr"`. Bölüm başlığı/altyazı/`phone-cap` etiketleri yine 5 dil i18n. Ek: `alpfit` namespace (`crew` deseni); yeni `--color-surface` token (kart zeminleri, `--band-*` yerine tek token); `components/alpfit/` hibrit dizin + izole `PhoneMockups` CSS Module; hero iki-sütun Living Flow+compare; `next/image` düşer (görsel yok).
+
+**Gerekçe:** (1) ink-panel deseni TD4/Faz 8'de **a11y-mühürlü** ve Crew OS bandıyla **tutarlı** → yeni `--band-*` ailesi + tema-tuzağı yüzeyi (MEMORY `tema-fix-html-dark-token-flip`, `a11y-olcum-tema-tuzagi`) doğmaz; bakım + a11y güvenli (QUALITY §2/§5). (2) sabit-TR mockup: RTL'de LTR-telefon içinde Arapça bozulmaz, micro-anahtar patlaması yok, örnek proper-noun/rakam çevrilmez; dürüst (gerçek TR ürünü). Craft üst eksen korunur (imza Living Flow hero'da kalır), pazarlık-dışı guardrail'ler (dürüstlük 4/4, marka sesi) değişmez.
+
+**İlgili Task/Faz:** Faz 15 (research; task'lar plan-phase 15'te). Kaynak feature `PRD/features/alpfit-plus.md`; bulgular `phases/PHASE-15.md` → Araştırma Bulguları.
+
+---
+
 ### 2026-07-03 — `/forum` index hedefi `/` + redirect sırası çıplak-önce (`:slug*` boş-segment tuzağı) (Faz 13, TB-2)
 
 **Bağlam:** Faz 13 TB-2. `next.config.ts` redirect denetimi iki açık buldu: (1) `/forum` + `/forum/:slug*` locale-twin'siz → `/en/forum` vb. sessiz 404 (AMPİRİK memory `next-config-redirect-locale-prefix`); (2) mevcut `/forum`→`/bulten` hedefi zaten **404'e iniyordu** — `src/app/[locale]/bulten/` altında index `page.tsx` yok (yalnız 2 makale klasörü), bülten içeriği ana sayfada `id="forum"` bölümünde.
