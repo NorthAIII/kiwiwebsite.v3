@@ -169,7 +169,7 @@ Her doküman bir tür bilginin **evidir**; bilgi yanlış eve yazılırsa hem or
 4. **Acele etme.** Kararların sonuçlarını düşün. Sırf öneri vermek için öneri verme.
 5. **Varsayımları sorgula.** Kullanıcının her şeyi doğru yaptığını varsayma, kontrol et.
 6. **Bilgi havuzunu güncel tut.** Elde ettiğin bilgileri düzenli kaydet. Önemli kararları `_dev/docs/DECISIONS.md`'ye yaz.
-7. **Test atlanmaz.** Her task'ın tamamlanma kriteri teste bağlıdır. (Not: bu projede şu an test altyapısı **yok** — kurulumu bir teknik faz adayı; o gelene dek "test" = build'in temiz geçmesi + canlıda/preview'da gözle doğrulama.)
+7. **Test atlanmaz.** Her task'ın tamamlanma kriteri teste bağlıdır. (Test altyapısı **v0.2 Faz 5'te (D1) kuruldu** — Vitest node/jsdom + Playwright/axe + GitHub Actions CI, kümülatif; komutlar/konvansiyon → `_dev/docs/TESTING.md`. Sandbox ortamı `next start`/Playwright'i bazen exit 144 ile öldürür → o durumda "test" = `next build` temiz + Vitest + `page.route` interception / canlıda gözle doğrulama; → `_dev/MEMORY.md`.)
 8. **Riskli komutlar çalıştırma.** Emin olmadığın komutları çalıştırma, kullanıcıya danış.
 9. **`_dev/` izolasyonunu koru.** DevFlow dokümanlarını `_dev/` dışına koyma, projenin dokümanlarını `_dev/` içine koyma.
 10. **Hiçbir dosya yarım veya atlanarak okunmaz.** Bir Read çağrısı dosyayı tam getirmezse — çıktıda truncate / **PARTIAL** / satır-limiti uyarısı görürsen ya da istediğin aralık eksik döndüyse — **kör deneme-yanılma yapma** (giderek daralan aralıkları rastgele deneme) ve **yarım okuyup sonraki işe geçme**. Kural `_dev/` ile sınırlı değil; kod ve dış dosyalar dahil her Read için geçerli. Sırayla:
@@ -214,7 +214,7 @@ Her doküman bir tür bilginin **evidir**; bilgi yanlış eve yazılırsa hem or
 ## Task Tamamlanma Sırası
 
 Her task bittiğinde bu sıra izlenir (ATLANMAZ):
-1. **Test** — Testleri çalıştır (yoksa: en azından `next build` temiz geçmeli + ilgili davranışı preview/canlıda gözle doğrula)
+1. **Test** — İlgili testleri çalıştır (Vitest / Playwright-axe; kümülatif — her feature kendi testini ekler, → `_dev/docs/TESTING.md`). Sandbox suite'i koşturamıyorsa (exit 144) fallback: `next build` temiz geçmeli + ilgili davranışı `page.route`/preview/canlıda gözle doğrula.
 2. **Task Dokümanı** — Oturum kaydı ekle, durumu güncelle
 3. **DURUM.md ve Faz Dokümanı** — Aktif task pointer güncelle, task özeti ekle. Faz dokümanında task durumu güncelle.
 4. **MEMORY** (gerekirse) — Beklenmeyen proje-geneli tuzak/öğrenim varsa `_dev/memory/<slug>.md` ekle/güncelle + MEMORY.md index'ini güncelle
@@ -308,7 +308,7 @@ Bu dosyaları kullanıcı izni olmadan değiştirme:
 **Ürün taksonomisi (içerik hatasının kökü — sıkı tut):**
 - Bayrak katman sitede **her zaman "Crew OS"** (public ad). **"Bunker OS"** iç kod adıdır, hiçbir yüzeyde görünmez. İkisi **aynı şey**, iki ürün değil.
 - **Alpfit** ayrı, bağımsız dikey üründür (`/spor-salonu-yazilimi`). Crew OS'un parçası değildir.
-- Crew OS showcase route'u hâlâ `/bunker-os` (iç ad URL'de sızıyor; public `/crew-os` + kalıcı redirect + i18n namespace `bunker`→`crew` 5-dil rename **v0.3 kapsamına alındı** — M6+M2+M4; iş birimi discuss-phase'de damgalanır).
+- Crew OS showcase sayfasının public route'u **`/crew-os`** (v0.3 Faz 11'de rename **tamamlandı**: eski `/bunker-os` → kalıcı 308 redirect, 5 locale + i18n namespace `bunker`→`crew` 5-dil senkron + sitemap/canonical/alternates). İç kod adı yalnız **kod-seviyesi tanımlayıcılarda** kalır (`components/bunker-os/`, `Bunker.tsx`, nav id) — taksonomi izin veriyor, URL'de sızmıyor.
 
 **Operasyonel:**
 - **Canlıya dokunma:** `main` canlı, revize `revize/...` branch'lerinde (→ Commit Stratejisi).

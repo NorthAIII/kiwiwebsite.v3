@@ -74,17 +74,17 @@
 
 ### F2.5: Crew OS teaser bölümü → Faz —
 
-**Açıklama:** `Bunker.tsx` (bileşen adı iç ad kalıntısı) — başlık + gövde + Crew OS panelinde 4 otomasyon akışı (animasyonlu nabız barları), `/bunker-os`'a link. Sitede görünen ad **Crew OS**.
+**Açıklama:** `Bunker.tsx` (bileşen adı iç ad kalıntısı; namespace `crew`) — başlık + gövde + Crew OS panelinde 4 otomasyon akışı (animasyonlu nabız barları), `/crew-os`'a link. Sitede görünen ad **Crew OS**.
 
 **Kabul Kriterleri:**
 - Panel akışları "running/queued" durumlarıyla animasyonlu.
-- "Keşfet" linki Crew OS showcase sayfasına (`/bunker-os`) gider.
+- "Keşfet" linki Crew OS showcase sayfasına (`/crew-os`) gider.
 
 **Bağımlılık:** M1, M4
 
 **Edge Case'ler:**
 - **v0.1 (R3 — büyük ölçüde çözülmüş):** prd-refine: bölümün **ana metni zaten doğru** (`bunker.title/body/points` platform kimliğini anlatıyor — gözlemlenebilir/ölçülebilir/hep-açık; Alpfit özellik listesi değil). REVIZE-BACKLOG A6 (*"4 madde Alpfit, alakasız"*) çözülmüş. **Kalan tek kalem:** sağdaki canlı panelin 4 akış adı (`bunker.flows`) sektöre-özgü; **karar: bırakıldı** — "platformda çalışan gerçek akışlar" çerçevesi (Crew OS'un *tanımı* değil; craft = gerçek akış adı soyut etiketten inandırıcı). PRD: `_dev/PRD/features/crew-os-bolumu.md`.
-- Bayrak katman her yüzeyde **"Crew OS"** anılır; "Bunker OS" görünmez. `bunker.explore` → `/bunker-os` route'u korunur (public `/crew-os` + redirect kararı görsel/SEO versiyonuna ertelendi — açık konu, M6).
+- Bayrak katman her yüzeyde **"Crew OS"** anılır; "Bunker OS" görünmez. `crew.explore` → `/crew-os` showcase sayfasına gider (i18n namespace `bunker`→`crew` + route `/bunker-os`→`/crew-os` **v0.3 Faz 11'de rename edildi**; eski `/bunker-os` → kalıcı 308 redirect).
 
 ---
 
@@ -103,9 +103,9 @@
 
 ---
 
-### F2.7: Crew OS showcase sayfası (route /bunker-os) → Faz —
+### F2.7: Crew OS showcase sayfası (route /crew-os) → Faz —
 
-**Açıklama:** `bunker-os/page.tsx` + `components/bunker-os/BunkerShowcase.tsx` (dizin/route adları iç ad kalıntısı; sitede görünen ad **Crew OS**) — hero (Living Flow), uçtan uca mimari diyagram (Kaynaklar → çekirdek → Kanallar + geri-besleme, animasyonlu nabızlar), "Nasıl çalışır" 4 adım (platform: Bağla/Akış kur/Çalıştır/Ölç), canlı operasyon paneli (örnek metrikler). **v0.1 dışı** — sayfa ana sayfa revizesi kapsamında değil.
+**Açıklama:** `crew-os/page.tsx` (route klasörü v0.3 Faz 11'de rename edildi; namespace `crewOs`) + `components/bunker-os/BunkerShowcase.tsx` (component dizini iç-ad kalıntısı — taksonomi izin veriyor, URL'de sızmıyor; sitede görünen ad **Crew OS**) — hero (Living Flow), uçtan uca mimari diyagram (Kaynaklar → çekirdek → Kanallar + geri-besleme, animasyonlu nabızlar), "Nasıl çalışır" 4 adım (platform: Bağla/Akış kur/Çalıştır/Ölç), canlı operasyon paneli (örnek metrikler). **v0.1 dışı** — sayfa ana sayfa revizesi kapsamında değil.
 
 **Kabul Kriterleri:**
 - Mimari diyagram nabız animasyonlarıyla render edilir.
@@ -153,9 +153,9 @@
 
 - İçerik veri-odaklı: sabit JS dizileri (KEYS/STUDIES vb.) + i18n namespace'leri eşleştirilir; veritabanı yok.
 - Akıcı tipografi: `clamp()` ile (örn. `text-[clamp(2rem,4.5vw,3.5rem)]`).
-- Showcase sayfaları (Crew OS [route `/bunker-os`], Alpfit) `PageHeader` + `LivingFlow` desenini paylaşır.
+- Showcase sayfaları (Crew OS [route `/crew-os`], Alpfit) `PageHeader` + `LivingFlow` desenini paylaşır.
 - **v0.1 revize işi (R1–R4) bu modülde** (PRD reframe: cerrahi/ana-sayfa) — yapısal: Nasıl Çalışır 4 adım (R1), Sektörler gym paneli (R2); ses: Crew OS teyidi (R3), dürüstlük taraması + hero ikincil CTA (R4). Kaynak: `_dev/PRD/features/`. Ertelenenler (görsel cila A1/A3, Living Flow kapsamı, test): `docs/REVIZE-BACKLOG.md`.
 
 ---
 
-**Son Güncelleme:** 2026-07-16 — re-kickoff (kickoff-docs): F2.8'e v0.4 "Alpfit Plus" zengin yeniden tasarım notu eklendi (AP1–AP3; yeni bölümler + mobil uygulama mockup'ları + 5-dil namespace + dürüstlük 4/4 gerçek; route korunur). Baseline açıklama korundu (merge). Feature: `PRD/features/alpfit-plus.md`.
+**Son Güncelleme:** 2026-07-16 — re-kickoff: (kickoff-docs) F2.8'e v0.4 "Alpfit Plus" zengin yeniden tasarım notu eklendi (AP1–AP3; yeni bölümler + mobil uygulama mockup'ları + 5-dil namespace + dürüstlük 4/4 gerçek; route korunur); (kickoff-verify) F2.5/F2.7 route referansları `/crew-os`'a + namespace `crew`/`crewOs`'a hizalandı — v0.3 Faz 11 rename'i modül dokümanına yansımamıştı (kod teyitli: route klasörü `crew-os/`, component dizini `bunker-os/` iç-ad). Feature: `PRD/features/alpfit-plus.md`.

@@ -25,7 +25,7 @@ Ajansın teklifini (analiz → tekrarlayan işin tespiti → otomasyona bağlama
 Tekrarlayan operasyonel işi otomatikleştirmek isteyen işletmeler (spor salonu, klinik, e-ticaret, emlak, eğitim/danışmanlık, restoran/kafe) ve karar vericileri. Çok dilli kitle: TR (varsayılan), EN, AR, DE, ES.
 
 ### Kapsam
-**Dahil:** Tanıtım/pazarlama sitesi — ana sayfa + alt sayfalar (Crew OS showcase [route `/bunker-os`], Alpfit spor salonu yazılımı, vaka çalışmaları, bülten makaleleri), Living Flow WebGL, çok dilli i18n (RTL dahil), canlı Claude chatbot, SEO/sitemap, light/dark tema.
+**Dahil:** Tanıtım/pazarlama sitesi — ana sayfa + alt sayfalar (Crew OS showcase [public route `/crew-os`; eski `/bunker-os` → kalıcı redirect], Alpfit spor salonu yazılımı, vaka çalışmaları, bülten makaleleri), Living Flow WebGL, çok dilli i18n (RTL dahil), canlı Claude chatbot, SEO/sitemap, light/dark tema.
 **Dahil değil:** Backend/otomasyon ürününün kendisi (Crew OS motoru — iç adıyla *Bunker OS*) — o ayrı bir repo'dur (`NorthAIII/kiwi-ai-lab`, private). Forum/bülten için gerçek backend (şu an statik içerik), ödeme, kullanıcı hesapları.
 
 ---
@@ -51,7 +51,7 @@ Tekrarlayan operasyonel işi otomatikleştirmek isteyen işletmeler (spor salonu
 - **Çok dilli site** — 5 dil, AR için RTL; locale-prefixli route'lar, dünya-ikonu dil değiştirici.
 - **Canlı Claude chatbot** — `/api/chat` üzerinden streaming, kullanıcı dilini algılar, key yoksa zarif "offline".
 - **Light/Dark tema** — `localStorage` + FOUC önleyici script, Living Flow temaya uyumlu.
-- **Sektör/ürün showcase sayfaları** — Crew OS (route `/bunker-os`), Alpfit (spor salonu), vaka çalışmaları, bülten.
+- **Sektör/ürün showcase sayfaları** — Crew OS (route `/crew-os`), Alpfit (spor salonu), vaka çalışmaları, bülten.
 - **Scroll-koreografisi** — GSAP + Lenis + Reveal pattern; reduced-motion tam fallback.
 
 **Detaylar:** `MODULE-MAP.md` (modül ve feature haritası), `modules/` (modül detayları)
@@ -120,4 +120,4 @@ CLAUDE.md repo kökünde olacaktır (`/CLAUDE.md`) — kickoff-verify'da oluştu
 
 ---
 
-**Son Güncelleme:** 2026-06-28 — kickoff-docs: ürün taksonomisi metni hizalandı (public Crew OS / iç kod adı Bunker OS; route hâlâ `/bunker-os`).
+**Son Güncelleme:** 2026-07-16 — re-kickoff (kickoff-verify): Crew OS showcase route referansları `/crew-os`'a hizalandı (public route v0.3 Faz 11'de rename edildi; eski `/bunker-os` → kalıcı redirect). Taksonomi/kimlik değişmedi.

@@ -35,7 +35,7 @@ Secret'lar ve ortama bağlı değerler koda gömülmez. Merkezi, değişken-taba
 
 ### Kümülatif test altyapısı
 
-Test atlanmaz. Test altyapısı her geliştirmeyle üstüne koyarak büyür — her yeni yetenek kendi güvencesini de getirir. Geriye dönük güven zamanla artmalı, azalmamalı. (Not: bu projede şu an test altyapısı **yok**; ilk kurulum bir teknik faz adayıdır.)
+Test atlanmaz. Test altyapısı her geliştirmeyle üstüne koyarak büyür — her yeni yetenek kendi güvencesini de getirir. Geriye dönük güven zamanla artmalı, azalmamalı. (Test altyapısı **v0.2 Faz 5'te (D1) kuruldu** — Vitest + Playwright/axe + GitHub Actions CI, kümülatif; detay `docs/TESTING.md`.)
 
 ---
 
@@ -66,4 +66,4 @@ Kickoff/PRD sırasında doldurulur. Boş bir alan "henüz konuşulmadı" demekti
 
 ---
 
-**Son Güncelleme:** 2026-07-02 — prd-review (v0.2): Öncelikli Eksenler #2(b) gerçekliğe hizalandı — a11y ≥100 v0.2'de ulaşıldı (yeni taban); perf/LCP brief bütçesi lab'da açık kaldı (adanmış iş yapıldı ama Lantern körlüğü lab skorunu kapatmadı), nihai doğrulama gerçek-cihaz/Vercel field'a bağlandı. Hedef düşmedi.
+**Son Güncelleme:** 2026-07-16 — re-kickoff (kickoff-verify): "Kümülatif test altyapısı" ilkesinin factual notu gerçeğe hizalandı — altyapı **yok** değil, v0.2 Faz 5/D1'de kuruldu (Vitest + Playwright/axe + CI). İlkenin yön/önceliği değişmedi (test atlanmaz, kümülatif büyür).
