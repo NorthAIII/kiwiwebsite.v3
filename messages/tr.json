@@ -394,6 +394,59 @@
       },
       "asideQ": "“Geçen ay <b>kaç randevuya gelinmedi</b>, elinizde rakam var mı?”",
       "asideSrc": "Çoğu kulüpte bu rakam bilinmiyor. Alpfit Plus’ta ekranda duruyor — boş kapasite görünür olunca kampanyayı da oraya kurarsınız."
+    },
+    "pricing": {
+      "eyebrow": "Fiyatlandırma",
+      "title": "Salon başına, sade.",
+      "sub": "Paket karmaşası yok, eğitmen limiti yok. Diyetisyen ve mobil uygulamalar dahil.",
+      "currency": "₺",
+      "amount": "1.500",
+      "per": "+ KDV / salon / ay",
+      "note": "İkinci salondan itibaren %20 indirimli (₺1.200 + KDV).",
+      "rows": {
+        "setup": {
+          "label": "Kurulum (salon başına, tek seferlik)",
+          "value": "₺3.000 + KDV"
+        },
+        "setupFree": {
+          "label": "Yıllık peşin ödemede kurulum",
+          "value": "Ücretsiz"
+        },
+        "trial": {
+          "label": "Ücretsiz deneme",
+          "value": "15 gün"
+        }
+      },
+      "ctaPrimary": "Demo iste",
+      "ctaSecondary": "Teklif al",
+      "founderNote": "Erken kurucu kulüplere özel koşullar sunuyoruz — detay için görüşelim.",
+      "inclTitle": "Her salonda dahil",
+      "incl": {
+        "one": "Üye mobil uygulaması",
+        "two": "Antrenör mobil uygulaması",
+        "three": "Diyetisyen modülü",
+        "four": "Çok-şube cockpit",
+        "five": "Finans, ciro & borç takibi",
+        "six": "Raporlar (Excel / PDF)",
+        "seven": "Kurulum, veri taşıma & eğitim"
+      }
+    },
+    "roadmap": {
+      "tag": "Yol haritası — yakında",
+      "items": {
+        "payment": "Online ödeme",
+        "qr": "QR / turnike giriş",
+        "store": "Mağaza (üye e-ticaret)",
+        "health": "Apple Health & Google Fit",
+        "ai": "AI gelişim & beslenme analizi"
+      },
+      "suffix": "Bugün üründe değil; geliştirme yol haritamızda."
+    },
+    "close": {
+      "title": "15 dakikada kendi kulübünüzde görün.",
+      "body": "Ekran paylaşımıyla gösterelim, kendi kulübünüzde nasıl duracağına siz karar verin.",
+      "ctaPrimary": "Demo iste",
+      "ctaSecondary": "Soru sor"
     }
   },
   "forum": {

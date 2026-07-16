@@ -6,11 +6,13 @@
 
 Bu, [WebGL-arkası "incomplete"](axe-webgl-contrast-incomplete.md), [aria-hidden muafiyet değil](aria-hidden-color-contrast-muafiyeti-degil.md) ve [a11y ölçüm tema tuzağı](a11y-olcum-tema-tuzagi.md) ile aynı ölçüm-artefaktı ailesindendir — araç ölçemedi/yanlış ölçtü, öğe gerçekte erişilebilir.
 
-**Çözüm (görsel değişimsiz, en temiz):** Vurgu inline node'una **panelle aynı renk** opak zemin ver — `<b class="bg-ink font-semibold text-pulse-ink">`. `bg-ink` panelle aynı renk olduğu için **görsel fark yok**, ama axe artık node'un kendi opak zeminini doğrudan ölçer (viewport-dışı `elementsFromPoint`'e ihtiyaç kalmaz) → light 11.5:1 / dark 4.74:1 geçer. (TASK-15.05 aside pull-quote.)
+**Çözüm (görsel değişimsiz, en temiz):** Vurgu inline node'una **immediate backdrop ile aynı renk** opak zemin ver — aksan doğrudan panel üstündeyse `bg-ink`, panelin üstündeki **lifted kart** üstündeyse kartın rengi. Görsel fark yok (aynı renk), ama axe artık node'un kendi opak zeminini doğrudan ölçer (viewport-dışı `elementsFromPoint`'e ihtiyaç kalmaz) → light 11.5:1 / dark ~4.8:1 geçer.
+- **TASK-15.05** (aside pull-quote): aksan doğrudan `bg-ink` panel üstünde → `<b class="bg-ink ...">`.
+- **TASK-15.06** (fiyat bandı): bant `bg-ink` ama iç price-card'lar opak lift `INK_LIFT = bg-[color-mix(in_srgb,#fff_4%,var(--color-ink))]` → **backdrop aksana göre değişir**: eyebrow bant üstünde `bg-ink`, ₺/free-satır değerleri kart üstünde `INK_LIFT`. Yanlış zemini (örn. karta `bg-ink`) verirsen görsel dikdörtgen sızar → **her aksana kendi kabının rengini** ver. Muted metin (`text-canvas/65`, translücent) axe'te "incomplete" kalır → opak zemin gerekmez, dokunma.
 
 **Neden başka çözümler tutmadı:**
 - **Aksan rengini değiştir:** Koyu panelde okunur parlak yeşil (light `--color-pulse-ink` #6fe36f) canvas-fallback'te ~1.5 kalır; canvas-fallback'i geçen koyu yeşil ise gerçek koyu panelde muddy olur. **İki temada hem gerçek-panel hem body-fallback'i geçen tek aksan rengi yoktur.**
 - **Dekoratif glow'u kaldır:** Glow (radyal gradient) ilk şüpheliydi ama kaldırıldıktan sonra fail sürdü — glow neden değil.
 - Helper'ı (`scrollThrough` scroll-0 reset) değiştirmek paylaşılan mühürlü harness'i etkiler + uzun sayfada her şey aynı anda viewport'a sığmaz → çözüm ölçüm-tarafında değil, **öğeye opak zemin** vermekte.
 
-**Uygulama anı:** İnk-panel üstünde renkli inline metin aksanı (pull-quote highlight, fiyat/rakam vurgusu) her kullanıldığında — özellikle alt-fold bölümlerde. TASK-15.06 fiyat bandı (`bg-ink` + `--color-pulse-ink` aksanları) aynı deseni kullanacak → aksana `bg-ink` ver.
+**Uygulama anı:** İnk-panel üstünde renkli inline metin aksanı (pull-quote highlight, fiyat/rakam vurgusu, eyebrow, checkmark yanı değer) her kullanıldığında — özellikle alt-fold bölümlerde. Desen 15.05 (aside) + 15.06 (fiyat bandı) ile iki kez doğrulandı; genel kural: **küçük opak parlak aksana immediate-backdrop rengini ver, muted translücent metne dokunma.**
