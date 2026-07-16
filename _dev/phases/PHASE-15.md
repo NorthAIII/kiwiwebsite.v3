@@ -204,4 +204,4 @@
 ---
 
 **Oluşturulma:** 2026-07-16 (discuss-phase 15)
-**Son Güncelleme:** 2026-07-16 — plan-phase 15: Task Listesi dolduruldu (7 task, 15.01–15.07 — foundation+hero · sorun+roller · telefon mockup'ları [CSS Module] · 9 özellik · neden [ink-panel aside] · fiyat bandı+roadmap+kapanış · SEO+temizlik+guardrail). Sayfa 15.01'de erken wire edilir (Gym→Alpfit) → bölümler gerçek route'ta `next build` ile doğrulanır. Adım = verify-plan.
+**Son Güncelleme:** 2026-07-16 — verify-plan 15: 7 task (15.01–15.07) temiz context'te doğrulandı (referans gerçeklik-kontrolü + milestone/gereksinim/kalite/tutarlılık ✓). 1 mekanik düzeltme (TASK-15.02 `border-line-soft`→`border-line`, var-olmayan token; artifact `.divide` `--line` kullanır), 0 yapısal değişiklik. Task Listesi değişmedi. Adım = task (sıradaki `/devflow:run-task 15.01`).

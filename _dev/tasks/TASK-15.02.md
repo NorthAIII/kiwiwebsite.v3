@@ -29,7 +29,7 @@ Artifact'ın "Sorun" ve "Dört rol" bölümlerini React + Tailwind token + `alpf
 ## Alt Görevler
 
 - [ ] **1. Sorun bölümü**
-  - `AlpfitShowcase` kabuğuna inline section (basit — kendi bileşenine gerek yok): section-head (eyebrow "Sorun" + h2 + paragraf). Artifact L452-459 önünde `<hr>` ayraç (`border-line-soft`).
+  - `AlpfitShowcase` kabuğuna inline section (basit — kendi bileşenine gerek yok): section-head (eyebrow "Sorun" + h2 + paragraf). Artifact L452-459 önünde `<hr>` ayraç (`border-line` — artifact `.divide` `var(--line)` kullanır; `-soft` token yok, tek yeni token `--color-surface`).
   - i18n: `alpfit.problem.{eyebrow,title,body}` (5 dil; TR yetkili artifact L455-457).
 
 - [ ] **2. `AlpfitRoles` bileşeni**

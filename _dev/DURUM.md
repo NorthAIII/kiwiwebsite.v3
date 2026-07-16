@@ -1,6 +1,6 @@
 # DURUM — Proje Dashboard
 
-**Son Güncelleme:** 2026-07-16 — **plan-phase 15 tamamlandı → Adım = verify-plan.** 7 task dokümanı oluşturuldu (15.01–15.07): **15.01** foundation (`--color-surface` token + `alpfit` namespace kökü + `AlpfitShowcase` kabuk + Hero [Living Flow+before/after] + sayfa rewire Gym→Alpfit) · **15.02** sorun+4 rol · **15.03** telefon mockup'ları (CSS Module, `dir=ltr` sabit-TR, en yüksek craft) · **15.04** 9 özellik · **15.05** neden (koyu aside ink-panel) · **15.06** fiyat bandı (ink-panel)+roadmap(+Store)+kapanış · **15.07** SEO/metadata+Gym temizliği+guardrail doğrulama. Sayfa 15.01'de erken wire edilir → bölümler gerçek route'ta `next build` ile doğrulanır (jsdom WebGL yok — TESTING.md L37). Kaynak kod değişmedi (yalnız `_dev/`). Branch `revize/alpfit-plus`. **Versiyon Sonu Durumu `içerik_fazları`.** **⚠️ Devralınan açık takip: canlı `ANTHROPIC_API_KEY` env ayarlı değil** (`/api/chat` 503; chatbot "offline" — regresyon değil). **Sıradaki: `/devflow:verify-plan 15`.**
+**Son Güncelleme:** 2026-07-16 — **verify-plan 15 tamamlandı → Adım = task.** 7 task (15.01–15.07) temiz context'te doğrulandı: milestone (9 bölüm+5-dil+dürüstlük 4/4+guardrail+SEO tam eşlendi) · gereksinim · kalite · task-tutarlılık (ayrık `alpfit.*` alt-ağaçları, lineer bağımlılık, `#fiyat` anchor eşleşiyor) ✓; referans gerçeklik-kontrolü ✓ (kod yolları/token'lar/artifact satır refleri doğru). **1 mekanik düzeltme:** TASK-15.02 `border-line-soft`→`border-line` (var-olmayan token; artifact `.divide` `--line` kullanır, tek yeni token `--color-surface`). **0 yapısal değişiklik.** İlk task aktif: **`run-task 15.01`**. Kaynak kod değişmedi (yalnız `_dev/`). Branch `revize/alpfit-plus`. **Versiyon Sonu Durumu `içerik_fazları`.** **⚠️ Devralınan açık takip: canlı `ANTHROPIC_API_KEY` env ayarlı değil** (`/api/chat` 503; chatbot "offline" — regresyon değil). **Sıradaki: `/devflow:run-task 15.01`.**
 
 <!-- KURAL: Bu satır her oturum sonunda ÜZERİNE YAZILIR — tek satır, tek cümle. "Önceki:" / "Eski:" prefix ile kümülatif yığma YASAK; HTML comment'e sarma da yasak (CLAUDE.md → Doküman Disiplini). Tarih + kısa özet yeterli; detay için git log + ilgili PHASE/TASK dokümanları. -->
 
@@ -9,8 +9,8 @@
 ## Aktif Faz
 
 **Faz:** **15 — v0.4 Alpfit Plus ürün vitrini (F2.8 zengin yeniden tasarım)** (🔄 girildi — discuss-phase 15, tek faz). Fazlar 1–14 ✅ (v0.1+v0.2+v0.3 tamam, canlı).
-**Adım:** verify-plan — task yazımı tamamlandı (plan-phase 15 ✅; 7 task 15.01–15.07). **Sıradaki: `/devflow:verify-plan 15`** (task dokümanlarının detaylı review/doğrulaması — ayrı oturum). **⚠️ Devralınan açık takip: canlı `ANTHROPIC_API_KEY` env ayarlı değil** (`/api/chat` 503 → chatbot "offline"; Vercel env'e eklenince açılır — regresyon değil).
-**İlerleme:** plan-phase 15 (2026-07-16) ✅ — 7 task dokümanı (`tasks/TASK-15.01..07.md`): foundation+hero · sorun+roller · telefon mockup'ları [CSS Module] · 9 özellik · neden [ink-panel aside] · fiyat bandı+roadmap+kapanış · SEO+temizlik+guardrail. Sayfa 15.01'de erken wire → bölümler `next build` ile doğrulanır. Faz Task Listesi + DURUM güncellendi. Kaynak kod değişmedi (yalnız `_dev/`). research-phase 15 (2026-07-16) ✅ — Araştırma Bulguları (5 alan + 2 kullanıcı kararı: fiyat bandı ink-panel inversion, mockup metni i18n-dışı sabit-TR). discuss-phase 15 (2026-07-16) ✅ — Kapsam Tartışması (10 karar).
+**Adım:** task — plan review tamamlandı (verify-plan 15 ✅; 7 task doğrulandı, 1 mekanik düzeltme, 0 yapısal). **Sıradaki: `/devflow:run-task 15.01`** (ilk task — yeni oturum). **⚠️ Devralınan açık takip: canlı `ANTHROPIC_API_KEY` env ayarlı değil** (`/api/chat` 503 → chatbot "offline"; Vercel env'e eklenince açılır — regresyon değil).
+**İlerleme:** verify-plan 15 (2026-07-16) ✅ — 7 task temiz context'te doğrulandı; referans gerçeklik-kontrolü + milestone/gereksinim/kalite/tutarlılık ✓. Mekanik düzeltme: 1 (TASK-15.02 token), yapısal: 0. plan-phase 15 (2026-07-16) ✅ — 7 task dokümanı (`tasks/TASK-15.01..07.md`): foundation+hero · sorun+roller · telefon mockup'ları [CSS Module] · 9 özellik · neden [ink-panel aside] · fiyat bandı+roadmap+kapanış · SEO+temizlik+guardrail. Sayfa 15.01'de erken wire → bölümler `next build` ile doğrulanır. research-phase 15 (2026-07-16) ✅ — Araştırma Bulguları (5 alan + 2 kullanıcı kararı). discuss-phase 15 (2026-07-16) ✅ — Kapsam Tartışması (10 karar).
 **Son Faz Dokümanı:** `phases/PHASE-15.md` (🔄 aktif). Önceki: `phases/PHASE-14.md` (✅ v0.3 son fazı).
 
 ---
@@ -28,15 +28,15 @@
 
 ## Aktif Task
 
-**Task:** **YOK — plan fazı (task yazıldı, çalıştırılmadı).** 7 task hazır (15.01–15.07). Detaylı doğrulama sonrası ilk task `run-task 15.01`. Sıradaki: `/devflow:verify-plan 15`.
-**Durum:** Faz 15 🔄 (plan-phase 15 ✅); Adım = verify-plan; Aktif Versiyon v0.4, Versiyon Sonu Durumu `içerik_fazları`. Fazlar 1–14 ✅ (canlı v0.3).
-**İlerleme:** plan-phase 15 (2026-07-16) ✅ — 7 task dokümanı oluşturuldu, Faz Task Listesi + DURUM güncellendi. Kaynak kod değişmedi (yalnız `_dev/`).
+**Task:** **TASK-15.01 (aktif — henüz başlamadı).** Foundation: `--color-surface` token + `alpfit` ns kökü + `AlpfitShowcase` kabuk + Hero + sayfa rewire. Plan doğrulandı → başlatmaya hazır. Sıradaki: `/devflow:run-task 15.01`.
+**Durum:** Faz 15 🔄 (plan-phase 15 ✅, verify-plan 15 ✅); Adım = task; Aktif Versiyon v0.4, Versiyon Sonu Durumu `içerik_fazları`. Fazlar 1–14 ✅ (canlı v0.3).
+**İlerleme:** verify-plan 15 (2026-07-16) ✅ — 7 task doğrulandı (mekanik: 1 [TASK-15.02 token], yapısal: 0). plan-phase 15 (2026-07-16) ✅ — 7 task dokümanı oluşturuldu. Kaynak kod değişmedi (yalnız `_dev/`).
 
 ---
 
 ## Task Durumu (Aktif Faz)
 
-> **Faz 15 🔄** (plan-phase 15 ✅ — 7 task hazır, hiçbiri çalışmadı). Tam tablo + açıklamalar `phases/PHASE-15.md` Task Listesi. Fazlar 1–14 ✅; son faz (14, v0.3 versiyon-sonu senaryo testi — UAT 11/11, 0 kapsam-içi bug) detayı `phases/PHASE-14.md` + `tasks/archive/`.
+> **Faz 15 🔄** (plan-phase 15 ✅, verify-plan 15 ✅ — 7 task hazır/doğrulandı, hiçbiri çalışmadı; ilk task 15.01 aktif). Tam tablo + açıklamalar `phases/PHASE-15.md` Task Listesi. Fazlar 1–14 ✅; son faz (14, v0.3 versiyon-sonu senaryo testi — UAT 11/11, 0 kapsam-içi bug) detayı `phases/PHASE-14.md` + `tasks/archive/`.
 
 | # | Task | Durum |
 |---|------|-------|
@@ -77,8 +77,8 @@
 
 ## Hızlı Erişim
 
-**Aktif Task:** **YOK — plan fazı (7 task yazıldı, çalışmadı).** Sıradaki: `/devflow:verify-plan 15` → sonra `run-task 15.01`. **⚠️ Devralınan açık takip: canlı `ANTHROPIC_API_KEY` env ayarlı değil** (`/api/chat` 503 → chatbot "offline"; Vercel env'e eklenince açılır).
-**Aktif Faz:** **15 — v0.4 Alpfit Plus ürün vitrini** (🔄; plan-phase 15 ✅; tek faz, 7 task). Adım = verify-plan; sıradaki `/devflow:verify-plan 15`. **Aktif Versiyon v0.4 — Alpfit Plus ürün vitrini**, Versiyon Sonu Durumu: **içerik_fazları**. Fazlar 1–14 ✅ (v0.1+v0.2+v0.3, canlı). Faz dokümanı: `phases/PHASE-15.md`. Feature: `PRD/features/alpfit-plus.md`; tasarım referansı `docs/alpfit-plus-artifact.html`.
+**Aktif Task:** **TASK-15.01** (aktif — henüz başlamadı; plan doğrulandı). Sıradaki: `/devflow:run-task 15.01`. **⚠️ Devralınan açık takip: canlı `ANTHROPIC_API_KEY` env ayarlı değil** (`/api/chat` 503 → chatbot "offline"; Vercel env'e eklenince açılır).
+**Aktif Faz:** **15 — v0.4 Alpfit Plus ürün vitrini** (🔄; plan-phase 15 ✅, verify-plan 15 ✅; tek faz, 7 task). Adım = task; sıradaki `/devflow:run-task 15.01`. **Aktif Versiyon v0.4 — Alpfit Plus ürün vitrini**, Versiyon Sonu Durumu: **içerik_fazları**. Fazlar 1–14 ✅ (v0.1+v0.2+v0.3, canlı). Faz dokümanı: `phases/PHASE-15.md`. Feature: `PRD/features/alpfit-plus.md`; tasarım referansı `docs/alpfit-plus-artifact.html`.
 **Task Sistemi:** `tasks/TASKS-README.md`
 **PRD (karar kaynağı):** `PRD/VIZYON.md` · `PRD/VERSIONS.md` · `PRD/features/`
 **Revize Backlog (bilinen sorunlar):** `docs/REVIZE-BACKLOG.md`
@@ -86,4 +86,4 @@
 
 ---
 
-**Son Güncelleme:** 2026-07-16 — **research-phase 15 ✅ → Adım = plan.** Araştırma Bulguları + teknik kararlar `PHASE-15.md`'ye yazıldı (5 alan; 2 kullanıcı kararı: fiyat bandı **ink-panel inversion**, mockup metni **i18n-dışı sabit-TR**). Kararlar: `components/alpfit/` hibrit + `PhoneMockups` CSS Module (`dir=ltr`); `alpfit` namespace; yeni `--color-surface`; hero iki-sütun Living Flow+compare; `next/image` düşer. 2 karar `DECISIONS.md`'ye eklendi. Guardrail bağlı (a11y mührü + i18n parite). Versiyon Sonu Durumu `içerik_fazları`. Branch `revize/alpfit-plus`. **Sıradaki: `/devflow:plan-phase 15`.**
+**Son Güncelleme:** 2026-07-16 — **verify-plan 15 ✅ → Adım = task.** 7 task dokümanı (15.01–15.07) temiz context'te doğrulandı; referans gerçeklik-kontrolü (kod yolları/token'lar/artifact satır refleri) + milestone/gereksinim/kalite/tutarlılık ✓. **1 mekanik düzeltme** (TASK-15.02 `border-line-soft`→`border-line`, var-olmayan token), **0 yapısal değişiklik**. İlk task 15.01 aktif. Kaynak kod değişmedi (yalnız `_dev/`). Branch `revize/alpfit-plus`. **Sıradaki: `/devflow:run-task 15.01`.**
