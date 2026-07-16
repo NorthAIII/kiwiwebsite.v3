@@ -133,13 +133,19 @@
 
 ## Task Listesi
 
-> Bu bölüm `/devflow:plan-phase 15` oturumunda doldurulacak.
+> `/devflow:plan-phase 15` oturumunda dolduruldu (2026-07-16). 7 task — bölüm-bazlı dikey dilimler (foundation+hero → orta bölümler → final entegrasyon). Sayfa TASK-15.01'de erken wire edilir (Gym→Alpfit swap) → sonraki bölümler gerçek route'ta `next build` ile doğrulanır (jsdom WebGL yok — TESTING.md L37).
 
 <!-- KURAL: Task Listesi yalnızca özet tablodur (#, Task, Durum, kısa açıklama). Task'ın icra detayı / oturum kaydı / çalışma notu buraya değil `tasks/TASK-N.md`'ye yazılır. -->
 
 | # | Task | Durum | Açıklama |
 |---|------|-------|----------|
-| 15.01 | TASK-15.01 | ⬜ Bekliyor | (plan-phase'de belirlenecek) |
+| 15.01 | TASK-15.01 | ⬜ Bekliyor | Foundation: `--color-surface` token + `alpfit` namespace kökü + `AlpfitShowcase` kabuk + Hero (Living Flow + before/after) + sayfa rewire (Gym→Alpfit, PageHeader ns crewOs→alpfit) |
+| 15.02 | TASK-15.02 | ⬜ Bekliyor | Sorun bölümü + 4 Rol kartı (`AlpfitRoles`) + i18n |
+| 15.03 | TASK-15.03 | ⬜ Bekliyor | Mobil uygulama telefon mockup'ları (`PhoneMockups` — CSS Module, `dir=ltr` sabit-TR; en yüksek craft) |
+| 15.04 | TASK-15.04 | ⬜ Bekliyor | 9 Özellik grid (`AlpfitFeatures`) + i18n |
+| 15.05 | TASK-15.05 | ⬜ Bekliyor | Neden Alpfit Plus (`AlpfitWhy` — why-list + koyu aside ink-panel inversion) + i18n |
+| 15.06 | TASK-15.06 | ⬜ Bekliyor | Fiyat bandı (`AlpfitPricing` — ink-panel) + Yol haritası (+Store) + Kapanış + i18n |
+| 15.07 | TASK-15.07 | ⬜ Bekliyor | SEO/metadata (Alpfit Plus konumu, AP3) + eski Gym temizliği + guardrail doğrulama (a11y çift-tema · parite · build · RTL) |
 
 **Durum simgeleri:** ⬜ Bekliyor | 🔄 Devam ediyor | ⏸️ Duraklatıldı | ✅ Tamamlandı | 🔴 Bloke | ❌ İptal
 
@@ -198,4 +204,4 @@
 ---
 
 **Oluşturulma:** 2026-07-16 (discuss-phase 15)
-**Son Güncelleme:** 2026-07-16 — research-phase 15: Araştırma Bulguları yazıldı (5 alan: bileşen yapısı `components/alpfit/` hibrit + izole mockup · telefon CSS Module birebir + `dir=ltr` sabit-TR · fiyat bandı **ink-panel inversion** [kullanıcı kararı] · `alpfit` namespace `crew` deseni + mockup metni i18n-dışı [kullanıcı kararı] · hero iki-sütun Living Flow+compare). Yeni token `--color-surface`; `next/image` düşer; a11y mührü + i18n parite zaten bağlı. Adım = plan.
+**Son Güncelleme:** 2026-07-16 — plan-phase 15: Task Listesi dolduruldu (7 task, 15.01–15.07 — foundation+hero · sorun+roller · telefon mockup'ları [CSS Module] · 9 özellik · neden [ink-panel aside] · fiyat bandı+roadmap+kapanış · SEO+temizlik+guardrail). Sayfa 15.01'de erken wire edilir (Gym→Alpfit) → bölümler gerçek route'ta `next build` ile doğrulanır. Adım = verify-plan.
