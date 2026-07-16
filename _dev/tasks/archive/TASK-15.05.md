@@ -1,6 +1,6 @@
 # TASK-15.05: Neden Alpfit Plus bölümü (why-list + koyu aside, ink-panel inversion)
 
-**Durum:** ⬜ Bekliyor
+**Durum:** ✅ Tamamlandı
 **Modül:** M2 (Sayfalar & Bölümler) + M1 (ink-panel token deseni) + M4 (i18n)
 **Feature:** AP1 (port+bölümler) · AP2 (i18n namespace)
 **Faz:** Phase 15 (phases/PHASE-15.md)
@@ -95,9 +95,35 @@ messages/es.json                            # alpfit.why.* — TR kopyası (stal
 
 ## Oturum Kayıtları
 
-### Oturum — [TARİH]
+### Oturum — 2026-07-16
 
-**Durum:** [doldurulacak]
+**Durum:** ✅ Tamamlandı
+
+**Yapılanlar:**
+- **`AlpfitWhy.tsx` (YENİ):** artifact WHY bölümü (`_dev/docs/alpfit-plus-artifact.html` L660-685 / CSS L226-251) React+Tailwind port. İki-sütun `lg:grid-cols-[1.12fr_1fr]` (mobilde tek); section-head roles/features deseniyle birebir (sub yok). Sol `why-list`: `lead` kartı (opak yeşil-tint `bg-[color-mix(green 8%,surface)]` + `border-green/25` + başlık + açıklama + `badge` "18 rakip" dot'lu) + 4 düz madde (`ITEMS=[mobile,multibranch,nohardware,singlesource]` map, `border-t border-line py-6`). Sağ `<aside>`: **site ink-panel inversion** (`bg-ink text-canvas`, `rounded-[18px]`, artifact `--shadow-lg` portu, `lg:sticky lg:top-24`) — pull-quote `t.rich` `<b>` yeşil vurgu `text-pulse-ink` + muted kaynak `text-canvas/65` üst-border.
+- **`AlpfitShowcase`:** `AlpfitFeatures`'tan sonra `<AlpfitWhy/>` bağlandı (import + render).
+- **`alpfit.why` 5-dil i18n** (+29 satır/dil, kanonik JSON round-trip): `eyebrow,title,lead.{t,d,badge},items.{4×{t,d}},asideQ,asideSrc` (15 leaf). TR yetkili (artifact L664-681); en/ar/de/es TR-kopya (versiyon-sınırı stale). `asideQ` `<b>…</b>` markup + t.rich renderer.
+
+**Sorunlar:**
+- **axe color-contrast yanlış-pozitif (light, 5 dil):** Aside yeşil vurgu `<b>` (`#6fe36f` on panel `#12140f` = gerçek 11.5:1) axe'te `bgColor=#f7f6f1` (body) → 1.5:1 fail verdi. Kök neden ampirik teşhisle bulundu (`elementsFromPoint`): `scrollThrough` sona `scrollTo(0,0)` yapıp aside'ı **viewport-dışı** bırakıyor → küçük inline `<b>` için `elementsFromPoint` boş dönünce axe panel zeminini çözemeyip `<body>` canvas'ına düşüyor (`<p>` krem metin viewport-dışı da "incomplete" kalıp geçerken küçük inline node kesin-fail veriyor). İlk hipotez (dekoratif radyal glow örtüşmesi) çürütüldü — glow kaldırıldıktan sonra da fail sürdü. **Çözüm:** vurgu `<b>`'ye açık `bg-ink` verildi (panelle **aynı renk** → görsel değişim sıfır) → axe artık opak paneli doğrudan ölçüyor → 11.5:1 (light) / 4.74:1 (dark) geçer. Vurgu korundu.
+
+**Kararlar:**
+- **Muted kaynak `text-canvas/55` → `/65`:** task/artifact `--band-soft` (`/55`) öneriyordu ama kontrast hesabı + MEMORY precedent (TASK-8.02) dark temada `/55`'in AA'da kaldığını (≈3.97:1<4.5) gösterdi; task'ın kendi kriteri "light+dark AA geçmeli" olduğu için `/65`'e çıkarıldı (dark ≈5.5:1). *docs/DECISIONS.md'ye eklendi: Hayır (icra-detayı; MEMORY tuzağının uygulaması).*
+- **Dekoratif radyal glow kaldırıldı:** research §3 zaten *site ink-panel inversion* desenini seçmişti; site ink panelleri (Crew OS/Footer) glow taşımaz → desenle tutarlı, a11y yüzeyi küçülür. *DECISIONS: Hayır.*
+- **lead kartı zemini opak `color-mix(green 8%,surface)`** (task'ın `bg-green/[.08]` şeffaf önerisi yerine): artifact-birebir + a11y-deterministik + features/roles opak-kart deseni. *DECISIONS: Hayır.*
+- **Yeni token yok** (task kısıtı korundu): `--color-pulse-ink` (@theme, TD4) → `text-pulse-ink` utility; `--band-*` eklenmedi.
+
+**Dosya Değişiklikleri:**
+- `src/components/alpfit/AlpfitWhy.tsx` → YENİ (why-list + ink-panel aside)
+- `src/components/alpfit/AlpfitShowcase.tsx` → `AlpfitWhy` import + render
+- `messages/{tr,en,ar,de,es}.json` → `alpfit.why` bloğu (+29 satır/dil)
+
+**Test Sonuçları:**
+- `next build`: 37/37 SSG, exit 0, 0 MISSING_MESSAGE / 0 warn (t.rich + arbitrary color-mix derlendi).
+- Prerender grep (5 dil): eyebrow=1, lead=1, badge "18 rakip"=1, 4/4 madde başlığı, aside `<b class="…text-pulse-ink">kaç randevuya gelinmedi</b>`=1, src=1; AR sayfa `dir=rtl`.
+- Vitest 39/39 (i18n-parity `why.*` 15 leaf × 5 dil eşit).
+- Playwright a11y: spor-salonu 10/10 (5 dil × light+dark, WCAG AA 0 ihlal) → tam süit **52/52** (çapraz-regresyonsuz).
+- Görsel craft (light+dark+AR-RTL screenshot): koyu aside doğru inversion (light koyu panel/krem, dark krem panel/koyu), yeşil vurgu iki temada okunur, lead kartı + 4 ayraç, AR tam aynalanır (aside↔list yer değiştirir, badge dot logical).
 
 ---
 

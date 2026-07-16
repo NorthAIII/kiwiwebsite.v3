@@ -6,6 +6,7 @@ import AlpfitHero from "./AlpfitHero";
 import AlpfitRoles from "./AlpfitRoles";
 import PhoneMockups from "./PhoneMockups";
 import AlpfitFeatures from "./AlpfitFeatures";
+import AlpfitWhy from "./AlpfitWhy";
 
 /**
  * Alpfit Plus — kulüp işletme yazılımı ürün vitrini (F2.8 zengin yeniden tasarım).
@@ -56,6 +57,8 @@ export default function AlpfitShowcase() {
       <PhoneMockups />
 
       <AlpfitFeatures />
+
+      <AlpfitWhy />
     </main>
   );
 }

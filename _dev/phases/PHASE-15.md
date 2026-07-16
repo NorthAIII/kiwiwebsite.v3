@@ -143,7 +143,7 @@
 | 15.02 | TASK-15.02 | ✅ Tamamlandı | Sorun bölümü (inline section-head + `<hr>` ayraç) + 4 Rol kartı (`AlpfitRoles` — telefon/monitor ikon, Telefon/Web rozeti, RTL mantıksal-prop) + `alpfit.problem`/`alpfit.roles` i18n (5-dil) |
 | 15.03 | TASK-15.03 | ✅ Tamamlandı | Mobil uygulama telefon mockup'ları (`PhoneMockups` + `.module.css` — 4 iPhone, CSS Module birebir port, `dir=ltr` sabit-TR; en yüksek craft) + `alpfit.app` i18n (5-dil) |
 | 15.04 | TASK-15.04 | ✅ Tamamlandı | 9 Özellik grid (`AlpfitFeatures` — artifact `.features` port, `FEATURES` map, `gap-px` hairline + `color-mix` hover, `repeat(3)`→2→1) + `alpfit.features` i18n (5-dil) |
-| 15.05 | TASK-15.05 | ⬜ Bekliyor | Neden Alpfit Plus (`AlpfitWhy` — why-list + koyu aside ink-panel inversion) + i18n |
+| 15.05 | TASK-15.05 | ✅ Tamamlandı | Neden Alpfit Plus (`AlpfitWhy` — why-list opak-tint lead kartı + "18 rakip" badge + 4 madde + koyu aside site ink-panel inversion `bg-ink`+`t.rich` yeşil vurgu) + `alpfit.why` i18n (5-dil) |
 | 15.06 | TASK-15.06 | ⬜ Bekliyor | Fiyat bandı (`AlpfitPricing` — ink-panel) + Yol haritası (+Store) + Kapanış + i18n |
 | 15.07 | TASK-15.07 | ⬜ Bekliyor | SEO/metadata (Alpfit Plus konumu, AP3) + eski Gym temizliği + guardrail doğrulama (a11y çift-tema · parite · build · RTL) |
 

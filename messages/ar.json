@@ -365,6 +365,35 @@
         "t": "Bildirim & Retention",
         "d": "Hatırlatma ve duyurular; risk altındaki üyeyi önceden gör."
       }
+    },
+    "why": {
+      "eyebrow": "Neden Alpfit Plus",
+      "title": "Rakip sadece takvim tutarken, biz kulübün tamamını yönetiriz.",
+      "lead": {
+        "t": "Diyetisyen aynı platformda",
+        "d": "Danışan takibi, beslenme programı ve ölçüm okuma tek yerde. Diyetisyeninizle çalışıyorsanız, üye programını telefonundan görür — WhatsApp trafiği biter.",
+        "badge": "İncelediğimiz 18 rakip üründe yok."
+      },
+      "items": {
+        "mobile": {
+          "t": "Hem üye hem antrenör için mobil uygulama",
+          "d": "Antrenör kendi telefonundan takvimini yönetir, tek dokunuşla yoklama alır. Yerli rakiplerin çoğunda antrenör uygulaması yok."
+        },
+        "multibranch": {
+          "t": "Çok şube, butik fiyatına",
+          "d": "Şubeleri tek ekrandan yönetin. Büyüyen stüdyo zincirleri için ilk günden tasarlandı."
+        },
+        "nohardware": {
+          "t": "Donanımsız, sade",
+          "d": "Turnike, kart okuyucu ya da ekstra cihaza gerek yok. Bugün kur, bugün kullan."
+        },
+        "singlesource": {
+          "t": "Tek doğru veri kaynağı",
+          "d": "Randevu, üyelik, ciro ve ölçüm aynı yerde — çift kayıt ve ay sonu mutabakatı biter."
+        }
+      },
+      "asideQ": "“Geçen ay <b>kaç randevuya gelinmedi</b>, elinizde rakam var mı?”",
+      "asideSrc": "Çoğu kulüpte bu rakam bilinmiyor. Alpfit Plus’ta ekranda duruyor — boş kapasite görünür olunca kampanyayı da oraya kurarsınız."
     }
   },
   "forum": {
