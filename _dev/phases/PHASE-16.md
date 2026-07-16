@@ -111,15 +111,17 @@
 
 ## Task Listesi
 
-> Bu bölüm `/devflow:plan-phase 16` oturumunda doldurulur.
+> `/devflow:plan-phase 16` oturumunda dolduruldu (2026-07-16). Bu faz **tek mekanik task** gerektiriyor (TB-D1); TB-D2 ve REL task değil (aşağıdaki notlar).
 
 | # | Task | Durum | Açıklama |
 |---|------|-------|----------|
-| 16.01 | TASK-16.01 | ⬜ Bekliyor | (plan-phase doldurur — örn. gym PNG disk hijyeni + npm audit) |
+| 16.01 | TASK-16.01 | ⬜ Bekliyor | TB-D1 — gym PNG disk hijyeni (`public/gym/*.png` 4 orphan sil, ~1.7MB, 0 tüketici) + M2:123 stale açıklama v0.4 senkronu |
 
 **Durum simgeleri:** ⬜ Bekliyor | 🔄 Devam ediyor | ⏸️ Duraklatıldı | ✅ Tamamlandı | 🔴 Bloke | ❌ İptal
 
-**Not (faz-dışı operasyonel aksiyon, kayıt):** v0.4 TR production release bu oturumda yapıldı (task değil — operasyonel) → `docs/RELEASE-v0.4.md`. Canlı = `f173234`.
+**Not (TB-D2 — task değil, kayıtla kapanır):** npm audit / bağımlılık denetimi research-phase 16'da tamamlandı — deliverable = audit raporu + karar kaydı (`docs/DECISIONS.md` 2026-07-16, kabul + kayıt; `overrides`/downgrade yok, kod/paket değişmez). Kalan icra işi yok → review-phase 16'da doğrulanıp ✅ kapanır (kod task'ı açılmadı).
+
+**Not (REL — faz-dışı operasyonel aksiyon, kayıt):** v0.4 TR production release bu oturumda yapıldı (task değil — operasyonel) → `docs/RELEASE-v0.4.md`. Canlı = `f173234`.
 
 ---
 
@@ -148,4 +150,4 @@
 ---
 
 **Oluşturulma:** 2026-07-16 (discuss-phase 16)
-**Son Güncelleme:** 2026-07-16 — research-phase 16: Araştırma Bulguları yazıldı. TB-D1 (gym PNG) grep 0 tüketici → güvenle silinir + M2:123 stale açıklama güncellenir. TB-D2 (npm audit) tek kök neden = Next'e gömülü `postcss@8.4.31`, sömürülemez, güvenli sürüm-fix'i yok (her Next 15.x/16.x aynı pin) → **kabul + kayıt** (kullanıcı onayı; `docs/DECISIONS.md` 2026-07-16). Adım = plan.
+**Son Güncelleme:** 2026-07-16 — plan-phase 16: 1 task dokümanı oluşturuldu — TASK-16.01 (TB-D1 gym PNG disk hijyeni + M2:123 v0.4 senkronu). TB-D2 (npm audit) task değil (research'te tamamlandı — audit raporu + DECISIONS kaydı; review-phase'de ✅ kapanır). Adım = verify-plan.
