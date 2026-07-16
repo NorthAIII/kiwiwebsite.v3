@@ -142,7 +142,7 @@
 | 15.01 | TASK-15.01 | ✅ Tamamlandı | Foundation: `--color-surface` token + `alpfit` namespace kökü + `AlpfitShowcase` kabuk + Hero (Living Flow + before/after) + sayfa rewire (Gym→Alpfit, PageHeader ns crewOs→alpfit) |
 | 15.02 | TASK-15.02 | ✅ Tamamlandı | Sorun bölümü (inline section-head + `<hr>` ayraç) + 4 Rol kartı (`AlpfitRoles` — telefon/monitor ikon, Telefon/Web rozeti, RTL mantıksal-prop) + `alpfit.problem`/`alpfit.roles` i18n (5-dil) |
 | 15.03 | TASK-15.03 | ✅ Tamamlandı | Mobil uygulama telefon mockup'ları (`PhoneMockups` + `.module.css` — 4 iPhone, CSS Module birebir port, `dir=ltr` sabit-TR; en yüksek craft) + `alpfit.app` i18n (5-dil) |
-| 15.04 | TASK-15.04 | ⬜ Bekliyor | 9 Özellik grid (`AlpfitFeatures`) + i18n |
+| 15.04 | TASK-15.04 | ✅ Tamamlandı | 9 Özellik grid (`AlpfitFeatures` — artifact `.features` port, `FEATURES` map, `gap-px` hairline + `color-mix` hover, `repeat(3)`→2→1) + `alpfit.features` i18n (5-dil) |
 | 15.05 | TASK-15.05 | ⬜ Bekliyor | Neden Alpfit Plus (`AlpfitWhy` — why-list + koyu aside ink-panel inversion) + i18n |
 | 15.06 | TASK-15.06 | ⬜ Bekliyor | Fiyat bandı (`AlpfitPricing` — ink-panel) + Yol haritası (+Store) + Kapanış + i18n |
 | 15.07 | TASK-15.07 | ⬜ Bekliyor | SEO/metadata (Alpfit Plus konumu, AP3) + eski Gym temizliği + guardrail doğrulama (a11y çift-tema · parite · build · RTL) |
@@ -204,4 +204,4 @@
 ---
 
 **Oluşturulma:** 2026-07-16 (discuss-phase 15)
-**Son Güncelleme:** 2026-07-16 — run-task 15.03: `PhoneMockups.tsx` + `PhoneMockups.module.css` (4 iPhone mockup birebir port; paylaşılan StatusBar/TabBar, 4 bespoke ekran, `dir="ltr"` sabit-TR içerik) + `alpfit.app` 5-dil i18n. CSS Module bu repoda ilk kullanım — Next 15 App Router sıfır-config sorunsuz derledi (research §2 kararı doğrulandı, fallback gerekmedi). Vitest 39/39 · build 37/37 SSG exit 0 · a11y 52/52 (spor-salonu 10/10 çift-tema + AR RTL, çapraz regresyonsuz) · görsel light+dark+AR-RTL craft doğrulandı. Task Listesi 15.03 → ✅. Adım = task (sıradaki `/devflow:run-task 15.04`).
+**Son Güncelleme:** 2026-07-16 — run-task 15.04: `AlpfitFeatures.tsx` (YENİ — artifact `.features`/`.feat` React+Tailwind port; `FEATURES=["f1".."f9"]` map crew/roles deseni; `gap-px` hairline + opak `bg-surface` hücreler + `color-mix` yeşil hover tint; `repeat(3)`→sm2→lg3; section-head sub-yok) + `AlpfitShowcase`'e `#ozellikler` bağlandı + `alpfit.features` 5-dil i18n (+40 net satır/dil). Tailwind arbitrary `bg-[color-mix(...)]` repoda ilk — Next 15 sıfır-config derledi. Vitest 39/39 · build 37/37 SSG exit 0 · a11y spor-salonu 10/10 (çift-tema + AR RTL, WCAG AA 0 ihlal) · görsel light+dark+AR-RTL craft doğrulandı (3×3 hairline grid). Task Listesi 15.04 → ✅. Adım = task (sıradaki `/devflow:run-task 15.05`).

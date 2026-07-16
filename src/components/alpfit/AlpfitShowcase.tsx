@@ -5,6 +5,7 @@ import Reveal from "@/components/Reveal";
 import AlpfitHero from "./AlpfitHero";
 import AlpfitRoles from "./AlpfitRoles";
 import PhoneMockups from "./PhoneMockups";
+import AlpfitFeatures from "./AlpfitFeatures";
 
 /**
  * Alpfit Plus — kulüp işletme yazılımı ürün vitrini (F2.8 zengin yeniden tasarım).
@@ -53,6 +54,8 @@ export default function AlpfitShowcase() {
       <AlpfitRoles />
 
       <PhoneMockups />
+
+      <AlpfitFeatures />
     </main>
   );
 }

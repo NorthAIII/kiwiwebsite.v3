@@ -325,6 +325,46 @@
           "screen": "Gelişim"
         }
       }
+    },
+    "features": {
+      "eyebrow": "Ne yapar",
+      "title": "Kulübün tamamını yönetir — sadece takvim değil.",
+      "f1": {
+        "t": "Takvim & Rezervasyon",
+        "d": "Self-servis randevu, bekleme listesi, iptal / no-show adaleti, push hatırlatma."
+      },
+      "f2": {
+        "t": "Grup Dersleri",
+        "d": "Tekrarlı program, kapasite, yoklama ve doluluk — reformer'dan WOD'a."
+      },
+      "f3": {
+        "t": "Üyelik & Paket",
+        "d": "Süreli üyelik ve seans paketi, kalan hak, bitişe yaklaşan üyeler."
+      },
+      "f4": {
+        "t": "Üye 360",
+        "d": "Üyelik, PT, ölçüm, ödeme ve diyetisyen — hepsi tek ekranda."
+      },
+      "f5": {
+        "t": "Finans & Ciro",
+        "d": "Satış ↔ ödeme, borç takibi, nakit ciro; şube ve eğitmen bazlı kırılım, iade."
+      },
+      "f6": {
+        "t": "Çok-Şube Cockpit",
+        "d": "Bütün şubeler tek ekranda; tıkla, şubenin detayına in."
+      },
+      "f7": {
+        "t": "Antrenör Performansı",
+        "d": "Kim kaç seans verdi, kim ne sattı — rakamla."
+      },
+      "f8": {
+        "t": "Raporlar",
+        "d": "Excel (XLSX/CSV) ve PDF çıktı; ay sonunu beklemeden."
+      },
+      "f9": {
+        "t": "Bildirim & Retention",
+        "d": "Hatırlatma ve duyurular; risk altındaki üyeyi önceden gör."
+      }
     }
   },
   "forum": {
