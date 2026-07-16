@@ -227,6 +227,10 @@
   "alpfit": {
     "back": "Ana sayfa",
     "cta": "Ücretsiz keşif görüşmesi al",
+    "meta": {
+      "title": "Alpfit Plus — Kulüp İşletme Yazılımı",
+      "description": "Kulübünüzün tüm işi tek platformda: randevu, grup dersleri, üyelik, ciro ve diyetisyen. Reformer, boks, CrossFit ve çok şubeli kulüpler için spor salonu yazılımı."
+    },
     "hero": {
       "pilot": "Weekend Training Club'da canlı pilotta",
       "h1lead": "Kulübünüzün tüm işi ",

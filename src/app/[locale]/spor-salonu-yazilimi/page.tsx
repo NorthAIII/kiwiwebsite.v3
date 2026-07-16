@@ -13,9 +13,12 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
   const { locale } = await params;
-  const title =
-    locale === "tr" ? "Spor Salonu Yönetim Yazılımı — Kiwi AI Lab" : "Gym Management Software — Kiwi AI Lab";
-  return { title, alternates: localizedAlternates(locale, "/spor-salonu-yazilimi") };
+  const t = await getTranslations({ locale, namespace: "alpfit" });
+  return {
+    title: `${t("meta.title")} — Kiwi AI Lab`,
+    description: t("meta.description"),
+    alternates: localizedAlternates(locale, "/spor-salonu-yazilimi"),
+  };
 }
 
 export default async function GymSoftwarePage({
