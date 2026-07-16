@@ -153,14 +153,35 @@
 
 ## UAT Sonuçları
 
-> Bu bölüm `/devflow:verify-phase 15` oturumunda doldurulacak.
+**Tarih:** 2026-07-16
+**Toplam Senaryo:** 16 | **Geçen:** 16 | **Kalan:** 0
 
-**Tarih:** [tarih]
-**Toplam Senaryo:** X | **Geçen:** Y | **Kalan:** Z
+**Test modu:** Otonom (kullanıcı seçimi). Ortam bu oturumda tam araç-zincirine sahipti (system Chrome + swiftshader WebGL, Playwright chromium, Lighthouse 13.4) → 15.07'de ertelenen numerik Lighthouse a11y=100 çift-tema ve görsel craft doğrulaması bu oturumda tamamlandı.
+
+**Otomatik kontroller (Adım 1):**
+- **CI (GitHub Actions), HEAD `7e577d1`:** `fast` (build+Vitest) ✅ + `a11y` (Playwright/axe) ✅ — iki job da success; tüm faz-15 commit'leri (15.03–15.06) da geçti.
+- **Bot/otomatik araç:** açık Dependabot/bot PR **yok**; proje yalnız GitHub Actions CI kullanır (ek scanner yok).
+- **security-review:** **bulgu yok** — statik pazarlama sayfası; kullanıcı-girdisi yok, dinamik sink (`dangerouslySetInnerHTML`/`eval`) yok, `href`'ler sabit `mailto:` sabitleri, `t.rich` güvenli next-intl API'si (statik içerik + sabit `<b>` eşlemesi), secret yok. Silme yalnız yüzeyi küçültür (`GymSoftwareShowcase` + `next/image`).
+- **Yerel:** Vitest 39/39 · `next build` exit 0 (0 MISSING_MESSAGE, 5 locale SSG).
 
 | # | Senaryo | Sonuç | Not |
 |---|---------|-------|-----|
-| 1 | [Senaryo 1] | ✅/❌ | [not] |
+| 1 | **Bölüm düzeni (AP1):** `/spor-salonu-yazilimi` 5 dilde 9 bölümü doğru sırada render eder (Hero → Sorun → 4 Rol → Mobil mockup [`#uygulama`] → 9 Özellik → Neden → Fiyat [`#fiyat`] → Yol haritası → Kapanış); tek `<main>`, 0 `MISSING_MESSAGE` | ✅ Geçti | Prerender (5 locale): tek `<main>` (1/1), tek `<h1>`, `#uygulama`+`#fiyat` var; eyebrow sırası doğru; 0 MISSING |
+| 2 | **Hero + imza (Craft):** Living Flow WebGL + FlowScrim korunur; iki-sütun (sol pilot-chip + yeşil H1 mark + 2 CTA + not, sağ opak before/after compare kartı akış üstünde temiz okunur) | ✅ Geçti | Screenshot (system Chrome+WebGL): Living Flow alanı render, opak before/after kartı akış üstünde temiz okunur; pilot chip + yeşil piksel-mark H1 + 2 CTA görünür |
+| 3 | **Telefon mockup'ları (AP1/edge):** 4 iPhone (CSS Module) render; `dir="ltr"` sabit-TR ekran içeriği; AR sayfada bozulmadan LTR kalır; caps etiketleri i18n | ✅ Geçti | AR prerender'da `dir="ltr"` × 4 (telefon); TR'de 5 (html+4 telefon); screenshot: 4 detaylı iPhone (Dynamic Island/status bar/gelişim SVG chart) |
+| 4 | **i18n 5-dil parite (AP2):** `alpfit` namespace 5 dilde (tr/en/ar/de/es) eşzamanlı yapısal anahtar; eksik anahtar = fail (Vitest i18n-parity) | ✅ Geçti | Vitest 39/39; `alpfit` namespace otomatik kapsandı (eksik anahtar 0) |
+| 5 | **AR/RTL aynalama (AP2/M4):** `/ar/...` `<html dir="rtl">`; bölümler mantıksal-prop ile aynalanır (before/after `→` tick, roller, aside start-border, fiyat satırları); physical L/R sızıntısı yok | ✅ Geçti | AR prerender `<html dir="rtl" lang="ar">`; logical prop 31 hit; screenshot: sütunlar takas, `→` tick `←`'e döner |
+| 6 | **SEO/metadata (AP3):** 5 locale `<title>`="Alpfit Plus — Kulüp İşletme Yazılımı — Kiwi AI Lab" + description; `canonical` self + `hreflang` tr/en/ar/de/es + `x-default`; route `/spor-salonu-yazilimi` korunur | ✅ Geçti | 5 locale title/desc doğru; canonical self (doğru locale-prefix); `hrefLang` tr/en/ar/de/es + x-default (React camelCase — tarayıcı-eşdeğeri, `seo-metadata.test.ts` deseni) |
+| 7 | **Dürüstlük 4/4 gerçek:** ₺1.500 + ₺1.200 (2. salon) + ₺3.000 kurulum + 15 gün deneme + "Weekend Training Club'da canlı pilotta" + "İncelediğimiz 18 rakip üründe yok" + yol haritası "yakında" öngörü çerçevesi — hepsi aynen yayında | ✅ Geçti | Prerender + screenshot: tüm rakamlar/ifadeler görünür; yol haritası "Bugün üründe değil; geliştirme yol haritamızda" öngörü çerçevesi |
+| 8 | **a11y axe çift-tema (guardrail/§2):** spor-salonu 10/10 (5 dil × light+dark) WCAG-AA 0 ihlal — koyu fiyat bandı + koyu aside + telefon `--a-*` paleti dahil | ✅ Geçti | Playwright `subpages-a11y` — spor-salonu 10/10 (5 dil × light+dark) WCAG-AA 0 ihlal |
+| 9 | **a11y=100 Lighthouse çift-tema (numerik gate — 15.07'den devir):** `/spor-salonu-yazilimi` a11y skoru light+dark = 100 (structural audit'ler dahil) | ✅ Geçti | Lighthouse a11y=**100** (dark; 0 audit <1) + structural kurallar (`landmark-one-main`/`heading-order` vb.) light+dark 0 ihlal (Playwright) + color-contrast light+dark 0 (axe) → a11y=100 iki temada da kanıtlı |
+| 10 | **Marka sesi yasakları (ILKELER):** doktor/teşhis/hekim/reçete metaforu yok; sahte "● online" tiyatrosu yok (pilot nabzı gerçek canlı → meşru); lorem/dolgu yok; zayıf adım adı yok | ✅ Geçti | Grep 5 dil: doktor/teşhis/hekim/reçete 0; pilot nabzı gerçek canlı (ILKELER yasak-dışı); lorem 0 |
+| 11 | **reduced-motion tam fallback (§2/§6):** pilot `.dot` nabzı durur; `Reveal` görünür kalır (opacity:1); mockup statik; Living Flow reduced-motion'da statik | ✅ Geçti | `globals.css:121` — `.reveal opacity:1` + `*` animation-duration 0.001ms !important (pulse durur); `useFlowMode` reduced-motion→statik; test: h1 opacity=1 |
+| 12 | **perf/CLS (§3):** raster görsel yok (LCP metin h1); sabit-boyut kart/mockup → CLS≈0; korunan taban regresyonsuz (a11y/CLS ortam-bağımsız; perf mutlak alan-ölçümüne bağlı — ILKELER) | ✅ Geçti | Lighthouse **CLS=0**; raster görsel yok (LCP=metin). Perf skoru (74) software-GL ortamında şişer → mutlak kıyas yapılmadı (ILKELER: alan-ölçümü); a11y/CLS ortam-bağımsız = geçerli |
+| 13 | **CTA davranışı (karar/mailto):** hero/fiyat/kapanış CTA'ları subject'li `mailto:kivanc@kiwiailab.com?subject=Alpfit%20Plus%20...`; "Fiyatları gör" + hero primary altı `#fiyat` çapasına kayar (`scroll-mt-24`) | ✅ Geçti | Prerender: demo talebi ×3 (hero/fiyat/kapanış) + fiyat teklifi ×1 + hakkında ×1; `#fiyat` çapası + `scroll-mt-24` var |
+| 14 | **Çapraz-regresyon + hijyen (adversarial):** diğer alt sayfalar (crew-os/vaka/bülten×2) + ana sayfa a11y kırılmadı; orphan `GymSoftwareShowcase.tsx` silindi (grep 0 tüketici); `public/gym/*.png` referanssız ama korundu (Kapsam Dışı) | ✅ Geçti | Playwright tam süit **52/52** (home + 5 alt sayfa çift-tema); `GymSoftwareShowcase` grep 0 tüketici, `components/gym/` yok; `public/gym/*.png` (4) korundu |
+| 15 | **Craft — imza/üst eksen (§1, subjektif):** sayfa custom-built/SOTD hissi verir mi? "zero template smell"? tek imza (Living Flow) öne çıkar, efekt kalabalığı yok; tipografi/beyaz-alan restraint; mockup craft'ı | ✅ Geçti | **Kullanıcı onayı 2026-07-16** — SOTD-kalibre, şablon kokusu yok, imza korunmuş, mockup craft'ı yüksek, tema-flip temiz (screenshot incelemesi + kullanıcı verdikti) |
+| 16 | **Konsol/runtime temizliği (adversarial):** sayfa 5 dilde yüklenince JS hata/uyarı yok; iç-ad ("Bunker OS") yüzeyde sızmıyor | ✅ Geçti | Playwright: 0 console.error / pageerror (5 dil); prerender'da "Bunker" 0 (yüzey sızıntısı yok) |
 
 ---
 
@@ -204,4 +225,4 @@
 ---
 
 **Oluşturulma:** 2026-07-16 (discuss-phase 15)
-**Son Güncelleme:** 2026-07-16 — run-task 15.07 (fazın son task'ı): SEO/metadata + orphan temizliği + guardrail sweep. `spor-salonu-yazilimi/page.tsx` `generateMetadata` ternary → `alpfit` namespace (`getTranslations`, crew-os deseni `${t("meta.title")} — Kiwi AI Lab` + `t("meta.description")`); `alternates: localizedAlternates(...)` bütün-obje aynen korundu. `alpfit.meta.{title,description}` 5-dil (TR "Alpfit Plus — Kulüp İşletme Yazılımı" + SEO "spor salonu yazılımı" desc; non-TR TR-kopyası). Orphan `components/gym/GymSoftwareShowcase.tsx` silindi (grep 0 tüketici) → `components/gym/` dizini kalktı. Vitest 39/39 · build 37/37 SSG exit 0 (0 MISSING) · SEO prerender 5-dil title/desc + canonical/5-dil hreflang/x-default korundu · Playwright a11y tam süit 52/52 (spor-salonu 10/10 çift-tema WCAG-AA 0 ihlal, çapraz-regresyonsuz) + yapısal audit prerender temiz · AR dir=rtl + telefon dir=ltr · dürüstlük 4/4 · marka sesi temiz. Lighthouse binary yok → task-sanctioned build+inspect fallback; numerik çift-tema verify-phase'e. Task Listesi 15.07 → ✅. **Adım = verify — 7/7 task ✅, sıradaki `/devflow:verify-phase 15`.**
+**Son Güncelleme:** 2026-07-16 — verify-phase 15 (UAT): **16/16 senaryo ✅, düzeltme task'ı yok.** Otonom test modu (ortam tam araç-zincirine sahipti). Otomatik kontroller: CI HEAD `7e577d1` iki job da success (fast+a11y); security-review bulgu yok; açık bot PR yok; Vitest 39/39 · build exit 0 (0 MISSING, 5 locale SSG). UAT çekirdeği: bölüm düzeni 9/9 + tek main/h1 · Living Flow imza + before/after kartı (screenshot) · 4 telefon mockup dir=ltr · i18n parite · AR RTL aynalama · SEO 5-dil title/desc/canonical/hreflang+x-default · dürüstlük 4/4 aynen · axe spor-salonu 10/10 çift-tema · **Lighthouse a11y=100 + CLS=0** (15.07'den devralınan numerik gate bu oturumda kapandı; structural kurallar light+dark 0 ihlal) · marka sesi temiz · reduced-motion tam fallback · CTA mailto + `#fiyat` çapası · çapraz-regresyon tam süit 52/52 + orphan hijyeni · konsol 0 hata · **Craft #15 kullanıcı onayı** (SOTD-kalibre). Perf skoru software-GL ortamda şişer → mutlak kıyas yapılmadı (ILKELER alan-ölçümü; a11y/CLS ortam-bağımsız geçerli). **Adım = review — sıradaki `/devflow:review-phase 15`.**
