@@ -1,6 +1,6 @@
 # Phase 15: Alpfit Plus ürün vitrini (F2.8 zengin yeniden tasarım)
 
-**Durum:** 🔄 Devam ediyor
+**Durum:** ✅ Tamamlandı
 
 <!-- Bu doküman faza girince (discuss-phase) oluştu; durum 🔄 ile başlar. -->
 <!-- KURAL: Bu doküman tek-okunabilir kalmalı (CLAUDE.md → Boyut ve Bölünme). Bir bölüm büyüyüp kırmızı çizgiye (~20k token) yaklaşırsa faz HÂLÂ AKTİFKEN `PHASE-15-<slug>.md`'ye bölünür — parent'ta self-yeten özet + pointer kalır, içerik taşınıp silinir, parent o fazın mini-index'i olur. Tamamlandıktan (✅) sonra bölme yasaktır; verify-phase ve review-phase fazı dondurmadan önce boyutu kontrol eder. -->
@@ -187,42 +187,61 @@
 
 ## Retrospektif
 
-> Bu bölüm `/devflow:review-phase 15` oturumunda doldurulacak.
+> `/devflow:review-phase 15` oturumunda dolduruldu (2026-07-16).
 
 ### Ne İyi Gitti?
-- [Tekrarlanması gereken pratikler]
+- **Araştırmada damgalanan zor tasarım kararları icrayı temiz dikey dilimlere böldü — yeniden-iş (rework) sıfır.** ink-panel inversion + tek `--color-surface` token + mockup i18n-dışı sabit-TR + crew named-key+map deseni önden kararlaştırıldığı için 7 task foundation → orta bölümler → final entegrasyon olarak sorunsuz üst üste bindi. i18n namespace **yapı portuyla birlikte** indi (15.01'de `alpfit` kökü + kabuk) → ara durumda TR-hardcode/EN-fallback regresyonu doğmadı; **tek-faz kararının gerekçesi tam da buydu ve karşılığını verdi.**
+- **a11y-mühürlü mevcut desenler yeniden kullanıldı → yeni tema-tuzağı yüzeyi açılmadı.** Sayfaya **iki koyu panel** (fiyat bandı + "Neden" aside) + **kendi açık paletli** telefon mockup'ları eklenmesine rağmen a11y=100 çift-tema korundu: ink-panel inversion (TD4/Faz 8), `--color-pulse-ink` adaptif token, off-viewport backdrop fix (15.05→15.06 genelleştirildi) hazır, kanıtlı çözümlerdi.
+- **CSS Module (repoda yeni desen) en yüksek craft-maliyetli mockup portunu izole etti** — artifact `.phone`/`.ph-*` birebir taşındı, `globals.css` yalın kaldı (yalnız +4 satır token). Pixel-craft sadakati + modülerlik birlikte sağlandı; plan-teyidi tuttu (globals.css-ekleme fallback'ine düşülmedi).
+- **Off-viewport axe kontrast disiplini faz-içinde genelleşti ve memory'de kanonikleşti** (aside pull-quote 15.05 → fiyat bandı eyebrow/₺/free-satır 15.06; `axe-offscreen-inline-contrast`). Tekrar eden bir tuzağın çözümü ikinci karşılaşmada hazırdı → sürtünme eridi.
+- **UAT ortamı tam araç-zincirine sahipti** (system Chrome+swiftshader, Lighthouse 13.4) → 15.07'de ertelenen numerik Lighthouse a11y=100 çift-tema gate verify-phase'de kapandı, review'a taşınmadı. Otomatik güvence katmanı (CI iki job success + security-review bulgu-yok + Vitest 39/39 + build exit 0) insan-UAT'ından önce tarandı.
 
 ### Ne Kötü Gitti?
-- [Sorunlar ve darboğazlar]
+- **15.07 numerik Lighthouse'u koşamadı → a11y=100 gate'i verify-phase'e devretti.** Lighthouse binary npx-cache'te yoktu (kurulum onay-gerektiren) → 15.07 task-sanctioned build+inspect (structural audit prerender'da temiz) + axe çift-tema fallback'ine düştü; numerik gate UAT'a kaydı. Kabul edilebilir (verify-phase kapattı, kaynak değişmedi) ama task-seviyesi bir gate'in UAT'a kayması ideal değil — ortam araç-zinciri per-session flaky (bilinen, memory `perf-olcum-devcontainer-kurulumu`).
+- **Artifact'ın tek-tema paleti çift-temada olduğu gibi port edilemedi.** Muted metin için artifact `--band-soft` seviyesi dark-tema krem-flip'inde AA'yı geçmiyor → `text-canvas/65`'e (bir kademe yukarı, TASK-8.02 emsali) çekmek gerekti. Küçük sapma ama artifact'ın (tek-tema HTML) renk paletinin olduğu gibi taşınamayacağını doğruladı — beklenen, ama her koyu-panel port'unda çift-tema doğrulaması şart.
 
 ### Sonraki Faz İçin Öneriler
-- [Alınan dersler, tavsiyeler]
+- **Faz 15 = v0.4'ün tek içerik fazı (Alpfit Plus ürün vitrini) tamam.** Versiyon Sonu Durumu `içerik_fazları` (değişmez — bu bir içerik fazıdır); v0.4'ün içerik işi bitti. Sıradaki adım **`/devflow:discuss-phase 16`** — discuss-phase 16 Adım 0 versiyon-sonu tespitiyle `içerik_fazları`→`teknik_borç` promote edecek (versiyon-sonu teknik borç fazı; Faz 7→8 emsali).
+- **v0.4 versiyon-sonu / release için sahipli kalemler (teknik borç fazı + prd-review adayları):**
+  - **non-TR (en/ar/de/es) `alpfit` namespace = TR stale-kopya.** 133 leaf × 5 dil yapısal olarak tam (parite yeşil) ama non-TR değerler şu an **birebir Türkçe** — yeni bir ürün vitrini için EN/AR/DE/ES sayfalarında büyük hacimde Türkçe metin. Bilinçli (versiyon-sınırı, TR tek kaynak — DECISIONS 2026-06-27) ama v0.4 çeviri geçişi / dil stratejisi prd-review'da öne çıkmalı.
+  - **`public/gym/*.png` (4 dosya, ~1.7MB) referanssız diskte kaldı** (asset silme bilinçle Kapsam Dışı) → disk hijyeni teknik borç adayı.
+  - **Devralınan açık takip: canlı `ANTHROPIC_API_KEY` env ayarlı değil** (`/api/chat` 503 → chatbot "offline"; Vercel env'e eklenince açılır — regresyon değil). v0.4 henüz canlı değil (branch `revize/alpfit-plus`, `main`'e merge edilmedi) → **v0.4 production release** (merge) versiyon-sonunda bilinçli adım olur (v0.2 release emsali, DECISIONS 2026-07-01).
+- **Önceki faz (14) önerileri prosedüreldi ve uygulandı:** zorunlu prd-review yapıldı (v0.4 re-kickoff'la açıldı); B-grubu kalemler v0.3 prd-review'a aitti. `page.route` interception önerisi ortam-bağımlıydı — bu oturum ortamı tam araç-zincirine sahip olduğundan verify-phase system Chrome+Playwright kullandı (gerek kalmadı, ideal ortam).
+
+### Task-Spesifik Teknik Öğrenimler
+<!-- Bu fazdaki task'larda öğrenilen ama proje genelinde geçerli olmayan teknik nüanslar. Proje-geneli olan (axe-offscreen backdrop) memory'de kanonikleşti. -->
+- **Artifact tek-tema paleti çift-temada olduğu gibi port edilemez:** flip eden ink-panel üstünde muted metin `text-canvas/65` (AA-güvenli seviye, TASK-8.02) olmalı — artifact `--band-soft`'un bir kademe üstü. 15.05/15.06 portunda bulundu.
+- **CSS Module bu repoda (Next 15 App Router) çalışıyor** — pixel-craft mockup için doğrulandı; co-located `.module.css` scope'ludur, `globals.css` yalın kalır (+4 satır token dışında global şişme yok). Yeni desen, plan-teyidi tuttu.
+- **`t.rich` `<b>` aksanının kendi panel zeminini (`bg-ink`) miras alması** axe kontrastını opak panel karşısında çözer (~11.5:1), off-viewport body-canvas'a mis-resolve'u engeller (memory `axe-offscreen-inline-contrast`, bu fazda genelleştirildi).
 
 ---
 
 ## Kalite Kontrol Sonuçları
 
-> Bu bölüm `/devflow:review-phase 15` oturumunda doldurulacak.
+> `/devflow:review-phase 15` oturumunda dolduruldu (2026-07-16). İçerik fazı — yeni yüzey (8 bileşen + `alpfit` namespace + 1 token) üretildi; her eksen bu yeni yüzey üzerinde sistematik kontrol edildi.
 
 | Eksen | Durum | Not |
 |-------|-------|-----|
-| Modülerlik | ✅ / ⚠️ / ❌ | ... |
-| Güvenlik | ✅ / ⚠️ / ❌ | ... |
-| Bakım Maliyeti | ✅ / ⚠️ / ❌ | ... |
-| Performans | ✅ / ⚠️ / ❌ | ... |
-| Hata Yönetimi | ✅ / ⚠️ / ❌ | ... |
-| Test Kapsamı | ✅ / ⚠️ / ❌ | ... |
-| Erişilebilirlik | ✅ / N/A | ... |
+| Marka & Craft (imza) | ✅ | İmza Living Flow hero'da korundu (Craft üst eksen) + opak before/after kartı akış üstünde temiz; ekran görüntüleri kalktı, artifact dekoratif radial'ları bırakıldı (efekt kalabalığı yok — Living Flow ambient yeşili taşır); Fraunces/Geist token tipografi + ink-panel restraint; mockup CSS Module birebir port. **Kullanıcı onayı: SOTD-kalibre, zero template smell (UAT #15).** |
+| Erişilebilirlik | ✅ | Lighthouse a11y=100 çift-tema (structural audit'ler dahil, UAT #9) + axe spor-salonu **10/10** (5 dil × light+dark) WCAG-AA 0 ihlal — koyu fiyat bandı + koyu aside + telefon `--a-*` paleti dahil (#8); tek `<main>`/tek `<h1>`/sıralı başlık; dekoratif SVG'ler `aria-hidden`; off-viewport inline-kontrast backdrop fix (memory). İki-gate mühür uygulandı. |
+| Performans | ✅ | Raster görsel yok → LCP metin (h1); sabit-boyut kart/mockup → **CLS=0** (UAT #12); tek Living Flow (ek WebGL maliyeti yok); yeni font yok; eski 4-PNG (~1.7MB) yükü kalktı. Perf mutlak skoru software-GL ortamda şişer → kıyas yapılmadı (ILKELER alan-ölçümü); a11y/CLS ortam-bağımsız = geçerli. |
+| Yerelleştirme & RTL | ✅ | `alpfit` 133 leaf × 5 dil parite (Vitest 39/39, eksik anahtar=fail) + 0 `MISSING_MESSAGE` (build, 5 locale SSG); AR `dir=rtl` aynalama — logical prop 31 hit, before/after `→` tick `←`'e döner (#5); mockup `dir=ltr` sabit-TR (RTL-güvenli). **Sahipli:** non-TR ar/de/es = TR stale-kopya (versiyon-sınırı, TR tek kaynak) → görünür kopukluk yok ama v0.4 çeviri geçişi prd-review'a. |
+| Modülerlik & Bakım | ✅ | `components/alpfit/` hibrit dizin: kabuk (`AlpfitShowcase`) + bölüm alt-bileşenleri + izole `PhoneMockups`; crew named-key+map deseni (JSON array yok, kopya-kod yok) roller/özellik/neden/fiyatta; primitive'ler yeniden kullanıldı (Reveal/PageHeader/Footer/LivingFlow/FlowScrim); **tek** yeni token (`--color-surface`, `--band-*` ailesi eklenmedi); CSS Module co-located; orphan `GymSoftwareShowcase` silindi. Sorun/roadmap/kapanış kabukta inline (küçük bloklar — bilinçli). |
+| Hata Yönetimi & Degradasyon | ✅ | Living Flow reduced-motion→statik, no-WebGL→statik (yeniden kullanıldı); `Reveal` reduced-motion'da no-op (görünür kalır); pilot `.dot` nabzı motion-gated; mockup statik (UAT #11). i18n eksik anahtar=build fail (guard). Statik pazarlama sayfası → yeni failure yüzeyi yok. |
+| Güvenlik | ✅ | security-review **bulgu yok** (UAT Adım 1): statik sayfa, kullanıcı-girdisi yok, dinamik sink (`dangerouslySetInnerHTML`/`eval`) yok, `href`'ler sabit `mailto:` sabitleri, `t.rich` güvenli next-intl API (statik içerik + sabit `<b>` eşlemesi), secret yok. Silme (Gym + `next/image`) yalnız yüzeyi küçültür. |
+| Test Kapsamı | ✅ | Vitest 39/39 (i18n parite `alpfit` ns'i otomatik kapsadı) + Playwright/axe tam süit **52/52** (spor-salonu 10/10 çift-tema, çapraz-regresyonsuz) + CI `fast`+`a11y` success. Kümülatif harness yeniden kullanıldı — yeni test dosyası gerekmedi (parite + a11y tohumları yeni namespace/sayfayı otomatik kapsar). Mockup içi sabit-TR metin test-dışı ama bilinçle i18n-dışı (gerçek ürün ekranı semantiği) — boşluk değil. |
+
+**Kullanıcı yolculuğu / boşluk:** Akış tutarlı — ana sayfa Sektörler gym paneli "Live — Alpfit" CTA'sı + hero Alpfit rozeti bu sayfaya (`/spor-salonu-yazilimi`) gider (hedef korundu, değiştirilmedi); sayfa Hero→Sorun→Roller→Uygulama→Özellik→Neden→Fiyat→Yol haritası→Kapanış akar, CTA'lar mailto + `#fiyat` çapası, PageHeader geri-linki + global Nav. Sahipsiz boşluk yok. **Tek referanssız yüzey:** `public/gym/*.png` (4 dosya diskte, hiçbir bileşen tüketmiyor) — kullanıcıya görünmez, disk hijyeni teknik borç adayı (bilinçle Kapsam Dışı).
 
 ---
 
 ## Sonuç
 
-- **Tamamlanma Tarihi:** [Tarih]
-- **Toplam Task:** [Sayı]
-- **Notlar:** [Önemli kararlar, sonraki faza aktarılanlar]
+- **Tamamlanma Tarihi:** 2026-07-16
+- **Toplam Task:** 7 (TASK-15.01→15.07) — hepsi ✅, düzeltme task'ı gerekmedi
+- **Notlar:** v0.4 Alpfit Plus ürün vitrini tamamlandı — **UAT 16/16 GEÇTİ, kapsam-içi bug 0, düzeltme task'ı 0.** Alpfit (`/spor-salonu-yazilimi`) sayfası artifact hedef düzenine port edildi (9 bölüm: Hero+before/after · Sorun · 4 Rol · Mobil mockup'lar · 9 Özellik · Neden · Fiyat bandı · Yol haritası+Store · Kapanış) — React+Tailwind v4 token + `alpfit` 5-dil namespace (133 leaf parite) + izole `components/alpfit/` (8 bileşen, CSS Module mockup); imza Living Flow korundu, dürüstlük 4/4 gerçek aynen, guardrail'ler (a11y=100 çift-tema · CLS=0 · i18n parite · marka sesi · reduced-motion) regresyonsuz; Craft kullanıcı onayı (SOTD-kalibre). Orphan `GymSoftwareShowcase` + `next/image` bağımlılığı düştü; yalnız `--color-surface` tek yeni token. Kalite 8 eksen ✅. **Sahipli kalemler v0.4 versiyon-sonu / prd-review'a:** non-TR stale çeviri · `public/gym/*.png` disk hijyeni · canlı `ANTHROPIC_API_KEY` env (v0.4 henüz canlı değil → prod release versiyon-sonunda). Versiyon Sonu Durumu `içerik_fazları` (değişmez); sıradaki adım **`/devflow:discuss-phase 16`** (versiyon-sonu teknik borç fazı — discuss-phase 16 promote eder).
 
 ---
 
 **Oluşturulma:** 2026-07-16 (discuss-phase 15)
-**Son Güncelleme:** 2026-07-16 — verify-phase 15 (UAT): **16/16 senaryo ✅, düzeltme task'ı yok.** Otonom test modu (ortam tam araç-zincirine sahipti). Otomatik kontroller: CI HEAD `7e577d1` iki job da success (fast+a11y); security-review bulgu yok; açık bot PR yok; Vitest 39/39 · build exit 0 (0 MISSING, 5 locale SSG). UAT çekirdeği: bölüm düzeni 9/9 + tek main/h1 · Living Flow imza + before/after kartı (screenshot) · 4 telefon mockup dir=ltr · i18n parite · AR RTL aynalama · SEO 5-dil title/desc/canonical/hreflang+x-default · dürüstlük 4/4 aynen · axe spor-salonu 10/10 çift-tema · **Lighthouse a11y=100 + CLS=0** (15.07'den devralınan numerik gate bu oturumda kapandı; structural kurallar light+dark 0 ihlal) · marka sesi temiz · reduced-motion tam fallback · CTA mailto + `#fiyat` çapası · çapraz-regresyon tam süit 52/52 + orphan hijyeni · konsol 0 hata · **Craft #15 kullanıcı onayı** (SOTD-kalibre). Perf skoru software-GL ortamda şişer → mutlak kıyas yapılmadı (ILKELER alan-ölçümü; a11y/CLS ortam-bağımsız geçerli). **Adım = review — sıradaki `/devflow:review-phase 15`.**
+**Son Güncelleme:** 2026-07-16 — **review-phase 15 ✅: FAZ TAMAMLANDI.** Retrospektif + kalite kontrol (8 eksen ✅) + sonuç yazıldı. UAT 16/16 GEÇTİ, kapsam-içi bug 0, düzeltme task'ı 0. Bağımsız re-teyit: orphan gym kalıntısı 0 · "Bunker" alpfit ns'de 0 (5 dil) · `crewOs` ödünç bırakıldı · dürüstlük 4/4 TR değerleri VAR · parite 133 leaf × 5 dil · `--color-surface` çift-tema. Boyut kontrolü (Adım 5b): ~8.7k token `token-rahat` → bölme gerekmedi. İmza Living Flow + dürüstlük 4/4 korundu; guardrail'ler regresyonsuz; Craft SOTD-kalibre kullanıcı onayı. Versiyon Sonu Durumu `içerik_fazları` (değişmez); sahipli kalemler (non-TR stale · gym png disk hijyeni · canlı env) v0.4 versiyon-sonu/prd-review'a. Sıradaki adım **`/devflow:discuss-phase 16`** (versiyon-sonu teknik borç fazı).
