@@ -140,7 +140,7 @@
 | # | Task | Durum | Açıklama |
 |---|------|-------|----------|
 | 15.01 | TASK-15.01 | ✅ Tamamlandı | Foundation: `--color-surface` token + `alpfit` namespace kökü + `AlpfitShowcase` kabuk + Hero (Living Flow + before/after) + sayfa rewire (Gym→Alpfit, PageHeader ns crewOs→alpfit) |
-| 15.02 | TASK-15.02 | ⬜ Bekliyor | Sorun bölümü + 4 Rol kartı (`AlpfitRoles`) + i18n |
+| 15.02 | TASK-15.02 | ✅ Tamamlandı | Sorun bölümü (inline section-head + `<hr>` ayraç) + 4 Rol kartı (`AlpfitRoles` — telefon/monitor ikon, Telefon/Web rozeti, RTL mantıksal-prop) + `alpfit.problem`/`alpfit.roles` i18n (5-dil) |
 | 15.03 | TASK-15.03 | ⬜ Bekliyor | Mobil uygulama telefon mockup'ları (`PhoneMockups` — CSS Module, `dir=ltr` sabit-TR; en yüksek craft) |
 | 15.04 | TASK-15.04 | ⬜ Bekliyor | 9 Özellik grid (`AlpfitFeatures`) + i18n |
 | 15.05 | TASK-15.05 | ⬜ Bekliyor | Neden Alpfit Plus (`AlpfitWhy` — why-list + koyu aside ink-panel inversion) + i18n |

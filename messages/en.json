@@ -252,6 +252,56 @@
           "four": "Çok şube, tek panel"
         }
       }
+    },
+    "problem": {
+      "eyebrow": "Sorun",
+      "title": "Kulüp dağınık araçlarla yönetiliyor.",
+      "body": "Randevu WhatsApp'ta, ciro Excel'de, ölçüm defterde, üye listesi başka yerde. Sonuç: kaçan randevu, ay sonu mutabakatı, görünmeyen boş kapasite ve risk altındaki üyeler. Her araç ayrı çalışıyor — ama hiçbiri birbiriyle konuşmuyor. Alpfit Plus tek doğru veri kaynağı olur."
+    },
+    "roles": {
+      "eyebrow": "Dört rol",
+      "title": "Herkes kendi ekranından.",
+      "sub": "Üye ve antrenör telefondan; yönetim ve diyetisyen web panelinden. Herkes yalnızca kendi işini görür.",
+      "member": {
+        "title": "Üye",
+        "dev": "Telefon",
+        "items": {
+          "one": "Randevu al, grup dersine kaydol",
+          "two": "Üyelik & paket durumu, kalan hak",
+          "three": "Ölçüm grafiği, diyetisyen programı",
+          "four": "Hatırlatma bildirimleri"
+        }
+      },
+      "trainer": {
+        "title": "Antrenör",
+        "dev": "Telefon",
+        "items": {
+          "one": "Kendi takvimi ve müsaitliği",
+          "two": "Tek dokunuşla yoklama",
+          "three": "PT planlama, öğrenci gelişimi",
+          "four": "Ölçüm girişi"
+        }
+      },
+      "dietitian": {
+        "title": "Diyetisyen",
+        "dev": "Web",
+        "items": {
+          "one": "Atanan danışanlar",
+          "two": "Beslenme programı & güncelleme",
+          "three": "PDF yükleme",
+          "four": "Ölçüm & günlük okuma"
+        }
+      },
+      "management": {
+        "title": "Yönetim",
+        "dev": "Web",
+        "items": {
+          "one": "Tüm üyeler, üyelik & PT satışı",
+          "two": "Şube bazlı rapor, doluluk",
+          "three": "Eğitmen performansı",
+          "four": "Kampanya, modül aç/kapa"
+        }
+      }
     }
   },
   "forum": {
