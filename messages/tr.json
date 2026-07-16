@@ -302,6 +302,29 @@
           "four": "Kampanya, modül aç/kapa"
         }
       }
+    },
+    "app": {
+      "eyebrow": "Mobil uygulama",
+      "title": "Üye ve antrenör, cebinden yönetir.",
+      "sub": "Üye randevusunu alır, gelişimini görür; antrenör gününü ve yoklamasını tek dokunuşla halleder. Aynı veriye siz web panelinden bakarsınız.",
+      "caps": {
+        "memberHome": {
+          "role": "Üye",
+          "screen": "Ana ekran"
+        },
+        "memberBooking": {
+          "role": "Üye",
+          "screen": "Randevu al"
+        },
+        "trainer": {
+          "role": "Antrenör",
+          "screen": "Bugün & yoklama"
+        },
+        "memberProgress": {
+          "role": "Üye",
+          "screen": "Gelişim"
+        }
+      }
     }
   },
   "forum": {

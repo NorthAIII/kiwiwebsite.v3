@@ -4,6 +4,7 @@ import { useTranslations } from "next-intl";
 import Reveal from "@/components/Reveal";
 import AlpfitHero from "./AlpfitHero";
 import AlpfitRoles from "./AlpfitRoles";
+import PhoneMockups from "./PhoneMockups";
 
 /**
  * Alpfit Plus — kulüp işletme yazılımı ürün vitrini (F2.8 zengin yeniden tasarım).
@@ -50,6 +51,8 @@ export default function AlpfitShowcase() {
       </section>
 
       <AlpfitRoles />
+
+      <PhoneMockups />
     </main>
   );
 }

@@ -141,7 +141,7 @@
 |---|------|-------|----------|
 | 15.01 | TASK-15.01 | ✅ Tamamlandı | Foundation: `--color-surface` token + `alpfit` namespace kökü + `AlpfitShowcase` kabuk + Hero (Living Flow + before/after) + sayfa rewire (Gym→Alpfit, PageHeader ns crewOs→alpfit) |
 | 15.02 | TASK-15.02 | ✅ Tamamlandı | Sorun bölümü (inline section-head + `<hr>` ayraç) + 4 Rol kartı (`AlpfitRoles` — telefon/monitor ikon, Telefon/Web rozeti, RTL mantıksal-prop) + `alpfit.problem`/`alpfit.roles` i18n (5-dil) |
-| 15.03 | TASK-15.03 | ⬜ Bekliyor | Mobil uygulama telefon mockup'ları (`PhoneMockups` — CSS Module, `dir=ltr` sabit-TR; en yüksek craft) |
+| 15.03 | TASK-15.03 | ✅ Tamamlandı | Mobil uygulama telefon mockup'ları (`PhoneMockups` + `.module.css` — 4 iPhone, CSS Module birebir port, `dir=ltr` sabit-TR; en yüksek craft) + `alpfit.app` i18n (5-dil) |
 | 15.04 | TASK-15.04 | ⬜ Bekliyor | 9 Özellik grid (`AlpfitFeatures`) + i18n |
 | 15.05 | TASK-15.05 | ⬜ Bekliyor | Neden Alpfit Plus (`AlpfitWhy` — why-list + koyu aside ink-panel inversion) + i18n |
 | 15.06 | TASK-15.06 | ⬜ Bekliyor | Fiyat bandı (`AlpfitPricing` — ink-panel) + Yol haritası (+Store) + Kapanış + i18n |
@@ -204,4 +204,4 @@
 ---
 
 **Oluşturulma:** 2026-07-16 (discuss-phase 15)
-**Son Güncelleme:** 2026-07-16 — verify-plan 15: 7 task (15.01–15.07) temiz context'te doğrulandı (referans gerçeklik-kontrolü + milestone/gereksinim/kalite/tutarlılık ✓). 1 mekanik düzeltme (TASK-15.02 `border-line-soft`→`border-line`, var-olmayan token; artifact `.divide` `--line` kullanır), 0 yapısal değişiklik. Task Listesi değişmedi. Adım = task (sıradaki `/devflow:run-task 15.01`).
+**Son Güncelleme:** 2026-07-16 — run-task 15.03: `PhoneMockups.tsx` + `PhoneMockups.module.css` (4 iPhone mockup birebir port; paylaşılan StatusBar/TabBar, 4 bespoke ekran, `dir="ltr"` sabit-TR içerik) + `alpfit.app` 5-dil i18n. CSS Module bu repoda ilk kullanım — Next 15 App Router sıfır-config sorunsuz derledi (research §2 kararı doğrulandı, fallback gerekmedi). Vitest 39/39 · build 37/37 SSG exit 0 · a11y 52/52 (spor-salonu 10/10 çift-tema + AR RTL, çapraz regresyonsuz) · görsel light+dark+AR-RTL craft doğrulandı. Task Listesi 15.03 → ✅. Adım = task (sıradaki `/devflow:run-task 15.04`).
