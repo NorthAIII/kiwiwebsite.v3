@@ -6,6 +6,9 @@
 @theme {
   --color-canvas: #f7f6f1;
   --color-canvas-deep: #efede4;
+  /* Lifted card surface (Alpfit Plus vitrini) — one step lighter than canvas so
+     opaque cards read cleanly over the Living Flow field. Flips in html.dark. */
+  --color-surface: #fffefb;
   --color-ink: #12140f;
   --color-ink-soft: #4a4d44;
   --color-ink-faint: #67695f;
@@ -40,6 +43,7 @@ html.dark {
   color-scheme: dark;
   --color-canvas: #131510;
   --color-canvas-deep: #1c1e17;
+  --color-surface: #191b12;
   --color-ink: #f2f1e8;
   --color-ink-soft: #b7b9ac;
   --color-ink-faint: #8a8c80;

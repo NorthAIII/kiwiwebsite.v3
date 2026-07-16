@@ -1,6 +1,6 @@
 # DURUM — Proje Dashboard
 
-**Son Güncelleme:** 2026-07-16 — **verify-plan 15 tamamlandı → Adım = task.** 7 task (15.01–15.07) temiz context'te doğrulandı: milestone (9 bölüm+5-dil+dürüstlük 4/4+guardrail+SEO tam eşlendi) · gereksinim · kalite · task-tutarlılık (ayrık `alpfit.*` alt-ağaçları, lineer bağımlılık, `#fiyat` anchor eşleşiyor) ✓; referans gerçeklik-kontrolü ✓ (kod yolları/token'lar/artifact satır refleri doğru). **1 mekanik düzeltme:** TASK-15.02 `border-line-soft`→`border-line` (var-olmayan token; artifact `.divide` `--line` kullanır, tek yeni token `--color-surface`). **0 yapısal değişiklik.** İlk task aktif: **`run-task 15.01`**. Kaynak kod değişmedi (yalnız `_dev/`). Branch `revize/alpfit-plus`. **Versiyon Sonu Durumu `içerik_fazları`.** **⚠️ Devralınan açık takip: canlı `ANTHROPIC_API_KEY` env ayarlı değil** (`/api/chat` 503; chatbot "offline" — regresyon değil). **Sıradaki: `/devflow:run-task 15.01`.**
+**Son Güncelleme:** 2026-07-16 — **run-task 15.01 ✅ (Faz 15'in ilk task'ı).** Foundation kuruldu: `--color-surface` token (light `#fffefb`/dark `#191b12`) + `alpfit` i18n ns kökü 5 dilde (back/cta + `hero.*` — TR yetkili, non-TR TR-kopya) + `components/alpfit/{AlpfitShowcase,AlpfitHero}.tsx` (iki-sütun Living Flow+FlowScrim hero, opak surface before/after kart, pilot nabzı, 3-parça mark, mailto+`#fiyat` CTA, RTL logical) + `spor-salonu-yazilimi/page.tsx` rewire (Gym→Alpfit, PageHeader ns crewOs→alpfit; `generateMetadata` 15.07'ye bırakıldı). **Test:** Vitest 39/39 · `next build` 37/37 SSG exit 0 (0 MISSING/0 warn) · prerender 5-dil grep 1/1 · **Playwright a11y bu oturumda koştu 50/50** (spor-salonu 10 varyant WCAG AA 0 ihlal). `GymSoftwareShowcase.tsx` orphan (15.07 temizlik). Branch `revize/alpfit-plus`. **⚠️ Devralınan açık takip: canlı `ANTHROPIC_API_KEY` env ayarlı değil** (`/api/chat` 503 — regresyon değil). **Sıradaki: `/devflow:run-task 15.02`** (6 task kaldı).
 
 <!-- KURAL: Bu satır her oturum sonunda ÜZERİNE YAZILIR — tek satır, tek cümle. "Önceki:" / "Eski:" prefix ile kümülatif yığma YASAK; HTML comment'e sarma da yasak (CLAUDE.md → Doküman Disiplini). Tarih + kısa özet yeterli; detay için git log + ilgili PHASE/TASK dokümanları. -->
 
@@ -8,9 +8,9 @@
 
 ## Aktif Faz
 
-**Faz:** **15 — v0.4 Alpfit Plus ürün vitrini (F2.8 zengin yeniden tasarım)** (🔄 girildi — discuss-phase 15, tek faz). Fazlar 1–14 ✅ (v0.1+v0.2+v0.3 tamam, canlı).
-**Adım:** task — plan review tamamlandı (verify-plan 15 ✅; 7 task doğrulandı, 1 mekanik düzeltme, 0 yapısal). **Sıradaki: `/devflow:run-task 15.01`** (ilk task — yeni oturum). **⚠️ Devralınan açık takip: canlı `ANTHROPIC_API_KEY` env ayarlı değil** (`/api/chat` 503 → chatbot "offline"; Vercel env'e eklenince açılır — regresyon değil).
-**İlerleme:** verify-plan 15 (2026-07-16) ✅ — 7 task temiz context'te doğrulandı; referans gerçeklik-kontrolü + milestone/gereksinim/kalite/tutarlılık ✓. Mekanik düzeltme: 1 (TASK-15.02 token), yapısal: 0. plan-phase 15 (2026-07-16) ✅ — 7 task dokümanı (`tasks/TASK-15.01..07.md`): foundation+hero · sorun+roller · telefon mockup'ları [CSS Module] · 9 özellik · neden [ink-panel aside] · fiyat bandı+roadmap+kapanış · SEO+temizlik+guardrail. Sayfa 15.01'de erken wire → bölümler `next build` ile doğrulanır. research-phase 15 (2026-07-16) ✅ — Araştırma Bulguları (5 alan + 2 kullanıcı kararı). discuss-phase 15 (2026-07-16) ✅ — Kapsam Tartışması (10 karar).
+**Faz:** **15 — v0.4 Alpfit Plus ürün vitrini (F2.8 zengin yeniden tasarım)** (🔄 devam — tek faz). Fazlar 1–14 ✅ (v0.1+v0.2+v0.3 tamam, canlı).
+**Adım:** task — 15.01 ✅ tamamlandı (7 task'tan 1'i bitti, 6 kaldı). **Sıradaki: `/devflow:run-task 15.02`** (Sorun bölümü + 4 Rol — yeni oturum). **⚠️ Devralınan açık takip: canlı `ANTHROPIC_API_KEY` env ayarlı değil** (`/api/chat` 503 → chatbot "offline"; Vercel env'e eklenince açılır — regresyon değil).
+**İlerleme:** run-task 15.01 (2026-07-16) ✅ — Foundation: `--color-surface` token + `alpfit` ns kökü (5-dil) + `AlpfitShowcase`/`AlpfitHero` (Living Flow + before/after) + sayfa rewire. Vitest 39/39 · build 37/37 SSG · a11y 50/50 (spor-salonu çift-tema 0 ihlal). verify-plan 15 (2026-07-16) ✅ — 7 task doğrulandı (mekanik: 1, yapısal: 0). plan-phase 15 (2026-07-16) ✅ — 7 task dokümanı. research-phase 15 (2026-07-16) ✅ — Araştırma Bulguları. discuss-phase 15 (2026-07-16) ✅ — Kapsam Tartışması.
 **Son Faz Dokümanı:** `phases/PHASE-15.md` (🔄 aktif). Önceki: `phases/PHASE-14.md` (✅ v0.3 son fazı).
 
 ---
@@ -28,19 +28,19 @@
 
 ## Aktif Task
 
-**Task:** **TASK-15.01 (aktif — henüz başlamadı).** Foundation: `--color-surface` token + `alpfit` ns kökü + `AlpfitShowcase` kabuk + Hero + sayfa rewire. Plan doğrulandı → başlatmaya hazır. Sıradaki: `/devflow:run-task 15.01`.
-**Durum:** Faz 15 🔄 (plan-phase 15 ✅, verify-plan 15 ✅); Adım = task; Aktif Versiyon v0.4, Versiyon Sonu Durumu `içerik_fazları`. Fazlar 1–14 ✅ (canlı v0.3).
-**İlerleme:** verify-plan 15 (2026-07-16) ✅ — 7 task doğrulandı (mekanik: 1 [TASK-15.02 token], yapısal: 0). plan-phase 15 (2026-07-16) ✅ — 7 task dokümanı oluşturuldu. Kaynak kod değişmedi (yalnız `_dev/`).
+**Task:** **TASK-15.02 (aktif — henüz başlamadı).** Sorun bölümü + 4 Rol kartı (`AlpfitRoles`) + i18n. Sıradaki: `/devflow:run-task 15.02`.
+**Durum:** Faz 15 🔄 (15.01 ✅; 6 task kaldı); Adım = task; Aktif Versiyon v0.4, Versiyon Sonu Durumu `içerik_fazları`. Fazlar 1–14 ✅ (canlı v0.3).
+**İlerleme:** run-task 15.01 (2026-07-16) ✅ — Foundation kuruldu (token + alpfit ns + kabuk/hero + rewire); Vitest 39/39, build 37/37 SSG, a11y 50/50. Kaynak kod ilk kez değişti (globals.css + page.tsx + 5 messages + 2 yeni `components/alpfit/*`).
 
 ---
 
 ## Task Durumu (Aktif Faz)
 
-> **Faz 15 🔄** (plan-phase 15 ✅, verify-plan 15 ✅ — 7 task hazır/doğrulandı, hiçbiri çalışmadı; ilk task 15.01 aktif). Tam tablo + açıklamalar `phases/PHASE-15.md` Task Listesi. Fazlar 1–14 ✅; son faz (14, v0.3 versiyon-sonu senaryo testi — UAT 11/11, 0 kapsam-içi bug) detayı `phases/PHASE-14.md` + `tasks/archive/`.
+> **Faz 15 🔄** (15.01 ✅ tamamlandı; 6 task kaldı, sıradaki 15.02 aktif). Tam tablo + açıklamalar `phases/PHASE-15.md` Task Listesi. Fazlar 1–14 ✅; son faz (14, v0.3 versiyon-sonu senaryo testi — UAT 11/11, 0 kapsam-içi bug) detayı `phases/PHASE-14.md` + `tasks/archive/`.
 
 | # | Task | Durum |
 |---|------|-------|
-| 15.01 | Foundation: token + `alpfit` ns kökü + kabuk + Hero + sayfa rewire | ⬜ Bekliyor |
+| 15.01 | Foundation: token + `alpfit` ns kökü + kabuk + Hero + sayfa rewire | ✅ Tamamlandı |
 | 15.02 | Sorun + 4 Rol | ⬜ Bekliyor |
 | 15.03 | Telefon mockup'ları (CSS Module, en yüksek craft) | ⬜ Bekliyor |
 | 15.04 | 9 Özellik grid | ⬜ Bekliyor |
@@ -52,17 +52,12 @@
 
 ## Son Task Özetleri
 
-> **KURAL:** Sadece son 2 task özeti tutulur, daha eskileri **gerçekten silinir** (HTML comment'e sarma, "Önceki:" prefix, üstü çizili etiket yasak — detay için git log + arşivlenmiş task dokümanı). Her özet kısa formatlı: paragraf yasak, **bullet zorunlu**, "Özet" alanı max 3 bullet. **Faz 13 kapandı → Faz 13 task özetleri sıfırlandı** (detaylar `phases/PHASE-13.md` + `tasks/archive/`).
+> **KURAL:** Sadece son 2 task özeti tutulur, daha eskileri **gerçekten silinir** (HTML comment'e sarma, "Önceki:" prefix, üstü çizili etiket yasak — detay için git log + arşivlenmiş task dokümanı). Her özet kısa formatlı: paragraf yasak, **bullet zorunlu**, "Özet" alanı max 3 bullet. **Faz 14 kapandı (v0.3 canlı) → Faz 14 task özetleri PHASE-14'e mezun edildi** (detaylar `phases/PHASE-14.md` + `tasks/archive/`); Faz 15 aktif.
 
-**TASK-14.09 — S9 Adversarial / Holistik Kırma (fazın son task'ı)** ✅ (2026-07-05)
-- **12/12 runtime + 6/6 JS-off + build temiz, kapsam-içi bug YOK.** `next build` 37/37 SSG 0 warn + 30 page-locale 0 MISSING_MESSAGE + Vitest 39/39 (canonical/redirect tohumu yeşil); JS-off 6 TR sayfa okunur (h1=1+nav+main+metin 1278–4016, canvas=0 beklenen client-only); tema **11-tık race** final-tutarlı (html.dark=true==localStorage(`theme`=dark)==aria-pressed=true) + reload kalıcı; dil zinciri en→de→ar→es→tr 5/5 tutarlı (lang==url, AR dir=rtl); scroll/anchor storm → 6 bölüm sağlam + **nabız canvas 1→1 tek shared WebGL context** + anchor #contact settle + scroll-lock yok + **0 ScrollTrigger/GSAP/Lenis hatası**.
-- **Ortam engeli & çözümü:** `next start`/`next dev` 3 başlatma yöntemiyle de exit 144 + backgrounded-server+Chrome kombinasyonu da signal-16 (144) → **tek-process Playwright `page.route` interception** (diskten `.next` prerender+static byte-for-byte servis) → system Chrome (`channel:'chrome'`+swiftshader) WebGL2 kararlı (FlowBackdrop canvas=1, false-static değil). Build-ground-truth'a mecburi düşüş YOK. Harness artefaktı (bug değil): `/script.js` (Umami dış) + `/icon.svg` (app-router route) 404.
-- **Kaynak değişmedi** (harness `tests/_verify-s9-*` silindi → git temiz). **Bütünsel S1–S9 kapsam-içi bug sıfır → verify-phase 14'e hazır.** S9'da yeni sahipli kalem çıkmadı (mevcutlar prd-review B grubunda).
-
-**TASK-14.08 — S7 Chatbot 0-token (offline + sanitizasyon + malformed)** ✅ (2026-07-05)
-- **13/13 PASS (11 route node + 2 UI jsdom), kapsam-içi bug YOK, toplam gerçek Anthropic API çağrısı = 0** (gerçek key hiç kullanılmadı + `@anthropic-ai/sdk` mock). **`next start`/`test:e2e` bu oturumda exit 144** (cloud-devcontainer sandbox worker-fork) → PHASE-14 **build-ground-truth fallback**: Vitest (ortam-bağımsız).
-- **Sanitizasyon sırası (kod-inceleme):** route.ts:21-24 apiKey-gate→503 · :26-32 parse→400 · :35-42 rol whitelist+trim+`slice(-12)` · :44-46 sonda-user→400 · :48 `new Anthropic()` — **hepsi Anthropic kurulumu ÖNCESİNDE ✓**. Route (SDK mock): key-yok→503 (mock hiç kurulmadı); malformed 6× 400 (Anthropic öncesi red); geçerli→200 mock çağrıldı (gerçek asla), 15→slice(-12). Offline UI (`#chat` inline, 503): dürüst çevrimdışı metni + **sahte online-dot/presence YOK** + UI takılmaz + 200-stream hiç.
-- **Kaynak değişmedi** (harness `tests/_verify-s7-*` silindi). Sahipli: per-mesaj max-byte uzunluk cap'i yok (min-length + geçmiş-sayısı var) → güvenlik-hardening → prd-review.
+**TASK-15.01 — Foundation: `--color-surface` token + `alpfit` ns kökü + `AlpfitShowcase`/`AlpfitHero` + sayfa rewire** ✅ (2026-07-16)
+- **Kuruldu:** `--color-surface` (@theme `#fffefb` / html.dark `#191b12`) + `alpfit` i18n ns 5 dilde (back/cta + `hero.*`; TR yetkili, non-TR TR-kopya, yapısal anahtar eşzamanlı) + `components/alpfit/{AlpfitShowcase,AlpfitHero}.tsx` (iki-sütun `LivingFlow`+`FlowScrim` hero, opak `bg-surface` before/after kart, pilot `animate-ping` nabzı, 3-parça yeşil mark, subject'li mailto + `#fiyat` CTA, RTL `rtl:-scale-x-100` tick) + `spor-salonu-yazilimi/page.tsx` rewire (Gym→Alpfit, PageHeader ns crewOs→alpfit; `generateMetadata` 15.07'ye).
+- **Test:** Vitest 39/39 · `next build` 37/37 SSG exit 0 (0 MISSING/0 warn, type-check geçti) · prerender 5-dil grep pilot/mark/mailto/#fiyat/compare 1/1 MISSING 0 · **Playwright a11y bu oturumda koştu 50/50** (spor-salonu 10 varyant = 5 dil × light+dark, RTL dahil, WCAG AA 0 ihlal); crew-os görünür hero sağlam.
+- **Not:** `GymSoftwareShowcase.tsx` orphan oldu ama silinmedi (referans; 15.07 temizlik). next-intl tüm ns'i her sayfaya gömer → `alpfit` crew-os.html'de escaped-JSON (görünür içerik değil, mevcut davranış).
 
 
 <!-- KURAL: Sadece son 2 task özeti tutulur, daha eskileri silinir (gerçek silme — HTML comment yasak). -->
@@ -77,8 +72,8 @@
 
 ## Hızlı Erişim
 
-**Aktif Task:** **TASK-15.01** (aktif — henüz başlamadı; plan doğrulandı). Sıradaki: `/devflow:run-task 15.01`. **⚠️ Devralınan açık takip: canlı `ANTHROPIC_API_KEY` env ayarlı değil** (`/api/chat` 503 → chatbot "offline"; Vercel env'e eklenince açılır).
-**Aktif Faz:** **15 — v0.4 Alpfit Plus ürün vitrini** (🔄; plan-phase 15 ✅, verify-plan 15 ✅; tek faz, 7 task). Adım = task; sıradaki `/devflow:run-task 15.01`. **Aktif Versiyon v0.4 — Alpfit Plus ürün vitrini**, Versiyon Sonu Durumu: **içerik_fazları**. Fazlar 1–14 ✅ (v0.1+v0.2+v0.3, canlı). Faz dokümanı: `phases/PHASE-15.md`. Feature: `PRD/features/alpfit-plus.md`; tasarım referansı `docs/alpfit-plus-artifact.html`.
+**Aktif Task:** **TASK-15.02** (aktif — henüz başlamadı). Sorun + 4 Rol. Sıradaki: `/devflow:run-task 15.02`. **⚠️ Devralınan açık takip: canlı `ANTHROPIC_API_KEY` env ayarlı değil** (`/api/chat` 503 → chatbot "offline"; Vercel env'e eklenince açılır).
+**Aktif Faz:** **15 — v0.4 Alpfit Plus ürün vitrini** (🔄; 15.01 ✅, 6 task kaldı). Adım = task; sıradaki `/devflow:run-task 15.02`. **Aktif Versiyon v0.4 — Alpfit Plus ürün vitrini**, Versiyon Sonu Durumu: **içerik_fazları**. Fazlar 1–14 ✅ (v0.1+v0.2+v0.3, canlı). Faz dokümanı: `phases/PHASE-15.md`. Feature: `PRD/features/alpfit-plus.md`; tasarım referansı `docs/alpfit-plus-artifact.html`.
 **Task Sistemi:** `tasks/TASKS-README.md`
 **PRD (karar kaynağı):** `PRD/VIZYON.md` · `PRD/VERSIONS.md` · `PRD/features/`
 **Revize Backlog (bilinen sorunlar):** `docs/REVIZE-BACKLOG.md`
@@ -86,4 +81,4 @@
 
 ---
 
-**Son Güncelleme:** 2026-07-16 — **verify-plan 15 ✅ → Adım = task.** 7 task dokümanı (15.01–15.07) temiz context'te doğrulandı; referans gerçeklik-kontrolü (kod yolları/token'lar/artifact satır refleri) + milestone/gereksinim/kalite/tutarlılık ✓. **1 mekanik düzeltme** (TASK-15.02 `border-line-soft`→`border-line`, var-olmayan token), **0 yapısal değişiklik**. İlk task 15.01 aktif. Kaynak kod değişmedi (yalnız `_dev/`). Branch `revize/alpfit-plus`. **Sıradaki: `/devflow:run-task 15.01`.**
+**Son Güncelleme:** 2026-07-16 — **run-task 15.01 ✅.** Foundation: `--color-surface` token + `alpfit` ns kökü (5-dil) + `AlpfitShowcase`/`AlpfitHero` (Living Flow + before/after) + `spor-salonu-yazilimi/page.tsx` rewire (Gym→Alpfit). Vitest 39/39 · build 37/37 SSG exit 0 · Playwright a11y 50/50 (spor-salonu çift-tema 0 ihlal). Kaynak kod ilk kez değişti (7 dosya + 2 yeni). Branch `revize/alpfit-plus`. **Sıradaki: `/devflow:run-task 15.02`** (6 task kaldı).

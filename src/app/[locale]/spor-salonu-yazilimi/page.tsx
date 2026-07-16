@@ -4,7 +4,7 @@ import SmoothScroll from "@/components/SmoothScroll";
 import CustomCursor from "@/components/CustomCursor";
 import PageHeader from "@/components/PageHeader";
 import Footer from "@/components/Footer";
-import GymSoftwareShowcase from "@/components/gym/GymSoftwareShowcase";
+import AlpfitShowcase from "@/components/alpfit/AlpfitShowcase";
 import { localizedAlternates } from "@/i18n/metadata";
 
 export async function generateMetadata({
@@ -25,13 +25,13 @@ export default async function GymSoftwarePage({
 }) {
   const { locale } = await params;
   setRequestLocale(locale);
-  const t = await getTranslations({ locale, namespace: "crewOs" });
+  const t = await getTranslations({ locale, namespace: "alpfit" });
 
   return (
     <SmoothScroll>
       <CustomCursor />
       <PageHeader back={t("back")} cta={t("cta")} />
-      <GymSoftwareShowcase />
+      <AlpfitShowcase />
       <Footer />
     </SmoothScroll>
   );

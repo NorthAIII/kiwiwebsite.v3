@@ -224,6 +224,36 @@
       }
     }
   },
+  "alpfit": {
+    "back": "Ana sayfa",
+    "cta": "Ücretsiz keşif görüşmesi al",
+    "hero": {
+      "pilot": "Weekend Training Club'da canlı pilotta",
+      "h1lead": "Kulübünüzün tüm işi ",
+      "h1mark": "tek platformda",
+      "h1tail": ".",
+      "sub": "Randevu, grup dersleri, üyelik, ciro ve diyetisyen — hepsi bir arada. Üye ve antrenör telefondan, siz web panelinden.",
+      "ctaPrimary": "15 dakikalık demo iste",
+      "ctaSecondary": "Fiyatları gör",
+      "note": "Reformer & pilates · boks & dövüş · CrossFit · çok şubeli kulüpler için.",
+      "compare": {
+        "todayLabel": "Bugün",
+        "afterLabel": "Alpfit",
+        "today": {
+          "one": "Randevu — WhatsApp",
+          "two": "Ciro — Excel",
+          "three": "Ölçüm — defter",
+          "four": "Takvim — ayrı uygulama"
+        },
+        "after": {
+          "one": "Randevu & rezervasyon",
+          "two": "Ciro & borç, anlık",
+          "three": "Üye 360, tek ekran",
+          "four": "Çok şube, tek panel"
+        }
+      }
+    }
+  },
   "forum": {
     "label": "النشرة",
     "title": "قراءات قصيرة عن الأتمتة.",

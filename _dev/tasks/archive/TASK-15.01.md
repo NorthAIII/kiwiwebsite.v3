@@ -1,6 +1,6 @@
 # TASK-15.01: Foundation — `--color-surface` token + `alpfit` namespace kökü + `AlpfitShowcase` kabuk + Hero (Living Flow + before/after) + sayfa rewire
 
-**Durum:** ⬜ Bekliyor
+**Durum:** ✅ Tamamlandı
 **Modül:** M2 (Sayfalar & Bölümler) + M1 (token/Living Flow) + M4 (i18n)
 **Feature:** AP1 (port+bölümler) · AP2 (i18n namespace)
 **Faz:** Phase 15 (phases/PHASE-15.md)
@@ -90,30 +90,47 @@ messages/es.json                                 # alpfit.* — TR kopyası (sta
 
 ## Test Kriterleri
 
-- [ ] `next build` temiz: `/spor-salonu-yazilimi` 5 locale SSG üretir, **0 `MISSING_MESSAGE`**, 0 warn.
-- [ ] `npm run test` yeşil: `i18n-parity.test.ts` yeni `alpfit` namespace'ini kapsar (5 dilde eşzamanlı anahtar) + mevcut Vitest testleri kırılmaz.
-- [ ] Route render: hero 5 dilde görünür — pilot-chip + H1 (mark vurgulu) + sub + iki CTA + note + before/after kartı; Living Flow + FlowScrim arkaplan.
-- [ ] CTA primary `mailto:...?subject=Alpfit%20Plus%20demo%20talebi`; secondary `#fiyat` anchor.
-- [ ] PageHeader `back`/`cta` `alpfit` namespace'inden gelir (crewOs değil); crew-os sayfası etkilenmez.
-- [ ] (Sandbox koşarsa) `subpages-a11y.spec.ts` `/spor-salonu-yazilimi` axe light+dark yeşil — kırılmaz.
+- [x] `next build` temiz: `/spor-salonu-yazilimi` 5 locale SSG üretir, **0 `MISSING_MESSAGE`**, 0 warn. ✅ (37/37 SSG, exit 0, type-check geçti)
+- [x] `npm run test` yeşil: `i18n-parity.test.ts` yeni `alpfit` namespace'ini kapsar (5 dilde eşzamanlı anahtar) + mevcut Vitest testleri kırılmaz. ✅ (39/39)
+- [x] Route render: hero 5 dilde görünür — pilot-chip + H1 (mark vurgulu) + sub + iki CTA + note + before/after kartı; Living Flow + FlowScrim arkaplan. ✅ (prerender HTML grep: 5 dilde pilot/mark/sub/mailto/#fiyat/compare 1/1, MISSING 0)
+- [x] CTA primary `mailto:...?subject=Alpfit%20Plus%20demo%20talebi`; secondary `#fiyat` anchor. ✅
+- [x] PageHeader `back`/`cta` `alpfit` namespace'inden gelir (crewOs değil); crew-os sayfası etkilenmez. ✅ (back="Ana sayfa" 5 dilde; crew-os görünür hero "Crew OS/İşletim katmanı" sağlam)
+- [x] (Sandbox koşarsa) `subpages-a11y.spec.ts` `/spor-salonu-yazilimi` axe light+dark yeşil — kırılmaz. ✅ **Bu oturumda koştu:** 50/50 PASS, 10 spor-salonu varyantı (5 dil × light+dark, RTL dahil) WCAG AA 0 ihlal.
 
 ---
 
 ## Tamamlanma Kriterleri
 
-- [ ] Tüm alt görevler tamamlandı
-- [ ] Tüm test kriterleri karşılandı
-- [ ] Git commit & push yapıldı (`feat(TASK-15.01): ...`)
-- [ ] Bu doküman güncellendi (oturum kaydı)
-- [ ] DURUM.md güncellendi
+- [x] Tüm alt görevler tamamlandı
+- [x] Tüm test kriterleri karşılandı
+- [x] Git commit & push yapıldı (`feat(TASK-15.01): ...`)
+- [x] Bu doküman güncellendi (oturum kaydı)
+- [x] DURUM.md güncellendi
 
 ---
 
 ## Oturum Kayıtları
 
-### Oturum — [TARİH]
+### Oturum — 2026-07-16
 
-**Durum:** [doldurulacak]
+**Durum:** ✅ Tamamlandı
+
+**Yapılanlar:**
+- **`--color-surface` token** (`globals.css`): `@theme` → `#fffefb` (light), `html.dark` → `#191b12` (dark). Tailwind v4 `bg-surface`/`border-surface` yardımcılarını otomatik üretir. Kaynak: artifact `--surface`. (F1.4 kuralı: yeni renk hem light hem dark tanımlandı.)
+- **`alpfit` namespace kökü** 5 dile (`crewOs`↔`forum` arası): `back`="Ana sayfa", `cta`="Ücretsiz keşif görüşmesi al" (PageHeader `/#contact` bağlamı — "Demo iste" değil) + `hero.{pilot, h1lead, h1mark, h1tail, sub, ctaPrimary, ctaSecondary, note, compare.{todayLabel, afterLabel, today.one..four, after.one..four}}`. TR yetkili; en/ar/de/es = TR kopyası (stale placeholder; yapısal anahtar 5 dilde eşzamanlı, değer versiyon-sınırı). `h1lead` sonundaki boşluk ("Kulübünüzün tüm işi ") mark ayrımı için korundu.
+- **`components/alpfit/AlpfitShowcase.tsx`** (YENİ, `"use client"`): `<main className="pt-16">` kompozisyon kabuğu, şimdilik yalnız `<AlpfitHero/>`. Bölümler 15.02–15.06'da eklenecek.
+- **`components/alpfit/AlpfitHero.tsx`** (YENİ, `"use client"`, `useTranslations("alpfit")`): iki-sütun grid (`lg:grid-cols-[1.1fr_0.9fr]`, mobilde tek sütun) + `LivingFlow`+`FlowScrim` arkaplan. Sol: pilot-chip (`.dot` yeşil + `animate-ping` halo — global reduced-motion ile durur; gerçek canlı pilot = dürüst) → H1 (3-parça anahtar, mark = yeşil + `bg-pulse/40` piksel-altçizgi, `whitespace-nowrap`) → sub → 2 CTA (primary subject'li mailto, secondary `#fiyat` anchor) → note. Sağ: opak `bg-surface` before/after compare kartı (`grid-cols-[1fr_1px_1fr]`, before `bg-canvas-deep` + `<s>` üstü çizili, after yeşil `→` tick). RTL: `→` tick'ler `rtl:-scale-x-100` ile döner; grid/inset logical (physical L/R yok).
+- **`page.tsx` rewire**: import `GymSoftwareShowcase`→`AlpfitShowcase`; `getTranslations namespace:"crewOs"`→`"alpfit"`. `generateMetadata` **değişmedi** (SEO → 15.07); `localizedAlternates`/route korundu. `GymSoftwareShowcase.tsx` orphan oldu ama **silinmedi** (referans; 15.07 temizlik).
+
+**Test/Doğrulama:**
+- Vitest 39/39 ✅ (i18n-parite `alpfit`'i 5 dilde eşzamanlı doğruladı).
+- `next build` temiz: 37/37 SSG, exit 0, type-check + lint geçti, 0 MISSING_MESSAGE, 0 warn.
+- Prerender ground-truth grep: 5 dilde pilot/mark/sub/mailto/#fiyat/compare izi 1/1, MISSING 0. PageHeader `back`="Ana sayfa" 5 dilde alpfit ns'ten.
+- Playwright a11y **bu oturumda koştu** (sandbox öldürmedi): 50/50 PASS, spor-salonu 10 varyantı (5 dil × light+dark, RTL) WCAG AA 0 ihlal. crew-os görünür hero'su sağlam (rewire kırmadı).
+
+**Notlar / sonraki task farkındalığı:**
+- next-intl `NextIntlClientProvider` **tüm** mesaj sözlüğünü her sayfaya gömer → `alpfit` ns crew-os.html'de de escaped-JSON olarak görünür (görünür içerik DEĞİL, mevcut davranış; kapsam-dışı, ~600 bayt/sayfa).
+- Sayfa artık erken-wire; 15.02+ bölümleri `AlpfitShowcase` kabuğuna eklenip gerçek route'ta `next build` ile doğrulanacak.
 
 ---
 
