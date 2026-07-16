@@ -66,7 +66,46 @@
 
 ## Araştırma Bulguları
 
-> Bu bölüm `/devflow:research-phase 16` oturumunda doldurulur.
+> `/devflow:research-phase 16` oturumunda dolduruldu (2026-07-16). Bu faz iki mekanik teknik-borç kalemi olduğundan araştırma = **mevcut durumu kodda/registry'de doğrulamak** (mimari yaklaşım karşılaştırması değil). Karar noktası yalnız TB-D2'de doğdu → kullanıcıya soruldu, `docs/DECISIONS.md` 2026-07-16'ya kaydedildi.
+
+### TB-D1 — gym PNG disk hijyeni (karar gerektirmez)
+
+**Doğrulama (grep, teyitli):**
+- `public/gym/`: 4 dosya — `calendar.png` (437KB) · `dashboard.png` (339KB) · `member.png` (371KB) · `messaging.png` (576KB) = **~1.7MB**. *(kaynak: repoda-tanımlı disk asset — `public/gym/*.png`.)*
+- **0 kod tüketicisi:** repo-geneli grep (`src/`, `messages/`, `sitemap.ts`, `robots.ts`, `next.config.ts`, `.css`) `calendar/dashboard/member/messaging.png` + `/gym/` için **hiç eşleşme yok**. Tek referanslar `_dev/` dokümanlarında (tarihsel/planlama) + M2 modül dokümanı (aşağıda, stale).
+- Eski `components/gym/GymSoftwareShowcase.tsx` zaten TASK-15.07'de `git rm`'lendi; sayfa artık `components/alpfit/*` (6 bileşen: Hero/Showcase/Roles/Features/Why/Pricing, saf CSS/SVG — raster görsel yok, `next/image` bu sayfadan düştü). *(kaynak: repoda-tanımlı — `src/components/alpfit/`, `src/app/[locale]/spor-salonu-yazilimi/page.tsx`.)*
+- Sitemap/OG-imaj/robots referansı **yok** (sitemap 5 locale × 6 path, imaj listesi tutmaz).
+
+**Sonuç:** 4 PNG tam orphan → güvenle silinir. Plan-phase'de mekanik task: `git rm public/gym/*.png` + boşalan `public/gym/` dizini kaldır.
+
+### TB-D2 — npm audit / bağımlılık denetimi (karar: kabul + kayıt)
+
+**Doğrulama (npm audit + registry sorgusu):**
+- **365 bağımlılık · 2 moderate · 0 low/high/critical/info.** İki bulgu da **tek kök nedenden:** `next`'in içine gömülü (nested) `postcss@8.4.31` — `node_modules/next/node_modules/postcss`. *(kaynak: dış — Next'in bundle bağımlılığı; projenin declared bağımlılığı değil.)*
+- Advisory: [GHSA-qx2v-qp2m-jg93](https://github.com/advisories/GHSA-qx2v-qp2m-jg93) — postcss `<8.5.10`, CSS stringify çıktısında `</style>` kaçırma XSS, **CVSS 6.1**. *(kaynak: dış.)*
+- **Projenin kendi postcss'i temiz:** root `8.5.15` · tailwind/vite `8.5.16` — hepsi `≥8.5.10`. Yalnız Next'in bundle'ı eski.
+- **Belirleyici:** `next@15.3.0` → `15.5.20` **her** patch, hatta `next@16.2.10` (son major) bile `dependencies.postcss: 8.4.31`'i **sabit pinliyor** → aralık-içi `npm update` de, major upgrade de audit'i çözmez. npm'in tek `fixAvailable`'ı `next@9.3.3` (`isSemVerMajor` — Next 15→9 katastrofik downgrade).
+
+**Sömürülebilirlik (bu proje):** yok. Next'in gömülü postcss'i **build-zamanı** CSS pipeline'ında çalışır; tüm CSS geliştirici-yazımı (globals.css + Tailwind), site statik üretilir, sunulan `<style>`'a giden güvenilmez girdi yolu yok → tedarik-zinciri hijyen bayrağı, canlı risk değil.
+
+### Değerlendirilen Yaklaşımlar (TB-D2)
+- **Kabul + DECISIONS kaydı** — dokunulmaz dosyalara dokunmadan borcu upstream-bekleyen/sömürülemez olarak kaydet. *Artı:* Dokunulmazlar + ILKELER kalıcılık ile hizalı, regresyon riski yok, sömürülemez açık için orantılı. *Eksi:* audit sayacı 2 moderate'te kalır (kozmetik).
+- **package.json `overrides`** — postcss'i `≥8.5.10`'a zorla, audit susar. *Artı:* sayaç sıfırlanır. *Eksi:* `package.json`+`package-lock.json` (Dokunulmaz, onay-gerektiren) değişir; Next'in bilinçli pin'ini ezer (regresyon riski); tam build+Vitest+a11y regresyon koşusu gerekir; sömürülemez açık için orantısız.
+- **Seçilen:** **Kabul + kayıt** (kullanıcı onayı, 2026-07-16). Gerekçe → `docs/DECISIONS.md` 2026-07-16 (Faz 16, TB-D2).
+
+### Kullanılacak Araçlar/Kütüphaneler
+- **Yeni bağımlılık yok.** TB-D1 saf dosya silme; TB-D2 rapor+kayıt (kod/paket değişmez).
+- `next@15.5.19` (kurulu; `^15.3.0`) korunur — güncelleme audit'i çözmediğinden değişiklik gerekçesi yok (Dokunulmazlar: `package.json`/`package-lock.json`).
+
+### Dikkat Edilecekler
+- **gym PNG silmeden önce son bir grep** (kaynak + `_dev/` + config) — silme anında yeni tüketici doğmadığını doğrula (araştırma anı teyitli ama plan/icra arası değişebilir). *(kaynak: `public/gym/*.png`.)*
+- **M2 modül dokümanı drift (stale):** `_dev/modules/M2-Sayfalar-Bolumler.md:123` F2.8 "Açıklama"sı hâlâ eski yapıyı anlatıyor (`components/gym/GymSoftwareShowcase.tsx` + 8-özellik grid + `next/image` + `public/gym/*.png`) — v0.4 Alpfit Plus port sonrası gerçekle çelişiyor (satır 133 v0.4 notu var ama base açıklama eski). TB-D1 PNG silinince bu satır güncellenmeli (yoksa doküman "silinen asset'i kullanılıyor" gösterir). *(kaynak: repoda-tanımlı — `_dev/modules/M2-Sayfalar-Bolumler.md:123`.)*
+- **TB-D2'de `npm audit fix --force` ASLA** — Next'i 9.3.3'e downgrade eder (build yıkılır). Düz `npm audit fix` de bir şey yapmaz (fix yalnız semver-major).
+- **Regresyon güvencesi:** TB-D1 PNG silme runtime'ı etkilemez (0 tüketici); TB-D2 kod/paket değiştirmez. Yine de faz-sonu `next build` temiz + Vitest + a11y tohumları koşulur (guardrail: a11y=100 çift-tema · CLS≈0 · i18n 5-dil parite — Faz 15'te mühürlü).
+
+### Teknik Kararlar
+- **TB-D1:** 4 orphan PNG silinir (grep 0 tüketici); M2:123 stale açıklama TB-D1 ile birlikte güncellenir. *Gerekçe:* mekanik disk hijyeni + doküman gerçeklik-senkronu; kalıcılık ilkesi.
+- **TB-D2:** kabul + DECISIONS kaydı; `overrides`/downgrade yok. *Gerekçe:* sömürülemez (build-zamanı, geliştirici-CSS, statik), güvenli fix yok, Dokunulmazlar + ILKELER kalıcılık. Yeniden-değerlendirme: Next bundle postcss bump edince versiyon-sınırında. Detay → `docs/DECISIONS.md` 2026-07-16.
 
 ---
 
@@ -109,4 +148,4 @@
 ---
 
 **Oluşturulma:** 2026-07-16 (discuss-phase 16)
-**Son Güncelleme:** 2026-07-16 — discuss-phase 16: versiyon-sonu tespiti `içerik_fazları`→`teknik_borç`; kapsam gym PNG hijyeni + npm audit; non-TR çeviri ertelendi. **v0.4 TR production release yapıldı** (kullanıcı önceliği, canlı `f173234` — `docs/RELEASE-v0.4.md`).
+**Son Güncelleme:** 2026-07-16 — research-phase 16: Araştırma Bulguları yazıldı. TB-D1 (gym PNG) grep 0 tüketici → güvenle silinir + M2:123 stale açıklama güncellenir. TB-D2 (npm audit) tek kök neden = Next'e gömülü `postcss@8.4.31`, sömürülemez, güvenli sürüm-fix'i yok (her Next 15.x/16.x aynı pin) → **kabul + kayıt** (kullanıcı onayı; `docs/DECISIONS.md` 2026-07-16). Adım = plan.

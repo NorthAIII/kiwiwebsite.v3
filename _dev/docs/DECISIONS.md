@@ -9,6 +9,22 @@
 
 <!-- Her yeni karar aşağıdaki formatta en üste eklenir (en yeni en üstte) -->
 
+### 2026-07-16 — npm audit: Next'e gömülü postcss@8.4.31 (2 moderate) kabul + kayıt, overrides/downgrade yok (Faz 16, TB-D2)
+
+**Bağlam:** Faz 16 (v0.4 versiyon-sonu teknik borç) research. `npm audit`: 365 bağımlılık, **2 moderate, 0 low/high/critical**. İki bulgu da tek kök nedenden: `next`'in içine gömülü (nested) `postcss@8.4.31` (`node_modules/next/node_modules/postcss`) → advisory [GHSA-qx2v-qp2m-jg93](https://github.com/advisories/GHSA-qx2v-qp2m-jg93) (postcss `<8.5.10`, CSS stringify `</style>` kaçırma XSS, CVSS 6.1). Projenin kendi postcss'i temiz (root `8.5.15`, tailwind/vite `8.5.16` — hepsi `≥8.5.10`). Belirleyici: `next@15.3.0`→`15.5.20` **her** patch, hatta `next@16.2.10` (son major) bile `postcss: 8.4.31`'i sabit pinliyor → hiçbir sürüm güncellemesi audit'i çözmez. npm'in tek "fix"i `next@9.3.3` (`isSemVerMajor` — katastrofik downgrade).
+
+**Seçenekler:**
+1. **Kabul + kayıt** — dokunulmaz dosyalara dokunma; upstream-bekleyen, sömürülemez borç olarak kaydet; Next bundle postcss'i bumpladığında versiyon-sınırında yeniden bak.
+2. **package.json `overrides`** ile postcss'i `≥8.5.10`'a zorla — audit susar ama `package.json` + `package-lock.json` (Dokunulmaz) değişir, Next'in pinlediği sürümü ezer (regresyon riski), tam build+Vitest+a11y regresyon koşusu gerekir.
+
+**Karar:** Seçenek 1 — **kabul + bu kayıt.** `npm audit fix --force` (Next downgrade) ve `overrides` **yapılmaz**. TB-D2 deliverable'ı = audit raporu + bu karar kaydı.
+
+**Gerekçe:** Açık **bu proje bağlamında sömürülemez** — Next'in gömülü postcss'i build-zamanı CSS pipeline'ında çalışır, tüm CSS geliştirici-yazımı (globals.css + Tailwind), site statik üretiliyor, sunulan `<style>`'a giden güvenilmez girdi yolu yok. Güvenli otomatik fix **yok** (tek öneri katastrofik downgrade). `overrides` sömürülemez bir moderate için Dokunulmazlar'ı (`package.json`/`package-lock.json`, onay-gerektiren) bozar + Next'in bilinçli pin'ini ezer (regresyon riski) → ILKELER kalıcılık (framework'le savaşan hack yerine upstream'i bekle) ile ters. Kalıcı çözüm upstream: Next gömülü postcss'i `≥8.5.10`'a bumpladığında aralık-içi `npm update` alır.
+
+**İlgili Task/Faz:** Faz 16 (research; TB-D2). Yeniden-değerlendirme tetikleyicisi: sonraki versiyon-sonu / `npm audit` temizlenene dek her release öncesi hızlı kontrol. Bulgular → `phases/PHASE-16.md` → Araştırma Bulguları.
+
+---
+
 ### 2026-07-16 — Alpfit Plus port: fiyat bandı ink-panel inversion + mockup metni i18n-dışı sabit-TR (Faz 15, research)
 
 **Bağlam:** Faz 15 (v0.4 Alpfit Plus) araştırması. Artifact (`_dev/docs/alpfit-plus-artifact.html`) React+Tailwind-token+next-intl'e port edilirken iki tasarım kararı task'ları şekillendiriyordu: (1) fiyat bandı + "Neden" aside'ının koyu paneli tema geçişinde nasıl davranacağı; (2) telefon mockup'larının içindeki metinlerin i18n'e girip girmeyeceği. İkisi de kullanıcıya soruldu (research-phase Adım 3).
