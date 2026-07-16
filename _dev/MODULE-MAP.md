@@ -164,6 +164,10 @@ M6 (SEO/Deploy) ─────────────────────>
 | AP1: Alpfit Plus sayfası port + yeni bölümler (Hero/before-after · Sorun · 4 Rol · Mobil uygulama mockup'ları · 9 Özellik · Neden/rekabet · Fiyat · Yol haritası+Store · Kapanış) → React + Tailwind v4 token; primitive'ler (Reveal/PageHeader/Footer) yeniden kullanılır | M2 (+M1/M3) | v0.4 | 15 | ✅ |
 | AP2: 5-dil i18n namespace (yeni içerik `messages/*.json`; TR birincil, non-TR versiyon-sınırı; component-içi TR/EN deseni terk edilir) | M4 (+M2) | v0.4 | 15 | ✅ |
 | AP3: SEO/metadata (ürün konumuna göre başlık/description; route `/spor-salonu-yazilimi` korunur) | M6 (+M2) | v0.4 | 15 | ✅ |
+| **— v0.4 versiyon-sonu iş birimleri (Faz 16 — teknik borç + TR production release) —** | | | | |
+| REL: v0.4 TR production release (`revize/alpfit-plus`→`main` canlı; TR tam, non-TR stale-TR ertelendi; duman testi) | M6 | v0.4 | 16 | ✅ |
+| TB-D1: gym PNG disk hijyeni (`public/gym/*.png` 4 orphan dosya sil; 0 tüketici) | M2 | v0.4 | 16 | 🔄 |
+| TB-D2: npm audit / bağımlılık denetimi (rapor + onaylı güncelleme; `package-lock` dokunulmaz) | M6 | v0.4 | 16 | 🔄 |
 
 **Durum simgeleri:**
 - ⬜ **Bekliyor** — Fazı henüz başlamadı
@@ -182,4 +186,4 @@ M6 (SEO/Deploy) ─────────────────────>
 
 ---
 
-**Son Güncelleme:** 2026-07-16 — review-phase 15: AP1/AP2/AP3 Durum 🔄→**✅** (Faz 15 tamam, UAT 16/16, kalite 8 eksen ✅). Alpfit sayfası artifact düzenine port edildi (`components/alpfit/` 8 bileşen + CSS Module mockup + `alpfit` 5-dil 133-leaf namespace + `--color-surface` token); imza Living Flow + dürüstlük 4/4 korundu; guardrail'ler regresyonsuz. Detay → `phases/PHASE-15.md`.
+**Son Güncelleme:** 2026-07-16 — discuss-phase 16: v0.4 versiyon-sonu iş birimleri eklendi (Faz 16) — REL (TR production release ✅ canlı `f173234`), TB-D1 gym PNG hijyeni 🔄, TB-D2 npm audit 🔄. non-TR çeviri ertelendi (sonraki faz/prd-review). Detay → `phases/PHASE-16.md`, `docs/RELEASE-v0.4.md`.

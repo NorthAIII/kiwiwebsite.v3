@@ -78,6 +78,7 @@
 | `docs/REVIZE-BACKLOG.md` | Güçlü revize ham girdisi: kullanıcı tespitleri + bekleyen işler (PRD tohumu) |
 | `docs/UMAMI-ANALYTICS.md` | Umami analytics entegrasyon spec'i (bekliyor — kod, değerler, uyarılar) |
 | `docs/RELEASE-v0.2.md` | v0.2 production release runbook & checklist (hafif operasyonel oturum: temiz pencere → PR/merge → canlı duman testi → Umami +1). run-task 10'dan önce. |
+| `docs/RELEASE-v0.4.md` | **v0.4** TR production release kaydı (2026-07-16, canlı `f173234`): `revize/alpfit-plus`→`main` ff-merge + canlı duman testi ✓; TR tam, non-TR stale-TR ertelendi; açık takip chatbot env. |
 | `docs/perf/` | Ana sayfa Lighthouse perf/a11y tabanları (`README.md` = metodoloji+koşu tablosu+a11y kırılımı; `home-{mobile,desktop}-<tarih>.{html,json}` kanonik artefaktlar). İlk taban: v0.1 2026-06-28 (TD3). |
 | `docs/alpfit-plus-artifact.html` | **v0.4** — Alpfit Plus tasarım referansı (kullanıcı artifact'i v2, saf HTML/CSS; nihai hedef düzen). Port kaynağı; feature `PRD/features/alpfit-plus.md`. |
 
@@ -198,7 +199,7 @@ kiwiwebsite.v3/
 
 ---
 
-**Son Güncelleme:** 2026-07-16 — re-kickoff (kickoff-docs): v0.4 içerik dokümanları eklendi — `PRD/features/alpfit-plus.md` (Alpfit Plus feature) + `docs/alpfit-plus-artifact.html` (tasarım referansı).
+**Son Güncelleme:** 2026-07-16 — discuss-phase 16: `docs/RELEASE-v0.4.md` eklendi (v0.4 TR production release kaydı — canlı `f173234`).
 
 <!-- KURAL: Bu satır her güncellemede ÜZERİNE YAZILIR. "Önceki:" prefix ile kümülatif yığma YASAK (CLAUDE.md → Doküman Disiplini). -->
 <!-- KURAL: Tamamlanmış fazların task arşiv listesini INDEX'e ekleme — `ls _dev/tasks/archive/` zaten görür. INDEX yalnızca aktif klasör konumlarını gösterir; statik liste dokümanı değildir. -->
