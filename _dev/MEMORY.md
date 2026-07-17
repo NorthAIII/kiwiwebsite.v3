@@ -7,7 +7,7 @@
 >
 > Bu yapı şişmeyi önler: index ince kalır (hep yüklü), detay yalnızca gerekince okunur.
 
-**Son Güncelleme:** 2026-07-16 — run-task 15.06: [axe-offscreen-inline-contrast](memory/axe-offscreen-inline-contrast.md) genelleştirildi (Teknik Tuzaklar) — off-viewport küçük opak parlak aksan zemini `<body>` canvas'ına düşer; çözüm aksana **immediate backdrop** rengini ver (doğrudan bant üstünde `bg-ink`, lifted kart üstünde kart rengi `INK_LIFT`). Fiyat bandında iki kez doğrulandı (aside + band); muted translücent metne dokunma.
+**Son Güncelleme:** 2026-07-18 — run-task 17.06 (S2): [sandbox-runtime-browser-page-route](memory/sandbox-runtime-browser-page-route.md)'e **`history.back()`-after-SPA yanlış-FAIL** notu eklendi (Ortam & Araç) — `page.route` statik full-`.rsc` servis edince ileri SPA-nav çalışır ama browser-back URL'i çevirir/içeriği restore etmez (prod partial-flight uzlaşması ıraksar); ürün bug'ı değil, harness artefaktı. Dönüş doğrulamasında header back-link + tam-doküman back kullan (kör-red yok: grep + gerçek-UI + tam-doküman probe ile teyit).
 
 <!-- KURAL: Bu satır her güncellemede ÜZERİNE YAZILIR. "Önceki:" prefix ile kümülatif yığma YASAK (CLAUDE.md → Doküman Disiplini). -->
 
