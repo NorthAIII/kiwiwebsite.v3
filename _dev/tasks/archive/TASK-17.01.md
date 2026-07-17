@@ -1,6 +1,6 @@
 # TASK-17.01: S1 — Giriş Noktaları & Yönlendirme Matrisi
 
-**Durum:** ⬜ Bekliyor
+**Durum:** ✅ Tamamlandı
 **Modül:** M4 i18n (+M6 SEO/Deploy) (modules/M4-i18n.md, M6-SEO-Deploy.md)
 **Feature:** S1 senaryo grubu — giriş/yönlendirme (doğrulama, yeni feature üretmez)
 **Faz:** Phase 17 (phases/PHASE-17.md)
@@ -30,24 +30,24 @@
 
 ## Alt Görevler
 
-- [ ] **1. Taze `next build` + ground-truth teyidi**
+- [x] **1. Taze `next build` + ground-truth teyidi**
   - `npm run build` temiz geçmeli (6 sayfa × 5 locale SSG prerender; `Compiled successfully`) → `.next/routes-manifest.json` + `.next/server/app/**/*.html` yenilenir (17.02/17.03 buna dayanır)
   - Route ağacı ön-denetim: `crew-os` fiziksel dizin var; `bunker-os`/`forum` fiziksel dizin **yok** (redirect'i gölgeleyen route yok)
   - **`next start` DENENMEZ** (memory: sandbox `exit 144`) → HTTP doğrulaması curl + build-ground-truth ile
 
-- [ ] **2. Route status matrisi — 6 sayfa × 5 locale (curl)**
+- [x] **2. Route status matrisi — 6 sayfa × 5 locale (curl)**
   - 6 sayfa: `/`, `/crew-os`, `/spor-salonu-yazilimi`, `/vaka-calismalari`, `/bulten/ai-sdr-araclari`, `/bulten/claude-opus-4-8-fable-5`
   - TR prefixsiz + `NEXT_LOCALE=tr` cookie; EN/AR/DE/ES açık-prefixli cookie'siz → 30/30 = **200**; `html lang` doğru, AR `dir=rtl`
   - Not: canlı katman 17.08'de; bu task build-ground-truth (routes-manifest regex örnek-path testi) + gerekirse `page.route`/canlı curl ile HTTP kodu
 
-- [ ] **3. Redirect kontrolleri (v0.4 dokunmadı → regresyon re-teyit)**
+- [x] **3. Redirect kontrolleri (v0.4 dokunmadı → regresyon re-teyit)**
   - `.next/routes-manifest.json` regex'lerini örnek path'lere test et: `/bunker-os`→308→`/crew-os` (çıplak+5-locale twin); `/forum`→308→`/` (+twin); `/forum/:slug*`→308→`/bulten/:slug*` (+twin)
   - Sıra tuzağı teyidi: çıplak `/forum`→`/` slug girişinden **önce** eşleşiyor (hedefler ıraksak); hepsi `permanent:true`→308
 
-- [ ] **4. Derin-link & bilinmeyen-locale gözlem**
+- [x] **4. Derin-link & bilinmeyen-locale gözlem**
   - `/en#sectors`→200; çıplak `/bulten`→404; `/tr`→307→`/` (as-needed strip); `/xx`·`/en-US`·`/zz/crew-os`→404 (next-intl middleware) — gözle + kaydet (beklenen, bug değil)
 
-- [ ] **5. Triyaj & kayıt**
+- [x] **5. Triyaj & kayıt**
   - Kapsam-içi bug varsa (ana sayfa **veya 5 alt sayfa**) → düzeltme task'ı önerisi; sahipli/beklenen kayıtlar (çıplak `/bulten`→404, `/tr`→307) Oturum Kaydı + PHASE-17'ye
 
 ---
@@ -76,32 +76,58 @@ _dev/
 
 ## Test Kriterleri
 
-- [ ] `next build` temiz (6 sayfa × 5 locale prerender); `.next/routes-manifest.json` + prerender HTML tazelendi
-- [ ] 6 sayfa × 5 locale = 30 kombinasyon **200** (TR cookie ile prefixsiz, diğerleri prefixli); `html lang` + AR `dir=rtl` doğru
-- [ ] `/bunker-os`→`/crew-os` **308** çıplak + 5-locale twin; `/forum`→`/` **308**; `/forum/<slug>`→`/bulten/<slug>` **308**; sıra tuzağı doğru
-- [ ] Çıplak `/bulten`→404, `/tr`→307, bilinmeyen-locale→404 gözlemlendi ve kaydedildi (peşinen iddia yok)
-- [ ] Bulgular triyaj edildi; PHASE-17 + task doc'a yazıldı; kaynak kod değişmedi
+- [x] `next build` temiz (6 sayfa × 5 locale prerender); `.next/routes-manifest.json` + prerender HTML tazelendi
+- [x] 6 sayfa × 5 locale = 30 kombinasyon **200** (TR cookie ile prefixsiz, diğerleri prefixli); `html lang` + AR `dir=rtl` doğru
+- [x] `/bunker-os`→`/crew-os` **308** çıplak + 5-locale twin; `/forum`→`/` **308**; `/forum/<slug>`→`/bulten/<slug>` **308**; sıra tuzağı doğru
+- [x] Çıplak `/bulten`→404, `/tr`→307, bilinmeyen-locale→404 gözlemlendi ve kaydedildi (peşinen iddia yok)
+- [x] Bulgular triyaj edildi; PHASE-17 + task doc'a yazıldı; kaynak kod değişmedi
 
 ---
 
 ## Tamamlanma Kriterleri
 
-- [ ] Tüm alt görevler tamamlandı
-- [ ] Tüm test kriterleri karşılandı
-- [ ] Git commit & push yapıldı (conventional commits formatı)
-- [ ] Bu doküman güncellendi (oturum kaydı)
-- [ ] DURUM.md güncellendi
+- [x] Tüm alt görevler tamamlandı
+- [x] Tüm test kriterleri karşılandı
+- [x] Git commit & push yapıldı (conventional commits formatı)
+- [x] Bu doküman güncellendi (oturum kaydı)
+- [x] DURUM.md güncellendi
 
 ---
 
 ## Oturum Kayıtları
 
-### Oturum — [TARİH]
+### Oturum — 2026-07-17
 
-**Durum:** [durum]
+**Durum:** ✅ Tamamlandı
 
 **Yapılanlar:**
-- [doldurulacak]
+- **Taze `next build` ground-truth kuruldu** (17.02/17.03 buna dayanır): `Compiled successfully` + 37/37 static page. 6 SSG route × 5 locale prerender edildi; `.next/routes-manifest.json` + `.next/server/app/**/*.html` tazelendi (HEAD hizası garanti). Route ağacı ön-denetimi: `crew-os`/`spor-salonu-yazilimi`/`vaka-calismalari`/`bulten` fiziksel dizin var; `bunker-os`/`forum` fiziksel dizin **yok** → redirect'i gölgeleyen route yok. `next start` denenmedi (memory kuralı).
+- **Route status matrisi (30/30 = 200):** 6 sayfa × 5 locale prerender HTML'in **hepsi diskte** (SSG ground-truth = 200 servis eder). `html lang` doğru (tr/en/ar/de/es); **AR `dir="rtl"`** root + alt sayfalarda (crew-os/spor-salonu-yazilimi/bulten spot) teyitli. Canlı spot-check (7 kombinasyon, TR prefixsiz + prefixli) → hepsi **200**.
+- **Redirect kontrolleri (v0.4 dokunmadı → regresyon re-teyit):** `seo-redirects.test.ts` taze build'e karşı **16/16 geçti**. routes-manifest regex'leri **13 somut path'e** karşı bağımsız test edildi → 3 aile de çıplak + 4-locale twin **308** doğru hedefe. **Sıra tuzağı mühürlü:** çıplak `/forum`→`/` (sluga düşmedi, `/bulten` değil). Canlı zincir teyidi: çıplak+twin 308 → doğru hedef → zincir sonu 200.
+- **Derin-link & bilinmeyen-locale (canlı, beklenen davranış):** `/en`→200 (`#sectors` client-side); `/tr`→**307**→`/` (as-needed strip); çıplak `/bulten`→**404** (index yok + redirect yok, build-ground-truth teyitli); `/xx`·`/en-US`·`/zz/crew-os`→**404** (next-intl middleware, `locales:[tr,en,ar,de,es]`+`as-needed`). Hepsi "beklenen, bug değil".
+- **Triyaj:** Kapsam-içi (ana sayfa **veya 5 alt sayfa**) **gerçek bug yok** → düzeltme task'ı gerekmez. Sahipli/beklenen kayıtlar (`/bulten`→404 = PHASE-17 Kapsam Dışı kaydı; `/tr`→307 = as-needed strip) doğrulandı. **S1 = regresyon re-teyidi GEÇTİ.**
+
+**Sorunlar:**
+- Yok. Runtime middleware davranışları (`/tr`→307, bilinmeyen-locale→404) routes-manifest'te değil → build-ground-truth gösteremedi; `next start` yasak (memory `exit 144`). Çözüm: canlı curl (test-what's-live; v0.4 bu katmana dokunmadı, canlı aynı middleware'i koşar) → deterministik build kanıtı + ampirik canlı gözlem birleştirildi.
+
+**Kararlar:**
+- HTTP-katmanı runtime davranışı için doğrulama substratı: build-ground-truth (deterministik: prerender varlığı + routes-manifest regex + Vitest) **birincil**; middleware-runtime edge davranışları için canlı curl (test-what's-live). `page.route` bu task'ta gereksiz (middleware 404/307 negotiation'ı diskten servis taklidiyle üretilemez; o araç S3/S4 runtime-JS içindir).
+- docs/DECISIONS.md'ye eklendi: Hayır (yeni karar yok — mevcut mühürlü katmanın regresyon re-teyidi).
+
+**Kalan İşler:** Yok (task tamamlandı).
+
+**Dosya Değişiklikleri:**
+- Kaynak kod: **değişmedi** (doğrulama fazı; git status kaynak için temiz). Yalnız `.next/` build çıktısı tazelendi (gitignore'da).
+- `_dev/tasks/TASK-17.01.md` → oturum kaydı + durum ✅
+- `_dev/phases/PHASE-17.md` → Task Listesi 17.01 ✅ + S1 bulgu notu
+- `_dev/DURUM.md` → aktif task 17.01→17.02, özet
+
+**Test Sonuçları:**
+- `next build`: temiz (`Compiled successfully`, 37/37 static page).
+- `vitest run tests/seo-redirects.test.ts`: **16/16 geçti** (taze build'e karşı).
+- routes-manifest regex bağımsız path testi: **13/13 geçti** + sıra tuzağı mührü ✓.
+- Prerender HTML matrisi: **30/30 mevcut** (6×5); `html lang`/`dir` 5-locale doğru, AR RTL.
+- Canlı curl: redirect 3 ailesi (çıplak+twin) 308→doğru hedef→200; spot 200 (7); edge (`/tr` 307, `/bulten`+bilinmeyen-locale 404) beklenen.
 
 ---
 

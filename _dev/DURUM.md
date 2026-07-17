@@ -1,6 +1,6 @@
 # DURUM — Proje Dashboard
 
-**Son Güncelleme:** 2026-07-17 — **verify-plan 17 ✅ — 8 task fresh-context review, plan TEMİZ (0 mekanik düzeltme, 0 yapısal değişiklik).** Referans gerçeklik-kontrolü tam: tüm kod yolları/satır no/tanımlayıcılar gerçekle birebir teyitli (alpfit 133-leaf×5 parite · route.ts sanitizasyon L38/40/42/44 → new Anthropic L48 · Chatbot L14/71/103 · next.config redirect 3 ailesi L27-49 · subpages-a11y 50 test · 5 Vitest + 2 e2e · Alpfit 7 bileşen+PhoneMockups). Milestone/gereksinim/tutarlılık ✓. Task çalıştırılmadı. Açık takipler (regresyon değil): branch→`main` merge bekliyor (gym PNG) · canlı `ANTHROPIC_API_KEY` env yok · non-TR alpfit stale-TR (prd-review). Fazlar 1–16 ✅, Faz 17 🔄 (Adım: **task**). **v0.4 TR CANLI** (`main`=`f173234`). **Sıradaki: `/devflow:run-task` → TASK-17.01** (yeni oturum).
+**Son Güncelleme:** 2026-07-17 — **run-task TASK-17.01 ✅ — S1 giriş/yönlendirme matrisi GEÇTİ, 0 kapsam-içi bug.** Taze `next build` ground-truth kuruldu (temiz, 37/37 static; 17.02/17.03 buna dayanır). 30/30 prerender 200 + `html lang`/AR-RTL doğru; `seo-redirects` 16/16 + routes-manifest regex 13/13 (sıra tuzağı mührü çıplak `/forum`→`/`); canlı redirect zinciri 308→200 + spot 200; edge beklenen (`/tr`→307, `/bulten`+bilinmeyen-locale→404). v0.4 bu katmana dokunmadı → regresyon re-teyidi. Kaynak kod değişmedi. Fazlar 1–16 ✅, Faz 17 🔄 (Adım: **task**, 7 task kaldı). **v0.4 TR CANLI** (`main`=`f173234`). **Sıradaki: `/devflow:run-task` → TASK-17.02** (yeni oturum).
 
 <!-- KURAL: Bu satır her oturum sonunda ÜZERİNE YAZILIR — tek satır, tek cümle. "Önceki:" / "Eski:" prefix ile kümülatif yığma YASAK; HTML comment'e sarma da yasak (CLAUDE.md → Doküman Disiplini). Tarih + kısa özet yeterli; detay için git log + ilgili PHASE/TASK dokümanları. -->
 
@@ -9,8 +9,8 @@
 ## Aktif Faz
 
 **Faz:** **17 — v0.4 versiyon-sonu senaryo testi** 🔄 (discuss-phase 17 girdi, kapsam damgalandı). Doğrulama fazı — yeni feature üretilmez; ana sayfa + 5 alt sayfa uçtan-uca (S1–S9), delta odağı **Alpfit Plus ürün vitrini** (Faz 15) + test-what's-live (v0.4 canlıda `f173234`). Önceki faz **16 ✅** (v0.4 versiyon-sonu teknik borç + TR release). Fazlar 1–16 ✅.
-**Adım:** **task** — verify-plan 17 ✅ (8 task fresh-context review; referans gerçeklik-kontrolü tam — tüm kod yolları/satır no/tanımlayıcılar teyitli; milestone/gereksinim/task-arası tutarlılık ✓; **0 mekanik düzeltme, 0 yapısal değişiklik** — plan temiz). Katman sırası A build-ground-truth (01-03) → C runtime `page.route`+system Chrome (04-07) → adversarial+canlı duman (08). **Sıradaki: `/devflow:run-task` → TASK-17.01** (ilk task — yeni oturum). **⚠️ Açık takipler (regresyon değil):** (1) `revize/v0.4-versiyon-sonu`→`main` **merge bekliyor** (TB-D1 gym PNG silme; versiyon-sonu finalizasyona, kapsam dışı; canlıda hâlâ 200, 0 tüketici → etkisiz); (2) canlı `ANTHROPIC_API_KEY` env YOK (`/api/chat` 503 → chatbot "offline"; kullanıcı aksiyonu); (3) non-TR alpfit stale-TR (versiyon-sınırı → prd-review).
-**İlerleme:** verify-plan 17 (2026-07-17) — 8 task fresh-context review'dan geçti; referans gerçeklik-kontrolü + milestone/gereksinim/tutarlılık ✓; plan temiz (düzeltme/değişiklik yok). Sıradaki: run-task TASK-17.01.
+**Adım:** **task** — TASK-17.01 ✅ (S1 giriş/yönlendirme matrisi geçti, 0 kapsam-içi bug; taze `next build` ground-truth kuruldu → 17.02/17.03 buna dayanır). Fazda 7 task kaldı (17.02–17.08). Katman sırası A build-ground-truth (01-03) → C runtime `page.route`+system Chrome (04-07) → adversarial+canlı duman (08). **Sıradaki: `/devflow:run-task` → TASK-17.02** (yeni oturum). **⚠️ Açık takipler (regresyon değil):** (1) `revize/v0.4-versiyon-sonu`→`main` **merge bekliyor** (TB-D1 gym PNG silme; versiyon-sonu finalizasyona, kapsam dışı; canlıda hâlâ 200, 0 tüketici → etkisiz); (2) canlı `ANTHROPIC_API_KEY` env YOK (`/api/chat` 503 → chatbot "offline"; kullanıcı aksiyonu); (3) non-TR alpfit stale-TR (versiyon-sınırı → prd-review).
+**İlerleme:** run-task TASK-17.01 (2026-07-17) — S1 geçti (build temiz 37/37 · 30/30 prerender 200 · seo-redirects 16/16 + manifest regex 13/13 · canlı redirect zinciri + edge beklenen); kaynak kod değişmedi. Sıradaki: run-task TASK-17.02.
 **Son Faz Dokümanı:** `phases/PHASE-17.md` (🔄). Önceki: `phases/PHASE-16.md` (✅ v0.4 teknik borç), `phases/PHASE-15.md` (✅ v0.4 içerik fazı). Release kaydı: `docs/RELEASE-v0.4.md`.
 
 ---
@@ -28,9 +28,9 @@
 
 ## Aktif Task
 
-**Task:** **TASK-17.01** ⬜ Bekliyor — sıradaki çalıştırılacak (S1 giriş/yönlendirme matrisi + taze `next build` ground-truth; 17.02/17.03 prerender-grep buna dayanır). verify-plan 17 ✅ → plan temiz. 8 task ⬜ (TASK-17.01–17.08).
-**Durum:** Fazlar 1–16 ✅, Faz 17 🔄 (senaryo testi, Adım: task — verify-plan ✅); Versiyon Sonu Durumu `senaryo_testi`. **v0.4 TR canlı** (`f173234`).
-**İlerleme:** verify-plan 17 (2026-07-17) — 8 task review temiz (0 düzeltme). Sıradaki adım: run-task TASK-17.01.
+**Task:** **TASK-17.02** ⬜ Bekliyor — sıradaki çalıştırılacak (S5 + S6-render + Alpfit render bütünlüğü; prerender grep — TASK-17.01'in taze build'ine dayanır). TASK-17.01 ✅ (S1 geçti). 7 task ⬜ (TASK-17.02–17.08).
+**Durum:** Fazlar 1–16 ✅, Faz 17 🔄 (senaryo testi, Adım: task — 17.01 ✅); Versiyon Sonu Durumu `senaryo_testi`. **v0.4 TR canlı** (`f173234`).
+**İlerleme:** run-task TASK-17.01 (2026-07-17) — S1 geçti, 0 kapsam-içi bug; taze build ground-truth kuruldu. Sıradaki adım: run-task TASK-17.02.
 
 ---
 
@@ -40,7 +40,7 @@
 
 | # | Task | Durum | Kısa |
 |---|------|-------|------|
-| 17.01 | TASK-17.01 | ⬜ Bekliyor | S1 giriş/yönlendirme matrisi + taze `next build` ground-truth (A) |
+| 17.01 | TASK-17.01 | ✅ Tamamlandı | S1 giriş/yönlendirme matrisi + taze `next build` ground-truth (A) — geçti, 0 bug |
 | 17.02 | TASK-17.02 | ⬜ Bekliyor | S5+S6-render + Alpfit render bütünlüğü (prerender grep, A) |
 | 17.03 | TASK-17.03 | ⬜ Bekliyor | S8-suite + S6-parite (Vitest+axe/CI, `alpfit` 133-leaf; a11y mührü CI) |
 | 17.04 | TASK-17.04 | ⬜ Bekliyor | S3 Living Flow degradasyon + Alpfit before/after + CLS (C) |
@@ -55,7 +55,10 @@
 
 > **KURAL:** Sadece son 2 task özeti tutulur, daha eskileri **gerçekten silinir** (HTML comment'e sarma, "Önceki:" prefix, üstü çizili etiket yasak — detay için git log + arşivlenmiş task dokümanı). Her özet kısa formatlı: paragraf yasak, **bullet zorunlu**, "Özet" alanı max 3 bullet. **Faz 16 kapandı (v0.4 versiyon-sonu teknik borç) → Faz 16 task özeti (TASK-16.01) PHASE-16'ya mezun edildi.**
 
-_(Yeni faz henüz girilmedi — güncel task özeti yok. Faz 16 task özeti `phases/PHASE-16.md`'de.)_
+**TASK-17.01** ✅ (S1 giriş/yönlendirme matrisi — doğrulama, kaynak kod değişmedi)
+- Taze `next build` temiz (37/37 static); 30/30 prerender HTML mevcut (6×5) = 200 ground-truth + `html lang`/AR-RTL doğru; canlı spot 200 (7).
+- Redirect: `seo-redirects` 16/16 + routes-manifest regex 13/13 (3 aile çıplak+twin 308, sıra tuzağı mührü çıplak `/forum`→`/`); canlı zincir 308→200.
+- Edge beklenen: `/tr`→307, `/bulten`+bilinmeyen-locale (`/xx`,`/en-US`,`/zz/crew-os`)→404. **0 kapsam-içi bug** → v0.4 dokunmadı, regresyon re-teyidi geçti.
 
 <!-- KURAL: Sadece son 2 task özeti tutulur, daha eskileri silinir (gerçek silme — HTML comment yasak). -->
 <!-- KURAL: Sadece aktif fazın task'leri gösterilir. Geçmiş fazların bilgileri phases/ klasöründedir. -->
@@ -69,8 +72,8 @@ _(Yeni faz henüz girilmedi — güncel task özeti yok. Faz 16 task özeti `pha
 
 ## Hızlı Erişim
 
-**Aktif Task:** **TASK-17.01** ⬜ Bekliyor (sıradaki `/devflow:run-task`). 8 task ⬜ (TASK-17.01–17.08); verify-plan 17 ✅ plan temiz. **⚠️ Açık takipler (regresyon değil):** branch→main merge bekliyor (gym PNG, versiyon-sonu finalizasyona) · canlı `ANTHROPIC_API_KEY` env YOK (`/api/chat` 503 → chatbot "offline"; kullanıcı aksiyonu) · non-TR alpfit stale-TR (prd-review).
-**Aktif Faz:** **17 — v0.4 versiyon-sonu senaryo testi** 🔄 (Adım: task). Doğrulama fazı: ana sayfa + 5 alt sayfa uçtan-uca (S1–S9 → 8 task), delta odağı **Alpfit Plus** + test-what's-live. Plan ✅ (plan-phase 17). Önceki **Faz 16 ✅** (v0.4 teknik borç + TR release). **Aktif Versiyon v0.4**, Versiyon Sonu Durumu: **senaryo_testi**. **v0.4 TR CANLI** (`main` = `f173234`). Fazlar 1–16 ✅. Faz dokümanı: `phases/PHASE-17.md` (🔄); release kaydı `docs/RELEASE-v0.4.md`.
+**Aktif Task:** **TASK-17.02** ⬜ Bekliyor (sıradaki `/devflow:run-task`). TASK-17.01 ✅ (S1 geçti). 7 task ⬜ (TASK-17.02–17.08). **⚠️ Açık takipler (regresyon değil):** branch→main merge bekliyor (gym PNG, versiyon-sonu finalizasyona) · canlı `ANTHROPIC_API_KEY` env YOK (`/api/chat` 503 → chatbot "offline"; kullanıcı aksiyonu) · non-TR alpfit stale-TR (prd-review).
+**Aktif Faz:** **17 — v0.4 versiyon-sonu senaryo testi** 🔄 (Adım: task, 1/8 task ✅). Doğrulama fazı: ana sayfa + 5 alt sayfa uçtan-uca (S1–S9 → 8 task), delta odağı **Alpfit Plus** + test-what's-live. Plan ✅ (plan-phase 17). Önceki **Faz 16 ✅** (v0.4 teknik borç + TR release). **Aktif Versiyon v0.4**, Versiyon Sonu Durumu: **senaryo_testi**. **v0.4 TR CANLI** (`main` = `f173234`). Fazlar 1–16 ✅. Faz dokümanı: `phases/PHASE-17.md` (🔄); release kaydı `docs/RELEASE-v0.4.md`.
 **Task Sistemi:** `tasks/TASKS-README.md`
 **PRD (karar kaynağı):** `PRD/VIZYON.md` · `PRD/VERSIONS.md` · `PRD/features/`
 **Revize Backlog (bilinen sorunlar):** `docs/REVIZE-BACKLOG.md`
@@ -78,4 +81,4 @@ _(Yeni faz henüz girilmedi — güncel task özeti yok. Faz 16 task özeti `pha
 
 ---
 
-**Son Güncelleme:** 2026-07-17 — **verify-plan 17 ✅ — 8 task fresh-context plan review, plan TEMİZ.** Referans gerçeklik-kontrolü tam (tüm kod yolları/satır no/tanımlayıcılar gerçekle birebir: alpfit 133-leaf×5 parite · route.ts sanitizasyon L38/40/42/44→new Anthropic L48 · Chatbot L14/71/103 · next.config 3 redirect ailesi · subpages-a11y 50 test · 5 Vitest+2 e2e · Alpfit 7 bileşen+PhoneMockups · Bunker `id="bunker"`/`"bunker":"Crew OS"` kod-adı kalıntısı); milestone (5 kalem) tüm task'larla eşleşiyor, gereksinim/kalite/task-arası tutarlılık ✓; **0 mekanik düzeltme, 0 yapısal değişiklik**. Yalnız DURUM.md güncellendi (Adım verify-plan→task, TASK-17.01 aktif). Fazlar 1–16 ✅, Faz 17 🔄. **v0.4 TR CANLI** (`f173234`). Branch `revize/v0.4-versiyon-sonu`. **Sıradaki: `/devflow:run-task` → TASK-17.01** (yeni oturum).
+**Son Güncelleme:** 2026-07-17 — **run-task TASK-17.01 ✅ — S1 giriş/yönlendirme matrisi GEÇTİ, 0 kapsam-içi bug.** Taze `next build` temiz (37/37 static) → ground-truth kuruldu (17.02/17.03 buna dayanır). 30/30 prerender HTML mevcut (6 sayfa × 5 locale = 200) + `html lang`/AR-`dir=rtl` doğru; `seo-redirects` 16/16 + routes-manifest regex 13/13 (3 redirect ailesi çıplak+locale-twin 308, sıra tuzağı mührü çıplak `/forum`→`/`); canlı redirect zinciri 308→doğru hedef→200 + spot 200; edge beklenen (`/tr`→307 as-needed strip, `/bulten`+bilinmeyen-locale→404 middleware). v0.4 bu katmana dokunmadı → regresyon re-teyidi. **Kaynak kod değişmedi** (doğrulama fazı). Fazlar 1–16 ✅, Faz 17 🔄 (Adım: task, 1/8 ✅). **v0.4 TR CANLI** (`f173234`). Branch `revize/v0.4-versiyon-sonu`. **Sıradaki: `/devflow:run-task` → TASK-17.02** (yeni oturum).
