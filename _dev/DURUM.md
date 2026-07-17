@@ -1,6 +1,6 @@
 # DURUM — Proje Dashboard
 
-**Son Güncelleme:** 2026-07-17 — **discuss-phase 17 ✅ — FAZ 17 GİRİLDİ (v0.4 versiyon-sonu senaryo testi).** Kapsam ana sayfa + 5 alt sayfa uçtan-uca (Faz 14 çıtası); **v0.4 delta odağı = Alpfit Plus ürün vitrini** (9 bölüm SSG render + saf CSS/SVG PhoneMockups + `alpfit` 133-leaf 5-dil parite + before/after Living Flow + dürüstlük 4/4); **canlı katman = branch/build + hafif canlı duman** (test-what's-live, v0.4 canlıda `f173234`); TR birincil + non-TR tutarlılık (alpfit stale-TR görünür kopukluk yok), chatbot 0-token, keşfet+kaydet+triyaj, otonom; S1–S9 onaylandı. Kapsam `phases/PHASE-17.md`'ye yazıldı. Açık takipler (regresyon değil): branch→`main` merge bekliyor (gym PNG, versiyon-sonu finalizasyona) · canlı `ANTHROPIC_API_KEY` env yok (`/api/chat` 503) · non-TR alpfit stale-TR (prd-review). Fazlar 1–16 ✅, Faz 17 🔄. **v0.4 TR CANLI** (`main`=`f173234`). **Sıradaki: `/devflow:research-phase 17`** (yeni oturum).
+**Son Güncelleme:** 2026-07-17 — **research-phase 17 ✅ — araç eşlemesi + ortam ampirik teyidi tamamlandı.** S1–S9 → doğrulama araçları eşlendi (`phases/PHASE-17.md` → Araştırma Bulguları). Substrat katmanlı: **deterministik build-ground-truth birincil** (prerender grep + Vitest + routes-manifest), runtime davranış yalnız `page.route`+system Chrome (`next start` denenmez — sandbox exit 144), a11y mührü otoritatif **CI** (`test:e2e` a11y job), hafif canlı duman (curl). **Ortam teyitli:** node v24 · Chrome 149 · Vitest **39 test yeşil** · canlı kiwiailab.com 200 + Alpfit marker `PhoneMockup` 150× (branch build ile birebir) + `/api/chat` 503. Açık takipler (regresyon değil): branch→`main` merge bekliyor (gym PNG) · canlı `ANTHROPIC_API_KEY` env yok · non-TR alpfit stale-TR (prd-review). Fazlar 1–16 ✅, Faz 17 🔄 (Adım: **plan**). **v0.4 TR CANLI** (`main`=`f173234`). **Sıradaki: `/devflow:plan-phase 17`** (yeni oturum).
 
 <!-- KURAL: Bu satır her oturum sonunda ÜZERİNE YAZILIR — tek satır, tek cümle. "Önceki:" / "Eski:" prefix ile kümülatif yığma YASAK; HTML comment'e sarma da yasak (CLAUDE.md → Doküman Disiplini). Tarih + kısa özet yeterli; detay için git log + ilgili PHASE/TASK dokümanları. -->
 
@@ -9,8 +9,8 @@
 ## Aktif Faz
 
 **Faz:** **17 — v0.4 versiyon-sonu senaryo testi** 🔄 (discuss-phase 17 girdi, kapsam damgalandı). Doğrulama fazı — yeni feature üretilmez; ana sayfa + 5 alt sayfa uçtan-uca (S1–S9), delta odağı **Alpfit Plus ürün vitrini** (Faz 15) + test-what's-live (v0.4 canlıda `f173234`). Önceki faz **16 ✅** (v0.4 versiyon-sonu teknik borç + TR release). Fazlar 1–16 ✅.
-**Adım:** **research** — Kapsam tartışması ✅ (`phases/PHASE-17.md` → Kapsam Tartışması). Kararlar: kapsam ana sayfa + 5 alt sayfa (Faz 14 çıtası) · branch/build + canlı duman · TR birincil + non-TR tutarlılık · chatbot 0-token · keşfet+kaydet+triyaj · otonom · S1–S9 yeterli. **Sıradaki: `/devflow:research-phase 17`** (araç eşlemesi + ortam ampirik teyidi — yeni oturum). **⚠️ Açık takipler (regresyon değil):** (1) `revize/v0.4-versiyon-sonu`→`main` **merge bekliyor** (TB-D1 gym PNG silme; versiyon-sonu finalizasyona, kapsam dışı; canlıda hâlâ 200, 0 tüketici → etkisiz); (2) canlı `ANTHROPIC_API_KEY` env YOK (`/api/chat` 503 → chatbot "offline"; kullanıcı aksiyonu); (3) non-TR alpfit stale-TR (versiyon-sınırı → prd-review).
-**İlerleme:** discuss-phase 17 (2026-07-17) — Faz 17 girildi (🔄). Kapsam tartışması `phases/PHASE-17.md`'ye yazıldı; PHASES/MODULE-MAP/DURUM güncellendi (faz promosyonu). Sıradaki: research-phase 17.
+**Adım:** **plan** — Araştırma ✅ (`phases/PHASE-17.md` → Araştırma Bulguları). Araç eşlemesi + ortam ampirik teyidi tamam: S1–S9 → doğrulama araçları (deterministik build-ground-truth birincil; runtime `page.route`+system Chrome; a11y mührü CI; canlı duman curl). Ortam teyitli (node v24 · Chrome 149 · Vitest 39 test yeşil · canlı 200 + Alpfit marker + chat 503). **Sıradaki: `/devflow:plan-phase 17`** (S1–S9 → task dökümü — yeni oturum). **⚠️ Açık takipler (regresyon değil):** (1) `revize/v0.4-versiyon-sonu`→`main` **merge bekliyor** (TB-D1 gym PNG silme; versiyon-sonu finalizasyona, kapsam dışı; canlıda hâlâ 200, 0 tüketici → etkisiz); (2) canlı `ANTHROPIC_API_KEY` env YOK (`/api/chat` 503 → chatbot "offline"; kullanıcı aksiyonu); (3) non-TR alpfit stale-TR (versiyon-sınırı → prd-review).
+**İlerleme:** research-phase 17 (2026-07-17) — araç eşlemesi + ortam ampirik teyidi `phases/PHASE-17.md` → Araştırma Bulguları'na yazıldı (boyut 8.3k token, tek-okuma güvenli; bölme gerekmedi). Sıradaki: plan-phase 17.
 **Son Faz Dokümanı:** `phases/PHASE-17.md` (🔄). Önceki: `phases/PHASE-16.md` (✅ v0.4 teknik borç), `phases/PHASE-15.md` (✅ v0.4 içerik fazı). Release kaydı: `docs/RELEASE-v0.4.md`.
 
 ---
@@ -28,9 +28,9 @@
 
 ## Aktif Task
 
-**Task:** Aktif/bekleyen task **yok** — Faz 17 girildi (kapsam tartışması), task'lar `/devflow:plan-phase 17`'de yazılır (research-phase 17'den sonra). Senaryo testi çapraz-doğrulama fazıdır (tipik olarak yeni feature task'ı üretmez).
-**Durum:** Fazlar 1–16 ✅, Faz 17 🔄 (senaryo testi, Adım: research); Versiyon Sonu Durumu `senaryo_testi`. **v0.4 TR canlı** (`f173234`).
-**İlerleme:** discuss-phase 17 (2026-07-17) — kapsam tartışması ✅; kararlar `phases/PHASE-17.md` → Kapsam Tartışması. Sıradaki adım research-phase 17.
+**Task:** Aktif/bekleyen task **yok** — Faz 17 araştırma ✅, task'lar `/devflow:plan-phase 17`'de yazılır. Senaryo testi çapraz-doğrulama fazıdır (tipik olarak yeni feature task'ı üretmez; S1–S9 → doğrulama task'ları).
+**Durum:** Fazlar 1–16 ✅, Faz 17 🔄 (senaryo testi, Adım: plan); Versiyon Sonu Durumu `senaryo_testi`. **v0.4 TR canlı** (`f173234`).
+**İlerleme:** research-phase 17 (2026-07-17) — araç eşlemesi + ortam ampirik teyidi ✅; bulgular `phases/PHASE-17.md` → Araştırma Bulguları. Sıradaki adım plan-phase 17.
 
 ---
 
@@ -60,8 +60,8 @@ _(Yeni faz henüz girilmedi — güncel task özeti yok. Faz 16 task özeti `pha
 
 ## Hızlı Erişim
 
-**Aktif Task:** Aktif/bekleyen task **yok** — Faz 17 girildi (kapsam tartışması ✅). Sıradaki adım: `/devflow:research-phase 17`. **⚠️ Açık takipler (regresyon değil):** branch→main merge bekliyor (gym PNG, versiyon-sonu finalizasyona) · canlı `ANTHROPIC_API_KEY` env YOK (`/api/chat` 503 → chatbot "offline"; kullanıcı aksiyonu) · non-TR alpfit stale-TR (prd-review).
-**Aktif Faz:** **17 — v0.4 versiyon-sonu senaryo testi** 🔄 (discuss-phase 17 girdi). Doğrulama fazı: ana sayfa + 5 alt sayfa uçtan-uca (S1–S9), delta odağı **Alpfit Plus** + test-what's-live. Önceki **Faz 16 ✅** (v0.4 teknik borç + TR release). **Aktif Versiyon v0.4**, Versiyon Sonu Durumu: **senaryo_testi**. **v0.4 TR CANLI** (`main` = `f173234`). Fazlar 1–16 ✅. Faz dokümanı: `phases/PHASE-17.md` (🔄); release kaydı `docs/RELEASE-v0.4.md`.
+**Aktif Task:** Aktif/bekleyen task **yok** — Faz 17 araştırma ✅ (Adım: plan). Sıradaki adım: `/devflow:plan-phase 17`. **⚠️ Açık takipler (regresyon değil):** branch→main merge bekliyor (gym PNG, versiyon-sonu finalizasyona) · canlı `ANTHROPIC_API_KEY` env YOK (`/api/chat` 503 → chatbot "offline"; kullanıcı aksiyonu) · non-TR alpfit stale-TR (prd-review).
+**Aktif Faz:** **17 — v0.4 versiyon-sonu senaryo testi** 🔄 (Adım: plan). Doğrulama fazı: ana sayfa + 5 alt sayfa uçtan-uca (S1–S9), delta odağı **Alpfit Plus** + test-what's-live. Araç eşlemesi + ortam teyidi ✅ (research-phase 17). Önceki **Faz 16 ✅** (v0.4 teknik borç + TR release). **Aktif Versiyon v0.4**, Versiyon Sonu Durumu: **senaryo_testi**. **v0.4 TR CANLI** (`main` = `f173234`). Fazlar 1–16 ✅. Faz dokümanı: `phases/PHASE-17.md` (🔄); release kaydı `docs/RELEASE-v0.4.md`.
 **Task Sistemi:** `tasks/TASKS-README.md`
 **PRD (karar kaynağı):** `PRD/VIZYON.md` · `PRD/VERSIONS.md` · `PRD/features/`
 **Revize Backlog (bilinen sorunlar):** `docs/REVIZE-BACKLOG.md`
