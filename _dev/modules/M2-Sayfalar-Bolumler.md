@@ -123,13 +123,13 @@
 **Açıklama:** `spor-salonu-yazilimi/page.tsx` + `components/alpfit/*` — `AlpfitShowcase` orchestrator (tek `<main>` landmark, bölümleri kompoze eder) + 5 bölüm bileşeni (`AlpfitHero`/`AlpfitRoles`/`AlpfitFeatures`/`AlpfitWhy`/`AlpfitPricing`) + izole `PhoneMockups` (saf CSS iPhone mockup'ları); Sorun/Yol haritası/Kapanış bölümleri orchestrator içinde inline. Saf CSS/SVG — raster görsel yok, `next/image` düştü.
 
 **Kabul Kriterleri:**
-- Ekran görüntüleri responsive `next/image` ile (AVIF/WebP).
-- `useLocale()` ile TR/EN özellik listesi seçilir.
+- Bölümler saf CSS/SVG ile render edilir (raster görsel yok); telefon mockup'ları izole CSS Module ile birebir.
+- İçerik 5-dil `alpfit` i18n namespace'inden gelir (TR birincil, non-TR versiyon-sınırı); dürüstlük 4/4 gerçek korunur.
 
-**Bağımlılık:** M1, M4, M6 (image)
+**Bağımlılık:** M1 (Living Flow), M3 (Reveal/PageHeader/Footer), M4 (i18n)
 
 **Edge Case'ler:**
-- Görseller gerçek Alpfit demo'sundan; marka tutarlılığı korunmalı.
+- Telefon mockup içi metin i18n-dışı sabit-TR (gerçek TR ürün ekranı semantiği, RTL-güvenli `dir="ltr"`).
 - **v0.4 (AP1–AP3 — "Alpfit Plus" zengin yeniden tasarım):** sayfa sade halden zengin ürün landing page'ine taşınır — Hero/before-after · Sorun · 4 Rol · **Mobil uygulama mockup'ları** (saf CSS iPhone; en yüksek craft maliyeti) · 9 Özellik · Neden/rekabet ("18 rakip üründe yok") · **Fiyat** (₺1.500+KDV, public/kesin) · Yol haritası (+Store) · Kapanış. **i18n değişir:** component-içi `tr?...:...` TR/EN deseni → düzgün 5-dil namespace (`messages/*.json`; TR birincil, non-TR versiyon-sınırı). Dürüstlük 4/4 gerçek (canlı pilot / public fiyat / ürün iddiaları mevcut / 18-rakip) → içerik olduğu gibi. Route `/spor-salonu-yazilimi` korunur. Kabul kriterleri + kopya: `_dev/PRD/features/alpfit-plus.md`; tasarım referansı `_dev/docs/alpfit-plus-artifact.html`. Faz/iş-birimi bölünmesi discuss-phase 15'te.
 
 ---
@@ -158,4 +158,4 @@
 
 ---
 
-**Son Güncelleme:** 2026-07-16 — re-kickoff: (kickoff-docs) F2.8'e v0.4 "Alpfit Plus" zengin yeniden tasarım notu eklendi (AP1–AP3; yeni bölümler + mobil uygulama mockup'ları + 5-dil namespace + dürüstlük 4/4 gerçek; route korunur); (kickoff-verify) F2.5/F2.7 route referansları `/crew-os`'a + namespace `crew`/`crewOs`'a hizalandı — v0.3 Faz 11 rename'i modül dokümanına yansımamıştı (kod teyitli: route klasörü `crew-os/`, component dizini `bunker-os/` iç-ad). Feature: `PRD/features/alpfit-plus.md`.
+**Son Güncelleme:** 2026-07-17 — review-phase 16: F2.8 Kabul Kriterleri/Bağımlılık/Edge Case gerçeklik-senkron (stale `next/image`/AVIF-WebP + `useLocale() TR/EN` + `M6 (image)` → v0.4 saf CSS/SVG + `alpfit` 5-dil namespace + M1/M3/M4 bağımlılık). base "Açıklama" (satır 123) run-task 16.01'de senkronlanmıştı; bu blok kardeş satırların gym→Alpfit driftini kapatır (v0.4 Faz 15 port'u sonrası artık geçersizdi).

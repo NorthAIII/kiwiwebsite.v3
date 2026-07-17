@@ -1,6 +1,6 @@
 # Phase 16: v0.4 versiyon-sonu teknik borç kapatma (+ TR production release)
 
-**Durum:** 🔄 Devam ediyor
+**Durum:** ✅ Tamamlandı
 
 <!-- Bu doküman faza girince (discuss-phase) oluştu; durum 🔄 ile başlar. -->
 <!-- KURAL: Bu doküman tek-okunabilir kalmalı (CLAUDE.md → Boyut ve Bölünme). Bir bölüm büyüyüp kırmızı çizgiye (~20k token) yaklaşırsa faz HÂLÂ AKTİFKEN `PHASE-16-<slug>.md`'ye bölünür. Tamamlandıktan (✅) sonra bölme yasaktır. -->
@@ -157,21 +157,56 @@
 
 ## Retrospektif
 
-> Bu bölüm `/devflow:review-phase 16` oturumunda doldurulur.
+> `/devflow:review-phase 16` oturumunda dolduruldu (2026-07-17).
 
----
+### Ne İyi Gitti?
+- **Versiyon-sonu teknik borç disiplini temiz işledi.** Faz 15'ten bilinçle devredilen gym PNG hijyeni (TB-D1) tek mekanik task'la kapandı; npm audit (TB-D2) `overrides`/downgrade zorlaması yerine **orantılı kabul+kayıt** ile ele alındı (sömürülemez build-zamanı açık için Dokunulmazlar + kalıcılık ilkesiyle hizalı).
+- **Task/non-task ayrımı doğru kuruldu.** Yalnız TB-D1 kod task'ı oldu; TB-D2 (research'te kayıtla kapandı) ve REL (operasyonel release) bilinçle task açılmadı → gereksiz task şişmesi olmadı, her kalemin evi doğru (TB-D2→DECISIONS, REL→RELEASE-v0.4).
+- **TR production release güvenle öne çekildi.** Normal sıra (teknik borç → senaryo testi → prd-review → release) yerine App Store aciliyetiyle release **şimdi** yapıldı; kalite riski düşük çünkü Faz 15 tam doğrulandı (UAT 16/16, a11y=100, CI yeşil) — "test-what's-live" modeli (v0.2 emsali).
+- **Otomatik güvence katmanı insan-UAT'ından önce tarandı.** CI `d876054` success (fast+a11y iki job) + security-review 0 bulgu + npm audit=kayıt birebir + Vitest 39/39 + build 37/37 → UAT bu zemine oturdu (11/11).
+- **Silme + doküman-senkron aynı task'te bağlandı (16.01).** Asset silinip doküman güncellenmeseydi "silinen asset kullanılıyor" driftı doğardı; bağlama bunu önledi.
+
+### Ne Kötü Gitti?
+- **M2 F2.8 modül-doküman bloğu Faz 15'te tam senkronlanmamıştı.** Gym→Alpfit değişimi Faz 15'te yapıldı ama modül dokümanının F2.8 bloğu yalnız v0.4 overlay-notuyla (satır 133) güncellendi; base "Açıklama" (123) + Kabul Kriterleri/Bağımlılık/Edge (126–132) stale kaldı. research-phase 16 base açıklamayı yakaladı (16.01 kapattı) ama kardeş satırlar 16.01 scope'u dışında bırakıldı → bu review'a doküman-borcu olarak taşındı (burada kapatıldı). **Ders:** bir bileşen/sayfa yeniden tasarlanınca modül dokümanının **tüm** F-bloğu (açıklama + kabul kriterleri + bağımlılık + edge) birlikte gerçeklik-senkronlanmalı, yalnız değişim-notu eklenmemeli — audit-docs bunu sistematik tarar.
+- **Release sırası standart versiyon-sonu akışından saptı.** Release normalde senaryo testi + prd-review'dan **sonra** yapılır; bu fazda aciliyetle önce yapıldı. Bilinçli ve kabul edilebilir (v0.2 emsali, kayıtlı) ama sonuç: senaryo testi + prd-review artık **canlıdaki** kodu doğrulayacak (sıra ters çevrildi).
+
+### Sonraki Faz İçin Öneriler
+- **Versiyon Sonu Durumu `teknik_borç` → `senaryo_testi`** damgalandı (bu review). Sıradaki adım **`/devflow:discuss-phase 17`** (v0.4 versiyon-sonu senaryo testi fazı).
+- **Senaryo testi artık canlı v0.4'ü doğrular (test-what's-live literal).** TR production'da (`f173234`) → senaryo testi Alpfit Plus deltasını canlıda/branch'te uçtan-uca doğrulayabilir; branch→main merge o akışın parçası (gym PNG silme merge'de canlıya yansır).
+- **Sahipli kalemler (senaryo testi + prd-review adayları):**
+  - **non-TR (en/ar/de/es) `alpfit` namespace = TR stale-kopya** (133 leaf × 5 dil yapısal tam, değer Türkçe) → v0.4 çeviri geçişi / dil stratejisi prd-review'da öne çıkmalı.
+  - **`revize/v0.4-versiyon-sonu` → `main` merge bekliyor** → TB-D1 gym PNG silme canlıya merge'de yansır; canlıda hâlâ 200 ama 0 tüketici (etkisiz).
+  - **Devralınan: canlı `ANTHROPIC_API_KEY` env yok** (`/api/chat` 503 → chatbot "offline"; kullanıcı aksiyonu, Vercel dashboard — regresyon değil).
+
+### Task-Spesifik Teknik Öğrenimler
+<!-- Bu fazdaki task'larda öğrenilen ama proje genelinde geçerli olmayan teknik nüanslar. -->
+- **npm audit bulgusu (Next'e gömülü `postcss@8.4.31`) sürüm-güncellemesiyle çözülemez:** `next@15.3.0`→`15.5.20` her patch, hatta `next@16.2.10` bile `dependencies.postcss: 8.4.31`'i sabit pinliyor → aralık-içi `npm update` de major upgrade de audit'i temizlemez; npm'in tek `fixAvailable`'ı `next@9.3.3` (katastrofik downgrade). Kalıcı çözüm upstream (Next bundle postcss'i `≥8.5.10`'a bumpladığında). Detay → `docs/DECISIONS.md` 2026-07-16.
+- **`git rm <dosya>` dizini otomatik boşaltıp kaldırır** — 4 PNG `git rm`'lenince `public/gym/` dizini ayrı `rmdir` gerektirmeden kalktı.
 
 ## Kalite Kontrol Sonuçları
 
-> Bu bölüm `/devflow:review-phase 16` oturumunda doldurulur.
+> `/devflow:review-phase 16` oturumunda dolduruldu (2026-07-17). Bu faz **yeni UI/craft yüzeyi üretmedi** (asset silme + doküman senkron + audit kaydı + operasyonel release) — eksenler "regresyonsuz / yeni-yüzey yok" perspektifinden kontrol edildi; Faz 15'te mühürlü guardrail'ler korundu.
 
----
+| Eksen | Durum | Not |
+|-------|-------|-----|
+| Marka & Craft (imza) | ✅ | Görsel/craft yüzeyine dokunulmadı — Faz 15 craft (SOTD-kalibre) mühürlü kaldı; orphan asset silme yüzeyi küçültür, imza/görsel değişmez. |
+| Erişilebilirlik | ✅ | DOM/markup değişmedi; CI a11y `/` light+dark 0 ihlal (job success); Faz 15 a11y=100 çift-tema (structural dahil) korundu. Yeni a11y yüzeyi yok. |
+| Performans | ✅ | 0 tüketici → runtime etkilenmedi; ~1.7MB disk yükü kalktı; `next build` 37/37 temiz; CLS/perf tabanı (Faz 15) regresyonsuz. |
+| Yerelleştirme & RTL | ✅ | Vitest 39/39 (5-dil parite, eksik anahtar=fail) + 0 MISSING_MESSAGE; non-TR stale-TR **bilinçli versiyon-sınırı** (TR tek kaynak, DECISIONS 2026-06-27) — eksik anahtar değil. |
+| Modülerlik & Bakım | ✅ | Orphan asset temizliği = bakım yükü azalması; M2:123 base açıklama gerçeklik-senkron (16.01) + 126/127 Kabul Kriterleri/Bağımlılık/Edge review'da senkronlandı (drift kapandı). |
+| Hata Yönetimi & Degradasyon | ✅ | Chatbot `/api/chat` key yokken zarif 503 "offline" teyit (canlı POST); env eksikliği kullanıcı aksiyonu, kod regresyonu değil. Statik sayfa → yeni failure yüzeyi yok. |
+| Güvenlik | ✅ | security-review **0 bulgu** (faz diff = 4 silinen binary PNG + `_dev/` markdown; kod yüzeyi yok); npm audit 2 moderate = sömürülemez build-zamanı postcss (statik site, güvenilmez girdi yolu yok), DECISIONS 2026-07-16 kayıtlı. |
+| Test Kapsamı | ✅ | Yeni davranış yok → yeni test gerekmedi (kümülatif ilke korunur); mevcut tohumlar (i18n parite Vitest 39/39 + `/` a11y regresyon CI) yeşil, silme+audit'i regresyonsuz kapsadı. |
+
+**Kullanıcı yolculuğu / boşluk:** Bu faz kullanıcı-görünür yüzey üretmedi; canlı v0.4 akışı Faz 15'te doğrulanmıştı (Alpfit Plus sayfası tutarlı). Sahipsiz boşluk yok — açık takiplerin hepsi kayıtlı ve sahipli (branch→main merge · chatbot env · non-TR çeviri). Silinen PNG'ler 0 tüketici → kullanıcıya görünmez; merge sonrası doğrudan-URL 404 olur (beklenen, SEO/işlev etkisi yok).
 
 ## Sonuç
 
-> Bu bölüm `/devflow:review-phase 16` oturumunda doldurulur.
+- **Tamamlanma Tarihi:** 2026-07-17
+- **Toplam Task:** 1 (TASK-16.01) ✅ — düzeltme task'ı gerekmedi
+- **Notlar:** v0.4 versiyon-sonu teknik borç kapatıldı — **UAT 11/11 GEÇTİ, kapsam-içi bug 0, düzeltme task'ı 0.** TB-D1 (gym PNG hijyeni): 4 orphan `public/gym/*.png` (~1.7MB, 0 tüketici) `git rm` + dizin kalktı + M2:123 gerçeklik-senkron. TB-D2 (npm audit): 2 moderate = Next'e gömülü `postcss@8.4.31`, sömürülemez (build-zamanı, geliştirici-CSS, statik) → kabul+kayıt (`overrides`/downgrade yok, `package.json`/`package-lock.json` faz boyunca 0 değişiklik). REL: **v0.4 TR production release** operasyonel — canlı `f173234` (`docs/RELEASE-v0.4.md`). Guardrail'ler (a11y=100 çift-tema · perf tabanı · CLS≈0 · i18n 5-dil parite) regresyonsuz; kalite 8 eksen ✅. Review'da M2:126/127 minor gerçeklik-drift'i doküman-hijyeni olarak kapatıldı. **Sahipli kalemler senaryo testi + prd-review'a:** non-TR stale çeviri · branch→main merge · canlı `ANTHROPIC_API_KEY` env. Versiyon Sonu Durumu `teknik_borç` → `senaryo_testi`; sıradaki adım **`/devflow:discuss-phase 17`** (versiyon-sonu senaryo testi fazı).
 
 ---
 
 **Oluşturulma:** 2026-07-16 (discuss-phase 16)
-**Son Güncelleme:** 2026-07-17 — verify-phase 16 ✅: otomatik kontroller (CI `d876054` success · npm audit 2 moderate = kayıt birebir · security-review 0 bulgu) + UAT **11/11 geçti** (otonom mod). Düzeltme task'ı yok. Açık takipler (regresyon değil): branch→main merge bekliyor (TB-D1 canlıya merge'de yansır), chatbot env (kullanıcı aksiyonu), M2:126/127 minor artık-drift (review/audit). Faz → Adım = **review**. Önceki: run-task 16.01 ✅: TB-D1 tamam — 4 orphan `public/gym/*.png` (~1.7MB) `git rm` ile silindi + dizin kalktı; silme öncesi/sonrası güvenlik grep'i kaynak/config 0 tüketici; M2:123 base "Açıklama" gerçek v0.4 yapısına senkronlandı (`components/alpfit/*` — `AlpfitShowcase` orchestrator + 5 bölüm bileşeni + izole `PhoneMockups`, saf CSS/SVG); regresyon kapısı yeşil (`next build` temiz, 0 MISSING_MESSAGE; Vitest 39/39). TB-D2 (npm audit) task değil (research'te tamamlandı; review-phase'de ✅ kapanır). Fazın tek task'ı bitti → Adım = verify.
+**Son Güncelleme:** 2026-07-17 — **review-phase 16 ✅: FAZ TAMAMLANDI.** Retrospektif + kalite kontrol (8 eksen ✅) + sonuç yazıldı. UAT 11/11 GEÇTİ, kapsam-içi bug 0, düzeltme task'ı 0. TB-D1 (gym PNG hijyeni) ✅ + TB-D2 (npm audit kabul+kayıt) ✅ + REL (v0.4 TR canlı `f173234`) ✅. Review'da M2:126/127 minor gerçeklik-drift'i doküman-hijyeni olarak kapatıldı (Kabul Kriterleri/Bağımlılık/Edge → v0.4 saf CSS/SVG gerçeğine senkron). Boyut kontrolü (Adım 5b): ~4.9k token `token-rahat` → bölme gerekmedi. Guardrail'ler (a11y=100 çift-tema · perf tabanı · CLS≈0 · i18n parite) regresyonsuz. Versiyon Sonu Durumu `teknik_borç` → `senaryo_testi`; sahipli kalemler (non-TR stale · branch→main merge · canlı env) senaryo testi + prd-review'a. Sıradaki adım **`/devflow:discuss-phase 17`** (versiyon-sonu senaryo testi fazı).
