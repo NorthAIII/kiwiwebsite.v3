@@ -127,7 +127,31 @@
 
 ## UAT Sonuçları
 
-> Bu bölüm `/devflow:verify-phase 16` oturumunda doldurulur.
+**Tarih:** 2026-07-17
+**Toplam Senaryo:** 11 | **Geçen:** 11 | **Kalan:** 0
+**Test Modu:** Otonom (kullanıcı seçimi)
+
+> **Otomatik kontroller (Adım 1):** CI `d876054` ✅ success (fast[build+vitest] + a11y[playwright+axe] iki job yeşil) · `npm audit` 2 moderate = `docs/DECISIONS.md` 2026-07-16 birebir (Dependabot config/açık PR yok) · security-review 0 bulgu (faz diff = 4 silinen binary PNG + `_dev/` markdown; kod yüzeyi yok). Düzeltme gerektiren bulgu yok.
+
+| # | Senaryo | Sonuç | Not |
+|---|---------|-------|-----|
+| 1 | TB-D1 silme teyidi — `public/gym/` + 4 PNG diskte yok, git 4× deleted, silme sonrası kaynak/config 0 tüketici | ✅ Geçti | `git show d876054` 4× `Bin→0 bytes`; `public/gym` disk'te yok; silme-sonrası grep kaynak/config 0 eşleşme |
+| 2 | TB-D1 sayfa sağlığı — `/spor-salonu-yazilimi` PNG silme sonrası sorunsuz prerender (`components/alpfit/*`, kırık görsel yok) | ✅ Geçti | alpfit/ 6 bileşen + PhoneMockups.module.css; 0 gym/png/next-image atfı; build 5 locale prerender (9.02 kB) |
+| 3 | TB-D1 SEO çıktısı — sitemap/robots silinen PNG'ye başvurmuyor (5 locale × 6 path intact) | ✅ Geçti | `sitemap.ts`/`robots.ts` PNG/gym/image referansı yok (path-tabanlı) |
+| 4 | TB-D1 adversarial — silinen PNG'ye doğrudan URL → 404 (asset gerçekten gitti) | ✅ Geçti | Repo/branch/build'de absent (git rm + `public/gym` yok + build temiz). **Canlıda hâlâ 200** çünkü `d876054` `revize/v0.4-versiyon-sonu`'da, `main`'e unmerged — branch stratejisi gereği beklenen; merge sonrası 404. Regresyon değil |
+| 5 | TB-D2 audit ↔ kayıt — `npm audit` = 2 moderate, GHSA-qx2v-qp2m-jg93, DECISIONS 2026-07-16 ile birebir | ✅ Geçti | 2 moderate, postcss nested-in-next; kararla birebir; `overrides`/downgrade yapılmadı |
+| 6 | TB-D2 Dokunulmazlık — `overrides`/downgrade yok; `package.json`/`package-lock.json` faz boyunca değişmedi | ✅ Geçti | `package.json`'da `overrides` yok; `git diff 739531c~1..HEAD -- package.json package-lock.json` = 0 değişiklik |
+| 7 | REL canlı duman — `main`=`f173234`; kiwiailab.com TR ana sayfa + `/spor-salonu-yazilimi` v0.4 içeriği 200 | ✅ Geçti | `main`=`f173234`; canlı TR home 200 + `/spor-salonu-yazilimi` 200 + "Alpfit Plus — Kulüp İşletme Yazılımı" v0.4 marker var |
+| 8 | Guardrail build — `next build` temiz, 0 MISSING_MESSAGE | ✅ Geçti | Compiled successfully; 37/37 static page; 0 MISSING_MESSAGE; 0 error |
+| 9 | Guardrail test/i18n/a11y — Vitest 39/39 (5-dil parite, eksik anahtar yok) + CI a11y `/` light+dark 0 ihlal | ✅ Geçti | Vitest 5 dosya / 39 test yeşil; CI a11y job success (axe `/` light+dark) — non-TR stale kabul, eksik anahtar yok |
+| 10 | Doküman gerçeklik-senkron — M2:123 F2.8 gerçek v0.4 yapısını anlatıyor; silinen asset atfı kalmadı | ✅ Geçti | Hedef satır 123 (base Açıklama) `components/alpfit/*` + saf CSS/SVG; silinen-asset atfı yok. **Not:** aynı bloğun satır 126/127 eski Kabul Kriterleri hâlâ `next/image`/AVIF-WebP + `useLocale() TR/EN` diyor (v0.4'te geçersiz) — TASK-16.01 bilinçle scope-dışı bıraktı (satır 133 redirect overlay); minor artık-drift → review-phase/audit-docs |
+| 11 | Chatbot açık takip (degradasyon) — `/api/chat` key yokken zarif offline (kod regresyonu değil, env — beklenen) | ✅ Geçti | Route: key yok → `503 "ANTHROPIC_API_KEY is not configured."`; canlı POST → 503 teyit. Env eksikliği (kullanıcı aksiyonu), kod regresyonu değil |
+
+### UAT Notları — Faz Sonrası Açık Takipler (regresyon/bug değil)
+
+- **`revize/v0.4-versiyon-sonu` → `main` merge bekliyor:** TB-D1 gym PNG silme repo/branch'te tamam ama canlıya (main) unmerged. Silme canlıya versiyon-sonu akışının merge adımında yansıyacak (senaryo testi + prd-review sonrası). Canlıdaki orphan PNG'ler 0 tüketici → SEO/işlev etkisi yok (yalnız disk/repo hijyeni, merge'de düşer).
+- **Chatbot `ANTHROPIC_API_KEY` canlı env'de yok:** `/api/chat` 503 → chatbot "offline". Kullanıcı aksiyonu (Vercel dashboard env); kod işi değil, kapsam dışı (discuss-phase 16). Env eklenince açılır.
+- **M2:123 bloğu satır 126/127 artık-drift:** minor; TASK-16.01 scope'u (satır 123) dışıydı, satır 133 v0.4 redirect'i overlay ediyor. Fix zorunlu değil — `review-phase 16` veya `audit-docs`'a taşındı.
 
 ---
 
@@ -150,4 +174,4 @@
 ---
 
 **Oluşturulma:** 2026-07-16 (discuss-phase 16)
-**Son Güncelleme:** 2026-07-17 — run-task 16.01 ✅: TB-D1 tamam — 4 orphan `public/gym/*.png` (~1.7MB) `git rm` ile silindi + dizin kalktı; silme öncesi/sonrası güvenlik grep'i kaynak/config 0 tüketici; M2:123 base "Açıklama" gerçek v0.4 yapısına senkronlandı (`components/alpfit/*` — `AlpfitShowcase` orchestrator + 5 bölüm bileşeni + izole `PhoneMockups`, saf CSS/SVG); regresyon kapısı yeşil (`next build` temiz, 0 MISSING_MESSAGE; Vitest 39/39). TB-D2 (npm audit) task değil (research'te tamamlandı; review-phase'de ✅ kapanır). Fazın tek task'ı bitti → Adım = verify.
+**Son Güncelleme:** 2026-07-17 — verify-phase 16 ✅: otomatik kontroller (CI `d876054` success · npm audit 2 moderate = kayıt birebir · security-review 0 bulgu) + UAT **11/11 geçti** (otonom mod). Düzeltme task'ı yok. Açık takipler (regresyon değil): branch→main merge bekliyor (TB-D1 canlıya merge'de yansır), chatbot env (kullanıcı aksiyonu), M2:126/127 minor artık-drift (review/audit). Faz → Adım = **review**. Önceki: run-task 16.01 ✅: TB-D1 tamam — 4 orphan `public/gym/*.png` (~1.7MB) `git rm` ile silindi + dizin kalktı; silme öncesi/sonrası güvenlik grep'i kaynak/config 0 tüketici; M2:123 base "Açıklama" gerçek v0.4 yapısına senkronlandı (`components/alpfit/*` — `AlpfitShowcase` orchestrator + 5 bölüm bileşeni + izole `PhoneMockups`, saf CSS/SVG); regresyon kapısı yeşil (`next build` temiz, 0 MISSING_MESSAGE; Vitest 39/39). TB-D2 (npm audit) task değil (research'te tamamlandı; review-phase'de ✅ kapanır). Fazın tek task'ı bitti → Adım = verify.

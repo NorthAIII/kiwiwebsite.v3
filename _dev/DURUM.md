@@ -1,6 +1,6 @@
 # DURUM — Proje Dashboard
 
-**Son Güncelleme:** 2026-07-17 — **run-task 16.01 ✅ (TB-D1 tamam).** 4 orphan `public/gym/*.png` (~1.7MB, 0 tüketici) `git rm` ile silindi + dizin kalktı; silme öncesi/sonrası güvenlik grep'i kaynak/config 0 tüketici; M2:123 base "Açıklama" gerçek v0.4 yapısına senkronlandı (`components/alpfit/*`, saf CSS/SVG). Regresyon kapısı yeşil: `next build` temiz (0 MISSING_MESSAGE) + Vitest 39/39. Faz 16'nın tek task'ı bitti → **Adım = verify**. **TB-D2 (npm audit) task DEĞİL** (research'te kapandı; review-phase'de ✅). **v0.4 TR CANLI** (`main` = `f173234`). **⚠️ Açık takip: chatbot `ANTHROPIC_API_KEY` Vercel prod env'de YOK → `/api/chat` 503 offline** (kullanıcı aksiyonu). Branch `revize/v0.4-versiyon-sonu`. **Sıradaki: `/devflow:verify-phase 16`.**
+**Son Güncelleme:** 2026-07-17 — **verify-phase 16 ✅ — UAT 11/11 geçti, 0 düzeltme task'ı.** Otomatik kontroller: CI `d876054` success (fast+a11y iki job) · `npm audit` 2 moderate = DECISIONS 2026-07-16 birebir · security-review 0 bulgu (diff = 4 silinen PNG + `_dev/`, kod yüzeyi yok). UAT (otonom): silme+grep+build(37/37, 0 MISSING_MESSAGE)+Vitest 39/39+canlı duman(TR home/alpfit 200 + "Alpfit Plus" marker) hepsi yeşil. Açık takipler (regresyon değil): (1) `revize/v0.4-versiyon-sonu`→`main` **merge bekliyor** — TB-D1 gym PNG silme canlıya merge'de yansır (canlıda hâlâ 200; 0 tüketici → etkisiz); (2) chatbot `ANTHROPIC_API_KEY` canlı env yok → `/api/chat` 503 (kullanıcı aksiyonu); (3) M2:126/127 minor artık-drift (review/audit). Faz → **Adım = review**. **v0.4 TR CANLI** (`main`=`f173234`). Branch `revize/v0.4-versiyon-sonu`. **Sıradaki: `/devflow:review-phase 16`.**
 
 <!-- KURAL: Bu satır her oturum sonunda ÜZERİNE YAZILIR — tek satır, tek cümle. "Önceki:" / "Eski:" prefix ile kümülatif yığma YASAK; HTML comment'e sarma da yasak (CLAUDE.md → Doküman Disiplini). Tarih + kısa özet yeterli; detay için git log + ilgili PHASE/TASK dokümanları. -->
 
@@ -8,9 +8,9 @@
 
 ## Aktif Faz
 
-**Faz:** **16 — v0.4 versiyon-sonu teknik borç (+ TR production release)** 🔄 (discuss ✅, research ✅, plan ✅, verify-plan ✅, run-task 16.01 ✅). Kapsam: gym PNG disk hijyeni (TB-D1 ✅) + npm audit (TB-D2, kabul+kayıt — review-phase'de ✅); non-TR çeviri ertelendi. **v0.4 TR CANLIYA ALINDI** (operasyonel — `f173234`, `docs/RELEASE-v0.4.md`). Fazlar 1–15 ✅; **v0.4 TR canlı** (`main`).
-**Adım:** **verify** — TASK-16.01 ✅ tamamlandı (TB-D1: 4 orphan gym PNG silindi + M2:123 v0.4 senkron; regresyon kapısı yeşil — `next build` temiz, Vitest 39/39). Fazın tek task'ı bitti. TB-D2 task değil (research'te tamamlandı — audit raporu + `docs/DECISIONS.md` kabul+kayıt; review-phase'de ✅). **Sıradaki: `/devflow:verify-phase 16`** (UAT — yeni oturum). **⚠️ Açık takip: canlı `ANTHROPIC_API_KEY` env YOK** (`/api/chat` 503 → chatbot "offline"; Vercel env'e eklenince açılır — regresyon değil).
-**İlerleme:** run-task 16.01 (2026-07-17) — TB-D1 icra edildi: `git rm public/gym/*.png` (4 dosya, ~1.7MB) + dizin kalktı; güvenlik grep'i (öncesi+sonrası) kaynak/config 0 tüketici; M2:123 gerçek v0.4 yapısına senkron; `next build` temiz (0 MISSING_MESSAGE) + Vitest 39/39. Önceki oturum: verify-plan 16 (plan review). Bulgular/kararlar `phases/PHASE-16.md`, `docs/DECISIONS.md`.
+**Faz:** **16 — v0.4 versiyon-sonu teknik borç (+ TR production release)** 🔄 (discuss ✅, research ✅, plan ✅, verify-plan ✅, run-task 16.01 ✅, verify-phase ✅). Kapsam: gym PNG disk hijyeni (TB-D1 ✅) + npm audit (TB-D2, kabul+kayıt — review-phase'de ✅); non-TR çeviri ertelendi. **v0.4 TR CANLIYA ALINDI** (operasyonel — `f173234`, `docs/RELEASE-v0.4.md`). Fazlar 1–15 ✅; **v0.4 TR canlı** (`main`).
+**Adım:** **review** — verify-phase 16 ✅: otomatik kontroller (CI success · npm audit 2 moderate = kayıt birebir · security-review 0 bulgu) + UAT **11/11 geçti** (otonom mod), 0 düzeltme task'ı. **Sıradaki: `/devflow:review-phase 16`** (faz review + retrospektif — yeni oturum). **⚠️ Açık takipler (regresyon değil):** (1) `revize/v0.4-versiyon-sonu`→`main` **merge bekliyor** (TB-D1 silme canlıya merge'de yansır); (2) canlı `ANTHROPIC_API_KEY` env YOK (`/api/chat` 503 → chatbot "offline"; kullanıcı aksiyonu); (3) M2:126/127 minor artık-drift (review/audit).
+**İlerleme:** verify-phase 16 (2026-07-17) — UAT 11/11 ✅ (silme teyidi + sayfa/SEO sağlığı + npm audit↔kayıt + Dokunulmazlık + canlı duman + build 37/37 + Vitest 39/39 + doküman senkron + chatbot degradasyon). CI `d876054` success. Düzeltme task'ı yok → faz Adım = review. Önceki oturum: run-task 16.01 ✅ (TB-D1 icra). Sonuçlar `phases/PHASE-16.md` → UAT Sonuçları.
 **Son Faz Dokümanı:** `phases/PHASE-16.md` (🔄). Önceki: `phases/PHASE-15.md` (✅ v0.4 içerik fazı). Release kaydı: `docs/RELEASE-v0.4.md`.
 
 ---
@@ -28,9 +28,9 @@
 
 ## Aktif Task
 
-**Task:** **TASK-16.01 ✅ Tamamlandı** (TB-D1 gym PNG disk hijyeni + M2:123 v0.4 senkronu — arşivlendi `tasks/archive/`). Aktif çalışılan/bekleyen task yok (fazın tek task'ı bitti); sıradaki adım UAT: `/devflow:verify-phase 16` (yeni oturum).
-**Durum:** Faz 16 🔄 (discuss ✅, research ✅, plan ✅, verify-plan ✅, run-task 16.01 ✅, Adım = **verify**); Versiyon Sonu Durumu `teknik_borç`; kapsam TB-D1 gym PNG silme (✅ +M2:123 senkron) + TB-D2 npm audit (kabul+kayıt, kod task'ı değil — review-phase'de ✅); non-TR çeviri ertelendi. **v0.4 TR canlı** (`f173234`). Fazlar 1–15 ✅.
-**İlerleme:** run-task 16.01 (2026-07-17) — TB-D1 tamamlandı (4 orphan gym PNG silindi ~1.7MB + dizin kalktı; M2:123 v0.4 senkron; `next build` temiz + Vitest 39/39). Task arşivlendi.
+**Task:** **TASK-16.01 ✅ Tamamlandı** (TB-D1 gym PNG disk hijyeni + M2:123 v0.4 senkronu — arşivlendi `tasks/archive/`). Aktif çalışılan/bekleyen task yok; verify-phase 16 ✅ (UAT 11/11, 0 düzeltme task'ı). Sıradaki adım: `/devflow:review-phase 16` (yeni oturum).
+**Durum:** Faz 16 🔄 (discuss ✅, research ✅, plan ✅, verify-plan ✅, run-task 16.01 ✅, verify-phase ✅, Adım = **review**); Versiyon Sonu Durumu `teknik_borç`; kapsam TB-D1 gym PNG silme (✅ +M2:123 senkron) + TB-D2 npm audit (kabul+kayıt, kod task'ı değil — review-phase'de ✅); non-TR çeviri ertelendi. **v0.4 TR canlı** (`f173234`). Fazlar 1–15 ✅.
+**İlerleme:** verify-phase 16 (2026-07-17) — UAT 11/11 geçti, otomatik kontroller yeşil (CI success · npm audit = kayıt · security-review 0 bulgu), 0 düzeltme task'ı. Önceki: run-task 16.01 ✅ (TB-D1 icra). Sonuçlar `phases/PHASE-16.md` → UAT Sonuçları.
 
 ---
 
@@ -65,8 +65,8 @@
 
 ## Hızlı Erişim
 
-**Aktif Task:** **TASK-16.01 ✅ Tamamlandı** (TB-D1 gym PNG silindi + M2:123 senkron; arşivlendi). Bekleyen task yok — fazın tek task'ı bitti. Sıradaki adım UAT: `/devflow:verify-phase 16`. **⚠️ Açık takip: canlı `ANTHROPIC_API_KEY` env YOK** (`/api/chat` 503 → chatbot "offline"; Vercel env'e eklenince açılır — kullanıcı aksiyonu).
-**Aktif Faz:** **16 🔄 — v0.4 versiyon-sonu teknik borç (+ TR release)** (discuss ✅, research ✅, plan ✅, verify-plan ✅, run-task 16.01 ✅, Adım = **verify**). Kapsam TB-D1 gym PNG silme ✅ + TB-D2 npm audit (kabul+kayıt — review-phase'de ✅); non-TR çeviri ertelendi. **Aktif Versiyon v0.4**, Versiyon Sonu Durumu: **teknik_borç**. **v0.4 TR CANLI** (`main` = `f173234`). Fazlar 1–15 ✅. Faz dokümanı: `phases/PHASE-16.md`; TB-D2 kararı `docs/DECISIONS.md`; release kaydı `docs/RELEASE-v0.4.md`.
+**Aktif Task:** **TASK-16.01 ✅ Tamamlandı** (TB-D1 gym PNG silindi + M2:123 senkron; arşivlendi). Bekleyen task yok; verify-phase 16 ✅ (UAT 11/11, 0 düzeltme task'ı). Sıradaki adım: `/devflow:review-phase 16`. **⚠️ Açık takipler (regresyon değil):** branch→main merge bekliyor · canlı `ANTHROPIC_API_KEY` env YOK (`/api/chat` 503 → chatbot "offline"; kullanıcı aksiyonu) · M2:126/127 minor artık-drift.
+**Aktif Faz:** **16 🔄 — v0.4 versiyon-sonu teknik borç (+ TR release)** (discuss ✅, research ✅, plan ✅, verify-plan ✅, run-task 16.01 ✅, verify-phase ✅, Adım = **review**). Kapsam TB-D1 gym PNG silme ✅ + TB-D2 npm audit (kabul+kayıt — review-phase'de ✅); non-TR çeviri ertelendi. **Aktif Versiyon v0.4**, Versiyon Sonu Durumu: **teknik_borç**. **v0.4 TR CANLI** (`main` = `f173234`). Fazlar 1–15 ✅. Faz dokümanı: `phases/PHASE-16.md`; TB-D2 kararı `docs/DECISIONS.md`; release kaydı `docs/RELEASE-v0.4.md`.
 **Task Sistemi:** `tasks/TASKS-README.md`
 **PRD (karar kaynağı):** `PRD/VIZYON.md` · `PRD/VERSIONS.md` · `PRD/features/`
 **Revize Backlog (bilinen sorunlar):** `docs/REVIZE-BACKLOG.md`
@@ -74,4 +74,4 @@
 
 ---
 
-**Son Güncelleme:** 2026-07-17 — **run-task 16.01 ✅** (TB-D1 tamam). 4 orphan `public/gym/*.png` (~1.7MB, 0 tüketici) `git rm` ile silindi + dizin kalktı; silme öncesi/sonrası güvenlik grep'i kaynak/config 0 tüketici; M2:123 base "Açıklama" gerçek v0.4 yapısına senkron (`components/alpfit/*`, saf CSS/SVG); regresyon kapısı yeşil (`next build` temiz 0 MISSING_MESSAGE + Vitest 39/39). Task arşivlendi. Fazın tek task'ı bitti → Adım = **verify**. **TB-D2 (npm audit) task DEĞİL** — research'te kapandı (`docs/DECISIONS.md` 2026-07-16); review-phase 16'da ✅. **v0.4 TR CANLI** (`f173234`). **⚠️ Açık: chatbot `ANTHROPIC_API_KEY` env YOK → /api/chat 503** (kullanıcı aksiyonu). Branch `revize/v0.4-versiyon-sonu`. **Sıradaki: `/devflow:verify-phase 16`.**
+**Son Güncelleme:** 2026-07-17 — **verify-phase 16 ✅ — UAT 11/11 geçti, 0 düzeltme task'ı.** Otomatik kontroller: CI `d876054` success (fast+a11y) · `npm audit` 2 moderate = DECISIONS 2026-07-16 birebir · security-review 0 bulgu (diff = 4 silinen PNG + `_dev/`, kod yüzeyi yok). UAT otonom: silme/grep/sayfa/SEO + build 37/37 (0 MISSING_MESSAGE) + Vitest 39/39 + canlı duman (TR home/alpfit 200 + "Alpfit Plus" marker) + chatbot 503 degradasyon — hepsi yeşil. Açık takipler (regresyon değil): (1) branch→`main` **merge bekliyor** (TB-D1 canlıya merge'de yansır; canlıda hâlâ 200, 0 tüketici → etkisiz); (2) chatbot `ANTHROPIC_API_KEY` env yok; (3) M2:126/127 minor artık-drift. Faz → Adım = **review**. **v0.4 TR CANLI** (`f173234`). Branch `revize/v0.4-versiyon-sonu`. **Sıradaki: `/devflow:review-phase 16`.**
