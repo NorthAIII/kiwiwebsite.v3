@@ -16,7 +16,7 @@
 
 ## Bağlam
 
-Alpfit sayfası v0.4 (Faz 15) "Alpfit Plus" yeniden tasarımıyla saf CSS/SVG'ye taşındı: eski `components/gym/GymSoftwareShowcase.tsx` TASK-15.07'de `git rm`'lendi, sayfa artık `components/alpfit/*` (6 showcase bileşeni + izole `PhoneMockups`) — raster görsel yok, `next/image` bu sayfadan düştü. Böylece `public/gym/*.png` (eski showcase'in ürün ekran görüntüleri) tam orphan kaldı. Bu disk hijyeni Faz 15'te bilinçle Kapsam Dışı bırakılıp bu faza devredilmişti (discuss-phase 16). research-phase 16 grep'i 0 kod tüketicisi + sitemap/OG/robots referansı yok olduğunu teyit etti (bulgular → PHASE-16 Araştırma Bulguları → TB-D1).
+Alpfit sayfası v0.4 (Faz 15) "Alpfit Plus" yeniden tasarımıyla saf CSS/SVG'ye taşındı: eski `components/gym/GymSoftwareShowcase.tsx` TASK-15.07'de `git rm`'lendi, sayfa artık `components/alpfit/*` (`AlpfitShowcase` orchestrator + 5 bölüm bileşeni + izole `PhoneMockups`) — raster görsel yok, `next/image` bu sayfadan düştü. Böylece `public/gym/*.png` (eski showcase'in ürün ekran görüntüleri) tam orphan kaldı. Bu disk hijyeni Faz 15'te bilinçle Kapsam Dışı bırakılıp bu faza devredilmişti (discuss-phase 16). research-phase 16 grep'i 0 kod tüketicisi + sitemap/OG/robots referansı yok olduğunu teyit etti (bulgular → PHASE-16 Araştırma Bulguları → TB-D1).
 
 ---
 
@@ -46,7 +46,7 @@ Alpfit sayfası v0.4 (Faz 15) "Alpfit Plus" yeniden tasarımıyla saf CSS/SVG'ye
   - Dosya: `public/gym/*.png` (silinir)
 
 - [ ] **3. M2:123 stale açıklamayı gerçek v0.4 yapısına senkronla**
-  - `modules/M2-Sayfalar-Bolumler.md:123` F2.8 base "Açıklama" hâlâ eski yapıyı anlatıyor: `components/gym/GymSoftwareShowcase.tsx` + "8 özellik grid'i" + "4 ürün ekran görüntüsü (`public/gym/*.png`, `next/image`)". Bunları gerçek v0.4 yapısına güncelle: `components/alpfit/*` (6 showcase bileşeni — Hero/Showcase/Roles/Features/Why/Pricing + izole `PhoneMockups`), `AlpfitShowcase` orchestrator, saf CSS/SVG (raster görsel yok, `next/image` düştü). Route `/spor-salonu-yazilimi` korunur.
+  - `modules/M2-Sayfalar-Bolumler.md:123` F2.8 base "Açıklama" hâlâ eski yapıyı anlatıyor: `components/gym/GymSoftwareShowcase.tsx` + "8 özellik grid'i" + "4 ürün ekran görüntüsü (`public/gym/*.png`, `next/image`)". Bunları gerçek v0.4 yapısına güncelle: `components/alpfit/*` — `AlpfitShowcase` orchestrator (tek `<main>`, bölümleri kompoze eder) + 5 bölüm bileşeni (`AlpfitHero`/`AlpfitRoles`/`AlpfitFeatures`/`AlpfitWhy`/`AlpfitPricing`) + izole `PhoneMockups` (saf CSS iPhone mockup'ları); Sorun/Yol haritası/Kapanış bölümleri orchestrator içinde inline; saf CSS/SVG (raster görsel yok, `next/image` düştü). Route `/spor-salonu-yazilimi` korunur.
   - **Drift/tekrar kaçın (Doküman Disiplini):** satır 133'teki v0.4 notu zaten "ne değişti"yi kaydediyor — base açıklamayı gerçekle uyumlu kıl, 133'le bilgi tekrarı yaratma (base = güncel durum, 133 = değişim kaydı). Silinen asset'e ("public/gym/*.png kullanılıyor") atıf kalmamalı.
   - Dosya: `_dev/modules/M2-Sayfalar-Bolumler.md`
 

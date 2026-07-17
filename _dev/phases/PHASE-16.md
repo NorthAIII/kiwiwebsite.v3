@@ -150,4 +150,4 @@
 ---
 
 **Oluşturulma:** 2026-07-16 (discuss-phase 16)
-**Son Güncelleme:** 2026-07-16 — plan-phase 16: 1 task dokümanı oluşturuldu — TASK-16.01 (TB-D1 gym PNG disk hijyeni + M2:123 v0.4 senkronu). TB-D2 (npm audit) task değil (research'te tamamlandı — audit raporu + DECISIONS kaydı; review-phase'de ✅ kapanır). Adım = verify-plan.
+**Son Güncelleme:** 2026-07-17 — verify-plan 16: TASK-16.01 temiz context ile doğrulandı (referans gerçeklik-kontrolü temiz; mekanik düzeltme yok; 1 yapısal düzeltme uygulandı — alt görev 3 Alpfit bileşen envanteri gerçekle hizalandı, `AlpfitShowcase`=orchestrator + 5 bölüm bileşeni). Task tablosu değişmedi. TB-D2 (npm audit) task değil (research'te tamamlandı; review-phase'de ✅ kapanır). Adım = task.
