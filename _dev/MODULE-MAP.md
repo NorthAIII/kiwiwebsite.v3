@@ -166,7 +166,7 @@ M6 (SEO/Deploy) ─────────────────────>
 | AP3: SEO/metadata (ürün konumuna göre başlık/description; route `/spor-salonu-yazilimi` korunur) | M6 (+M2) | v0.4 | 15 | ✅ |
 | **— v0.4 versiyon-sonu iş birimleri (Faz 16 — teknik borç + TR production release) —** | | | | |
 | REL: v0.4 TR production release (`revize/alpfit-plus`→`main` canlı; TR tam, non-TR stale-TR ertelendi; duman testi) | M6 | v0.4 | 16 | ✅ |
-| TB-D1: gym PNG disk hijyeni (`public/gym/*.png` 4 orphan dosya sil; 0 tüketici) | M2 | v0.4 | 16 | 🔄 |
+| TB-D1: gym PNG disk hijyeni (`public/gym/*.png` 4 orphan dosya sil; 0 tüketici) | M2 | v0.4 | 16 | ✅ |
 | TB-D2: npm audit / bağımlılık denetimi (rapor + onaylı güncelleme; `package-lock` dokunulmaz) | M6 | v0.4 | 16 | 🔄 |
 
 **Durum simgeleri:**
@@ -186,4 +186,4 @@ M6 (SEO/Deploy) ─────────────────────>
 
 ---
 
-**Son Güncelleme:** 2026-07-16 — discuss-phase 16: v0.4 versiyon-sonu iş birimleri eklendi (Faz 16) — REL (TR production release ✅ canlı `f173234`), TB-D1 gym PNG hijyeni 🔄, TB-D2 npm audit 🔄. non-TR çeviri ertelendi (sonraki faz/prd-review). Detay → `phases/PHASE-16.md`, `docs/RELEASE-v0.4.md`.
+**Son Güncelleme:** 2026-07-17 — run-task 16.01: TB-D1 gym PNG disk hijyeni ✅ (4 orphan `public/gym/*.png` silindi ~1.7MB + dizin kalktı; M2:123 v0.4 senkron; build+Vitest yeşil). TB-D2 npm audit 🔄 (review-phase 16'da ✅ kapanır — research'te kabul+kayıt). REL v0.4 TR release ✅ canlı `f173234`. non-TR çeviri ertelendi (sonraki faz/prd-review). Detay → `phases/PHASE-16.md`, `docs/RELEASE-v0.4.md`.

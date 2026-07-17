@@ -115,7 +115,7 @@
 
 | # | Task | Durum | Açıklama |
 |---|------|-------|----------|
-| 16.01 | TASK-16.01 | ⬜ Bekliyor | TB-D1 — gym PNG disk hijyeni (`public/gym/*.png` 4 orphan sil, ~1.7MB, 0 tüketici) + M2:123 stale açıklama v0.4 senkronu |
+| 16.01 | TASK-16.01 | ✅ Tamamlandı | TB-D1 — gym PNG disk hijyeni (`public/gym/*.png` 4 orphan silindi, ~1.7MB, 0 tüketici) + M2:123 stale açıklama v0.4 senkronu |
 
 **Durum simgeleri:** ⬜ Bekliyor | 🔄 Devam ediyor | ⏸️ Duraklatıldı | ✅ Tamamlandı | 🔴 Bloke | ❌ İptal
 
@@ -150,4 +150,4 @@
 ---
 
 **Oluşturulma:** 2026-07-16 (discuss-phase 16)
-**Son Güncelleme:** 2026-07-17 — verify-plan 16: TASK-16.01 temiz context ile doğrulandı (referans gerçeklik-kontrolü temiz; mekanik düzeltme yok; 1 yapısal düzeltme uygulandı — alt görev 3 Alpfit bileşen envanteri gerçekle hizalandı, `AlpfitShowcase`=orchestrator + 5 bölüm bileşeni). Task tablosu değişmedi. TB-D2 (npm audit) task değil (research'te tamamlandı; review-phase'de ✅ kapanır). Adım = task.
+**Son Güncelleme:** 2026-07-17 — run-task 16.01 ✅: TB-D1 tamam — 4 orphan `public/gym/*.png` (~1.7MB) `git rm` ile silindi + dizin kalktı; silme öncesi/sonrası güvenlik grep'i kaynak/config 0 tüketici; M2:123 base "Açıklama" gerçek v0.4 yapısına senkronlandı (`components/alpfit/*` — `AlpfitShowcase` orchestrator + 5 bölüm bileşeni + izole `PhoneMockups`, saf CSS/SVG); regresyon kapısı yeşil (`next build` temiz, 0 MISSING_MESSAGE; Vitest 39/39). TB-D2 (npm audit) task değil (research'te tamamlandı; review-phase'de ✅ kapanır). Fazın tek task'ı bitti → Adım = verify.

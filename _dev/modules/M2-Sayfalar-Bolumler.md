@@ -120,7 +120,7 @@
 
 ### F2.8: Alpfit (spor salonu yazılımı) sayfası → Faz —
 
-**Açıklama:** `spor-salonu-yazilimi/page.tsx` + `components/gym/GymSoftwareShowcase.tsx` — hero, 8 özellik grid'i (locale'e göre TR/EN liste), 4 ürün ekran görüntüsü (`public/gym/*.png`, `next/image`), CTA bandı.
+**Açıklama:** `spor-salonu-yazilimi/page.tsx` + `components/alpfit/*` — `AlpfitShowcase` orchestrator (tek `<main>` landmark, bölümleri kompoze eder) + 5 bölüm bileşeni (`AlpfitHero`/`AlpfitRoles`/`AlpfitFeatures`/`AlpfitWhy`/`AlpfitPricing`) + izole `PhoneMockups` (saf CSS iPhone mockup'ları); Sorun/Yol haritası/Kapanış bölümleri orchestrator içinde inline. Saf CSS/SVG — raster görsel yok, `next/image` düştü.
 
 **Kabul Kriterleri:**
 - Ekran görüntüleri responsive `next/image` ile (AVIF/WebP).

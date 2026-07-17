@@ -1,6 +1,6 @@
 # TASK-16.01: gym PNG disk hijyeni + M2 doküman senkronu
 
-**Durum:** ⬜ Bekliyor
+**Durum:** ✅ Tamamlandı
 **Modül:** M2 (asset) — `modules/M2-Sayfalar-Bolumler.md`
 **Feature:** TB-D1 — gym PNG disk hijyeni
 **Faz:** Phase 16 (phases/PHASE-16.md)
@@ -104,24 +104,32 @@ _dev/modules/
 
 ## Oturum Kayıtları
 
-### Oturum — [TARİH]
+### Oturum — 2026-07-17
 
-**Durum:** [doldurulacak]
+**Durum:** ✅ Tamamlandı (tek oturum)
 
 **Yapılanlar:**
-- [doldurulacak]
+- **Alt görev 1 (güvenlik kapısı):** Silmeden önce son tüketici grep'i (`gym/|calendar/dashboard/member/messaging.png` üzerinden `src/`, `messages/`, `next.config.ts`, `sitemap.ts`, `robots.ts`) → kaynak/config tarafında **0 eşleşme** (araştırma-icra arası yeni tüketici doğmamış). Ek olarak `components/alpfit/*` gerçek yapısı `AlpfitShowcase.tsx` okunarak teyit edildi (orchestrator = tek `<main>`, 5 bölüm bileşeni + `PhoneMockups`; Sorun/Yol haritası/Kapanış inline).
+- **Alt görev 2 (silme):** `git rm public/gym/calendar.png dashboard.png member.png messaging.png` (~1.7MB). `git rm` dosyaları silince `public/gym/` dizini otomatik boşalıp kalktı (ayrı `rmdir` gerekmedi). `git status` 4 dosyayı `deleted` (staged) gösteriyor.
+- **Alt görev 3 (M2:123 senkron):** F2.8 base "Açıklama" (M2:123) gerçek v0.4 yapısına güncellendi — `components/alpfit/*` (`AlpfitShowcase` orchestrator + 5 bölüm bileşeni + izole `PhoneMockups`, saf CSS/SVG). Silinen asset atıfları (`GymSoftwareShowcase.tsx`, `public/gym/*.png`, `next/image` kullanımı, "8 özellik grid'i") kaldırıldı; satır 133'teki v0.4 değişim kaydıyla bilgi tekrarı yaratılmadı (base = güncel implementasyon yapısı, 133 = değişim kaydı). Kabul Kriterleri/Edge Case (125-132) = orijinal F2.8 gereksinim kaydı, 133 PRD redirect'iyle overlay ediliyor — task scope'u (yalnız satır 123) dışında bırakıldı.
 
 **Test Sonuçları:**
-- [doldurulacak]
+- Silme teyidi: `public/gym/` + 4 PNG diskte yok; `git status` 4× `deleted`. ✅
+- Kalan referans yok: silme sonrası grep kaynak/config **0 eşleşme**. ✅
+- `next build` temiz: tüm route'lar prerender (`/spor-salonu-yazilimi` 9.02 kB dahil), **0 MISSING_MESSAGE**, build hatasız. ✅
+- Vitest: **39/39 (5 dosya)** yeşil (i18n 5-dil parite + tohumlar) — regresyonsuz. ✅
+- Doküman senkron: M2:123 `components/alpfit/*` + saf CSS/SVG anlatıyor; `public/gym/*.png` / `next/image` (kullanım) / `GymSoftwareShowcase` atfı kalmadı. ✅
 
 ---
 
 ## Sonuç Özeti
 
-**Tamamlanma Tarihi:** [Tarih]
+**Tamamlanma Tarihi:** 2026-07-17
 
 **Ne Yapıldı:**
-- [Kısa özet]
+- 4 orphan gym ürün ekran görüntüsü (`public/gym/*.png`, ~1.7MB, 0 kod tüketicisi) `git rm` ile silindi; boşalan `public/gym/` dizini kalktı. Disk hijyeni Faz 15'ten bu faza devredilmişti (Alpfit Plus port'u sonrası tam orphan).
+- M2 modül dokümanı F2.8 base "Açıklama" (satır 123) stale eski yapıdan (`GymSoftwareShowcase.tsx` + `public/gym/*.png` + `next/image`) gerçek v0.4 yapısına (`components/alpfit/*`, saf CSS/SVG) senkronlandı — gerçeklik-drift kapatıldı.
+- Regresyon kapısı yeşil (0 tüketici olduğundan runtime etkilenmedi): `next build` temiz + Vitest 39/39.
 
 ---
 
