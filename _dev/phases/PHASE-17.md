@@ -166,13 +166,22 @@ Faz 14'ün "taze devcontainer, araç yok" riski **bu oturumda geçerli değil** 
 
 ## Task Listesi
 
-> Bu bölüm `/devflow:plan-phase 17` oturumunda doldurulur.
+> Bu bölüm `/devflow:plan-phase 17` oturumunda dolduruldu (2026-07-17). **8 task.**
 
 <!-- KURAL: Task Listesi yalnızca özet tablodur (#, Task, Durum, kısa açıklama). Task'ın icra detayı / oturum kaydı / çalışma notu buraya değil `tasks/TASK-N.md`'ye yazılır — bu bölüme sızan detay şişmedir, temizlenir (bölme değil). -->
 
+> **Yapı (Faz 9/14 emsali, araştırma araç-eşlemesine uyarlandı):** S1–S9 senaryo grupları → **8 task** (Faz 14'ün 9 task'ından fark: ayrı Lighthouse task'ı YOK — araştırma kararı: a11y mührü CI axe çift-tema 50-test, perf korunan taban argument-from-unchanged + S3 CLS). Katman sırası: **A build-ground-truth (deterministik, 17.01–17.03)** → **C runtime `page.route`+system Chrome (17.04–17.07)** → **adversarial+canlı duman (17.08)**. 17.01 taze `next build` ground-truth'ı kurar (17.02/17.03 prerender-grep + seo-redirects buna dayanır). Doğrulama fazı: kaynak kod DEĞİŞMEZ (kapsam-içi bug → reaktif düzeltme task'ı istisnası).
+
 | # | Task | Durum | Açıklama |
 |---|------|-------|----------|
-| 17.01 | TASK-17.01 | ⬜ Bekliyor | [plan-phase 17'de doldurulacak] |
+| 17.01 | TASK-17.01 | ⬜ Bekliyor | **S1** giriş/yönlendirme matrisi (A: curl + routes-manifest + seo-redirects): 6 sayfa × 5 locale 200; 3 redirect ailesi (`/bunker-os`→`/crew-os`, `/forum`→`/`, `/forum/:slug*`→`/bulten/:slug*`) çıplak+5-twin 308 — **v0.4 dokunmadı → regresyon re-teyit**; taze `next build` ground-truth'ı kurar |
+| 17.02 | TASK-17.02 | ⬜ Bekliyor | **S5 + S6-render + Alpfit render bütünlüğü** (A: prerender grep): "Crew OS" var / görünür "Bunker"+URL yok; Alpfit dürüstlük 4/4 (sahte-online yok); 30 sayfa-locale 0 MISSING_MESSAGE; non-TR `alpfit` stale-TR görünür kopukluk yok; AR-RTL; **Alpfit 9 bölüm + `PhoneMockup` marker render** (kırık görsel yok); her sayfa `<main>` (Faz 8 dersi) |
+| 17.03 | TASK-17.03 | ⬜ Bekliyor | **S8-suite + S6-parite** (A/B): Vitest (i18n-parite **`alpfit` 133-leaf dahil** + seo-metadata/seo-redirects + smoke/umami) + `test:e2e` axe (home+subpages **çift-tema 50 test = a11y=100 mührü**) + CI `fast`+`a11y` success; perf korunan taban re-teyit (argument-from-unchanged + CLS→17.04). **Lighthouse tekrarlanmaz** (araştırma) |
+| 17.04 | TASK-17.04 | ⬜ Bekliyor | **S3** Living Flow degradasyon (C: `page.route`+system Chrome WebGL): ana sayfa nabız (light/dark/reduced/no-WebGL/**mobil-low desktop-only**/AR-RTL×dark×reduced) + **Alpfit before/after (v0.4 yeni WebGL yüzeyi)**; 320/768/1440 taşma yok + **near-zero CLS** (perf taban CLS bileşeni) |
+| 17.05 | TASK-17.05 | ⬜ Bekliyor | **S4** kontroller & kalıcılık (C: `page.route`+Chrome): tema toggle (`html.dark`+localStorage+reload+FOUC yok+Living Flow uniform), dil-switcher path-koru (**`/spor-salonu-yazilimi` dahil**, Escape/dış-tık), klavye-only + focus-visible yeşil (`reducedMotion:'reduce'`) |
+| 17.06 | TASK-17.06 | ⬜ Bekliyor | **S2** tam TR yolculuğu (C: `page.route` + A: prerender): Hero→CTA→sektörler (**Alpfit çıkışı→yeni Alpfit Plus**)→4-adım→Crew OS→Forum→Footer; alt sayfa çıkış/dönüş (Alpfit odak) SPA-nav; `<Logo>` tutarlı; `/tr/`-sızıntı/kopuk-link/boş-bölüm yok (milestone TR-birincil çekirdek) |
+| 17.07 | TASK-17.07 | ⬜ Bekliyor | **S7** chatbot 0-token (A: kod-inceleme `route.ts` + C: offline UI): sanitizasyon (role-whitelist+trim+slice(-12)+kısa-devre) **hepsi `new Anthropic()` öncesi**; malformed kısa-devre; offline `#chat` inline (sahte-online yok); **0 API çağrısı**; v0.4 dokunmadı → regresyon yok |
+| 17.08 | TASK-17.08 | ⬜ Bekliyor | **S9** adversarial/holistik + **canlı duman** (A: `next build` temiz + C: JS-off/scroll-race + D: curl canlı): 0 MISSING_MESSAGE; JS-off SSG okunabilirlik (**Alpfit saf CSS/SVG**); tema/dil race + scroll storm (0 ScrollTrigger hatası); **canlı kiwiailab.com 200 + Alpfit `PhoneMockup` marker + chat 503** (test-what's-live, `f173234`) |
 
 **Durum simgeleri:** ⬜ Bekliyor | 🔄 Devam ediyor | ⏸️ Duraklatıldı | ✅ Tamamlandı | 🔴 Bloke | ❌ İptal
 
@@ -232,4 +241,4 @@ Faz 14'ün "taze devcontainer, araç yok" riski **bu oturumda geçerli değil** 
 ---
 
 **Oluşturulma:** 2026-07-17 (discuss-phase 17)
-**Son Güncelleme:** 2026-07-17 — discuss-phase 17: Kapsam tartışması tamamlandı. v0.4 versiyon-sonu senaryo testi fazı; kapsam ana sayfa + 5 alt sayfa uçtan-uca (Faz 14 çıtası, Alpfit Plus delta odağı); branch/build + hafif canlı duman (test-what's-live, v0.4 canlıda `f173234`); TR birincil + non-TR tutarlılık (alpfit stale-TR); chatbot 0-token; keşfet+kaydet+triyaj; otonom; S1–S9 kataloğu onaylandı. Sıradaki adım research-phase 17.
+**Son Güncelleme:** 2026-07-17 — plan-phase 17: S1–S9 → **8 task** dökümü (TASK-17.01–17.08) yazıldı. Katman sırası A build-ground-truth (01-03) → C runtime `page.route`+system Chrome (04-07) → adversarial+canlı duman (08). Faz 14'ün 9 task'ından fark: ayrı Lighthouse task'ı yok (araştırma: a11y mührü CI axe çift-tema 50-test; perf korunan taban argument-from-unchanged + S3 CLS). Delta odağı Alpfit Plus 17.02/04/06/08'e dağıtıldı (render bütünlüğü / before-after / çıkış-dönüş / canlı marker). Sıradaki adım verify-plan 17.
