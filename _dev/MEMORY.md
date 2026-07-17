@@ -7,7 +7,7 @@
 >
 > Bu yapı şişmeyi önler: index ince kalır (hep yüklü), detay yalnızca gerekince okunur.
 
-**Son Güncelleme:** 2026-07-18 — run-task 17.06 (S2): [sandbox-runtime-browser-page-route](memory/sandbox-runtime-browser-page-route.md)'e **`history.back()`-after-SPA yanlış-FAIL** notu eklendi (Ortam & Araç) — `page.route` statik full-`.rsc` servis edince ileri SPA-nav çalışır ama browser-back URL'i çevirir/içeriği restore etmez (prod partial-flight uzlaşması ıraksar); ürün bug'ı değil, harness artefaktı. Dönüş doğrulamasında header back-link + tam-doküman back kullan (kör-red yok: grep + gerçek-UI + tam-doküman probe ile teyit).
+**Son Güncelleme:** 2026-07-18 — run-task 17.08 (S9): [sandbox-runtime-browser-page-route](memory/sandbox-runtime-browser-page-route.md)'e **default-locale prefix normalizasyonu prod middleware ister** notu eklendi (Ortam & Araç) — `page.route`'ta client SPA dil-switch'i varsayılan dile (TR) çevirince URL `/tr`'de kalır (prod `/tr`→307→`/` normalizasyonunu middleware yapar, harness'ta yok); `html lang=tr` doğru, yalnız pathname prefix'i artefakt (BULGU-S2 `history.back()` ailesi). Ürün bug'ı değil; belirleyici canlı probe ile teyit (kiwiailab.com dil-switch TR → `/`).
 
 <!-- KURAL: Bu satır her güncellemede ÜZERİNE YAZILIR. "Önceki:" prefix ile kümülatif yığma YASAK (CLAUDE.md → Doküman Disiplini). -->
 
