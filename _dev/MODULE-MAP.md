@@ -168,6 +168,8 @@ M6 (SEO/Deploy) ─────────────────────>
 | REL: v0.4 TR production release (`revize/alpfit-plus`→`main` canlı; TR tam, non-TR stale-TR ertelendi; duman testi) | M6 | v0.4 | 16 | ✅ |
 | TB-D1: gym PNG disk hijyeni (`public/gym/*.png` 4 orphan dosya sil; 0 tüketici) | M2 | v0.4 | 16 | ✅ |
 | TB-D2: npm audit / bağımlılık denetimi (rapor + onaylı güncelleme; `package-lock` dokunulmaz) | M6 | v0.4 | 16 | ✅ |
+| **— v0.4 versiyon-sonu senaryo testi (Faz 17 — çapraz doğrulama, yeni feature üretmez) —** | | | | |
+| S1–S9: v0.4 ana sayfa + 5 alt sayfa uçtan-uca senaryo doğrulaması (giriş/yolculuk/mod/kontrol/taksonomi/5-dil/chatbot/v0.4-guardrail/adversarial; delta: Alpfit Plus ürün vitrini 9 bölüm + `alpfit` namespace parite + before/after Living Flow + dürüstlük 4/4 + canlı duman/test-what's-live) | tümü | v0.4 | 17 | 🔄 |
 
 **Durum simgeleri:**
 - ⬜ **Bekliyor** — Fazı henüz başlamadı
@@ -186,4 +188,4 @@ M6 (SEO/Deploy) ─────────────────────>
 
 ---
 
-**Son Güncelleme:** 2026-07-17 — review-phase 16: **Faz 16 ✅ tamamlandı.** TB-D1 gym PNG hijyeni ✅ + TB-D2 npm audit ✅ (kabul+kayıt, sömürülemez build-zamanı postcss — DECISIONS 2026-07-16) + REL v0.4 TR release ✅ canlı `f173234`. UAT 11/11, kalite 8 eksen ✅. non-TR çeviri ertelendi (senaryo testi/prd-review). Detay → `phases/PHASE-16.md`, `docs/RELEASE-v0.4.md`.
+**Son Güncelleme:** 2026-07-17 — discuss-phase 17: **Faz 17 (v0.4 versiyon-sonu senaryo testi) girildi** (🔄). S1–S9 senaryo grupları eklendi (çapraz doğrulama, yeni feature üretmez); delta odağı Alpfit Plus ürün vitrini + canlı duman (test-what's-live). Detay → `phases/PHASE-17.md`.
