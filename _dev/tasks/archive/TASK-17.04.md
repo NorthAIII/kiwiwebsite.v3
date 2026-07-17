@@ -137,7 +137,7 @@ _dev/
 
 **Neden bloklayıcı değil:** Degradasyon/a11y/işlevsellik doğru — reduced-motion→StaticFlow ✓, no-WebGL→StaticFlow ✓, mobil→animasyonlu ✓, sayfa erişilebilir, taşma 0, CLS 0. Bu bir **craft nüansı** (masaüstü alt-sayfa hero'sunda imza alan zayıf), degradasyon hatası değil.
 
-**Kullanıcıya not / öneri:** Craft üst eksen (ILKELER) + AlpfitHero yorumunun "signature Living Flow field preserved" iddiası açısından bu masaüstü boşluğu kullanıcının bilgisine sunuldu. Seçenek: (a) küçük fix task — alt sayfalara `FlowBackdrop` mount et (masaüstü de ana sayfa gibi animasyonlu alan gösterir); (b) prd-review'a craft kalemi olarak kaydet/kabul et. **Bu doğrulama task'ında düzeltilmedi** (kaynak kod değişmez; tasarım/craft kararı kullanıcıya ait; v0.4 regresyonu değil). Karar 17.05'e geçmeden veya prd-review'da alınabilir.
+**Kullanıcıya not / öneri:** Craft üst eksen (ILKELER) + AlpfitHero yorumunun "signature Living Flow field preserved" iddiası açısından bu masaüstü boşluğu kullanıcının bilgisine sunuldu. Seçenek: (a) küçük fix task — alt sayfalara `FlowBackdrop` mount et (masaüstü de ana sayfa gibi animasyonlu alan gösterir); (b) prd-review'a craft kalemi olarak kaydet/kabul et. **Bu doğrulama task'ında düzeltilmedi** (kaynak kod değişmez; tasarım/craft kararı kullanıcıya ait; v0.4 regresyonu değil). **Karar (2026-07-17, kullanıcı: "devam"): prd-review'a ertelendi** — bu fazda fix task açılmadı; olası fix = alt sayfalara `FlowBackdrop` mount (perf/CLS/a11y guardrail re-teyidiyle kendi task'ında).
 
 ---
 
