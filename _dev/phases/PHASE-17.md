@@ -1,6 +1,6 @@
 # Phase 17: v0.4 Versiyon-Sonu Senaryo Testi (ana sayfa + 5 alt sayfa uçtan-uca)
 
-**Durum:** 🔄 Devam ediyor
+**Durum:** ✅ Tamamlandı
 
 <!-- Bu doküman faza girince (discuss-phase) oluşur; durum 🔄 ile başlar. Henüz girilmemiş fazların dokümanı/numarası olmaz — PHASES.md → Sıradaki Fazlar'da numarasız konu olarak durur. -->
 <!-- KURAL: Bu doküman tek-okunabilir kalmalı (CLAUDE.md → Boyut ve Bölünme). Bir bölüm büyüyüp kırmızı çizgiye (~20k token) yaklaşırsa faz HÂLÂ AKTİFKEN `PHASE-17-<slug>.md`'ye bölünür — parent'ta self-yeten özet + pointer kalır, içerik taşınıp silinir, parent o fazın mini-index'i olur. Tamamlandıktan (✅) sonra bölme yasaktır; verify-phase ve review-phase fazı dondurmadan önce boyutu kontrol eder. -->
@@ -94,73 +94,9 @@
 
 ## Araştırma Bulguları
 
-> `/devflow:research-phase 17` (2026-07-17). Bu bir doğrulama fazı → araştırma "kütüphane seçimi" değil **araç eşlemesi + ortam ampirik teyidi**: S1–S9'u hangi somut doğrulama yöntemine bağlıyoruz ve bu oturum onları koşturabiliyor mu. Tüm bulgular bu oturumda ampirik teyit edildi (aşağıda).
+> `/devflow:research-phase 17` (2026-07-17). Doğrulama fazı olduğu için araştırma "kütüphane seçimi" değil **araç eşlemesi + ortam ampirik teyidi**ydi. **Detay → [PHASE-17-ARASTIRMA.md](PHASE-17-ARASTIRMA.md)** (ortam teyidi · değerlendirilen substratlar · S1–S9 araç eşleme tablosu · tanımlayıcı kaynakları · dikkat edilecekler).
 
-### Ortam Ampirik Teyidi (bu oturum)
-
-Faz 14'ün "taze devcontainer, araç yok" riski **bu oturumda geçerli değil** — araç zinciri hazır ve doğrulandı:
-
-- **node v24.16.0 · npm 11.13.0 · Playwright 1.61.1 · Chrome 149 (system) · Chromium 150 · loadavg 3.31 (< ~6 perf eşiği) · 20 çekirdek.** WebGL için system Chrome mevcut.
-- **Deterministik katman koşuyor:** `npm run test` → **Vitest 5 dosya / 39 test / exit 0 / 526ms** (yeşil). S1/S6/parite/seo tohumları yerelde çalışır.
-- **Build ground-truth mevcut:** `.next/server/app/**/*.html` prerender (5 dil × 6 sayfa) diskte. Redirect matrisi `.next/routes-manifest.json` regex'lerinde.
-- **Canlı erişilebilir (test-what's-live):** kiwiailab.com `/` · `/spor-salonu-yazilimi` · `/crew-os` → **200**; canlı Alpfit Plus marker `PhoneMockup` **150×** (branch build prerender'ıyla **birebir aynı** → gym-PNG-silme branch delta'sı Alpfit sayfasını etkilemiyor, test-what's-live tutarlı); `/api/chat` → **503** (env yok, beklenen offline).
-
-### Değerlendirilen Yaklaşımlar (doğrulama substratı)
-
-- **A. Build ground-truth (deterministik) — prerender HTML grep + `routes-manifest.json` + Vitest.** Artı: deterministik, ayrı server yok, sandbox `exit 144` riski yok, hızlı, tekrarlanabilir. Eksi: yalnız statik SSG render'ı görür (runtime davranışı — WebGL degradasyon / toggle kalıcılık / klavye yolu — göremez).
-- **B. Runtime tarayıcı — `next start` + Playwright `webServer` (standart `test:e2e`).** Artı: mühürlü CI aracı, gerçek layout/CSS/a11y. Eksi: bu sandbox `next start`/`next dev`'i per-session **`exit 144`** ile öldürebilir (`memory/sandbox-runtime-browser-page-route.md`) → yerelde flaky, güvenilmez.
-- **C. Runtime tarayıcı — `page.route` interception + system Chrome.** Artı: ayrı server yok (sandbox öldürmez), `.next` prerender+static'i diskten byte-for-byte servis eder; WebGL için `channel:'chrome'`+`--enable-unsafe-swiftshader`. Eksi: harness proje-içine yazılmalı (scratchpad `playwright`'i çözemez), selector kaynaktan teyit edilmeli.
-- **D. Canlı duman (curl).** Artı: test-what's-live (v0.4 canlı `f173234`), gerçek production. Eksi: yalnız HTTP kodu + ham HTML string (runtime davranış değil).
-- **Seçilen — katmanlı öncelik:** **A birincil** (senaryoların çoğu build-ground-truth'ta deterministik çözülür); **runtime davranış statik okunamıyorsa C** (`page.route` **ilk tercih**, `next start`/B **denenmez** — memory kuralı); **a11y mührü otoritatif olarak CI'ın `a11y` job'u** (GitHub runner'da `test:e2e`, sandbox'tan bağımsız) — yerelde gerekirse `page.route`+axe ek nokta-kontrolü; **D hafif canlı duman** (anahtar sayfalar 200 + Alpfit marker + chat 503). Gerekçe: ILKELER kalıcılık/thoroughness + sandbox flaklığını tümüyle atlar (memory).
-
-### Senaryo → Araç Eşlemesi (S1–S9)
-
-| Senaryo | Birincil araç | Nasıl |
-|---------|---------------|-------|
-| **S1** giriş/route/redirect | A: `routes-manifest.json` + `seo-redirects.test.ts` (Vitest) + curl | Redirect 3 ailesi (`/bunker-os`→`/crew-os`, `/forum`→`/`, `/forum/:slug*`→`/bulten/:slug*`) çıplak+locale-twin 308 — tohum mühürlü; 6 sayfa × 5 dil prerender varlığı grep |
-| **S2** tam TR yolculuğu | A: prerender grep + C: `page.route` (nav/CTA tık) | TR (`NEXT_LOCALE=tr` cookie) ana→alt çıkış/dönüş; `/tr/` sızıntı yok, kopuk link yok, boş bölüm yok; `<Logo>` tutarlı |
-| **S3** Living Flow degradasyon | C: `page.route`+system Chrome (WebGL) | Ana sayfa nabız (light/dark/reduced/no-WebGL/mobil-low/AR-RTL×dark×reduced) + Alpfit before/after; 320/768/1440 taşma + CLS |
-| **S4** kontroller & kalıcılık | C: `page.route`+Chrome | Tema toggle (localStorage+reload), dil-switcher path-koru (**Alpfit dahil**), klavye-only + focus-visible (`reducedMotion:'reduce'` şart) |
-| **S5** taksonomi & dürüstlük | A: prerender grep | "Crew OS" var / görünür "Bunker" + URL'de yok (kod-adı kalıntısı hariç); Alpfit dürüstlük 4/4; uydurma sonuç/yasak metafor yok |
-| **S6** 5-dil bütünlük | A: `i18n-parity.test.ts` (Vitest) + prerender `MISSING_MESSAGE` grep | `alpfit` **133 leaf × 5 dil = tam parite** (teyitli); 6×5 render'da `MISSING_MESSAGE` yok; AR-RTL `dir`/logical |
-| **S7** chatbot 0-token | A: kod-inceleme (`route.ts`) + C: offline UI render | 503 kapısı + sanitizasyon `new Anthropic()` **öncesi** (teyitli: role-whitelist + `trim().length>0` + `slice(-12)` + malformed kısa-devre); **0 API çağrısı** |
-| **S8** guardrail suite | B→CI: `test:e2e` (a11y job) + A: Vitest + prerender grep | a11y=100 çift-tema (home + 5 alt sayfa, subpages-a11y 50 test mühürlü) + axe yeşil; Alpfit 9-bölüm/PhoneMockups render; parite; CI (`fast`+`a11y`) yeşil |
-| **S9** adversarial + canlı duman | A: `next build` temiz + C: JS-off/scroll-race + D: curl canlı | JS-kapalı SSG okunabilirlik (Alpfit saf CSS/SVG); hızlı toggle/scroll race; canlı kiwiailab.com 200 + Alpfit marker |
-
-### Kullanılacak Araçlar/Kütüphaneler
-
-- **Vitest 4.1.9** (`npm run test`) — deterministik tohumlar: `i18n-parity` (S6 parite, `alpfit` dahil), `seo-redirects` (S1), `seo-metadata`, `smoke`, `umami-script`. Yerelde koşuyor (39 test yeşil).
-- **Playwright 1.61.1 + @axe-core/playwright 4.12.1** — a11y/E2E. Otoritatif mühür **CI `a11y` job** (`test:e2e`, `home-a11y` + `subpages-a11y` = 50+ test); yerel runtime davranışı için `page.route` harness'i.
-- **system Chrome 149** — WebGL runtime (`channel:'chrome'` + `--enable-unsafe-swiftshader` + `--disable-dev-shm-usage`); Playwright-bundled chromium WebGL vermez.
-- **`next build`** (CI-proven; verify-phase **taze** koşar) — prerender ground-truth üretimi.
-- **curl** — canlı duman (kiwiailab.com 200 + marker), redirect HTTP kodu, chat 503.
-
-### Dikkat Edilecekler
-
-- **Prerender marker'ı = CSS-modül sınıf adı + render edilen metin, React bileşen adı DEĞİL.** `AlpfitHero`/`AlpfitShowcase` gibi bileşen adları HTML'e yazılmaz → S8/S5 render bütünlüğü grep'i `PhoneMockup` (CSS-modül sınıfı, `PhoneMockups.module.css`) + içerik string'leri (`roadmap`/before-after) üzerinden yapılır. (Bu oturumda kanıtlandı: bileşen adı grep'i 0, CSS sınıfı 150×.)
-- **`.next` tazeliği:** mevcut `.next` önceki koşudan olabilir → **verify-phase taze `next build` koşar** (HEAD hizası garanti); araştırmadaki `.next` yalnız fizibilite teyidi.
-- **`next start` denenmez (memory kuralı):** sandbox `exit 144` → runtime tarayıcı doğrudan `page.route` interception ile başlar; a11y mührü CI'da.
-- **Ölçüm disiplini tuzakları (a11y/runtime — `a11y-helpers.ts` + memory):** locale tuzağı (TR alt sayfa prefixsiz → `NEXT_LOCALE=tr` cookie; EN/AR/DE/ES açık-prefix) · tema tuzağı (`html.dark` + light+dark iki koşu, `emulateMedia`) · reveal tuzağı (`reducedMotion:'reduce'` + uçtan-uca scroll) · stray/stale `next-server` (listening-PID teyit) · host yükü (`/proc/loadavg` perf-bitişik ölçüm öncesi) · runtime harness selector-teyidi (LanguageSwitcher `router.replace` **butonu** / Chatbot inline `#chat` / tema `html.dark`+localStorage).
-- **Canlı ≠ branch delta:** canlı `main`=`f173234` Alpfit Plus'ı **içerir** ama gym-PNG-silme (TASK-16.01) + phase-16/17 docs branch'te **unmerged** (8 commit ileride). Alpfit sayfası raster kullanmaz → gym PNG orphan (0 tüketici), Alpfit render'ını etkilemez → canlı ile branch build birebir. Canlı duman `f173234` Alpfit'ini doğrular; merge kapsam-dışı (finalizasyon).
-
-**Tanımlayıcı kaynakları** (research kaydeder, verify-plan doğrular):
-- `alpfit` namespace (133 leaf × 5) → **repo:** `messages/{tr,en,ar,de,es}.json` (site-tanımlı, teyitli).
-- `PhoneMockup` CSS sınıfı → **repo:** `src/components/alpfit/PhoneMockups.module.css`.
-- Redirect 3 ailesi → **repo:** `next.config.ts`; runtime regex → build artefaktı `.next/routes-manifest.json`.
-- Prerender HTML → build artefaktı `.next/server/app/**/*.html` (taze build ile yenilenir).
-- Test tohumları → **repo:** `tests/` (`i18n-parity`, `seo-redirects`, `seo-metadata`, `smoke`, `umami-script`, `e2e/{home,subpages}-a11y`).
-- `ANTHROPIC_API_KEY` → **dış:** Vercel env (canlıda YOK → `/api/chat` 503); yalnız slot adı, değer asla.
-- `CHAT_MODEL` → **dış:** Vercel env (opsiyonel, varsayılan `claude-opus-4-8`).
-- Canlı sürüm `f173234` → **dış:** `main`/Vercel.
-- gym PNG `public/gym/{calendar,dashboard,member,messaging}.png` → **repo:** `main`'de var, branch'te silinmiş (unmerged).
-
-### Teknik Kararlar
-
-- **Deterministik build-ground-truth birincil substrat.** Senaryoların çoğu (S1/S5/S6/S8-parite/S9-build) SSG prerender + Vitest + routes-manifest ile server'sız/deterministik çözülür → sandbox flaklığı atlanır, tekrarlanabilir. Runtime tarayıcı yalnız statik okunamayan davranışa (S3 WebGL, S4 toggle/klavye, S7 offline UI, S9 JS-off/race) saklanır. (ILKELER kalıcılık + memory `page.route` ilk tercih.)
-- **a11y mührü otoritatif olarak CI.** S8 a11y=100 çift-tema re-teyidi mühürlü `subpages-a11y.spec.ts` (5 sayfa × 5 dil × 2 tema = 50 test) + `home-a11y` → GitHub `a11y` job'unda koşar (sandbox'tan bağımsız, otoritatif). Yerel `page.route`+axe yalnız ek nokta-kontrolü; a11y-DERİNLİK Faz 8/15'te yapıldı, tekrar edilmez (yalnız regresyon re-teyit).
-- **Runtime tarayıcı = `page.route` interception, `next start` denenmez.** Memory kuralı gereği doğrudan `page.route`; WebGL için system Chrome. Harness proje-içine yazılır, koşulur, silinir; selector kaynaktan teyit edilir.
-- **Canlı duman hafif tutulur.** kiwiailab.com anahtar sayfalar 200 + Alpfit marker + chat 503 (test-what's-live, tam yeniden ölçüm değil); tam doğrulama branch/build'de.
-- **Chatbot 0-token, kod-inceleme yolu.** `route.ts` 503-kapısı + sanitizasyon `new Anthropic()` öncesinde (teyitli); env yok → zaten offline; hiçbir senaryo API çağrısı üretmez. (Per-mesaj max-byte cap yok = kayıtlı sahipli açık, prd-review — bu fazda litige edilmez.)
+**Özet (kendi kendine yeten):** Doğrulama **katmanlı** kuruldu — **A** build-ground-truth birincil (prerender HTML grep + `routes-manifest.json` + Vitest; deterministik, server'sız), **C** runtime tarayıcı yalnız statik okunamayan davranışa (`page.route` interception + system Chrome `channel:'chrome'`+swiftshader; **`next start` denenmez** — sandbox `exit 144`, memory kuralı), **D** hafif canlı duman (curl kiwiailab.com, test-what's-live). **a11y mührü otoritatif olarak CI'ın `a11y` job'u** (`subpages-a11y` 5 sayfa × 5 dil × 2 tema = 50 test, GitHub runner'da — sandbox'tan bağımsız); a11y **derinliği** Faz 8/15'te mühürlendiği için ayrı Lighthouse koşusu bilinçle **tekrarlanmaz** (→ `docs/DECISIONS.md` 2026-07-18). Chatbot **0 API çağrısı** (kod-inceleme + SDK-mock + key-yok offline). Kritik uyarı: **prerender marker'ı CSS-modül sınıf adıdır** (`PhoneMockup`), React bileşen adı değil — bileşen-adı grep'i 0 döner, bu yanlış-FAIL değildir.
 
 ---
 
@@ -174,14 +110,14 @@ Faz 14'ün "taze devcontainer, araç yok" riski **bu oturumda geçerli değil** 
 
 | # | Task | Durum | Açıklama |
 |---|------|-------|----------|
-| 17.01 | TASK-17.01 | ✅ Tamamlandı | **S1** giriş/yönlendirme matrisi (A: curl + routes-manifest + seo-redirects): 6 sayfa × 5 locale 200; 3 redirect ailesi (`/bunker-os`→`/crew-os`, `/forum`→`/`, `/forum/:slug*`→`/bulten/:slug*`) çıplak+5-twin 308 — **v0.4 dokunmadı → regresyon re-teyit**; taze `next build` ground-truth'ı kurar. **Bulgu: ✅ GEÇTİ, 0 kapsam-içi bug** — build temiz (37/37); 30/30 prerender 200 + `html lang`/AR-RTL doğru; seo-redirects 16/16 + manifest regex 13/13 (sıra tuzağı mührü çıplak `/forum`→`/`); canlı redirect zinciri 308→200; edge beklenen (`/tr`→307, `/bulten`+bilinmeyen-locale→404). |
-| 17.02 | TASK-17.02 | ✅ Tamamlandı | **S5 + S6-render + Alpfit render bütünlüğü** (A: prerender grep): "Crew OS" var / görünür "Bunker"+URL yok; Alpfit dürüstlük 4/4 (sahte-online yok); 30 sayfa-locale 0 MISSING_MESSAGE; non-TR `alpfit` stale-TR görünür kopukluk yok; AR-RTL; **Alpfit 9 bölüm + `PhoneMockup` marker render** (kırık görsel yok); her sayfa `<main>` (Faz 8 dersi). **Bulgu: ✅ GEÇTİ, 0 kapsam-içi bug** — "Crew OS" home 15×/crew-os 14× (5 dil), görünür "Bunker OS" 0/30 (tüm kalıntı kod-adı: nav key `"bunker":"Crew OS"`/`#bunker`/`bunkerback` keyframe), `bunker-os` slug 0; Alpfit 4/4 (pilot "Weekend Training Club"/₺1.500-1.200-3.000-15gün/"Bugün üründe değil"/"canlı pilotta" dürüst); yasak metafor 0/30; MISSING_MESSAGE 0/30, AR 6/6 lang+dir=rtl, non-TR `alpfit` 5-dil birebir (133 leaf parite); Alpfit 5-locale 8 `<section>`+roadmap `<div>`=9 bölüm + `PhoneMockup` 150× + 0 `<img>`/49 `<svg>`; 30/30 tam bir `<main>`. Kaynak kod değişmedi. |
-| 17.03 | TASK-17.03 | ✅ Tamamlandı | **S8-suite + S6-parite** (A/B): Vitest (i18n-parite **`alpfit` 133-leaf dahil** + seo-metadata/seo-redirects + smoke/umami) + `test:e2e` axe (home+subpages **çift-tema 50 test = a11y=100 mührü**) + CI `fast`+`a11y` success; perf korunan taban re-teyit (argument-from-unchanged + CLS→17.04). **Lighthouse tekrarlanmaz** (araştırma). **Bulgu: ✅ GEÇTİ, 0 kapsam-içi bug** — taze `next build` 37/37 SSG temiz; `npm run test` **39/39 yeşil** (seo-metadata 16 + seo-redirects 16 [routes-manifest'e bağlı gerçekten koştu] + i18n-parity 5 + umami 1 + smoke 1); `alpfit` **133 leaf × 5 dil birebir parite** (ayrık teyit). CI run `29591588087` HEAD `5248a76`: `fast`+`a11y` **iki job da success** → axe `subpages-a11y` **50 test çift-tema WCAG-AA 0 ihlal** = a11y=100 otoritatif mühür (yerel `next start` denenmedi, memory kuralı). Perf korunan taban: git ile ampirik argument-from-unchanged (home 13.03/living-flow 12.03 v0.4'te dokunulmadı; `globals.css` salt-ekleme `--color-surface`; alpfit-dışı tek diff orphan `GymSoftwareShowcase.tsx` silme) → masaüstü 100/mobil LCP taban değişmedi; Alpfit CLS→17.04. |
-| 17.04 | TASK-17.04 | ✅ Tamamlandı | **S3** Living Flow degradasyon (C: `page.route`+system Chrome WebGL): ana sayfa nabız + Alpfit before/after; 320/768/1440 taşma + CLS. **Bulgu: ✅ GEÇTİ (degradasyon regresyonsuz) + 1 kapsam-içi craft bulgusu (BULGU-S3, regresyon değil, kullanıcıya sunuldu).** Sanity geçti (WebGL2 probe has:true; home high FlowBackdrop fixed canvas=1). Ana sayfa matrisi hepsi ✓: light/dark FOUC yok (early===final), reduced/no-WebGL → StaticFlow SVG canvas=0, **mobil-low nabız desktop-only** (canvasFixed=0/hero=1), AR-RTL×dark×reduced `lang=ar`+`dir=rtl`+dark+static çakışmasız. Taşma **6/6 overflowX=0** (home+alpfit 320/768/1440) + **CLS=0** iki sayfa. **BULGU-S3:** alt-sayfa hero'ları (Alpfit+crew-os) `high` masaüstünde canvas=0/StaticFlow=0 → yalnız base-wash (animasyonlu alan yok); kök neden `FlowBackdrop` yalnız ana sayfada mount (alt sayfa `LivingFlow` high'da canvas mount etmez); **crew-os ile birebir → v0.4 regresyonu değil, Faz 12'den yerleşik desen**; degradasyon/a11y doğru → craft nüansı, **prd-review'a ertelendi** (kullanıcı: devam; bu fazda fix task açılmadı). Kaynak kod değişmedi. |
-| 17.05 | TASK-17.05 | ✅ Tamamlandı | **S4** kontroller & kalıcılık (C: `page.route`+system Chrome). **Bulgu: ✅ GEÇTİ, 22/22 PASS, 0 kapsam-içi bug.** Sanity ✓ (WebGL2 has:true; home high FlowBackdrop canvas=1). **Tema:** light varsayılan→toggle→dark (`html.dark`+`aria-pressed`false→true+`localStorage.theme=dark`+bg `rgb(247,246,241)`→`rgb(19,21,16)`); **Living Flow uniform** canvas 1→1 `data-s4probe` korundu (remount YOK, renk MutationObserver yerinde); reload **kalıcı**; **FOUC YOK** (early===final=dark, `.dark` body girmeden = pre-paint). **Dil path-koru:** home→`/de`, **`/spor-salonu-yazilimi`→`/en/spor-salonu-yazilimi`** (Alpfit), `/crew-os`→`/en/crew-os` (finalPath+lang doğru); menü Escape/dış-tık/klavye kapanış. **Klavye:** focus-visible **yeşil 2px solid** light `rgb(31,122,61)`+dark `rgb(79,176,106)` (tema+dil+nav/CTA), odak kaybı yok (16/16). 3 harness artefaktı (chunk URL-encode→decode / MutationObserver bağlama-timing→`document` gözlemi / hex-parse) düzeltildi = gerçek bug değil. Kaynak kod değişmedi. |
-| 17.06 | TASK-17.06 | ✅ Tamamlandı | **S2** tam TR yolculuğu (C: `page.route`+system Chrome + A: prerender grep): ana→alt çıkış/dönüş (Alpfit odak) SPA-nav; `<Logo>` tutarlı; `/tr/`-sızıntı/kopuk-link/boş-bölüm yok (milestone TR-birincil çekirdek). **Bulgu: ✅ GEÇTİ, 21/22 çekirdek assertion PASS, 0 kapsam-içi bug** (1 harness artefaktı triyaj). Taze `next build` (HEAD `32207b0`, 31 HTML+31 `.rsc`). **Ana sayfa:** bölüm sırası birebir `top>how>sectors>bunker>forum>chat>contact`, boş bölüm yok, Hero ikincil CTA `#sectors`, **anchor settle rect.top=0** (Lenis full-motion). **Alpfit çıkışı:** sektörlerden `/spor-salonu-yazilimi` SPA-nav (marker korundu, full-reload yok) → tek `<main>`/9 bölüm/PhoneMockup 150×/0 `<img>`/0 MISSING/Logo/0 `/tr/`+`/bunker-os` sızıntı. **Dönüş:** header back-link (`<Link href="/">`) + tam-doküman browser-back → home tam restore ✅. **Crew OS:** taze home'dan `/crew-os` SPA-nav (`/bunker-os` sızıntı yok)/tek `<main>`/Logo/"Crew OS". Link hijyeni grep: çıkış href'leri mevcut (spor 3×·crew 2×·vaka 1×·2 bülten 1×'er), dead-`#` 0. **BULGU-S2 (harness artefaktı, ürün bug'ı DEĞİL):** `history.back()`-after-SPA URL'i `/`'a çevirir ama `<main>` Alpfit içeriğini gösterir (re-render yok); kök neden `page.route` statik full-`.rsc` servisi (prod `Next-Router-State-Tree` partial-flight uzlaşmasıyla ıraksar); belirleyici probe (tam-doküman back home restore) + grep (özel history override yok) + R3 (gerçek UI back home restore) ile artefakt teyitli; memory'ye eklendi. Kaynak kod değişmedi. |
-| 17.07 | TASK-17.07 | ✅ Tamamlandı | **S7** chatbot 0-token (A: kod-inceleme `route.ts` + Vitest SDK-mock + C: offline UI `page.route`). **Bulgu: ✅ GEÇTİ, 20/20 çekirdek assertion PASS (12 route + 8 UI), 0 gerçek Anthropic çağrısı, 0 kapsam-içi bug.** Sanitizasyon sırası birebir: 503-kapısı L22-24 → JSON guard L27-32 → sanitize L35-42 (role-whitelist L38 + `trim().length>0` L40 + `slice(-12)` L42) → trailing-user kısa-devre L44 → **`new Anthropic()` L48 (hepsinden SONRA)**. Route (Vitest 12/12): key-yok→503 (ctor hiç); 8 malformed varyant→400 (ctor+stream **hiç çağrılmadı** = kısa-devre `new Anthropic()` öncesi); `[system,user]`→system sıyrıldı yalnız user forward; `slice(-12)` 12 forward; SDK mock→0 çağrı. Offline UI (8/8): `#chat` **inline `<section>`** (floating değil), greeting, **sahte online/ping-dot YOK**, gönder→`/api/chat` 503→zarif offline metni (`t("error")`), UI takılmadı, stream hiç, **anthropicCalls=0** (tek benign dış: umami analytics offline). Kayıtlı sahipli açık: per-mesaj max-byte cap yok (min-length+geçmiş-sayısı var)→prd-review, litige edilmedi. v0.4 chat'e dokunmadı→regresyon yok. Kaynak kod değişmedi. |
-| 17.08 | TASK-17.08 | ✅ Tamamlandı | **S9** adversarial/holistik + **canlı duman** (A: `next build` temiz + C: JS-off/scroll-race + D: curl canlı). **Bulgu: ✅ GEÇTİ, 0 kapsam-içi bug (1 harness artefaktı = BULGU-S9).** Taze build (HEAD `a103998`) 0 warn/error, 37/37 SSG, 30 prerender **0 MISSING_MESSAGE**. **JS-off 40/40 PASS:** 6 TR sayfa okunur (h1+nav+`<main>`+metin 1252-5068ch, canvas=0, **0 gizli-opacity0**); Alpfit saf CSS/SVG PhoneMockup 138 görünür + 0 img/49 svg/8 bölüm (kök-neden: `.reveal` class ölü baseline kullanılmıyor, 17 bileşen JS-off-güvenli `data-reveal`). **Adversarial 13/14 PASS:** tema 9-tık race final-tutarlı (`html.dark`==localStorage==`aria-pressed`)+reload-kalıcı; dil zinciri en→de→ar→es→tr lang==target 5/5 + AR rtl; scroll storm bölümler 7→7 + **nabız tek WebGL context 1→1** (leak yok) + overflowX=0 + scroll-lock yok + anchor settle + **0 ScrollTrigger/GSAP/Lenis hatası**. **Canlı duman (test-what's-live `f173234`):** `/`+`/spor-salonu-yazilimi`+`/crew-os` **200** + Alpfit **PhoneMockup 150×** canlı (branch birebir) + "Crew OS" 14×/görünür "Bunker" 0 + `/bunker-os`→308→`/crew-os` + **`/api/chat` 503**. **BULGU-S9 (harness artefaktı, ürün bug'ı DEĞİL):** dil zinciri default-locale TR harness'ta URL `/tr` (prod `/tr`→307→`/` normalizasyonu middleware'de, page.route'ta yok; `html lang=tr` doğru); belirleyici canlı probe teyit etti (canlı dil-switch TR→`/`); BULGU-S2 ailesi, memory'ye eklendi. Kaynak kod değişmedi; harness silindi. |
+| 17.01 | TASK-17.01 | ✅ Tamamlandı | **S1** giriş/yönlendirme matrisi (A) — 6 sayfa × 5 locale + 3 redirect ailesi regresyon re-teyidi; faz için taze `next build` ground-truth'ı kurar. **✅ GEÇTİ, 0 bug.** |
+| 17.02 | TASK-17.02 | ✅ Tamamlandı | **S5 + S6-render + Alpfit render bütünlüğü** (A: prerender grep) — taksonomi, dürüstlük 4/4, 0 `MISSING_MESSAGE`, 9 bölüm + `PhoneMockup`, her sayfa `<main>`. **✅ GEÇTİ, 0 bug.** |
+| 17.03 | TASK-17.03 | ✅ Tamamlandı | **S8-suite + S6-parite** — Vitest 39/39 + CI `fast`+`a11y` success (axe çift-tema 50 test = a11y mührü) + perf korunan taban argument-from-unchanged. **✅ GEÇTİ, 0 bug.** |
+| 17.04 | TASK-17.04 | ✅ Tamamlandı | **S3** Living Flow degradasyon + taşma/CLS (C: `page.route`+system Chrome). **✅ GEÇTİ (degradasyon regresyonsuz)** + **BULGU-S3** (alt-sayfa `high` masaüstünde animasyonlu alan yok; crew-os ile birebir → v0.4 regresyonu değil, craft nüansı → prd-review'a ertelendi, kullanıcı: devam). |
+| 17.05 | TASK-17.05 | ✅ Tamamlandı | **S4** kontroller & kalıcılık — tema (localStorage/reload/FOUC-yok/Living Flow uniform), dil path-koru (Alpfit dahil), klavye focus-visible. **✅ GEÇTİ, 22/22 PASS, 0 bug** (3 harness artefaktı düzeltildi). |
+| 17.06 | TASK-17.06 | ✅ Tamamlandı | **S2** tam TR yolculuğu (Alpfit çıkış/dönüş odak) — milestone TR-birincil çekirdeği. **✅ GEÇTİ, 21/22 PASS, 0 bug** + **BULGU-S2** (`history.back()`-after-SPA = `page.route` harness artefaktı, belirleyici probe ile teyitli → memory). |
+| 17.07 | TASK-17.07 | ✅ Tamamlandı | **S7** chatbot 0-token — sanitizasyon sırası (`new Anthropic()` hepsinden sonra) + 8 malformed kısa-devre + zarif offline UI. **✅ GEÇTİ, 20/20 PASS, 0 gerçek API çağrısı, 0 bug.** |
+| 17.08 | TASK-17.08 | ✅ Tamamlandı | **S9** adversarial/holistik + canlı duman (test-what's-live `f173234`). **✅ GEÇTİ, 0 bug** — JS-off 40/40, adversarial 13/14, canlı 3 sayfa 200 + `PhoneMockup` 150× + `/api/chat` 503; **BULGU-S9** (default-locale prefix = harness artefaktı → memory). |
 
 **Durum simgeleri:** ⬜ Bekliyor | 🔄 Devam ediyor | ⏸️ Duraklatıldı | ✅ Tamamlandı | 🔴 Bloke | ❌ İptal
 
@@ -213,43 +149,89 @@ Faz 14'ün "taze devcontainer, araç yok" riski **bu oturumda geçerli değil** 
 
 ## Retrospektif
 
-> Bu bölüm `/devflow:review-phase 17` oturumunda doldurulur.
+> `/devflow:review-phase 17` (2026-07-18). Faz 17 = v0.4 versiyon-sonu senaryo testi: 8 task (S1–S9) + UAT 12/12 → **0 kapsam-içi bug, 0 düzeltme task'ı, 0 kaynak kod değişimi** (14 commit doc-only; `git diff main..HEAD -- src/ messages/` boş).
 
 ### Ne İyi Gitti?
-- [Tekrarlanması gereken pratikler]
+
+- **Katmanlı araç eşlemesi (A build-ground-truth → C `page.route` runtime → D canlı curl) karşılığını verdi.** Senaryoların çoğu prerender HTML + `routes-manifest.json` + Vitest ile **deterministik** çözüldü; runtime tarayıcı yalnız statik okunamayan davranışa saklandı → tekrarlanabilir kanıt + sandbox flaklığının tümüyle atlanması. Faz 14'ün dersi (`page.route` ilk tercih) ilk denemede uygulandı; **`next start` bu fazda hiç denenmedi**.
+- **17.01'in "taze `next build` ground-truth kur" görevi doğru bağımlılık sırasıydı;** ayrıca 17.03/17.06/17.08 kendi taze build'ini koştu → her katman HEAD-hizalı kanıt üretti, bayat `.next` yanlış-yeşili riski kapandı.
+- **Harness artefaktı ≠ gerçek bug triyajı 5 kez doğru işledi, hiçbirinde kör-red/kör-onay yok.** 17.05'te 3 ölçüm artefaktı harness düzeltilerek çözüldü; BULGU-S2 ve BULGU-S9 **belirleyici probe** ile kanıtlandı. Kritik nokta: karar, harness'ın kısıtını **paylaşmayan** bağımsız bir substratta koşulan probe'a bağlandı (tam-doküman navigasyon / gerçek middleware'li canlı site) — "muhtemelen artefakttır" denip geçilmedi.
+- **BULGU-S3 dürüstçe yükseltildi, sessizce yutulmadı.** crew-os parite koşusuyla "v0.4 regresyonu değil, Faz 12 deseni" **kanıtlandı** (varsayılmadı), degradasyon/a11y'nin doğru olduğu ayrıştırıldı, sonra craft nüansı olarak kullanıcı kararına sunuldu.
+- **Chatbot 0-token disiplini ampirik kanıtla güçlendi:** sanitizasyon sırası yalnız kod-okumayla değil **Vitest SDK-mock'la davranışsal** doğrulandı — 8 malformed varyantta `new Anthropic()` ctor + stream **hiç çağrılmadı**. Toplam gerçek Anthropic çağrısı **0**.
+- **"Test-what's-live" katmanı gerçek değer kattı:** canlı `f173234`'te Alpfit `PhoneMockup` **150×** = branch build'le birebir → doğrulamanın canlıya transferi gösterildi (varsayılmadı); aynı katman BULGU-S9'un belirleyici probe'unu sağladı.
+- **Geçici harness hijyeni tam:** 3+ harness yazıldı, koşuldu, **silindi** (`find _verify*` boş, `git status` temiz) → arkasında dosya/test çöpü kalmadı.
+- **Faz 16'nın üç önerisi de uygulandı:** `senaryo_testi` damgası → discuss-phase 17 ✓ · canlı duman katmanı kapsama girdi ve S9'da koştu ✓ · üç sahipli kalem yeniden litige edilmeden taşındı ✓.
 
 ### Ne Kötü Gitti?
-- [Sorunlar ve darboğazlar]
+
+- **Runtime doğrulamanın hiçbiri kalıcı regresyon tohumuna dönüşmedi.** S3/S4/S9 gerçek tarayıcıda zengin invariant üretti, ama harness'lar silindiği için CI'da bunları koruyan hiçbir şey yok. Üç versiyon-sonu (Faz 9 → 14 → 17) benzer harness'ı sıfırdan yazıp attı; TB-3 (full-motion tohumu) Faz 12'den beri açık. Fazın ürünü "o anki güvence" oldu, "kalıcı güvence" değil.
+- **`page.route` substratının prod'dan iki ıraksaması ancak koşarken keşfedildi** (BULGU-S2 partial-flight ↔ statik full-`.rsc`; BULGU-S9 default-locale prefix normalizasyonu middleware'de). Araştırmada öngörülmemişti → teşhis turu maliyeti. Memory'ye eklendiler.
+- **Perf ölçülmedi, argüman edildi.** Korunan taban `argument-from-unchanged` ile (git-temelli, ampirik) savunuldu; gerekçesi sağlam (sandbox software-GL perf'i kıyaslanamaz kılıyor) ve CLS gerçekten ölçüldü (0). Ama sonuç: v0.4 kapanışında **taze bir perf sayısı yok**; brief mobil açığı da hâlâ kapalı değil (metodolojik duvar).
+- **Craft üst ekseninde bir açık, faz kapanırken açık kaldı.** BULGU-S3 doğru triyaj edildi ve kullanıcı kararıyla ertelendi — ama amiral vitrin sayfası masaüstünde imza alanını göstermiyor, mobilde gösteriyor. Craft'ın **üst eksen** olduğu bir projede versiyon kapanışının bu ödünle yapılması prd-review'da yeniden tartılmalı.
 
 ### Sonraki Faz İçin Öneriler
-- [Alınan dersler, tavsiyeler]
+
+- **Versiyon Sonu Durumu `senaryo_testi` → `prd_review_bekliyor`** damgalandı (bu review). v0.4 versiyon-sonu fazları (16, 17) tamam → sıradaki adım **zorunlu `/devflow:prd-review`**.
+- **prd-review'a devredilen sahipli kalemler** (dispozisyonlarıyla, yeniden litige edilmeden):
+  - **BULGU-S3 — alt-sayfa masaüstü imza alanı boşluğu.** Alpfit + crew-os hero'ları `high` modda animasyonlu Living Flow göstermiyor (yalnız base-wash); kök neden `FlowBackdrop` yalnız ana sayfada mount. v0.4 regresyonu **değil**, degradasyon/a11y doğru → **craft kararı**. Olası fix: alt sayfalara `FlowBackdrop` mount (kendi task'ında, guardrail re-teyidiyle). **Craft üst eksen → prd-review'da öncelikli.**
+  - **non-TR (en/ar/de/es) `alpfit` = TR stale-kopya** — 133 leaf × 5 dil yapısal **tam** (eksik anahtar yok), değerler Türkçe. Site canlı ve 5 dil sunuyor → **non-TR ziyaretçi Alpfit'te Türkçe içerik görüyor**. Bilinçli versiyon-sınırı ama artık ziyaretçi-görünür → prd-review'ın **ana kalemi**.
+  - **Canlı `ANTHROPIC_API_KEY` env YOK** → `/api/chat` 503, canlı chatbot "offline" (offline yolun zarif olduğu S7+S9'da doğrulandı). **Kullanıcı aksiyonu** (Vercel dashboard); canlı sitedeki en görünür açık.
+  - **`revize/v0.4-versiyon-sonu` → `main` merge bekliyor** (gym PNG silme + Faz 16/17 dokümanları); canlıdaki orphan PNG'ler **0 tüketici** → etkisiz. Finalizasyon adımı.
+  - **Chatbot per-mesaj max-byte cap yok** (min-length + geçmiş-sayısı var) → hardening adayı. · **npm audit 2 moderate** (Next'e gömülü postcss, sömürülemez; DECISIONS 2026-07-16) → upstream-bekleyen. · **Brief mobil perf açığı** (≈90 / LCP >2.5s) → metodolojik duvar, DECISIONS 2026-06-30.
+- **TB-3'ü (runtime invariant tohumu) sonraki teknik borç fazında somut kapsam kalemi yap.** Silinen harness'lardan **WebGL-bağımsız ve kararlı** olanları (JS-off SSG okunabilirlik · tema kalıcılık/FOUC · dil-switcher path-koruma) kalıcı Playwright spec'ine çevir; WebGL-bağımlılar (degradasyon matrisi, scroll storm) flakilik nedeniyle geçici kalabilir. Versiyon-sonu senaryo testinin maliyetini de düşürür.
+- **Sonraki senaryo testinde `page.route` ıraksamalarını research'te peşinen listele.** İkisi memory'de kayıtlı; "bu substratın prod'dan bilinen farkları" başlığı açılırsa aynı teşhis turları tekrar ödenmez.
+
+### Task-Spesifik Teknik Öğrenimler
+<!-- Bu fazdaki task'larda öğrenilen ama proje genelinde geçerli olmayan teknik nüanslar. -->
+
+- **`page.route` harness'ında chunk yolları URL-encoded gelir.** `app/[locale]/…` chunk'ları `%5Blocale%5D` olarak istenir, diskteki ad literal `[locale]` → 404 ve **React hiç boot etmez** (sessiz: sayfa görünür, hidratasyon yok). Fix: `decodeURIComponent(pathname)`. Ayırt-edicilik sanity'si (WebGL probe + beklenen canvas) bunu yakalar. (17.05.)
+- **`document.documentElement`'e `document_start`'ta MutationObserver bağlanamaz** — element henüz yok, observer hiç ateşlemez (FOUC ölçümünde sessiz yanlış-negatif). Çözüm: `document`'i childList+subtree gözle. (17.05.)
+- **CSS custom property probe'u hex döner, `rgb()` değil.** `--color-green` ham değeri `#1f7a3d`; aynı renk `outline-color` olarak **kullanıldığında** tarayıcı `rgb(...)` normalize eder → karşılaştıran harness iki formatı da ayrıştırmalı. (17.05.)
+- **Prerender'da `MISSING_MESSAGE` grep'i yanlış-pozitif verebilir:** `alpfit.vercel.app` gerçek URL ama i18n key-path desenine benziyor — eşleşmeyi gözle doğrula. (17.02.)
+- **JS-off okunabilirliğin kök nedeni `data-reveal` deseni.** `.reveal` + `is-in` `globals.css`'te **ölü baseline** (hiç kullanılmıyor); 17 bileşen `data-reveal` kullanıyor, CSS varsayılanı `opacity:1` — `opacity:0`'ı yalnız GSAP **JS ile** uyguluyor → JS-off'ta içerik gizlenmiyor (40/40, 0 gizli-opacity0). Reveal desenine dokunan işlerde bu invariant korunmalı. (17.08.)
+- **Alpfit render marker'ı `PhoneMockup` (CSS-modül sınıfı), bileşen adı değil** — `AlpfitShowcase` grep'i 0 döner (beklenen, yanlış-FAIL değil); bölüm sayımı `8 <section> + roadmap <div> = 9 kavramsal bölüm`. (17.02/17.08.)
+
+### DevFlow'a Öneri
+
+- **Doğrulama (senaryo testi) fazları için "geçici harness → kalıcı tohum mezuniyeti" adımı yok.** DevFlow senaryo testi fazı keşfet+kaydet+triyaj yapıyor ama ürettiği runtime doğrulama araçlarının akıbetiyle ilgilenmiyor → araç her versiyon sonunda yeniden yazılıp atılıyor (bu projede 3 kez: Faz 9/14/17). Öneri: senaryo testi fazının kapanışına küçük bir triyaj sorusu eklensin — *"bu fazda yazılan geçici doğrulama araçlarından hangisi kalıcı regresyon tohumu olmayı hak ediyor?"* — ve hak edenler sonraki teknik borç fazının kapsam adayı olarak kaydedilsin. Proje-özel değil, yöntemsel. (Kullanıcıya bildirildi; DevFlow'a ayrı oturumda taşınacak.)
 
 ---
 
 ## Kalite Kontrol Sonuçları
 
-> Bu bölüm `/devflow:review-phase 17` oturumunda doldurulur.
+> `/devflow:review-phase 17` oturumunda dolduruldu (2026-07-18). Bu bir **doğrulama fazıdır** — kaynak kod değişmedi (`git diff main..HEAD -- src/ messages/` boş). Eksenler bu yüzden "yeni yüzey" değil, **v0.4 kapanışında ölçülen mevcut durum + regresyon** perspektifinden değerlendirildi. Fazın 8 task'ı zaten eksen-eksen kanıt üretti; aşağıdaki tablo o kanıtı QUALITY.md eksenlerine eşler.
 
 | Eksen | Durum | Not |
 |-------|-------|-----|
-| Marka & Craft (imza) | ✅ / ⚠️ / ❌ | ... |
-| Erişilebilirlik | ✅ / ⚠️ / ❌ | ... |
-| Performans | ✅ / ⚠️ / ❌ | ... |
-| Yerelleştirme & RTL | ✅ / ⚠️ / ❌ | ... |
-| Modülerlik & Bakım | ✅ / ⚠️ / ❌ | ... |
-| Hata Yönetimi & Degradasyon | ✅ / ⚠️ / ❌ | ... |
-| Güvenlik | ✅ / ⚠️ / ❌ | ... |
-| Test Kapsamı | ✅ / ⚠️ / ❌ | ... |
+| Marka & Craft (imza) | ⚠️ | Taksonomi/dürüstlük **temiz:** "Crew OS" home 15× / crew-os 14×, görünür "Bunker OS" **0/30**, `bunker-os` slug 0; Alpfit dürüstlük **4/4 gerçek** (pilot adı · gerçek fiyatlar · "Bugün üründe değil" dürüst çerçeve · sahte "● online" **0**); yasak metafor **0/30**; kod değişmedi → Faz 15 craft mühürlü. **⚠️ gerekçesi: BULGU-S3** — Alpfit + crew-os hero'ları `high` masaüstünde animasyonlu Living Flow göstermiyor (canvas=0/StaticFlow=0, yalnız base-wash); mobilde gösteriyor → masaüstü↔mobil ilişkisi ters. v0.4 **regresyonu değil** (crew-os parite kanıtlı, Faz 12 deseni) ama **Craft üst eksen** (ILKELER) ve amiral vitrin sayfasını etkiliyor → kullanıcı kararıyla prd-review'a ertelendi, açık kalem olarak işaretlenir. |
+| Erişilebilirlik | ✅ | Otoritatif mühür **CI `a11y` job** (GitHub runner): `subpages-a11y` **50 test** (5 sayfa × 5 dil × 2 tema), WCAG-AA **0 ihlal**, 3 ayrı HEAD'de success. Yapısal audit boşluğu deterministik ön-kontrolle kapatıldı: **30/30 sayfada tam bir `<main>`** (Faz 8 dersinin enstrümanı — bülten sayfaları dahil). Runtime: focus-visible **yeşil 2px** çift-tema, **odak kaybı yok 16/16**, menü Escape/dış-tık/klavye; reduced-motion tam fallback; AR `lang`+`dir=rtl` **6/6**. Metodoloji notu: ayrı Lighthouse **bilinçle tekrarlanmadı** (a11y derinliği Faz 8/15'te mühürlü; bu faz regresyon re-teyidi) → gerekçe DECISIONS 2026-07-18. |
+| Performans | ✅ | **CLS = 0** (PerformanceObserver buffered, home + alpfit, uçtan-uca scroll sonrası) · **overflowX = 0** 6/6 (320/768/1440 × 2 sayfa) · nabız **tek WebGL context 1→1** scroll storm sonrası (remount/leak yok) · canlı 3 sayfa 200. Korunan taban `argument-from-unchanged` ile **ampirik** temellendi (git): home son dokunuş 13.03, living-flow 12.03 → v0.4 dokunmadı; `globals.css` **salt-ekleme**; alpfit-dışı tek diff = ölü kod silme. Dürüst kayıt: bu fazda **taze perf sayısı ölçülmedi** — sandbox software-GL ortamı perf/TBT'yi kıyaslanamaz kılıyor (memory). Brief mobil açığı (perf ≈90 / LCP >2.5s) devralınan, metodolojik duvara dayalı → prd-review. |
+| Yerelleştirme & RTL | ✅ | **0 `MISSING_MESSAGE`** 30 sayfa-locale'de (iki bağımsız taze build'de teyit); `alpfit` **133 leaf × 5 dil birebir parite**, `i18n-parity` tohumu eksik-anahtar=fail ile mühürlü; AR RTL 6/6. **Anahtar varlığı ≠ değer tazeliği** disiplini korundu: non-TR `alpfit` stale-TR **bilinçli versiyon-sınırı** (yapısal tam → görünür kopukluk imkânsız), eksik anahtar **yok**. Açık: non-TR çeviri geçişi → prd-review (site canlı ve 5 dil sunuyor → artık ziyaretçi-görünür). |
+| Modülerlik & Bakım | ✅ | Kaynak kod değişmedi → ürün modülerliği Faz 15 durumunda. Doğrulama tarafı temiz: geçici harness'lar yazıldı, koşuldu, **silindi** (`find _verify*` boş, `git status` temiz) → dosya/test çöpü yok; katmanlı araç eşlemesi (A/C/D) yeniden kullanılabilir kaydedildi. Kayıtlı bakım maliyeti: runtime harness'lar kalıcı olmadığı için her versiyon sonunda yeniden yazılıyor (→ Ne Kötü Gitti / TB-3 önerisi). |
+| Hata Yönetimi & Degradasyon | ✅ | Living Flow mod matrisi **hepsi doğru**: reduced-motion/no-WebGL → StaticFlow · mobil-low → hero canvas · light/dark **FOUC yok** (pre-paint) · AR-RTL×dark×reduced çakışmasız. **JS-off 40/40 PASS** — 6 TR sayfa okunur, **0 gizli-opacity0 içerik**, Alpfit saf CSS/SVG tam okunur. Chatbot: key-yok → 503 → **zarif offline** (`t("error")`), UI takılmıyor (sonsuz Thinking yok, input kullanılabilir), stream hiç başlamıyor, **sahte online/ping-dot yok**. Adversarial: tema 9-tık race final-tutarlı + reload-kalıcı, dil zinciri lang==target 5/5, **0 ScrollTrigger/GSAP/Lenis/WebGL hatası**. |
+| Güvenlik | ✅ | **security-review 0 bulgu** (faz diff = `_dev/` markdown + Faz 16 PNG silme → kod/config/bağımlılık yüzeyi yok). Chat sanitizasyon sırası **satır-satır + davranışsal** doğrulandı: 503-kapısı L22 → JSON guard L27 → role-whitelist/trim/`slice(-12)` L38-42 → trailing-user kısa-devre L44 → **`new Anthropic()` L48 (hepsinden SONRA)**. Kanıt okuma değil koşu: **8 malformed varyant → 400, ctor + stream HİÇ çağrılmadı**; gömülü system/tool sıyrılıyor (`[system,user]` → yalnız user forward). Secret koda gömülü değil (yalnız env slot adı). Kayıtlı açıklar: per-mesaj max-byte cap yok (min-length + geçmiş-sayısı var) → prd-review hardening; npm audit 2 moderate = sömürülemez build-zamanı postcss (DECISIONS 2026-07-16). |
+| Test Kapsamı | ⚠️ | Commit'li suite **yeşil ve gerçekten koştu:** Vitest **39/39** (seo-redirects `routes-manifest.json`'a bağlı → atlanmadı, yanlış-yeşil değil) + CI `fast`+`a11y` **success** (axe 50-test). **⚠️ gerekçesi:** bu fazın kendi runtime doğrulaması (S3 degradasyon matrisi · S4 tema/dil/klavye kalıcılığı · S9 JS-off + race) **kalıcı tohum üretmedi** — harness'lar koşulup silindi, CI'da bu invariant'ları koruyan hiçbir şey yok. TB-3 (full-motion tohumu, WebGL-flaky) Faz 12'den beri açık ve bu fazda da kapanmadı. Üç versiyon-sonu (9/14/17) aynı invariant'ları yeniden doğrulayıp attı → öneri: WebGL-bağımsız olanları (JS-off okunabilirlik / tema kalıcılık-FOUC / dil path-koruma) kalıcı spec'e çevir (sonraki teknik borç fazı kapsam adayı). |
 
 ---
 
 ## Sonuç
 
-- **Tamamlanma Tarihi:** [Tarih]
-- **Toplam Task:** [Sayı]
-- **Notlar:** [Önemli kararlar, sonraki faza aktarılanlar]
+- **Tamamlanma Tarihi:** 2026-07-18
+- **Toplam Task:** 8 (17.01–17.08, hepsi ✅ ve arşivde)
+- **Milestone 5/5 karşılandı:** S1–S9 otonom koşuldu · her senaryonun sonucu kayıt altında · bulgular triyajlı (**0 kapsam-içi bug, 0 düzeltme task'ı**) · TR yolculuğu bütünsel-tutarlı + non-TR tutarlı · v0.4 guardrail'leri regresyonsuz.
+- **Kriter 5'e dürüst şerh:** "Living Flow imzası degradasyonlu" karşılandı (degradasyon her modda doğru), ancak alt-sayfa **masaüstünde animasyonlu imza alanı yok** (BULGU-S3) — degradasyon hatası değil, craft nüansı; kapanış bu bilinçli şerhle yapıldı.
+- **Kalite: 6 ✅ + 2 ⚠️** — ⚠️ Marka & Craft (BULGU-S3, üst eksen) · ⚠️ Test Kapsamı (runtime doğrulama kalıcı tohum üretmedi; TB-3 açık).
+- **Doğrulama fazı disiplini tam:** kaynak kod değişmedi (14 commit doc-only), geçici harness'lar silindi, 8/8 task arşivde, `git status` temiz. Kapsam kararlarının ve araştırma "Dikkat Edilecekler"inin tamamına uyuldu (`next start` hiç denenmedi).
+- **Versiyon Sonu Durumu `senaryo_testi` → `prd_review_bekliyor`** damgalandı → sıradaki adım **zorunlu `/devflow:prd-review`**.
+- **prd-review'a devredilenler:** BULGU-S3 (craft, öncelikli) · non-TR `alpfit` stale-TR (canlı-görünür) · canlı `ANTHROPIC_API_KEY` yok · branch→main merge · chatbot max-byte cap · npm audit 2 moderate · brief mobil perf açığı. **BULGU-S2 / BULGU-S9 harness artefaktı olarak kapatıldı** (memory'de, takip gerektirmez).
+
+---
+
+## Alt Dokümanlar
+
+- [PHASE-17-ARASTIRMA.md](PHASE-17-ARASTIRMA.md) — araştırma-detayı (ortam ampirik teyidi · değerlendirilen doğrulama substratları A/B/C/D · S1–S9 araç eşleme tablosu · tanımlayıcı kaynakları · dikkat edilecekler · teknik kararlar)
 
 ---
 
 **Oluşturulma:** 2026-07-17 (discuss-phase 17)
-**Son Güncelleme:** 2026-07-18 — verify-phase 17: **Faz 17 UAT ✅ GEÇTİ — 12/12 senaryo, 0 düzeltme task'ı → Adım: review.** Otomatik katman yeşil: CI (`36f8986`+`a103998`+`bae80f5` fast+a11y success = a11y=100 çift-tema mührü) · npm audit 2 moderate=Faz 16 kayıt (postcss Next'e gömülü, sömürülemez) · security-review 0 bulgu (doc+PNG-silme, kod yüzeyi yok). UAT 12 senaryo (milestone 5 kriter + kapsam + QUALITY 8 eksen + adversarial); otonom mod, anahtar kontroller bu oturumda bağımsız re-koştu (build 37/37 0 MISSING_MESSAGE, JS-off 40/40, adversarial 13/14, canlı 200+150×+503). Kaynak kod değişmedi (doğrulama fazı). Boyut ~12.7k token (bölme gerekmedi). Bulgular değişmedi (BULGU-S2/S3/S9 + S7 gap → memory/prd-review). Sıradaki: review-phase 17. A `next build` ground-truth + C `page.route`/system Chrome (JS-off + adversarial race) + D curl canlı; 3 geçici harness koşulup silindi (kaynak kod değişmedi). Regresyon tabanı: taze build (HEAD `a103998`) 0 warn, 37/37 SSG, 30 prerender **0 MISSING_MESSAGE**. **JS-off 40/40 PASS** (6 sayfa okunur, Alpfit PhoneMockup 138 görünür + 0 img/49 svg; kök-neden `.reveal` ölü baseline + `data-reveal` JS-off-güvenli). **Adversarial 13/14 PASS** (tema 9-tık race final-tutarlı+reload-kalıcı; dil zinciri lang==target 5/5 + AR rtl; scroll storm nabız tek WebGL context 1→1 + 0 ScrollTrigger/GSAP/Lenis hatası). **Canlı duman `f173234`:** 3 sayfa 200 + Alpfit PhoneMockup 150× + `/api/chat` 503. **BULGU-S9** (dil zinciri default-locale TR harness'ta `/tr`) = harness middleware-siz artefaktı (BULGU-S2 ailesi); belirleyici canlı probe teyit (canlı dil-switch TR→`/`); memory'ye eklendi, takip gerektirmez.
+**Son Güncelleme:** 2026-07-18 — **review-phase 17: Faz 17 ✅ TAMAMLANDI, faz donduruldu.** Milestone 5/5 (kriter 5'e BULGU-S3 şerhi); kalite 8 eksen → **6 ✅ + 2 ⚠️** (Marka&Craft · Test Kapsamı); **0 düzeltme task'ı**. Kapsam kararları + araştırma dikkat-noktaları + Faz 16'nın 3 önerisi: hepsi uygulandı. Versiyon Sonu Durumu **`senaryo_testi` → `prd_review_bekliyor`** → sıradaki **zorunlu `/devflow:prd-review`**. Yeni karar → `docs/DECISIONS.md` 2026-07-18 (senaryo testi a11y mühür metodolojisi); memory'ye belirleyici-probe disiplini eklendi. **Boyut (Adım 5b):** dondurmadan önce temizlik + bölme uygulandı — Task Listesi hücreleri özete indirildi (icra detayı zaten `tasks/archive/TASK-17.0X.md`'de) + Araştırma Bulguları [PHASE-17-ARASTIRMA.md](PHASE-17-ARASTIRMA.md)'ye taşındı (parent'ta özet + pointer); **44.9k → 43.3k karakter ve tek-okunabilirlik fiilen test edildi** (tek Read çağrısı, truncate yok). Faz artık **tarihsel/dokunulmaz**.

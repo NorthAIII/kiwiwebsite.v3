@@ -169,7 +169,7 @@ M6 (SEO/Deploy) ─────────────────────>
 | TB-D1: gym PNG disk hijyeni (`public/gym/*.png` 4 orphan dosya sil; 0 tüketici) | M2 | v0.4 | 16 | ✅ |
 | TB-D2: npm audit / bağımlılık denetimi (rapor + onaylı güncelleme; `package-lock` dokunulmaz) | M6 | v0.4 | 16 | ✅ |
 | **— v0.4 versiyon-sonu senaryo testi (Faz 17 — çapraz doğrulama, yeni feature üretmez) —** | | | | |
-| S1–S9: v0.4 ana sayfa + 5 alt sayfa uçtan-uca senaryo doğrulaması (giriş/yolculuk/mod/kontrol/taksonomi/5-dil/chatbot/v0.4-guardrail/adversarial; delta: Alpfit Plus ürün vitrini 9 bölüm + `alpfit` namespace parite + before/after Living Flow + dürüstlük 4/4 + canlı duman/test-what's-live) | tümü | v0.4 | 17 | 🔄 |
+| S1–S9: v0.4 ana sayfa + 5 alt sayfa uçtan-uca senaryo doğrulaması (giriş/yolculuk/mod/kontrol/taksonomi/5-dil/chatbot/v0.4-guardrail/adversarial; delta: Alpfit Plus ürün vitrini 9 bölüm + `alpfit` namespace parite + before/after Living Flow + dürüstlük 4/4 + canlı duman/test-what's-live) | tümü | v0.4 | 17 | ✅ |
 
 **Durum simgeleri:**
 - ⬜ **Bekliyor** — Fazı henüz başlamadı
@@ -188,4 +188,4 @@ M6 (SEO/Deploy) ─────────────────────>
 
 ---
 
-**Son Güncelleme:** 2026-07-17 — discuss-phase 17: **Faz 17 (v0.4 versiyon-sonu senaryo testi) girildi** (🔄). S1–S9 senaryo grupları eklendi (çapraz doğrulama, yeni feature üretmez); delta odağı Alpfit Plus ürün vitrini + canlı duman (test-what's-live). Detay → `phases/PHASE-17.md`.
+**Son Güncelleme:** 2026-07-18 — review-phase 17: **Faz 17 (v0.4 versiyon-sonu senaryo testi) ✅ Tamamlandı** — S1–S9 uçtan-uca doğrulandı (UAT 12/12, 0 kapsam-içi bug, 0 kaynak değişimi); v0.4 iş birimlerinin (AP1–AP3, REL, TB-D1/D2) tamamı doğrulanmış durumda. Açık craft kalemi BULGU-S3 (alt-sayfa masaüstü imza alanı) → prd-review. Detay → `phases/PHASE-17.md`.

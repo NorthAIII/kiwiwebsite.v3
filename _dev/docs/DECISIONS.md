@@ -9,6 +9,24 @@
 
 <!-- Her yeni karar aşağıdaki formatta en üste eklenir (en yeni en üstte) -->
 
+### 2026-07-18 — Senaryo testi fazlarında a11y mührü = CI axe çift-tema + yapısal grep; ayrı Lighthouse koşusu tekrarlanmaz (Faz 17)
+
+**Bağlam:** Memory'deki Süreç Disiplini şunu söyler: *"Bir sayfayı a11y-mühürlerken iki gate'i de koş — axe WCAG-AA 0 ihlal ≠ Lighthouse a11y=100."* Gerekçesi somut: Faz 8'de 50 axe testi yeşilken 2 bülten sayfası Lighthouse a11y=98 verdi çünkü `<main>` yoktu — `landmark-one-main`/`region`/`heading-order` gibi **structural/best-practice** audit'ler axe'ın WCAG alt-kümesinde yok. Faz 17 (v0.4 senaryo testi) bu disiplinle görünürde çelişen bir şey yaptı: **ayrı Lighthouse koşusu yapmadı.** Bu kararın gerekçesi kayda geçmezse gelecekte ya "disiplin atlandı" diye yanlış okunur ya da her versiyon sonunda gereksizce yeniden tartışılır.
+
+**Ayrım:** Disiplin bir sayfayı **ilk kez a11y-mühürlerken** geçerlidir (yeni yüzey / derinlik denetimi). Senaryo testi fazı ise **yeni yüzey üretmez** — kaynak koda dokunmaz, zaten mühürlenmiş sayfaların **regresyona uğramadığını** re-teyit eder. a11y derinliği bu proje için Faz 4 (ana sayfa 89→100), Faz 8 (5 alt sayfa çift-tema) ve Faz 15 (Alpfit Plus) oturumlarında yapıldı ve mühürlendi.
+
+**Seçenekler:**
+1. **CI axe çift-tema + deterministik yapısal ön-kontrol** — otoritatif mühür GitHub runner'daki `a11y` job (`subpages-a11y` 5 sayfa × 5 dil × 2 tema = 50 test + `home-a11y`, WCAG-AA 0 ihlal); disiplinin doğduğu **structural boşluk** ayrıca prerender grep'iyle deterministik kapatılır (30/30 sayfada tam bir `<main>`).
+2. **Ayrıca yerel Lighthouse çift-tema koşusu** — her versiyon sonunda 5 alt sayfa × 2 tema yeniden ölçülür.
+
+**Karar:** **Seçenek 1.** Senaryo testi (doğrulama) fazlarında a11y mührü CI axe çift-tema suite'i + yapısal grep ön-kontrolüdür; ayrı Lighthouse koşusu **tekrarlanmaz**. Gerekçeler: (a) disiplinin koruduğu somut failure mode (`<main>` eksikliği) deterministik grep'le **doğrudan** kapatılıyor — enstrüman değişti, güvence değil; (b) CI job sandbox'tan bağımsız GitHub runner'da koşuyor → bu ortamın `next start` flakiliğinden (`exit 144`) etkilenmiyor, yerel Lighthouse'tan **daha** güvenilir; (c) yerel Lighthouse bu devcontainer'da software-GL ile koşuyor → perf/TBT sayıları kıyaslanamaz (a11y skoru etkilenmese de koşunun marjinal faydası düşük); (d) a11y **derinliği** zaten mühürlü, tekrarlanan şey yalnız regresyon kontrolü olurdu.
+
+**Sınır (önemli):** Bu karar **yalnız doğrulama fazları** içindir. **Yeni bir sayfa/yüzey a11y-mühürlenirken iki-gate disiplini aynen geçerlidir** — Lighthouse structural audit'leri axe'ın kapsamadığı şeyi ölçer ve atlanamaz. Karar disiplini gevşetmez, uygulama alanını netleştirir.
+
+**Sonuç (Faz 17):** CI `fast`+`a11y` 3 ayrı HEAD'de `success`; `subpages-a11y` 50 test WCAG-AA 0 ihlal; 30/30 sayfada tam bir `<main>`; runtime focus-visible çift-tema + odak kaybı yok 16/16. Kalite ekseni "Erişilebilirlik ✅". Detay → `phases/PHASE-17.md` + `phases/PHASE-17-ARASTIRMA.md`.
+
+---
+
 ### 2026-07-16 — npm audit: Next'e gömülü postcss@8.4.31 (2 moderate) kabul + kayıt, overrides/downgrade yok (Faz 16, TB-D2)
 
 **Bağlam:** Faz 16 (v0.4 versiyon-sonu teknik borç) research. `npm audit`: 365 bağımlılık, **2 moderate, 0 low/high/critical**. İki bulgu da tek kök nedenden: `next`'in içine gömülü (nested) `postcss@8.4.31` (`node_modules/next/node_modules/postcss`) → advisory [GHSA-qx2v-qp2m-jg93](https://github.com/advisories/GHSA-qx2v-qp2m-jg93) (postcss `<8.5.10`, CSS stringify `</style>` kaçırma XSS, CVSS 6.1). Projenin kendi postcss'i temiz (root `8.5.15`, tailwind/vite `8.5.16` — hepsi `≥8.5.10`). Belirleyici: `next@15.3.0`→`15.5.20` **her** patch, hatta `next@16.2.10` (son major) bile `postcss: 8.4.31`'i sabit pinliyor → hiçbir sürüm güncellemesi audit'i çözmez. npm'in tek "fix"i `next@9.3.3` (`isSemVerMajor` — katastrofik downgrade).
