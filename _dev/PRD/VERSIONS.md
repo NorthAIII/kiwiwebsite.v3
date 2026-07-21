@@ -2,7 +2,7 @@
 
 **Amaç:** Hangi feature'ın hangi versiyona dahil olduğunu tutan tek kaynak. (MODULE-MAP'in Versiyon sütunu buradan beslenir.)
 
-> **Bağlam:** Mevcut site = "v3 (mevcut canlı)". Güçlü revize, **v0.1**'den başlayan kümülatif versiyonlarla yürür. **v0.1 tamamlandı** (3 faz: içerik + teknik borç + senaryo testi; prd-review 2026-06-29 — değişiklik yok). **v0.2 tamamlandı** (Faz 4–9: a11y + test altyapısı + mobil perf + Umami + versiyon-sonu teknik borç + senaryo testi; prd-review 2026-07-02 — PRD değişikliği yok). **v0.3 tamamlandı** (Faz 10–14: görsel cila + URL taksonomisi/SEO + Living Flow nabız + versiyon-sonu teknik borç + senaryo testi; prd-review 2026-07-05 — PRD drift düzeltmesi, vizyon değişikliği yok). **v0.4 planlandı** (re-kickoff 2026-07-16: Alpfit Plus ürün vitrini — aşağıda). Aşağıdaki feature'lar revizenin *yeni* iş birimleridir; mevcut çalışan feature'lar `_dev/MODULE-MAP.md`'de listelenir.
+> **Bağlam:** Mevcut site = "v3 (mevcut canlı)". Güçlü revize, **v0.1**'den başlayan kümülatif versiyonlarla yürür. **v0.1 tamamlandı** (3 faz: içerik + teknik borç + senaryo testi; prd-review 2026-06-29 — değişiklik yok). **v0.2 tamamlandı** (Faz 4–9: a11y + test altyapısı + mobil perf + Umami + versiyon-sonu teknik borç + senaryo testi; prd-review 2026-07-02 — PRD değişikliği yok). **v0.3 tamamlandı** (Faz 10–14: görsel cila + URL taksonomisi/SEO + Living Flow nabız + versiyon-sonu teknik borç + senaryo testi; prd-review 2026-07-05 — PRD drift düzeltmesi, vizyon değişikliği yok). **v0.4 tamamlandı** (Faz 15–17; prd-review 2026-07-21 — aşağıda). **v0.5 planlandı** (re-kickoff 2026-07-21: Chatbot ücretsiz sağlayıcı geçişi + canlıya alma — aşağıda). Aşağıdaki feature'lar revizenin *yeni* iş birimleridir; mevcut çalışan feature'lar `_dev/MODULE-MAP.md`'de listelenir.
 
 ---
 
@@ -15,6 +15,7 @@
 | Sektörler derinleştirme (6 sektör, özgün içerik) | `features/sektorler-derinlestirme.md` | v0.1 |
 | Site geneli TR kopya revizesi (marka sesi) | `features/kopya-revizesi.md` | v0.1 |
 | Alpfit Plus ürün vitrini (F2.8 zengin yeniden tasarım) | `features/alpfit-plus.md` | v0.4 |
+| Chatbot: ücretsiz sağlayıcı geçişi (Anthropic Opus → Groq/`llama-3.3-70b-versatile`) + canlıya alma | `docs/DECISIONS.md` (2026-07-21) | v0.5 |
 
 **v0.1 teması:** Türkçe içerik & mesaj revizesi — **ana sayfa odaklı, cerrahi** (prd-refine 2026-06-28 reframe: kopya zaten güçlü; baştan-sona rewrite değil, nokta-atışı düzeltmeler + ses taraması). TR tek kaynak; çeviri versiyon-sınırında (bkz. VIZYON §5).
 
@@ -61,9 +62,9 @@
 
 ## Sonraki Aday Versiyonlar
 
-> v0.5/v0.6 sırası chatbot kararında (DECISIONS 2026-07-21) kullanıcı-onaylı sabitlendi; kesin damgalama re-kickoff'ta. Diğer adaylar numarasız — sıra prd-refine / discuss-phase'de netleşir.
+> **v0.5 re-kickoff 2026-07-21'de Aktif Versiyon olarak damgalandı** (Chatbot ücretsiz sağlayıcı geçişi + canlıya alma; detay altta). v0.6 ve sonrası numarasız aday — sıra prd-refine / discuss-phase'de netleşir.
 
-- **v0.5 — Chatbot: ücretsiz sağlayıcı geçişi + canlıya alma** (öne alındı: chatbot canlıda offline). Anthropic Opus → **Groq · `llama-3.3-70b-versatile`** ($0/kartsız; DECISIONS 2026-07-21'de 5 kabul kriteri). Canlı 503/offline'ı da çözer. M5 merkez (`route.ts` + system prompt), M4 (TR-birincil dil algılama), OVERVIEW stack satırı. Chatbot per-mesaj max-byte cap (hardening) bu fazın adayı.
+- **v0.5 — Chatbot: ücretsiz sağlayıcı geçişi + canlıya alma** ✳️ **AKTİF** (re-kickoff 2026-07-21 damgaladı). Anthropic Opus → **Groq · `llama-3.3-70b-versatile`** ($0/kartsız; DECISIONS 2026-07-21'de 5 kabul kriteri). Canlı 503/offline'ı da çözer. M5 merkez (`route.ts` + system prompt), M4 (TR-birincil dil algılama), OVERVIEW stack satırı. Hardening (chatbot per-mesaj max-byte cap) + **canlıya alma** bu içerik fazına dahil (kickoff 2026-07-21). M5 içerik + OVERVIEW stack satırı implementasyon fazında güncellenir (kod↔doküman drift önleme).
 - **v0.6 — Booking + takvim entegrasyonu** (v0.5'ten ertelendi). Otomatik demo/randevu + botun takvime erişimi; tool/function calling + takvim sistemi + PII/spam güvenliği (Cal.com/Google Calendar seçimi açık). Ayrı ve daha büyük iş.
 - **Çeviri senkronu (numarasız aday):** alt sayfa EN/AR/DE/ES güncellemesi — alpfit stale-TR dahil, **ziyaretçi-görünür** (versiyon-sınırı işi; TR tek kaynak, VIZYON §5). + **AR-dil stratejisi** açık kalem.
 - **Craft cila (numarasız aday):** alt-sayfa masaüstü imza alanı boşluğu (BULGU-S3; Craft üst eksen).
@@ -71,4 +72,4 @@
 
 ---
 
-**Son Güncelleme:** 2026-07-21 — prd-review (v0.4): v0.4 (Alpfit Plus) "Tamamlanan Versiyon ✅" işaretlendi (Faz 15–17; vizyon değişikliği yok). Versiyon boyunca biriken chatbot sağlayıcı kararı (NOTES → DECISIONS 2026-07-21) sonraki versiyonlara mezun edildi: **v0.5 = Groq chatbot geçişi + canlıya alma** (öncelikli), **v0.6 = booking/takvim**; çeviri senkronu + craft cila numarasız aday. Aktif Versiyon re-kickoff'ta v0.5'e damgalanacak.
+**Son Güncelleme:** 2026-07-21 — v0.5 re-kickoff (kickoff-docs): **v0.5 (Chatbot ücretsiz sağlayıcı geçişi + canlıya alma) Aktif Versiyon olarak damgalandı** — Feature→Versiyon tablosuna C1 satırı (kaynak DECISIONS 2026-07-21, 5 kabul kriteri) eklendi; Bağlam notu v0.4 tamamlandı + v0.5 planlandı olarak güncellendi. v0.4 "Tamamlanan Versiyon ✅" (prd-review 2026-07-21). v0.6 booking/takvim + çeviri senkronu + craft cila numarasız aday. M5 içerik + OVERVIEW stack satırı implementasyon fazına ertelendi.

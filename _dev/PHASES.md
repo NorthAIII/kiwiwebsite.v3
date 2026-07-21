@@ -50,9 +50,9 @@ Faz numaraları **global, sürekli ve append-only**'dir — versiyon değişse b
 
 > Yaklaşan faz konuları — **numarasız**. Faza girildiğinde (discuss-phase) buradan çıkar, numara (mevcut en büyük faz no + 1) alıp Faz Durumu tablosuna 🔄 olarak geçer. Aşağıdakiler güçlü revize için aday konulardır; kesin kapsam ve sıra PRD/discuss-phase'de netleşir.
 
-**Near-term içerik faz konusu yok** — v0.4'ün içerik fazı (Faz 15) ✅; versiyon-sonu **teknik borç fazı Faz 16 ✅ + senaryo testi fazı Faz 17 🔄 girildi** (discuss-phase 17, 2026-07-17). v0.4'ün son versiyon-sonu sabit fazı girildi → Sıradaki Fazlar listesinde konu kalmadı.
+**v0.5 — Chatbot: ücretsiz sağlayıcı geçişi + canlıya alma** (içerik fazı; re-kickoff 2026-07-21) — Chatbot sağlayıcısı Anthropic Opus → **Groq · `llama-3.3-70b-versatile`** (`GROQ_API_KEY`). `route.ts` streaming/sanitizasyon/zarif offline fallback korunur + system prompt **TR-birincil dil algılama** + **"fiyat/rakam uydurma" yasağı** + hardening per-mesaj max-byte cap + **5-dil çıktı gözle doğrulama → canlıya alma** (canlı `/api/chat` 503/offline kapanır). Milestone / 5 kabul kriteri → `docs/DECISIONS.md` 2026-07-21. M5 içerik + OVERVIEW stack satırı implementasyon fazında güncellenir (kod↔doküman drift önleme).
 
-> Senaryo testi fazı (Faz 17) bitince zorunlu **prd-review** (dinamik, faza girince doğrudan tabloya eklenir). v0.4 TR canlıda (`f173234`) → Faz 17 "test-what's-live" literal (canlı v0.4 Alpfit Plus deltasını branch/build + canlı duman ile doğrular).
+> Bu içerik fazı bitince Versiyon Sonu Kuralı işler: sırasıyla (1) Teknik Borç Kapatma, (2) Senaryo Testi → sonra zorunlu prd-review. Hepsi just-in-time — discuss-phase promote eder, şimdi numaralanmaz/kapsamlanmaz.
 
 <!-- KURAL: Bu liste YAKIN ufku tutar (örn. aktif versiyonun kalan fazları), uzak gelecek değil — uzak ileriye dönük plan PRD/VERSIONS.md'dedir. Numara YAZMA (numara faza girince damgalanır). Bir konu faza girince bu listeden silinir (mezuniyet — soft delete yasak: HTML comment/üstü çizili/"Önceki:" prefix yok). -->
 <!-- NOT: VERSIONS.md feature→versiyon haritasını tekrar etme; burada faz konusu (geliştirme birimi) + milestone tutulur, feature listesi değil. -->
@@ -112,6 +112,6 @@ Faz numaraları **global, sürekli ve append-only**'dir — versiyon değişse b
 
 ---
 
-**Son Güncelleme:** 2026-07-18 — review-phase 17: **Faz 17 ✅ Tamamlandı** (retrospektif + kalite kontrol `phases/PHASE-17.md`'de; araştırma detayı `phases/PHASE-17-ARASTIRMA.md`'ye bölündü). UAT 12/12 + milestone 5/5 + 0 düzeltme task'ı; kalite 6 ✅ + 2 ⚠️. **v0.4 versiyon-sonu fazları (16, 17) tamam** → Versiyon Sonu Durumu `prd_review_bekliyor`; Sıradaki Fazlar boş. Sıradaki adım **zorunlu `/devflow:prd-review`**.
+**Son Güncelleme:** 2026-07-21 — v0.5 re-kickoff (kickoff-docs): Sıradaki Fazlar'a **v0.5 içerik fazı** (Chatbot ücretsiz sağlayıcı geçişi + canlıya alma; numarasız — faza girince Faz 18) eklendi. Faz Durumu tablosu değişmedi (1–17 ✅; Faz 17 sonrası prd-review 2026-07-21 ✅). Sıradaki adım **`/devflow:discuss-phase`** (Faz 18).
 
 <!-- KURAL: Bu satır her güncellemede ÜZERİNE YAZILIR. "Önceki:" prefix ile kümülatif yığma YASAK (CLAUDE.md → Doküman Disiplini). -->
