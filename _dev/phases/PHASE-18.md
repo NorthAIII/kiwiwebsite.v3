@@ -110,7 +110,7 @@
 | # | Task | Durum | Açıklama |
 |---|------|-------|----------|
 | 18.01 | TASK-18.01 | ✅ Tamamlandı | Branch finalize — v0.4 doc-merge → main + `revize/v0.5-chatbot-groq` aç (operasyonel ön-koşul) |
-| 18.02 | TASK-18.02 | ⬜ Bekliyor | Sanitize + byte-cap saf modül (`src/lib/chat-sanitize.ts`) + Vitest node testleri (Karar C.6) |
+| 18.02 | TASK-18.02 | ✅ Tamamlandı | Sanitize + byte-cap saf modül (`src/lib/chat-sanitize.ts`) + Vitest node testleri (Karar C.6) |
 | 18.03 | TASK-18.03 | ⬜ Bekliyor | Sağlayıcı geçişi Anthropic → Groq (`groq-sdk`) + system prompt cerrahi (route.ts + package.json; C.1/C.3/C.4/C.5) |
 | 18.04 | TASK-18.04 | ⬜ Bekliyor | Ziyaretçi offline kopya yeniden yazımı — messages ×5 `chat.error` (Karar C.2) |
 | 18.05 | TASK-18.05 | ⬜ Bekliyor | Dev/ops kimlik referansları — .env.example, README.md, CLAUDE.md (Dokunulmaz → onay) |
@@ -177,4 +177,4 @@
 ---
 
 **Oluşturulma:** 2026-07-21
-**Son Güncelleme:** 2026-07-22 — TASK-18.01 ✅ (branch finalize): `revize/v0.4-versiyon-sonu` (`df7c293`) → `main` ff-only merge + push → canlı `df7c293`; no-op doğrulandı (Vercel Production deploy tamamlandı, render byte-identical, Git-disconnect yok); temiz `revize/v0.5-chatbot-groq` açıldı+aktif. Not: merge saf-doc değildi (Faz-16 orphan-PNG refactor + gitignore de taşındı; kullanıcı onaylı). 1/8 task; sıradaki run-task (TASK-18.02).
+**Son Güncelleme:** 2026-07-22 — TASK-18.02 ✅ (sanitize+byte-cap saf modül): `route.ts` inline sanitizasyonu saf `src/lib/chat-sanitize.ts`'e çıkarıldı (whitelist/slice(-12)/trailing-user birebir korundu) + UTF-8 byte-cap 8192 (aşılırsa 400 "Message too large.", slice sonrası tutulan sete); route modüle bağlandı, Anthropic client/stream/system değişmedi (provider swap 18.03'e izole). 13 test Vitest node (52 passed, `next build` temiz). 2/8 task; sıradaki run-task (TASK-18.03).
