@@ -24,7 +24,7 @@
 **Kapatıldı:** BULGU-S2 / BULGU-S9 = `page.route` harness artefaktı (memory'de, takip gerektirmez).
 
 **İlerleme:** v0.5 re-kickoff (kickoff + kickoff-docs, 2026-07-21) — Aktif Versiyon v0.5 damgalandı; C1 satırı VERSIONS + MODULE-MAP'e, v0.5 içerik faz konusu PHASES → Sıradaki Fazlar'a eklendi; Versiyon Sonu Durumu `içerik_fazları` (değişmedi). Sıradaki: `/devflow:discuss-phase` (Faz 18).
-**Son Faz Dokümanı:** `phases/PHASE-17.md` (✅ tamamlandı, tarihsel; araştırma detayı → `phases/PHASE-17-ARASTIRMA.md`). Önceki: `phases/PHASE-16.md` (✅ v0.4 teknik borç + TR release), `phases/PHASE-15.md` (✅ v0.4 içerik fazı). Release kaydı: `docs/RELEASE-v0.4.md`.
+**Son Faz Dokümanı:** `phases/PHASE-17.md` (✅ tamamlandı, tarihsel; araştırma detayı → `phases/PHASE-17-ARASTIRMA.md`). Faz geçmişi → `PHASES.md`. Release kaydı: `docs/RELEASE-v0.4.md`.
 
 ---
 
@@ -60,6 +60,8 @@
 <!-- KURAL: Sadece son 2 task özeti tutulur, daha eskileri silinir (gerçek silme — HTML comment yasak). -->
 <!-- KURAL: Sadece aktif fazın task'leri gösterilir. Geçmiş fazların bilgileri phases/ klasöründedir. -->
 <!-- KURAL: "Son Tamamlanan Faz", "Son Tamamlanan Sprint" gibi ek özet bölümleri EKLEME — faz durum özeti PHASES.md'de, faz detayları PHASE-N.md'de. DURUM yalnızca aktif durum + son 2 task özeti. -->
+<!-- KURAL: Faz alt-fazlarının (verify-plan/plan/research/discuss) ayrı oturum özetlerini DURUM'a yazma — onlar faz dokümanına ait. -->
+<!-- KURAL: Her task özeti kısa formatlı — paragraf yasak, bullet zorunlu, "Özet" alanı max 3 bullet. -->
 
 ## Duraklatma Notu
 
