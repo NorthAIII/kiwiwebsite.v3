@@ -45,7 +45,7 @@
 | `PRD/features/crew-os-bolumu.md` | Crew OS bölümü: ana metin doğru, panel akışları bırakıldı — R3. |
 | `PRD/features/kopya-revizesi.md` | Site-geneli TR ses/ton + F5 dürüstlük konvansiyonu + F6 hero ikincil CTA — R4. |
 | `PRD/features/alpfit-plus.md` | **v0.4** — Alpfit (F2.8) sayfası "Alpfit Plus" zengin ürün vitrini yeniden tasarımı: bölümler + dürüstlük 4/4 gerçek + 5-dil namespace + kabul kriterleri (AP1–AP3). |
-| `PRD/SESSION-NOTES.md` | PRD çalışma kanvası: anlık durum, açık sorular (Crew OS URL, Living Flow kapsamı), keşfedilmemiş alanlar. |
+| `PRD/SESSION-NOTES.md` | PRD çalışma kanvası: mevcut durum analizi, sahipli açık kalemler (sonraki versiyon adayları), keşfedilmemiş alanlar. |
 | `PRD/NOTES.md` | Geliştirme sırası fikir/analiz/karar log'u (append-only; konsolidasyon prd-review'da). Şu an boş — chatbot Groq/llama sağlayıcı notu prd-review 2026-07-21'de DECISIONS + VERSIONS'a mezun edildi. |
 
 ### Modül Dokümanları (İlgili Modül Gerektiğinde OKU)
@@ -94,6 +94,11 @@
 2. ILKELER.md — proje ilkeleri
 3. `docs/REVIZE-BACKLOG.md` — ham girdi (PRD tohumu)
 4. `PRD/` altındaki tüm dokümanlar (oluştuktan sonra)
+
+### SENARYO: Geliştirme Sırasında Not (prd-note)
+1. Temel dokümanlar
+2. `PRD/NOTES.md` (varsa)
+3. Konuyla ilgili proje dosyaları
 
 ### SENARYO: Task Çalıştırma
 1. Temel dokümanlar
@@ -200,7 +205,7 @@ kiwiwebsite.v3/
 
 ---
 
-**Son Güncelleme:** 2026-07-21 — prd-review (v0.4): chatbot Groq/llama sağlayıcı notu `docs/DECISIONS.md` + `PRD/VERSIONS.md`'ye mezun edildi (v0.5 chatbot geçişi öncelikli, v0.6 booking); `PRD/NOTES.md` temizlendi.
+**Son Güncelleme:** 2026-07-21 — audit-docs: SESSION-NOTES tarifi güncellendi (bayat açık-soru örnekleri Crew OS URL / Living Flow kapsamı temizlendi — ikisi de çözülmüştü); `prd-note` okuma senaryosu eklendi (template uygunluğu).
 
 <!-- KURAL: Bu satır her güncellemede ÜZERİNE YAZILIR. "Önceki:" prefix ile kümülatif yığma YASAK (CLAUDE.md → Doküman Disiplini). -->
 <!-- KURAL: Tamamlanmış fazların task arşiv listesini INDEX'e ekleme — `ls _dev/tasks/archive/` zaten görür. INDEX yalnızca aktif klasör konumlarını gösterir; statik liste dokümanı değildir. -->
