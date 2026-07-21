@@ -46,6 +46,7 @@
 | `PRD/features/kopya-revizesi.md` | Site-geneli TR ses/ton + F5 dürüstlük konvansiyonu + F6 hero ikincil CTA — R4. |
 | `PRD/features/alpfit-plus.md` | **v0.4** — Alpfit (F2.8) sayfası "Alpfit Plus" zengin ürün vitrini yeniden tasarımı: bölümler + dürüstlük 4/4 gerçek + 5-dil namespace + kabul kriterleri (AP1–AP3). |
 | `PRD/SESSION-NOTES.md` | PRD çalışma kanvası: anlık durum, açık sorular (Crew OS URL, Living Flow kapsamı), keşfedilmemiş alanlar. |
+| `PRD/NOTES.md` | Geliştirme sırası fikir/analiz/karar log'u (append-only; konsolidasyon prd-review'da). Aktif not: chatbot Groq/llama sağlayıcı kararı (2026-07-21). |
 
 ### Modül Dokümanları (İlgili Modül Gerektiğinde OKU)
 
@@ -199,7 +200,7 @@ kiwiwebsite.v3/
 
 ---
 
-**Son Güncelleme:** 2026-07-16 — discuss-phase 16: `docs/RELEASE-v0.4.md` eklendi (v0.4 TR production release kaydı — canlı `f173234`).
+**Son Güncelleme:** 2026-07-21 — `PRD/NOTES.md` eklendi (chatbot Groq/llama sağlayıcı kararı notu; prd-review gündemine taşınacak).
 
 <!-- KURAL: Bu satır her güncellemede ÜZERİNE YAZILIR. "Önceki:" prefix ile kümülatif yığma YASAK (CLAUDE.md → Doküman Disiplini). -->
 <!-- KURAL: Tamamlanmış fazların task arşiv listesini INDEX'e ekleme — `ls _dev/tasks/archive/` zaten görür. INDEX yalnızca aktif klasör konumlarını gösterir; statik liste dokümanı değildir. -->
