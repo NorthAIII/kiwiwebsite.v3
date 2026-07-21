@@ -103,15 +103,24 @@
 
 ## Task Listesi
 
-> Bu bölüm `/devflow:plan-phase` oturumunda doldurulacak.
+> `/devflow:plan-phase 18` (2026-07-22) — C1 kohezif değişimi 8 küçük, bağımlılık-sıralı task'a bölündü. Detay/icra → `tasks/TASK-18.0X.md`.
 
 <!-- KURAL: Task Listesi yalnızca özet tablodur (#, Task, Durum, kısa açıklama). Task'ın icra detayı / oturum kaydı / çalışma notu buraya değil `tasks/TASK-N.md`'ye yazılır — bu bölüme sızan detay şişmedir, temizlenir (bölme değil). -->
 
 | # | Task | Durum | Açıklama |
 |---|------|-------|----------|
-| — | (plan-phase'de) | ⬜ Bekliyor | — |
+| 18.01 | TASK-18.01 | ⬜ Bekliyor | Branch finalize — v0.4 doc-merge → main + `revize/v0.5-chatbot-groq` aç (operasyonel ön-koşul) |
+| 18.02 | TASK-18.02 | ⬜ Bekliyor | Sanitize + byte-cap saf modül (`src/lib/chat-sanitize.ts`) + Vitest node testleri (Karar C.6) |
+| 18.03 | TASK-18.03 | ⬜ Bekliyor | Sağlayıcı geçişi Anthropic → Groq (`groq-sdk`) + system prompt cerrahi (route.ts + package.json; C.1/C.3/C.4/C.5) |
+| 18.04 | TASK-18.04 | ⬜ Bekliyor | Ziyaretçi offline kopya yeniden yazımı — messages ×5 `chat.error` (Karar C.2) |
+| 18.05 | TASK-18.05 | ⬜ Bekliyor | Dev/ops kimlik referansları — .env.example, README.md, CLAUDE.md (Dokunulmaz → onay) |
+| 18.06 | TASK-18.06 | ⬜ Bekliyor | `_dev/` stack dokümanları — M5 + OVERVIEW (Korumalı → onay) + MEMORY env (kabul kriteri 5) |
+| 18.07 | TASK-18.07 | ⬜ Bekliyor | 5-dil gözle doğrulama gate (test key node harness; kabul kriteri 4 — marka mührü) |
+| 18.08 | TASK-18.08 | ⬜ Bekliyor | Go-live — GROQ_API_KEY Vercel env (kullanıcı) + merge v0.5 → main + canlı duman testi (milestone) |
 
 **Durum simgeleri:** ⬜ Bekliyor | 🔄 Devam ediyor | ⏸️ Duraklatıldı | ✅ Tamamlandı | 🔴 Bloke | ❌ İptal
+
+**Bağımlılık zinciri:** 18.01 (branch) → 18.02 (sanitize) → 18.03 (Groq+prompt) → 18.04/18.05/18.06 (kopya+kimlik+docs) → 18.07 (5-dil mühür) → 18.08 (go-live). Kritik kapı: 18.07 geçmeden 18.08 yapılmaz; 18.08 env-önce-merge-sonra.
 
 ---
 
@@ -168,4 +177,4 @@
 ---
 
 **Oluşturulma:** 2026-07-21
-**Son Güncelleme:** 2026-07-21 — discuss-phase 18: kapsam tartışması tamamlandı
+**Son Güncelleme:** 2026-07-22 — plan-phase 18: 8 task dokümanı oluşturuldu (18.01–18.08), Task Listesi + bağımlılık zinciri dolduruldu. Sıradaki adım: verify-plan 18.
