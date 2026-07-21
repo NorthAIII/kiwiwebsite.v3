@@ -40,7 +40,7 @@ Research **kimlik-drift checklist** — tanımlayıcı kriter-5'ten (M5+OVERVIEW
   - `CHAT_MODEL` varsayılanı `claude-opus-4-8` → `llama-3.3-70b-versatile`; "flagship/sonnet" yorumu Groq'a uyarla
   - Değer **boş** kalır (sır gömülmez)
 
-- [ ] **2. `README.md`** (grep-teyitli satırlar: ~20, 30, 31, 38, 39)
+- [ ] **2. `README.md`** (grep-teyitli satırlar: 14, 20, 30, 31, 38)
   - `ANTHROPIC_API_KEY` → `GROQ_API_KEY`; model varsayılanı; Vercel env adımı; provider/SDK adı
 
 - [ ] **3. `CLAUDE.md`** (Dokunulmaz → **onay al**)

@@ -45,7 +45,7 @@ DECISIONS 2026-07-21 **kriter-5:** "M5-Chatbot-API.md + OVERVIEW stack satırı 
 
 - [ ] **2. `OVERVIEW.md`** (Korumalı → **onay al**)
   - Stack tablosu AI/Chatbot satırı (satır 42): `groq-sdk` + varsayılan `llama-3.3-70b-versatile` + `GROQ_API_KEY`
-  - Temel Özellikler / Proje Özeti'ndeki "Claude chatbot" ifadeleri (satır 22, 52, 54) → provider-nötr veya "Groq/Llama"
+  - Temel Özellikler / Proje Özeti'ndeki "Claude chatbot" ifadeleri (satır 22, 28, 52) → provider-nötr veya "Groq/Llama"
 
 - [ ] **3. `_dev/MEMORY.md`** "Chatbot env" satırı
   - `ANTHROPIC_API_KEY` → `GROQ_API_KEY`; varsayılan `llama-3.3-70b-versatile`
