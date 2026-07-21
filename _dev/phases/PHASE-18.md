@@ -109,7 +109,7 @@
 
 | # | Task | Durum | Açıklama |
 |---|------|-------|----------|
-| 18.01 | TASK-18.01 | ⬜ Bekliyor | Branch finalize — v0.4 doc-merge → main + `revize/v0.5-chatbot-groq` aç (operasyonel ön-koşul) |
+| 18.01 | TASK-18.01 | ✅ Tamamlandı | Branch finalize — v0.4 doc-merge → main + `revize/v0.5-chatbot-groq` aç (operasyonel ön-koşul) |
 | 18.02 | TASK-18.02 | ⬜ Bekliyor | Sanitize + byte-cap saf modül (`src/lib/chat-sanitize.ts`) + Vitest node testleri (Karar C.6) |
 | 18.03 | TASK-18.03 | ⬜ Bekliyor | Sağlayıcı geçişi Anthropic → Groq (`groq-sdk`) + system prompt cerrahi (route.ts + package.json; C.1/C.3/C.4/C.5) |
 | 18.04 | TASK-18.04 | ⬜ Bekliyor | Ziyaretçi offline kopya yeniden yazımı — messages ×5 `chat.error` (Karar C.2) |
@@ -177,4 +177,4 @@
 ---
 
 **Oluşturulma:** 2026-07-21
-**Son Güncelleme:** 2026-07-22 — verify-plan 18 ✅: 8 task fresh context ile doğrulandı (milestone/5 kriter tam, kararlar C.1–C.6 + kimlik-drift checklist eksiksiz, bağımlılık zinciri tutarlı, referans gerçeklik-kontrolü geçti); 2 mekanik pointer düzeltmesi (18.06 OVERVIEW satır 54→28, 18.05 README satır listesi), yapısal değişiklik yok. Sıradaki adım: run-task (TASK-18.01).
+**Son Güncelleme:** 2026-07-22 — TASK-18.01 ✅ (branch finalize): `revize/v0.4-versiyon-sonu` (`df7c293`) → `main` ff-only merge + push → canlı `df7c293`; no-op doğrulandı (Vercel Production deploy tamamlandı, render byte-identical, Git-disconnect yok); temiz `revize/v0.5-chatbot-groq` açıldı+aktif. Not: merge saf-doc değildi (Faz-16 orphan-PNG refactor + gitignore de taşındı; kullanıcı onaylı). 1/8 task; sıradaki run-task (TASK-18.02).
