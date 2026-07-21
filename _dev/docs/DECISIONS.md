@@ -9,6 +9,26 @@
 
 <!-- Her yeni karar aşağıdaki formatta en üste eklenir (en yeni en üstte) -->
 
+### 2026-07-21 — Chatbot AI sağlayıcısı: Anthropic (Opus) → Groq · `llama-3.3-70b-versatile` ($0 hedefi; implementasyon v0.5)
+
+**Bağlam:** `audit-docs` oturumunda (2026-07-21) canlı kontrol chatbot'un `/api/chat` → **HTTP 503 (offline)** verdiğini teyit etti (Vercel'de `ANTHROPIC_API_KEY` yok). Kullanıcı stratejik yön açtı: Claude Code aboneliğine zaten ~$100/ay ödüyor, chatbot için **ekstra aylık API faturası istemiyor** → **$0 hedefi** ("Groq/Llama gibi ücretsiz bir AI gömemez miyiz?"). Mevcut kod en pahalı modeli (`claude-opus-4-8`) kullanıyor — maliyet korkusunun kaynağı bu. Karar öncesi çok-kaynak web araştırması + 5 dilde (TR/AR/DE/ES/EN) 3 turluk **canlı kalite testi** yapıldı (gerçek `route.ts` system prompt'u + temsili ziyaretçi soruları, OpenAI-uyumlu endpoint, kartsız ücretsiz key'ler).
+
+**Seçenekler (canlı test + araştırma):**
+1. **Groq · `llama-3.3-70b-versatile`** — kartsız/$0, OpenAI-uyumlu (Vercel drop-in), veri-saklama temiz.
+2. Groq · `gpt-oss-120b` — çalıştı ama **elendi**: (a) system prompt dil listesinde TR'yi saymadığı için TR soruya İngilizce yanıt; (b) fiyat sorularına **uydurma rakam** ($1.200/ay · 250€/ay vb.) → **dürüstlük konvansiyonu ihlali**.
+3. Google Gemini Flash free-tier — AR'de en güçlü ama **elendi**: üretimde güvenilmez (canlı: 429 quota / 503 demand, 9/10 hata) + free-tier veriyi ürün-geliştirme/insan-inceleme'de kullanıyor (booking'te PII riski).
+4. Mevcut Anthropic Opus'ta kal + Vercel'e `ANTHROPIC_API_KEY` ekle — aylık ücretli, $0 hedefine aykırı.
+
+**Karar (kullanıcı onaylı):** **Seçenek 1** — chatbot sağlayıcısı Anthropic (Opus) → **Groq + `llama-3.3-70b-versatile`.** İmplementasyon **v0.5** ("Chatbot: ücretsiz sağlayıcı geçişi + canlıya alma"); otomatik demo/randevu **booking** + botun **takvim erişimi** ayrı/daha büyük iş olduğu için **v0.6'ya ertelendi**. Bu prd-review'da yalnız **karar** kaydedilir; kod + stack dokümanları (OVERVIEW stack satırı, `M5-Chatbot-API.md`) **v0.5 implementasyonunda** güncellenir — şimdi değiştirmek doküman↔kod drift'i yaratır (kod hâlâ Anthropic).
+
+**Gerekçe:** `llama-3.3-70b` canlı testte 5 dilin hepsinde **marka kalitesinde + dürüst** (fiyat uydurmadı, "keşif görüşmesine yönlendir" dedi), ~600ms, 18/18 sorunsuz. $0/kartsız hedefi karşılar; OpenAI-uyumlu endpoint mevcut streaming mimarisine yakın (drop-in); veri-saklama temiz. **Dürüstlük konvansiyonu** (ILKELER üst eksen / marka sesi yasakları) model **eleme kriteri** oldu — sayı uyduran `gpt-oss-120b` bu yüzden düştü. **Yan fayda:** geçiş canlıdaki 503/offline sorununu da çözer → `ANTHROPIC_API_KEY` bekleme kalemi **geçersizleşir** (yerine `GROQ_API_KEY`). Sır yönetimi ilkesi korunur: `GROQ_API_KEY` env'de, koda gömülmez.
+
+**v0.5 kabul kriterleri (planlamaya taşınacak):** (1) `route.ts` Groq'a geçer (`GROQ_API_KEY` Vercel env; OpenAI-uyumlu / `@ai-sdk/groq`); streaming + sanitizasyon + zarif offline fallback korunur. (2) System prompt **TR-birincil dil algılama** (varsayılan İngilizce değil; TR dahil 5 dil listelenir). (3) System prompt'a **"asla fiyat/rakam uydurma"** kuralı (dürüstlük konvansiyonu sağlamlaştırması). (4) **Canlıya almadan 5 dil çıktısı gözle doğrulanır** (marka mührü — ILKELER üst eksen). (5) `M5-Chatbot-API.md` + OVERVIEW stack satırı güncellenir.
+
+**İlgili Task/Faz:** prd-review (v0.4 versiyon sonu); kaynak not `PRD/NOTES.md` (mezun edildi → silindi). Versiyon adayları → `PRD/VERSIONS.md` (v0.5 Groq chatbot geçişi öncelikli, v0.6 booking/takvim). Test key repo-dışı `.env.keys.local`'da (git-ignore; canlı deploy'da kullanılmaz — Vercel env ayrı).
+
+---
+
 ### 2026-07-18 — Senaryo testi fazlarında a11y mührü = CI axe çift-tema + yapısal grep; ayrı Lighthouse koşusu tekrarlanmaz (Faz 17)
 
 **Bağlam:** Memory'deki Süreç Disiplini şunu söyler: *"Bir sayfayı a11y-mühürlerken iki gate'i de koş — axe WCAG-AA 0 ihlal ≠ Lighthouse a11y=100."* Gerekçesi somut: Faz 8'de 50 axe testi yeşilken 2 bülten sayfası Lighthouse a11y=98 verdi çünkü `<main>` yoktu — `landmark-one-main`/`region`/`heading-order` gibi **structural/best-practice** audit'ler axe'ın WCAG alt-kümesinde yok. Faz 17 (v0.4 senaryo testi) bu disiplinle görünürde çelişen bir şey yaptı: **ayrı Lighthouse koşusu yapmadı.** Bu kararın gerekçesi kayda geçmezse gelecekte ya "disiplin atlandı" diye yanlış okunur ya da her versiyon sonunda gereksizce yeniden tartışılır.

@@ -46,22 +46,29 @@
 
 > 🚀 **v0.3 production release tamamlandı (2026-07-05):** `revize/devflow-kurulum`→`main` merge (`2ea09b7`) + Vercel deploy `success`; canlı duman testi ✅ (`/crew-os` 200, `/bunker-os`→`/crew-os` 308, `/forum`→`/` 308, "Crew OS" görünür / "Bunker OS" 0×). **⚠️ Açık takip: canlı `ANTHROPIC_API_KEY` env ayarlı değil** (`/api/chat` 503 → chatbot "offline"; Vercel env'e eklenince açılır — regresyon değil, v0.2'den beri açık).
 
-## Aktif Versiyon: v0.4 — Alpfit Plus ürün vitrini 🔄
+## Tamamlanan Versiyon: v0.4 — Alpfit Plus ürün vitrini ✅
 
-> Re-kickoff (2026-07-16) ile planlandı. Tek merkez iş: **Alpfit (F2.8) sayfasının "Alpfit Plus" zengin ürün landing page'ine yeniden tasarımı** (M2 merkez; M4 i18n, M1 token, M6 SEO). Gerekçe: Craft en üst eksen (ILKELER); Alpfit ayrı/bağımsız dikey ürün (VIZYON §3), vitrini güçlendirilir. Tasarım referansı: kullanıcı artifact'i (`docs/alpfit-plus-artifact.html`); feature: `features/alpfit-plus.md`.
+> Re-kickoff (2026-07-16) ile planlandı; Faz 15–17 ile tamamlandı (prd-review 2026-07-21 — **vizyon değişikliği yok**; tek girdi versiyon boyunca biriken chatbot sağlayıcı kararı → sonraki versiyonlara mezun edildi, aşağıda). Tek merkez iş: **Alpfit (F2.8) sayfasının "Alpfit Plus" zengin ürün landing page'ine yeniden tasarımı** (M2 merkez; M4 i18n, M1 token, M6 SEO). Gerekçe: Craft en üst eksen (ILKELER); Alpfit ayrı/bağımsız dikey ürün (VIZYON §3). Tasarım referansı: `docs/alpfit-plus-artifact.html`; feature: `features/alpfit-plus.md`.
 
-- **Alpfit Plus sayfası** — artifact'taki bölümler (Hero+before/after · Sorun · 4 Rol · **Mobil uygulama mockup'ları** · 9 Özellik · Neden/rekabet · **Fiyat** ₺1.500+KDV · Yol haritası+**Store** · Kapanış) React + Tailwind v4 token + next-intl'e port; düzgün 5-dil namespace (TR birincil, non-TR versiyon-sınırı).
-- **Dürüstlük 4/4 gerçek** (kullanıcı teyidi 2026-07-16): canlı pilot / public fiyat / ürün iddiaları mevcut / "18 rakip" gerçek → içerik olduğu gibi korunur.
-- **Faz bölünmesi** (tek mi çok mu) + Living Flow hero akıbeti discuss-phase 15'te netleşir. Ardından versiyon-sonu sabit fazları (teknik borç → senaryo testi → prd-review).
-- **Guardrail regresyonsuz:** a11y=100 çift-tema · perf tabanı · CLS≈0 · i18n 5-dil parite · marka sesi yasakları.
+- **Alpfit Plus sayfası** ✅ — artifact düzenine port (Hero+before/after · Sorun · 4 Rol · saf CSS/SVG mobil mockup'lar · 9 Özellik · Neden/rekabet · Fiyat ₺1.500+KDV · Yol haritası+Store · Kapanış); `components/alpfit/` 8 bileşen + `alpfit` 133-leaf 5-dil namespace + tek `--color-surface` token (Faz 15: 7 task, UAT 16/16). İmza Living Flow hero'da korundu; ekran görüntüleri düştü.
+- **Dürüstlük 4/4 gerçek** ✅ — canlı pilot / public fiyat / ürün iddiaları mevcut / "18 rakip" gerçek → içerik olduğu gibi korundu.
+- **Versiyon-sonu teknik borç** ✅ — gym PNG disk hijyeni + npm audit (2 moderate, Next'e gömülü postcss, sömürülemez → kabul+kayıt) (Faz 16).
+- **Versiyon-sonu senaryo testi** ✅ — S1–S9 uçtan-uca, UAT 12/12, 0 kaynak değişimi, 0 kapsam-içi bug (Faz 17).
 
-## Sonraki Aday Versiyonlar (henüz planlanmadı)
+**v0.4 guardrail'leri regresyonsuz korundu:** a11y=100 çift-tema · perf tabanı · CLS≈0 · i18n 5-dil parite · marka sesi yasakları. Sahipli craft kalemi: alt-sayfa masaüstü imza alanı boşluğu (BULGU-S3; Craft üst eksen → sonraki craft cila adayı).
 
-> Numara/kesin versiyon atanmaz; sıra prd-refine / discuss-phase'de netleşir.
+> 🚀 **v0.4 TR production release tamamlandı (2026-07-16, canlı `f173234`):** `revize/alpfit-plus`→`main` ff-merge + canlı duman testi ✓; TR tam, non-TR stale-TR ertelendi (aday versiyon). **⚠️ Açık: canlı chatbot `/api/chat` 503 (offline)** — v0.5 Groq geçişiyle çözülecek (aşağıda; `ANTHROPIC_API_KEY` bekleme kalemi kararla geçersizleşti).
 
-- **Çeviri senkronu:** alt sayfa EN/AR/DE/ES güncellemesi (versiyon-sınırı işi; TR tek kaynak).
-- **Bekleyen veri/entegrasyon:** sosyal medya gerçek linkleri (C1), Weekend demo ("no 36" / C2), gerçek metrikler/vaka verileri (C4), chatbot → "book a call" akışı (C7), alt sayfa içerik derinleştirme.
+## Sonraki Aday Versiyonlar
+
+> v0.5/v0.6 sırası chatbot kararında (DECISIONS 2026-07-21) kullanıcı-onaylı sabitlendi; kesin damgalama re-kickoff'ta. Diğer adaylar numarasız — sıra prd-refine / discuss-phase'de netleşir.
+
+- **v0.5 — Chatbot: ücretsiz sağlayıcı geçişi + canlıya alma** (öne alındı: chatbot canlıda offline). Anthropic Opus → **Groq · `llama-3.3-70b-versatile`** ($0/kartsız; DECISIONS 2026-07-21'de 5 kabul kriteri). Canlı 503/offline'ı da çözer. M5 merkez (`route.ts` + system prompt), M4 (TR-birincil dil algılama), OVERVIEW stack satırı. Chatbot per-mesaj max-byte cap (hardening) bu fazın adayı.
+- **v0.6 — Booking + takvim entegrasyonu** (v0.5'ten ertelendi). Otomatik demo/randevu + botun takvime erişimi; tool/function calling + takvim sistemi + PII/spam güvenliği (Cal.com/Google Calendar seçimi açık). Ayrı ve daha büyük iş.
+- **Çeviri senkronu (numarasız aday):** alt sayfa EN/AR/DE/ES güncellemesi — alpfit stale-TR dahil, **ziyaretçi-görünür** (versiyon-sınırı işi; TR tek kaynak, VIZYON §5). + **AR-dil stratejisi** açık kalem.
+- **Craft cila (numarasız aday):** alt-sayfa masaüstü imza alanı boşluğu (BULGU-S3; Craft üst eksen).
+- **Bekleyen veri/entegrasyon:** sosyal medya gerçek linkleri (C1), Weekend demo ("no 36" / C2), gerçek metrikler/vaka verileri (C4), alt sayfa içerik derinleştirme. Sahipli teknik açıklar: TB-3 runtime tohumu · brief mobil perf · npm audit.
 
 ---
 
-**Son Güncelleme:** 2026-07-16 — re-kickoff (kickoff-docs): v0.4 (Alpfit Plus ürün vitrini) Aktif Versiyon olarak eklendi (F2.8 zengin yeniden tasarım; feature `features/alpfit-plus.md`, tasarım referansı `docs/alpfit-plus-artifact.html`); feature→versiyon tablosuna satır eklendi. Merkez M2; ilk faz no 15 (discuss-phase damgalar).
+**Son Güncelleme:** 2026-07-21 — prd-review (v0.4): v0.4 (Alpfit Plus) "Tamamlanan Versiyon ✅" işaretlendi (Faz 15–17; vizyon değişikliği yok). Versiyon boyunca biriken chatbot sağlayıcı kararı (NOTES → DECISIONS 2026-07-21) sonraki versiyonlara mezun edildi: **v0.5 = Groq chatbot geçişi + canlıya alma** (öncelikli), **v0.6 = booking/takvim**; çeviri senkronu + craft cila numarasız aday. Aktif Versiyon re-kickoff'ta v0.5'e damgalanacak.
