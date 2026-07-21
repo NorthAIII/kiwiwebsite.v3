@@ -171,7 +171,7 @@ M6 (SEO/Deploy) ─────────────────────>
 | **— v0.4 versiyon-sonu senaryo testi (Faz 17 — çapraz doğrulama, yeni feature üretmez) —** | | | | |
 | S1–S9: v0.4 ana sayfa + 5 alt sayfa uçtan-uca senaryo doğrulaması (giriş/yolculuk/mod/kontrol/taksonomi/5-dil/chatbot/v0.4-guardrail/adversarial; delta: Alpfit Plus ürün vitrini 9 bölüm + `alpfit` namespace parite + before/after Living Flow + dürüstlük 4/4 + canlı duman/test-what's-live) | tümü | v0.4 | 17 | ✅ |
 | **— v0.5 Chatbot ücretsiz sağlayıcı geçişi + canlıya alma iş birimi (M5 merkez; iş-birimi/faz bölünmesi discuss-phase 18'de damgalanır) —** | | | | |
-| C1: Chatbot sağlayıcı geçişi (Anthropic Opus → Groq/`llama-3.3-70b-versatile`) + canlıya alma (`route.ts` Groq streaming/sanitizasyon/offline korunur + system prompt TR-birincil dil algılama + "fiyat/rakam uydurma" yasağı + hardening per-mesaj max-byte cap + 5-dil gözle doğrulama + canlı deploy) | M5 (+M4, OVERVIEW stack) | v0.5 | — | ⬜ |
+| C1: Chatbot sağlayıcı geçişi (Anthropic Opus → Groq/`llama-3.3-70b-versatile`) + canlıya alma (`route.ts` Groq streaming/sanitizasyon/offline korunur + system prompt TR-birincil dil algılama + "fiyat/rakam uydurma" yasağı + hardening per-mesaj max-byte cap + 5-dil gözle doğrulama + canlı deploy) | M5 (+M4, OVERVIEW stack) | v0.5 | 18 | 🔄 |
 
 **Durum simgeleri:**
 - ⬜ **Bekliyor** — Fazı henüz başlamadı
@@ -190,4 +190,4 @@ M6 (SEO/Deploy) ─────────────────────>
 
 ---
 
-**Son Güncelleme:** 2026-07-21 — v0.5 re-kickoff (kickoff-docs): Feature-Faz Matrisi'ne **C1 (v0.5 Chatbot ücretsiz sağlayıcı geçişi + canlıya alma, M5 merkez)** satırı eklendi — Faz `—` (henüz girilmedi, just-in-time; discuss-phase 18'de damgalanır), Durum ⬜. Baseline ve v0.1–v0.4 satırları değişmedi. Kaynak: `docs/DECISIONS.md` 2026-07-21.
+**Son Güncelleme:** 2026-07-21 — discuss-phase 18: **C1** satırı **Faz 18**'e atandı (Faz `—`→`18`), Durum ⬜→🔄 (v0.5 içerik fazı girildi). Baseline ve v0.1–v0.4 satırları değişmedi. Kaynak: `docs/DECISIONS.md` 2026-07-21, `phases/PHASE-18.md`.
