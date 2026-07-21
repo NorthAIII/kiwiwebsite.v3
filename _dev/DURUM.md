@@ -1,6 +1,6 @@
 # DURUM — Proje Dashboard
 
-**Son Güncelleme:** 2026-07-21 — **discuss-phase 18 ✅ (v0.5 içerik fazı kapsam tartışması).** **Faz 18 girildi** (🔄): Chatbot Anthropic Opus → **Groq/`llama-3.3-70b-versatile`** + canlıya alma (C1). 4 karar: **OpenAI-uyumlu drop-in** (streaming/sanitizasyon/offline + UI korunur) · byte cap **reddet-400** · **canlıya alma Faz 18 sonunda** (5-dil gözle doğrulama sonrası → canlı 503 çözülür) · branch: v0.4 doc-merge önce → temiz `revize/v0.5-chatbot-groq`. Aktif Faz **18**, Adım **research**. Versiyon Sonu Durumu **içerik_fazları** (değişmedi). v0.4 TR canlı (`f173234`). **Sıradaki: `/devflow:research-phase 18`.** Açık: `GROQ_API_KEY` Vercel env (canlıdan önce, kullanıcı aksiyonu) · `revize/v0.4-versiyon-sonu`→`main` doc-only merge (v0.5 branch'ten önce).
+**Son Güncelleme:** 2026-07-21 — **research-phase 18 ✅ (teknik araştırma).** Bulgular PHASE-18.md'ye yazıldı; 2 karar noktası kullanıcı onaylı: **Groq istemcisi = `groq-sdk`** (net-sıfır bağımlılık drop-in; `@anthropic-ai/sdk` çıkar) · **offline hata kopyası yeniden yazılır** (5 dil `messages/*.json:494` "ANTHROPIC_API_KEY" mentionu kalkar — ziyaretçi-görünür, canlıda yanıltıcı). Somutlaştı: system prompt yerleşimi (`messages`'a `role:system`) + delta şekli (`choices[0].delta.content`); byte-cap UTF-8 8KB öneri; sanitizasyon saf fonksiyona (Vitest node); model `llama-3.3-70b-versatile` = 131K ctx / üretim. Aktif Faz **18**, Adım **plan**. Versiyon Sonu Durumu **içerik_fazları** (değişmedi). v0.4 TR canlı (`f173234`). **Sıradaki: `/devflow:plan-phase 18`.** Açık: `GROQ_API_KEY` Vercel env (canlıdan önce, kullanıcı aksiyonu) · `revize/v0.4-versiyon-sonu`→`main` doc-only merge (v0.5 branch'ten önce).
 
 <!-- KURAL: Bu satır her oturum sonunda ÜZERİNE YAZILIR — tek satır, tek cümle. "Önceki:" / "Eski:" prefix ile kümülatif yığma YASAK; HTML comment'e sarma da yasak (CLAUDE.md → Doküman Disiplini). Tarih + kısa özet yeterli; detay için git log + ilgili PHASE/TASK dokümanları. -->
 
@@ -9,7 +9,7 @@
 ## Aktif Faz
 
 **Faz:** **Faz 18 — v0.5 Chatbot: ücretsiz sağlayıcı geçişi + canlıya alma** (🔄 girildi; discuss-phase ✅ 2026-07-21). Fazlar 1–17 ✅; v0.5 ilk içerik fazı. Milestone / 5 kabul kriteri → `docs/DECISIONS.md` 2026-07-21; kapsam kararları → `phases/PHASE-18.md`.
-**Adım:** **research** — kapsam tartışması tamamlandı. **Sıradaki: `/devflow:research-phase 18`.**
+**Adım:** **plan** — teknik araştırma tamamlandı (research-phase ✅, bulgular PHASE-18.md). **Sıradaki: `/devflow:plan-phase 18`.**
 
 **v0.5 kapsamı ve açık kalemler** (re-kickoff 2026-07-21):
 
@@ -23,7 +23,7 @@
 
 **Kapatıldı:** BULGU-S2 / BULGU-S9 = `page.route` harness artefaktı (memory'de, takip gerektirmez).
 
-**İlerleme:** discuss-phase 18 (2026-07-21) — Faz 18 girildi (C1, v0.5 içerik fazı); kapsam tartışması ✅ (4 karar: drop-in · byte-cap reddet-400 · canlıya-alma faz-sonu · v0.5 branch). PHASE-18.md oluşturuldu; MODULE-MAP C1→Faz 18 🔄; PHASES tablo+geçiş güncellendi. Sıradaki: `/devflow:research-phase 18`.
+**İlerleme:** research-phase 18 (2026-07-21) — teknik araştırma ✅; bulgular PHASE-18.md "Araştırma Bulguları"na yazıldı. 2 karar kullanıcı onaylı (groq-sdk · offline kopya yeniden yaz); 6 teknik karar (C.1–C.6) + kimlik-drift checklist netleşti. Sıradaki: `/devflow:plan-phase 18`.
 **Aktif Faz Dokümanı:** `phases/PHASE-18.md` (🔄 Faz 18). Faz geçmişi → `PHASES.md`; v0.4 release → `docs/RELEASE-v0.4.md`; Faz 17 → `phases/PHASE-17.md`.
 
 ---
@@ -41,15 +41,15 @@
 
 ## Aktif Task
 
-**Task:** **Yok — Faz 18 planlama aşamasında** (discuss-phase ✅, henüz task yazılmadı). Task'lar `/devflow:plan-phase 18`'de yazılır; sıradaki adım `/devflow:research-phase 18`.
-**Durum:** Faz 18 🔄 (v0.5 içerik fazı, Adım research). Versiyon Sonu Durumu **`içerik_fazları`**. **v0.4 TR canlı** (`f173234`).
-**İlerleme:** discuss-phase 18 ✅ (2026-07-21) — kapsam tartışması tamam (4 karar + çerçeve onaylandı); PHASE-18.md oluşturuldu. Sıradaki adım: `/devflow:research-phase 18`.
+**Task:** **Yok — Faz 18 planlama aşamasında** (discuss ✅, research ✅, henüz task yazılmadı). Task'lar `/devflow:plan-phase 18`'de yazılır; sıradaki adım `/devflow:plan-phase 18`.
+**Durum:** Faz 18 🔄 (v0.5 içerik fazı, Adım plan). Versiyon Sonu Durumu **`içerik_fazları`**. **v0.4 TR canlı** (`f173234`).
+**İlerleme:** research-phase 18 ✅ (2026-07-21) — teknik araştırma tamam (bulgular PHASE-18.md; groq-sdk + offline kopya kararları onaylı). Sıradaki adım: `/devflow:plan-phase 18`.
 
 ---
 
 ## Task Durumu (Aktif Faz)
 
-> **Faz 18 aktif (🔄)** — discuss-phase ✅; task'lar henüz yazılmadı (plan-phase 18'de yazılır). Sıradaki adım research-phase 18. Kapsam → `phases/PHASE-18.md` → Kapsam Tartışması. (Faz 17'nin 8 task'ı → `phases/PHASE-17.md` + `tasks/archive/TASK-17.0X.md`.)
+> **Faz 18 aktif (🔄)** — discuss ✅ + research ✅; task'lar henüz yazılmadı (plan-phase 18'de yazılır). Sıradaki adım plan-phase 18. Kapsam → `phases/PHASE-18.md` → Kapsam Tartışması; teknik bulgular → Araştırma Bulguları. (Faz 17'nin 8 task'ı → `phases/PHASE-17.md` + `tasks/archive/TASK-17.0X.md`.)
 
 ---
 
@@ -71,8 +71,8 @@
 
 ## Hızlı Erişim
 
-**Aktif Task:** **Yok — Faz 18 planlama aşamasında** (discuss-phase ✅). Sıradaki adım **`/devflow:research-phase 18`**. Kapsam → `phases/PHASE-18.md`.
-**Aktif Faz:** **Faz 18 🔄** (v0.5 Chatbot Groq geçişi + canlıya alma; discuss ✅, Adım research). **Aktif Versiyon v0.5.** Versiyon Sonu Durumu **`içerik_fazları`**. **v0.4 TR CANLI** (`main` = `f173234`); branch `revize/v0.4-versiyon-sonu` (doc-only merge → v0.5 branch'ten önce). Faz dokümanı: `phases/PHASE-18.md`.
+**Aktif Task:** **Yok — Faz 18 planlama aşamasında** (discuss ✅, research ✅). Sıradaki adım **`/devflow:plan-phase 18`**. Kapsam → `phases/PHASE-18.md`.
+**Aktif Faz:** **Faz 18 🔄** (v0.5 Chatbot Groq geçişi + canlıya alma; discuss ✅ + research ✅, Adım plan). **Aktif Versiyon v0.5.** Versiyon Sonu Durumu **`içerik_fazları`**. **v0.4 TR CANLI** (`main` = `f173234`); branch `revize/v0.4-versiyon-sonu` (doc-only merge → v0.5 branch'ten önce). Faz dokümanı: `phases/PHASE-18.md`.
 **v0.5 kaynağı (karar + 5 kabul kriteri):** `docs/DECISIONS.md` 2026-07-21. M5 içerik + OVERVIEW stack satırı implementasyon fazına ertelendi.
 **Sonraki versiyon adayları (→ `PRD/VERSIONS.md`):** v0.6 booking/takvim · çeviri senkronu (non-TR + AR) · BULGU-S3 craft cila · TB-3 / npm audit / brief mobil perf.
 **Task Sistemi:** `tasks/TASKS-README.md`
@@ -82,4 +82,4 @@
 
 ---
 
-**Son Güncelleme:** 2026-07-21 — **discuss-phase 18 ✅ (v0.5 içerik fazı kapsam tartışması).** Faz 18 girildi (🔄): Chatbot Anthropic Opus → Groq/`llama-3.3-70b-versatile` + canlıya alma (C1). 4 karar: OpenAI-uyumlu **drop-in** (streaming/UI korunur) · byte cap **reddet-400** · **canlıya alma Faz 18 sonunda** (5-dil gözle doğrulama sonrası) · branch: v0.4 doc-merge önce → temiz `revize/v0.5-chatbot-groq`. PHASE-18.md oluşturuldu; MODULE-MAP C1→Faz 18 🔄; PHASES Faz Durumu tablosuna 18 satırı + geçiş notu (Sıradaki Fazlar'dan mezun). Aktif Faz **18**, Adım **research**. Versiyon Sonu Durumu **içerik_fazları** (değişmedi). **Sıradaki: `/devflow:research-phase 18`.** Açık: `GROQ_API_KEY` Vercel env (canlıdan önce, kullanıcı aksiyonu) · `revize/v0.4-versiyon-sonu`→`main` doc-only merge (v0.5 branch'ten önce).
+**Son Güncelleme:** 2026-07-21 — **research-phase 18 ✅ (teknik araştırma).** Bulgular PHASE-18.md "Araştırma Bulguları"na yazıldı. 2 karar kullanıcı onaylı: **Groq istemcisi = `groq-sdk`** (net-sıfır bağımlılık OpenAI-uyumlu drop-in; `@anthropic-ai/sdk` çıkar) · **offline hata kopyası yeniden yazılır** (5 dil `messages/*.json:494` "ANTHROPIC_API_KEY" mentionu kalkar — ziyaretçi-görünür + canlıda yanıltıcı). 6 teknik karar (C.1–C.6): system prompt `messages`'a `role:system` + TR-birincil + rakam-uydurma yasağı; delta `choices[0].delta.content`; byte-cap UTF-8 8KB reddet-400 (istemcide generic offline); sanitizasyon saf fonksiyona (Vitest node); fallback metni TR; `CHAT_MODEL` varsayılan `llama-3.3-70b-versatile` (131K ctx, üretim). Kimlik-drift checklist kriter-5'ten geniş (messages ×5 + README + .env.example + CLAUDE.md). Aktif Faz **18**, Adım **plan**. Versiyon Sonu Durumu **içerik_fazları** (değişmedi). **Sıradaki: `/devflow:plan-phase 18`.** Açık: `GROQ_API_KEY` Vercel env (canlıdan önce, kullanıcı aksiyonu) · `revize/v0.4-versiyon-sonu`→`main` doc-only merge (v0.5 branch'ten önce).
