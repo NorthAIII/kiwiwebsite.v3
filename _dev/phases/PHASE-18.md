@@ -111,7 +111,7 @@
 |---|------|-------|----------|
 | 18.01 | TASK-18.01 | ✅ Tamamlandı | Branch finalize — v0.4 doc-merge → main + `revize/v0.5-chatbot-groq` aç (operasyonel ön-koşul) |
 | 18.02 | TASK-18.02 | ✅ Tamamlandı | Sanitize + byte-cap saf modül (`src/lib/chat-sanitize.ts`) + Vitest node testleri (Karar C.6) |
-| 18.03 | TASK-18.03 | ⬜ Bekliyor | Sağlayıcı geçişi Anthropic → Groq (`groq-sdk`) + system prompt cerrahi (route.ts + package.json; C.1/C.3/C.4/C.5) |
+| 18.03 | TASK-18.03 | ✅ Tamamlandı | Sağlayıcı geçişi Anthropic → Groq (`groq-sdk`) + system prompt cerrahi (route.ts + package.json; C.1/C.3/C.4/C.5) |
 | 18.04 | TASK-18.04 | ⬜ Bekliyor | Ziyaretçi offline kopya yeniden yazımı — messages ×5 `chat.error` (Karar C.2) |
 | 18.05 | TASK-18.05 | ⬜ Bekliyor | Dev/ops kimlik referansları — .env.example, README.md, CLAUDE.md (Dokunulmaz → onay) |
 | 18.06 | TASK-18.06 | ⬜ Bekliyor | `_dev/` stack dokümanları — M5 + OVERVIEW (Korumalı → onay) + MEMORY env (kabul kriteri 5) |
@@ -177,4 +177,4 @@
 ---
 
 **Oluşturulma:** 2026-07-21
-**Son Güncelleme:** 2026-07-22 — TASK-18.02 ✅ (sanitize+byte-cap saf modül): `route.ts` inline sanitizasyonu saf `src/lib/chat-sanitize.ts`'e çıkarıldı (whitelist/slice(-12)/trailing-user birebir korundu) + UTF-8 byte-cap 8192 (aşılırsa 400 "Message too large.", slice sonrası tutulan sete); route modüle bağlandı, Anthropic client/stream/system değişmedi (provider swap 18.03'e izole). 13 test Vitest node (52 passed, `next build` temiz). 2/8 task; sıradaki run-task (TASK-18.03).
+**Son Güncelleme:** 2026-07-22 — TASK-18.03 ✅ (Groq geçişi + system prompt cerrahi): `route.ts` `@anthropic-ai/sdk` → `groq-sdk@^1.3.0` (net-sıfır bağımlılık) OpenAI-uyumlu drop-in; guard `GROQ_API_KEY`/503, model `CHAT_MODEL ?? "llama-3.3-70b-versatile"`, system prompt `messages[0]`, delta `choices[0].delta.content`; streaming/`text/plain`/sanitize(18.02)/`Chatbot.tsx` korundu. System prompt: TR eklenip varsayılan + "Never invent facts" (rakam uydurma yasağı); Crew OS/CTA korundu, Bunker yok. Fallback + guard TR/generic (C.4). 52 test yeşil, `next build` temiz, grep temiz. Not: fresh install sonrası `sharp` high CVE'leri Next-upstream (groq-sdk değil, bloker değil). 3/8 task; sıradaki run-task (TASK-18.04 offline kopya ×5).

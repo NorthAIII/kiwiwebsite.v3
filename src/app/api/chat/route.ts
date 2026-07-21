@@ -1,10 +1,10 @@
-import Anthropic from "@anthropic-ai/sdk";
+import Groq from "groq-sdk";
 import { sanitizeMessages } from "@/lib/chat-sanitize";
 
 export const runtime = "nodejs";
 export const maxDuration = 30;
 
-const MODEL = process.env.CHAT_MODEL ?? "claude-opus-4-8";
+const MODEL = process.env.CHAT_MODEL ?? "llama-3.3-70b-versatile";
 
 const SYSTEM_PROMPT = `You are the assistant for Kiwi AI Lab, an AI automation agency.
 
@@ -12,14 +12,16 @@ What Kiwi AI Lab does: we map a business, find where repetitive work leaks time 
 
 How we talk: output-focused, plain, confident. We sell measurable outcomes, not gimmicks. Never use the "business doctor / diagnose / prescription" metaphor.
 
-Language: detect the user's language and reply natively in it. You support English, Arabic, German, and Spanish fluently. Default to English if the language is unclear.
+Never invent facts: do not make up prices, numbers, statistics, dates, or specific figures. If you do not know a concrete number (a price, a percentage, a timeline), say so plainly and point the visitor to a free discovery call instead of guessing.
+
+Language: detect the user's language and reply natively in it. You support Turkish, English, Arabic, German, and Spanish fluently. Default to Turkish if the language is unclear.
 
 Your job: answer questions about what Kiwi can automate for the visitor's business, give one concrete example when useful, and — when someone shows buying intent — invite them to book a free discovery call (they can use the "Book a call" button or email kivanc@kiwiailab.com). Keep replies short and specific: two or three sentences, no filler, no bullet-point dumps unless asked.`;
 
 export async function POST(req: Request) {
-  const apiKey = process.env.ANTHROPIC_API_KEY;
+  const apiKey = process.env.GROQ_API_KEY;
   if (!apiKey) {
-    return new Response("ANTHROPIC_API_KEY is not configured.", { status: 503 });
+    return new Response("Chat provider is not configured.", { status: 503 });
   }
 
   let body: unknown;
@@ -36,32 +38,30 @@ export async function POST(req: Request) {
   }
   const sanitized = result.messages;
 
-  const client = new Anthropic({ apiKey });
+  const client = new Groq({ apiKey });
   const encoder = new TextEncoder();
 
   const stream = new ReadableStream<Uint8Array>({
     async start(controller) {
       try {
-        const claude = client.messages.stream({
+        // OpenAI-uyumlu: system prompt messages dizisinin ILK elemanı (Groq drop-in).
+        const completion = await client.chat.completions.create({
           model: MODEL,
           max_tokens: 1024,
-          system: SYSTEM_PROMPT,
-          messages: sanitized,
+          stream: true,
+          messages: [{ role: "system", content: SYSTEM_PROMPT }, ...sanitized],
         });
 
-        for await (const event of claude) {
-          if (
-            event.type === "content_block_delta" &&
-            event.delta.type === "text_delta"
-          ) {
-            controller.enqueue(encoder.encode(event.delta.text));
-          }
+        for await (const chunk of completion) {
+          controller.enqueue(
+            encoder.encode(chunk.choices[0]?.delta?.content ?? "")
+          );
         }
       } catch (err) {
         console.error("chat stream error", err);
         // surface a clean fallback to the client rather than a hard cut
         controller.enqueue(
-          encoder.encode("\n\n(The assistant hit an error. Please try again.)")
+          encoder.encode("\n\n(Asistan bir hataya takıldı. Lütfen tekrar deneyin.)")
         );
       } finally {
         controller.close();
