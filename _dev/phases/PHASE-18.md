@@ -112,7 +112,7 @@
 | 18.01 | TASK-18.01 | ✅ Tamamlandı | Branch finalize — v0.4 doc-merge → main + `revize/v0.5-chatbot-groq` aç (operasyonel ön-koşul) |
 | 18.02 | TASK-18.02 | ✅ Tamamlandı | Sanitize + byte-cap saf modül (`src/lib/chat-sanitize.ts`) + Vitest node testleri (Karar C.6) |
 | 18.03 | TASK-18.03 | ✅ Tamamlandı | Sağlayıcı geçişi Anthropic → Groq (`groq-sdk`) + system prompt cerrahi (route.ts + package.json; C.1/C.3/C.4/C.5) |
-| 18.04 | TASK-18.04 | ⬜ Bekliyor | Ziyaretçi offline kopya yeniden yazımı — messages ×5 `chat.error` (Karar C.2) |
+| 18.04 | TASK-18.04 | ✅ Tamamlandı | Ziyaretçi offline kopya yeniden yazımı — messages ×5 `chat.error` (Karar C.2) |
 | 18.05 | TASK-18.05 | ⬜ Bekliyor | Dev/ops kimlik referansları — .env.example, README.md, CLAUDE.md (Dokunulmaz → onay) |
 | 18.06 | TASK-18.06 | ⬜ Bekliyor | `_dev/` stack dokümanları — M5 + OVERVIEW (Korumalı → onay) + MEMORY env (kabul kriteri 5) |
 | 18.07 | TASK-18.07 | ⬜ Bekliyor | 5-dil gözle doğrulama gate (test key node harness; kabul kriteri 4 — marka mührü) |
@@ -177,4 +177,4 @@
 ---
 
 **Oluşturulma:** 2026-07-21
-**Son Güncelleme:** 2026-07-22 — TASK-18.03 ✅ (Groq geçişi + system prompt cerrahi): `route.ts` `@anthropic-ai/sdk` → `groq-sdk@^1.3.0` (net-sıfır bağımlılık) OpenAI-uyumlu drop-in; guard `GROQ_API_KEY`/503, model `CHAT_MODEL ?? "llama-3.3-70b-versatile"`, system prompt `messages[0]`, delta `choices[0].delta.content`; streaming/`text/plain`/sanitize(18.02)/`Chatbot.tsx` korundu. System prompt: TR eklenip varsayılan + "Never invent facts" (rakam uydurma yasağı); Crew OS/CTA korundu, Bunker yok. Fallback + guard TR/generic (C.4). 52 test yeşil, `next build` temiz, grep temiz. Not: fresh install sonrası `sharp` high CVE'leri Next-upstream (groq-sdk değil, bloker değil). 3/8 task; sıradaki run-task (TASK-18.04 offline kopya ×5).
+**Son Güncelleme:** 2026-07-22 — TASK-18.04 ✅ (ziyaretçi offline kopya ×5): `messages/{tr,en,ar,de,es}.json` `chat.error` dev anahtar-adı iması ("ANTHROPIC_API_KEY ekleyin") → ziyaretçiye uygun geçici-hata + e-posta CTA (`kivanc@kiwiailab.com`); byte-cap 400 + Groq 429/503 dahil her `!res.ok`'te göründüğü için genel geçici-hata tonu (Karar C.2). DEĞER değişimi (anahtar sabit) → i18n parite otomatik yeşil; register namespace tonuyla eşleşti (DE=Sie, ES=tú, AR tekil informal, EN nötr; AR RTL native + e-posta LTR gömülü). 52 test yeşil, `next build` temiz, JSON ×5 valid, grep anahtar-adı 0. 4/8 task; sıradaki run-task (TASK-18.05 dev/ops kimlik referansları).

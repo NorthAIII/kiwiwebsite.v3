@@ -491,7 +491,7 @@
     "send": "Gönder",
     "thinking": "Düşünüyor",
     "greeting": "Merhaba — ben Kiwi’nin asistanıyım. Ekibinizin en çok elle yaptığı işi söyleyin, otomasyonun nereye oturduğunu göstereyim.",
-    "error": "Asistan şu an çevrimdışı. Çevrimiçi olması için bir ANTHROPIC_API_KEY ekleyin.",
+    "error": "Asistan şu an yanıt veremiyor. Birazdan tekrar deneyin ya da kivanc@kiwiailab.com adresine yazın.",
     "suggestions": {
       "one": "Bir spor salonunu nasıl otomatikleştirirsiniz?",
       "two": "Crew OS nedir?",

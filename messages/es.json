@@ -491,7 +491,7 @@
     "send": "Enviar",
     "thinking": "Pensando",
     "greeting": "Hola — soy el asistente de Kiwi. Dime qué hace tu equipo a mano con más frecuencia y te muestro dónde encaja la automatización.",
-    "error": "El asistente está fuera de línea ahora mismo. Añade una ANTHROPIC_API_KEY para ponerlo en línea.",
+    "error": "El asistente no puede responder en este momento. Vuelve a intentarlo en un momento o escríbenos a kivanc@kiwiailab.com.",
     "suggestions": {
       "one": "¿Cómo automatizarías un gimnasio?",
       "two": "¿Qué es Crew OS?",

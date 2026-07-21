@@ -491,7 +491,7 @@
     "send": "Send",
     "thinking": "Thinking",
     "greeting": "Hi — I'm Kiwi's assistant. Tell me what your team does by hand most often, and I'll show you where automation fits.",
-    "error": "The assistant is offline right now. Add an ANTHROPIC_API_KEY to bring it online.",
+    "error": "The assistant can't respond right now. Please try again shortly, or email us at kivanc@kiwiailab.com.",
     "suggestions": {
       "one": "How would you automate a gym?",
       "two": "What is Crew OS?",
