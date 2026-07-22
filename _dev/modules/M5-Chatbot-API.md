@@ -10,7 +10,7 @@
 
 ### F5.1: Chat API endpoint → Faz —
 
-**Açıklama:** `src/app/api/chat/route.ts` — Node.js runtime (max 30s). Varsayılan model `process.env.CHAT_MODEL ?? "llama-3.3-70b-versatile"` (Groq). System prompt: Kiwi asistanı kimliği, **TR-birincil** dil algılama (TR/EN/AR/DE/ES; dil belirsizse varsayılan Türkçe), çıktı-odaklı/sade ton, **"fiyat/rakam/istatistik/tarih uydurma yasağı"** (dürüstlük konvansiyonu), satın-alma niyetinde "ücretsiz keşif görüşmesi"/e-posta (`kivanc@kiwiailab.com`) önerisi, 2–3 cümle yanıt. POST `{messages:[...]}`; sanitizasyon saf modüle çıkarıldı (`@/lib/chat-sanitize`, Vitest node ile test edilebilir): rol whitelist, boş içerik filtresi, son 12 mesaj, **per-mesaj UTF-8 byte-cap 8192 → aşımda 400 reddet** (sessiz kırpma yok), sonda user mesajı zorunlu. OpenAI-uyumlu `chat.completions.create({ stream: true })` ile text/plain stream, `max_tokens: 1024`.
+**Açıklama:** `src/app/api/chat/route.ts` — Node.js runtime (max 30s). Varsayılan model `process.env.CHAT_MODEL ?? "llama-3.3-70b-versatile"` (Groq). System prompt: Kiwi asistanı kimliği, **kullanıcının son mesajının dilinde yanıt** (TR/EN/AR/DE/ES; **tek dil/tek script — başka dil/karakter karıştırma yok**; yalnız dil gerçekten belirlenemezse TR fallback — TASK-18.07 marka mührü gate'inde sertleştirildi, "Default to Turkish if unclear" kaldırıldı), çıktı-odaklı/sade ton, **"fiyat/rakam/istatistik/tarih uydurma yasağı"** (dürüstlük konvansiyonu), satın-alma niyetinde "ücretsiz keşif görüşmesi"/e-posta (`kivanc@kiwiailab.com`) önerisi, 2–3 cümle yanıt. POST `{messages:[...]}`; sanitizasyon saf modüle çıkarıldı (`@/lib/chat-sanitize`, Vitest node ile test edilebilir): rol whitelist, boş içerik filtresi, son 12 mesaj, **per-mesaj UTF-8 byte-cap 8192 → aşımda 400 reddet** (sessiz kırpma yok), sonda user mesajı zorunlu. OpenAI-uyumlu `chat.completions.create({ stream: true, temperature: 0.2 })` ile text/plain stream, `max_tokens: 1024` (`temperature: 0.2` marka sesi tutarlılığı + script sızıntısı bastırma — 18.07).
 
 **Kabul Kriterleri:**
 - `GROQ_API_KEY` yoksa istek zarif şekilde başarısız olur (503; UI "offline" gösterir).
@@ -52,4 +52,4 @@
 
 ---
 
-**Son Güncelleme:** 2026-07-22 — TASK-18.06: provider Anthropic→Groq stack hizalama (`groq-sdk` / `llama-3.3-70b-versatile` / `GROQ_API_KEY`); F5.1'e system prompt TR-birincil dil algılama + rakam-uydurma yasağı + sanitize per-mesaj byte-cap (`@/lib/chat-sanitize`) yansıtıldı.
+**Son Güncelleme:** 2026-07-22 — TASK-18.07: 5-dil marka mührü gate sonrası system prompt dil kuralı sertleştirildi ("Default to Turkish if unclear" → "kullanıcının son mesajının dilinde yanıt + tek dil/tek script + yalnız gerçekten belirsizse TR fallback") + `temperature: 0.2` eklendi (EN→yanlış-dil düşüşü + çok-dilli script bozulması giderildi). Önceki (18.06): provider Anthropic→Groq stack hizalama + rakam-uydurma yasağı + sanitize byte-cap.

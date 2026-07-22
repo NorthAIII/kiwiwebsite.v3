@@ -9,6 +9,22 @@
 
 <!-- Her yeni karar aşağıdaki formatta en üste eklenir (en yeni en üstte) -->
 
+### 2026-07-22 — Chatbot system prompt dil kuralı sertleştirildi + `temperature: 0.2` (5-dil marka mührü gate bulgusu; C.3/C.5 refine)
+
+**Bağlam:** TASK-18.07 (kabul kriteri 4 — canlıya almadan 5-dil çıktı gözle doğrulama). Nihai `route.ts` prompt+model'iyle serversiz node harness (test key `.env.keys.local`, sandbox exit-144'ten kaçınıldı) 5 dil × 4 temsili soru koşuldu. **1. koşu reprodüktif başarısız** (2 tam koşu): (a) İngilizce sorular tutarlı biçimde **Türkçe/Korece'ye düştü** ("Do you offer automation for my gym?" 4/4 TR; "What is Crew OS?" 1 koşuda Korece) — kök neden prompt'taki *"Default to Turkish if unclear"* + llama-3.3-70b'nin kısa/özel-adlı EN sorularında zayıf dil algılaması; (b) **çok-dilli script bozulması** (CJK/Hangul/Kiril/Vietnamca karakter sızıntısı) TR/EN/AR'de aralıklı, craft'ı bozuyor. **Sağlam kalanlar:** dürüstlük 5/5 (uydurma rakam yok), Crew OS taksonomisi 5/5 (Bunker sızmadı).
+
+**Teşhis:** `temperature=0.3` EN→TR düşüşünü **çözmedi** (4/4 hâlâ TR) → dil-düşüşü **prompt kaynaklı**, sıcaklık kaynaklı değil. Bu, kör bir sıcaklık tweak'ini eledi; düzeltmenin prompt'ta olması gerektiğini gösterdi.
+
+**Seçenekler (AskUserQuestion):** (1) Prompt dil kuralını sertleştir + gate'i yeniden koş (model/provider kararı korunur). (2) Modeli yeniden değerlendir (DECISIONS 2026-07-21'i yeniden aç). (3) Mevcut haliyle canlıya al (marka mührü tavizi — önerilmez).
+
+**Karar (kullanıcı onaylı — Seçenek 1):** `route.ts` SYSTEM_PROMPT dil satırı **sertleştirildi**: "Default to Turkish if unclear" **kaldırıldı** → "reply in the exact language of the user's most recent message… write the whole reply in that one language and script only… a proper noun like Crew OS or a short question does not change it… never mix in words, characters, or scripts from another language… only fall back to Turkish when genuinely impossible to determine." Ayrıca `chat.completions.create`'e **`temperature: 0.2`** eklendi (marka sesi tutarlılığı + code-switch/script sızıntısı bastırma). Model (`llama-3.3-70b-versatile`), streaming/sanitizasyon/offline sözleşmesi, dürüstlük kuralı **değişmedi**.
+
+**Sonuç:** Sertleştirme sonrası **2 tam koşu reprodüktif GREEN** — mekanik garble dedektörü **0/20**, dil sadakati 5/5 (EN Crew OS + gym İngilizce'ye döndü), dürüstlük 5/5, taksonomi 5/5, booking sözü yok. Artık **2 küçük craft lekesi** (bloke değil, kayıtlı): TR "Crew OS nedir" yanıtında ~%50 "observable ve measured" İngilizce-yankısı (prompt ifadesi); nadir tek bozuk token. `next build` temiz + Vitest 52/52. **Kabul kriteri 4 ✅ → go-live (18.08) açıldı.**
+
+**İlgili Task/Faz:** Faz 18 / TASK-18.07 (C.3 dil kuralı + C.5 create-param'ı refine eder — `phases/PHASE-18.md` → Gözle Doğrulama). Sonraki cila adayı: prompt'ta "observable and measured" ifadesini yumuşatma (numarasız). Test key repo-dışı `.env.keys.local` (git-ignore; canlıda kullanılmaz).
+
+---
+
 ### 2026-07-21 — Chatbot AI sağlayıcısı: Anthropic (Opus) → Groq · `llama-3.3-70b-versatile` ($0 hedefi; implementasyon v0.5)
 
 **Bağlam:** `audit-docs` oturumunda (2026-07-21) canlı kontrol chatbot'un `/api/chat` → **HTTP 503 (offline)** verdiğini teyit etti (Vercel'de `ANTHROPIC_API_KEY` yok). Kullanıcı stratejik yön açtı: Claude Code aboneliğine zaten ~$100/ay ödüyor, chatbot için **ekstra aylık API faturası istemiyor** → **$0 hedefi** ("Groq/Llama gibi ücretsiz bir AI gömemez miyiz?"). Mevcut kod en pahalı modeli (`claude-opus-4-8`) kullanıyor — maliyet korkusunun kaynağı bu. Karar öncesi çok-kaynak web araştırması + 5 dilde (TR/AR/DE/ES/EN) 3 turluk **canlı kalite testi** yapıldı (gerçek `route.ts` system prompt'u + temsili ziyaretçi soruları, OpenAI-uyumlu endpoint, kartsız ücretsiz key'ler).

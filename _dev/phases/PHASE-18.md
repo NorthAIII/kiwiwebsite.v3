@@ -94,7 +94,7 @@
 
 - **[Karar C.1] Groq istemcisi: `groq-sdk`** (kullanıcı onaylı). Gerekçe: net-sıfır bağımlılık (Anthropic çıkar/Groq girer), resmi OpenAI-uyumlu drop-in, mevcut streaming sözleşmesini korur (kriter-1), ILKELER kalıcılık (bakımlı SDK > el-yazımı SSE). `package.json` değişimi onay alındı.
 - **[Karar C.2] Offline hata kopyası yeniden yazılır — dev anahtar-adı kaldırılır** (kullanıcı onaylı). `messages/*.json:494` ×5 "Add an ANTHROPIC_API_KEY" → ziyaretçiye uygun kopya ("birazdan tekrar deneyin / e-posta"). Gerekçe: canlıya alınınca offline = geçici hata (anahtar-eksik değil) → anahtar-adı iması yanlış olurdu; craft + dürüstlük. TR kaynak yazılır, non-TR değer-senkronu implementasyon task'ında. Bu bir **değer** değişimi (anahtar EKLEME/rename değil) → i18n disiplini korunur; ama tanımlayıcı TR dahil yanlış olduğundan bu fazın işi (çeviri-senkronu numarasız adayından ayrı).
-- **[Karar C.3] System prompt cerrahi düzenleme** (discuss kararının somutlaşması): İngilizce talimat dili korunur; dil satırı (`route.ts:14`) TR **eklenir + varsayılan yapılır** ("You support Turkish, English, Arabic, German, and Spanish… **Default to Turkish** if unclear"); **"asla fiyat/rakam/istatistik/tarih uydurma; bilmediğin somut sayıyı söyleme → keşif görüşmesine yönlendir"** kuralı eklenir (dürüstlük; `gpt-oss` bu yüzden elendi). Crew OS taksonomisi **zaten doğru** (prompt "Our flagship layer is Crew OS", Bunker sızmıyor ✓); booking sözü yok, keşif görüşmesi/e-posta CTA korunur (takvim v0.6). Tam yeniden yazım yok.
+- **[Karar C.3] System prompt cerrahi düzenleme** (discuss kararının somutlaşması): İngilizce talimat dili korunur; dil satırı (`route.ts:14`) TR **eklenir + varsayılan yapılır** ("You support Turkish, English, Arabic, German, and Spanish… **Default to Turkish** if unclear"); **"asla fiyat/rakam/istatistik/tarih uydurma; bilmediğin somut sayıyı söyleme → keşif görüşmesine yönlendir"** kuralı eklenir (dürüstlük; `gpt-oss` bu yüzden elendi). Crew OS taksonomisi **zaten doğru** (prompt "Our flagship layer is Crew OS", Bunker sızmıyor ✓); booking sözü yok, keşif görüşmesi/e-posta CTA korunur (takvim v0.6). Tam yeniden yazım yok. **→ TASK-18.07 gate'i bu dil kuralını sertleştirdi:** "Default to Turkish if unclear" **kaldırıldı**, yerine "kullanıcının son mesajının dilinde yanıtla + tek dil/tek script, başka dil/karakter karıştırma, yalnız gerçekten belirsizse TR" geldi; ayrıca `temperature: 0.2` eklendi. Gerekçe: llama varsayılan sıcaklıkta EN sorularını TR/başka dile düşürüyor + çok-dilli script sızdırıyordu. Detay → aşağıda **Gözle Doğrulama** bölümü + DECISIONS 2026-07-22.
 - **[Karar C.4] Fallback stream-hata metni TR'ye çevrilir** (`route.ts:73`, "The assistant hit an error…" → TR). Bu, i18n `error` (offline) string'inden **ayrı** — runtime stream-içi enjekte edilen kenar-durum metni.
 - **[Karar C.5] `CHAT_MODEL` override deseni korunur** (`route.ts:6`, repoda-tanımlı); yeni varsayılan `process.env.CHAT_MODEL ?? "llama-3.3-70b-versatile"`.
 - **[Karar C.6] Sanitizasyon+byte-cap saf fonksiyona çıkarılır** (Vitest node testi için); `max_tokens: 1024` + `text/plain` streaming sözleşmesi + `slice(-12)` geçmiş sınırı korunur. Byte-cap her tutulan mesajın `content`'ine uygulanır (yalnız trailing değil — history de istemciden gelir/güvenilmez). Kesin dosya konumu + cap değeri (öneri 8192) plan-phase.
@@ -115,12 +115,41 @@
 | 18.04 | TASK-18.04 | ✅ Tamamlandı | Ziyaretçi offline kopya yeniden yazımı — messages ×5 `chat.error` (Karar C.2) |
 | 18.05 | TASK-18.05 | ✅ Tamamlandı | Dev/ops kimlik referansları — .env.example, README.md, CLAUDE.md (Dokunulmaz → onay alındı) |
 | 18.06 | TASK-18.06 | ✅ Tamamlandı | `_dev/` stack dokümanları — M5 + OVERVIEW (Korumalı → onay alındı) + MEMORY env (kabul kriteri 5) |
-| 18.07 | TASK-18.07 | ⬜ Bekliyor | 5-dil gözle doğrulama gate (test key node harness; kabul kriteri 4 — marka mührü) |
+| 18.07 | TASK-18.07 | ✅ Tamamlandı | 5-dil gözle doğrulama gate (kabul kriteri 4 — marka mührü); 1. koşu başarısız → prompt sertleştirildi + `temperature: 0.2` → 2 koşu GREEN |
 | 18.08 | TASK-18.08 | ⬜ Bekliyor | Go-live — GROQ_API_KEY Vercel env (kullanıcı) + merge v0.5 → main + canlı duman testi (milestone) |
 
 **Durum simgeleri:** ⬜ Bekliyor | 🔄 Devam ediyor | ⏸️ Duraklatıldı | ✅ Tamamlandı | 🔴 Bloke | ❌ İptal
 
 **Bağımlılık zinciri:** 18.01 (branch) → 18.02 (sanitize) → 18.03 (Groq+prompt) → 18.04/18.05/18.06 (kopya+kimlik+docs) → 18.07 (5-dil mühür) → 18.08 (go-live). Kritik kapı: 18.07 geçmeden 18.08 yapılmaz; 18.08 env-önce-merge-sonra.
+
+---
+
+## Gözle Doğrulama — Marka Mührü Gate (TASK-18.07, 2026-07-22)
+
+> Kabul kriteri 4. Nihai `route.ts` SYSTEM_PROMPT + `llama-3.3-70b-versatile` + gerçek `sanitizeMessages` ile server**siz** node harness (test key `.env.keys.local`; sandbox `next start` exit-144'ten kaçınıldı). 5 dil (TR/EN/AR/DE/ES) × 4 temsili ziyaretçi sorusu (genel / **fiyat-dürüstlük probu** / "Crew OS nedir" / gym) = 20 yanıt/koşu. Harness: SYSTEM_PROMPT+MODEL+temperature route.ts'ten runtime çıkarıldı (sıfır drift); mekanik garble (CJK/Hangul/Kiril/Kana) dedektörü.
+
+**1. koşu (sertleştirme ÖNCESİ prompt) — ❌ BAŞARISIZ (2 tam koşu reprodüktif):**
+- **EN → yanlış dile düşüş:** "Do you offer automation for my gym?" 4/4 Türkçe; "What is Crew OS?" bir koşuda **Korece**. Kök neden: prompt'taki "Default to Turkish if unclear" + llama'nın kısa/özel-adlı EN sorularında zayıf dil algılaması.
+- **Çok-dilli script bozulması** (CJK/Hangul/Kiril/Vietnamca): TR/EN/AR'de aralıklı — craft (Awwwards çıtası) bozuluyor.
+- **Temperature teşhisi:** temp=0.3 EN→TR düşüşünü **çözmedi** (4/4 hâlâ TR) → dil-düşüşü prompt kaynaklı, sıcaklık kaynaklı değil.
+- **Sağlam kalanlar (bu koşuda bile):** dürüstlük 5/5 (uydurma rakam yok → keşif CTA), Crew OS taksonomisi 5/5 (Bunker sızmadı), booking sözü yok.
+
+**Remediation (kullanıcı onaylı, AskUserQuestion 2026-07-22):** `route.ts` SYSTEM_PROMPT dil kuralı sertleştirildi ("son mesajın dilinde yanıtla + tek dil/tek script + başka dil karıştırma yok + yalnız gerçekten belirsizse TR") + `temperature: 0.2` eklendi (garble bastırma).
+
+**2. + 3. koşu (sertleştirme SONRASI) — ✅ GEÇTİ (reprodüktif):**
+
+| Dil | (a) doğru dil | (b) dürüstlük | (c) Crew OS taksonomi | (d) marka sesi | garble |
+|-----|:---:|:---:|:---:|:---:|:---:|
+| TR | ✅ | ✅ | ✅ (Bunker yok) | ✅ | 0 (CJK/Hangul/Kiril/Kana) |
+| EN | ✅ (4/4 EN — Crew OS + gym düzeldi) | ✅ | ✅ | ✅ | 0 |
+| AR | ✅ | ✅ | ✅ | ✅ | 0 |
+| DE | ✅ | ✅ | ✅ | ✅ | 0 |
+| ES | ✅ | ✅ | ✅ | ✅ | 0 |
+
+- **GARBLE: 0/20** her iki koşuda (mekanik dedektör). **Dil sadakati 5/5**, **dürüstlük 5/5** (hiç uydurma rakam), **taksonomi 5/5**, booking sözü yok / keşif-e-posta CTA yerinde.
+- **Artık küçük craft lekeleri (bloke değil, dürüst kayıt):** (1) TR "Crew OS nedir" yanıtında ~%50 "observable ve measured" (prompt'un İngilizce ifadesi TR'ye yankılanıyor — anlam bozmuyor); (2) nadir tek bozuk token ("cụreleri", Latin-diakritik; regex-dışı, 1 örnekte). Ağır marka-kırıcı hatalar (yanlış-dil yanıt, Latin-dışı tam-kelime) tamamen gitti. İstenirse sonraki cila: prompt'ta "observable and measured" ifadesini yumuşat.
+
+**Verdict: kabul kriteri 4 ✅ — go-live (18.08) kapısı AÇILDI.** Test key hiçbir dosya/log/committe yazılmadı; harness scratchpad'de koşturuldu + silindi.
 
 ---
 
@@ -177,4 +206,4 @@
 ---
 
 **Oluşturulma:** 2026-07-21
-**Son Güncelleme:** 2026-07-22 — TASK-18.06 ✅ (`_dev/` stack dokümanları): `M5-Chatbot-API.md` + `OVERVIEW.md` (Korumalı → **kullanıcı onayı alındı**) + `MEMORY.md` "Chatbot env" satırı Anthropic→Groq hizalandı — `@anthropic-ai/sdk`→`groq-sdk`, `claude-opus-4-8`→`llama-3.3-70b-versatile`, `ANTHROPIC_API_KEY`→`GROQ_API_KEY`; M5 F5.1'e system prompt TR-birincil + rakam-uydurma yasağı + sanitize per-mesaj byte-cap (`@/lib/chat-sanitize`) yansıtıldı; OVERVIEW "Claude chatbot" ifadeleri provider-nötr/Groq-Llama oldu. MEMORY secret-örnek satırı (97) da GROQ'a hizalandı (factual). Kapsam: tarihsel/append-only (DECISIONS) + `CLAUDE.md` dosya-adı referansları (OVERVIEW 115/119) dokunulmadı. grep eski tanımlayıcı 0 (exit 1) / Groq karşılıkları yerinde. **Kabul kriteri 5 ✅.** 6/8 task; sıradaki run-task (TASK-18.07 5-dil gözle doğrulama gate).
+**Son Güncelleme:** 2026-07-22 — TASK-18.07 ✅ (5-dil marka mührü gate, kabul kriteri 4). Server**siz** node harness (nihai route.ts prompt+model, test key `.env.keys.local`). **1. koşu ❌** (2 tam koşu reprodüktif): EN soruları TR/Korece'ye düştü + TR/EN/AR çok-dilli script bozulması; temperature=0.3 teşhisi dil-düşüşünü çözmedi (prompt kaynaklı). **Remediation (kullanıcı onaylı):** `route.ts` SYSTEM_PROMPT dil kuralı sertleştirildi ("son mesajın dilinde yanıtla + tek dil/script + yalnız gerçekten belirsizse TR") + `temperature: 0.2` eklendi. **2.+3. koşu ✅ GREEN (reprodüktif):** garble 0/20, dil sadakati 5/5 (EN Crew OS+gym düzeldi), dürüstlük 5/5, taksonomi 5/5, booking yok. Artık 2 küçük craft lekesi (TR "observable ve measured" yankısı ~%50 + nadir tek token) — bloke değil, kayıtlı. `next build` temiz + Vitest 52/52. **Kabul kriteri 4 ✅ — go-live (18.08) kapısı açıldı.** 7/8 task; sıradaki run-task (TASK-18.08 go-live). Detay → Gözle Doğrulama bölümü.
