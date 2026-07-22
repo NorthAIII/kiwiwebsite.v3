@@ -113,7 +113,7 @@
 | 18.02 | TASK-18.02 | ✅ Tamamlandı | Sanitize + byte-cap saf modül (`src/lib/chat-sanitize.ts`) + Vitest node testleri (Karar C.6) |
 | 18.03 | TASK-18.03 | ✅ Tamamlandı | Sağlayıcı geçişi Anthropic → Groq (`groq-sdk`) + system prompt cerrahi (route.ts + package.json; C.1/C.3/C.4/C.5) |
 | 18.04 | TASK-18.04 | ✅ Tamamlandı | Ziyaretçi offline kopya yeniden yazımı — messages ×5 `chat.error` (Karar C.2) |
-| 18.05 | TASK-18.05 | ⬜ Bekliyor | Dev/ops kimlik referansları — .env.example, README.md, CLAUDE.md (Dokunulmaz → onay) |
+| 18.05 | TASK-18.05 | ✅ Tamamlandı | Dev/ops kimlik referansları — .env.example, README.md, CLAUDE.md (Dokunulmaz → onay alındı) |
 | 18.06 | TASK-18.06 | ⬜ Bekliyor | `_dev/` stack dokümanları — M5 + OVERVIEW (Korumalı → onay) + MEMORY env (kabul kriteri 5) |
 | 18.07 | TASK-18.07 | ⬜ Bekliyor | 5-dil gözle doğrulama gate (test key node harness; kabul kriteri 4 — marka mührü) |
 | 18.08 | TASK-18.08 | ⬜ Bekliyor | Go-live — GROQ_API_KEY Vercel env (kullanıcı) + merge v0.5 → main + canlı duman testi (milestone) |
@@ -177,4 +177,4 @@
 ---
 
 **Oluşturulma:** 2026-07-21
-**Son Güncelleme:** 2026-07-22 — TASK-18.04 ✅ (ziyaretçi offline kopya ×5): `messages/{tr,en,ar,de,es}.json` `chat.error` dev anahtar-adı iması ("ANTHROPIC_API_KEY ekleyin") → ziyaretçiye uygun geçici-hata + e-posta CTA (`kivanc@kiwiailab.com`); byte-cap 400 + Groq 429/503 dahil her `!res.ok`'te göründüğü için genel geçici-hata tonu (Karar C.2). DEĞER değişimi (anahtar sabit) → i18n parite otomatik yeşil; register namespace tonuyla eşleşti (DE=Sie, ES=tú, AR tekil informal, EN nötr; AR RTL native + e-posta LTR gömülü). 52 test yeşil, `next build` temiz, JSON ×5 valid, grep anahtar-adı 0. 4/8 task; sıradaki run-task (TASK-18.05 dev/ops kimlik referansları).
+**Son Güncelleme:** 2026-07-22 — TASK-18.05 ✅ (dev/ops kimlik referansları): `.env.example` + `README.md` + `CLAUDE.md` (Dokunulmaz → kullanıcı onayı alındı) Anthropic tanımlayıcıları Groq'a hizalandı — `ANTHROPIC_API_KEY`→`GROQ_API_KEY`, `claude-opus-4-8`→`llama-3.3-70b-versatile`, `@anthropic-ai/sdk`→`groq-sdk`, `console.anthropic.com`→`console.groq.com`. `.env.example` `CHAT_MODEL` yorumu belirli alt-model yerine Groq docs pointer'ı (halüsinasyon kaçınması). Kapsam sınırı: README task-dışı bayat içerik (Phase 1 / EN default / Bunker OS) ve `MASTER_PROMPT_v2.md` (brief) dokunulmadı. grep eski tanımlayıcı 0 (exit 1) / GROQ karşılıkları yerinde, `next build` temiz (exit 0). 5/8 task; sıradaki run-task (TASK-18.06 `_dev/` stack dokümanları M5+OVERVIEW+MEMORY).

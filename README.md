@@ -11,13 +11,13 @@ Built per [`MASTER_PROMPT.md`](MASTER_PROMPT.md). This is **Phase 1**: one deplo
 - **GSAP + ScrollTrigger** + **Lenis** smooth scroll · custom cursor
 - **next-intl** — EN default, AR/DE/ES scaffolded (locale-prefixed routes, RTL-ready)
 - **Fraunces** (display serif) + **Geist** (grotesque sans)
-- **@anthropic-ai/sdk** — live streaming multilingual chatbot (Claude)
+- **groq-sdk** — live streaming multilingual chatbot (Llama 3.3 on Groq)
 
 ## Local development
 
 ```bash
 npm install
-cp .env.example .env.local   # then add your ANTHROPIC_API_KEY
+cp .env.example .env.local   # then add your GROQ_API_KEY
 npm run dev                  # http://localhost:3000
 ```
 
@@ -27,15 +27,15 @@ The site renders fully without an API key; only the chatbot needs one (it shows 
 
 | Var | Required | Purpose |
 | --- | --- | --- |
-| `ANTHROPIC_API_KEY` | for the chatbot | Powers the live assistant (`/api/chat`) |
-| `CHAT_MODEL` | optional | Defaults to `claude-opus-4-8`; set `claude-sonnet-4-6` for lower latency/cost |
+| `GROQ_API_KEY` | for the chatbot | Powers the live assistant (`/api/chat`) |
+| `CHAT_MODEL` | optional | Defaults to `llama-3.3-70b-versatile`; see [Groq models](https://console.groq.com/docs/models) for alternatives |
 
 ## Deploy to Vercel
 
 Target project: **`north-ai/kiwi-ai-lab-v3`**.
 
 1. Push this repo to the Git remote connected to that Vercel project (or `vercel link` then `vercel`).
-2. In Vercel → Project → Settings → **Environment Variables**, add `ANTHROPIC_API_KEY` (and optionally `CHAT_MODEL`) for Production + Preview.
+2. In Vercel → Project → Settings → **Environment Variables**, add `GROQ_API_KEY` (and optionally `CHAT_MODEL`) for Production + Preview.
 3. Vercel auto-detects Next.js — no build config needed. The chat route runs on the Node.js runtime (`/api/chat`).
 
 ```bash

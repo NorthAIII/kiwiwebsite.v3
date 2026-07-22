@@ -281,7 +281,7 @@ Kullanıcı `/devflow:` ile başlayan komutlar kullanabilir. Komut dosyaları `.
 Bu dosyaları kullanıcı izni olmadan değiştirme:
 - **Build/derleme config:** `next.config.ts`, `tsconfig.json` (strict), `postcss.config.mjs`
 - **Bağımlılıklar:** `package.json`, `package-lock.json` — paket ekleme/çıkarma/sürüm değişikliği onay ister
-- **Secret'lar:** `.env*` ve Vercel environment değişkenleri (`ANTHROPIC_API_KEY`, opsiyonel `CHAT_MODEL`) — değerler koda gömülmez, env'de tutulur
+- **Secret'lar:** `.env*` ve Vercel environment değişkenleri (`GROQ_API_KEY`, opsiyonel `CHAT_MODEL`) — değerler koda gömülmez, env'de tutulur
 - **`.gitignore`** — özellikle `.claude/` satırı: DevFlow özel araç, public repo'da gitignore'da kalır (silme)
 - Veritabanı/migration **yok** (statik site) — ilgisiz
 
