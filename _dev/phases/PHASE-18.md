@@ -114,7 +114,7 @@
 | 18.03 | TASK-18.03 | ✅ Tamamlandı | Sağlayıcı geçişi Anthropic → Groq (`groq-sdk`) + system prompt cerrahi (route.ts + package.json; C.1/C.3/C.4/C.5) |
 | 18.04 | TASK-18.04 | ✅ Tamamlandı | Ziyaretçi offline kopya yeniden yazımı — messages ×5 `chat.error` (Karar C.2) |
 | 18.05 | TASK-18.05 | ✅ Tamamlandı | Dev/ops kimlik referansları — .env.example, README.md, CLAUDE.md (Dokunulmaz → onay alındı) |
-| 18.06 | TASK-18.06 | ⬜ Bekliyor | `_dev/` stack dokümanları — M5 + OVERVIEW (Korumalı → onay) + MEMORY env (kabul kriteri 5) |
+| 18.06 | TASK-18.06 | ✅ Tamamlandı | `_dev/` stack dokümanları — M5 + OVERVIEW (Korumalı → onay alındı) + MEMORY env (kabul kriteri 5) |
 | 18.07 | TASK-18.07 | ⬜ Bekliyor | 5-dil gözle doğrulama gate (test key node harness; kabul kriteri 4 — marka mührü) |
 | 18.08 | TASK-18.08 | ⬜ Bekliyor | Go-live — GROQ_API_KEY Vercel env (kullanıcı) + merge v0.5 → main + canlı duman testi (milestone) |
 
@@ -177,4 +177,4 @@
 ---
 
 **Oluşturulma:** 2026-07-21
-**Son Güncelleme:** 2026-07-22 — TASK-18.05 ✅ (dev/ops kimlik referansları): `.env.example` + `README.md` + `CLAUDE.md` (Dokunulmaz → kullanıcı onayı alındı) Anthropic tanımlayıcıları Groq'a hizalandı — `ANTHROPIC_API_KEY`→`GROQ_API_KEY`, `claude-opus-4-8`→`llama-3.3-70b-versatile`, `@anthropic-ai/sdk`→`groq-sdk`, `console.anthropic.com`→`console.groq.com`. `.env.example` `CHAT_MODEL` yorumu belirli alt-model yerine Groq docs pointer'ı (halüsinasyon kaçınması). Kapsam sınırı: README task-dışı bayat içerik (Phase 1 / EN default / Bunker OS) ve `MASTER_PROMPT_v2.md` (brief) dokunulmadı. grep eski tanımlayıcı 0 (exit 1) / GROQ karşılıkları yerinde, `next build` temiz (exit 0). 5/8 task; sıradaki run-task (TASK-18.06 `_dev/` stack dokümanları M5+OVERVIEW+MEMORY).
+**Son Güncelleme:** 2026-07-22 — TASK-18.06 ✅ (`_dev/` stack dokümanları): `M5-Chatbot-API.md` + `OVERVIEW.md` (Korumalı → **kullanıcı onayı alındı**) + `MEMORY.md` "Chatbot env" satırı Anthropic→Groq hizalandı — `@anthropic-ai/sdk`→`groq-sdk`, `claude-opus-4-8`→`llama-3.3-70b-versatile`, `ANTHROPIC_API_KEY`→`GROQ_API_KEY`; M5 F5.1'e system prompt TR-birincil + rakam-uydurma yasağı + sanitize per-mesaj byte-cap (`@/lib/chat-sanitize`) yansıtıldı; OVERVIEW "Claude chatbot" ifadeleri provider-nötr/Groq-Llama oldu. MEMORY secret-örnek satırı (97) da GROQ'a hizalandı (factual). Kapsam: tarihsel/append-only (DECISIONS) + `CLAUDE.md` dosya-adı referansları (OVERVIEW 115/119) dokunulmadı. grep eski tanımlayıcı 0 (exit 1) / Groq karşılıkları yerinde. **Kabul kriteri 5 ✅.** 6/8 task; sıradaki run-task (TASK-18.07 5-dil gözle doğrulama gate).

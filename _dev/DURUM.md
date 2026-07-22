@@ -1,6 +1,6 @@
 # DURUM — Proje Dashboard
 
-**Son Güncelleme:** 2026-07-22 — **TASK-18.05 ✅ (dev/ops kimlik referansları).** `.env.example` + `README.md` + `CLAUDE.md` (Dokunulmaz → kullanıcı onayı alındı) Anthropic tanımlayıcıları Groq'a hizalandı: `ANTHROPIC_API_KEY`→`GROQ_API_KEY`, `claude-opus-4-8`→`llama-3.3-70b-versatile`, `@anthropic-ai/sdk`→`groq-sdk`, `console.anthropic.com`→`console.groq.com`. Kapsam sınırı: README task-dışı bayat içerik + `MASTER_PROMPT_v2.md` (brief) dokunulmadı. grep eski tanımlayıcı 0 (exit 1) / GROQ karşılıkları yerinde, `next build` temiz (exit 0). Aktif Faz **18**, Adım **task**; sıradaki **TASK-18.06** (`_dev/` stack docs M5+OVERVIEW+MEMORY). Versiyon Sonu Durumu **içerik_fazları**. **Sıradaki: `/devflow:run-task` (TASK-18.06).** Açık: `GROQ_API_KEY` Vercel env (18.08).
+**Son Güncelleme:** 2026-07-22 — **TASK-18.06 ✅ (`_dev/` stack dokümanları — kabul kriteri 5).** `M5-Chatbot-API.md` + `OVERVIEW.md` (Korumalı → **kullanıcı onayı alındı**) + `MEMORY.md` "Chatbot env" satırı Anthropic→Groq hizalandı: `@anthropic-ai/sdk`→`groq-sdk`, `claude-opus-4-8`→`llama-3.3-70b-versatile`, `ANTHROPIC_API_KEY`→`GROQ_API_KEY`; M5 F5.1'e TR-birincil dil algılama + rakam-uydurma yasağı + sanitize byte-cap yansıdı; OVERVIEW "Claude chatbot" ifadeleri Groq/Llama oldu. grep eski tanımlayıcı 0 (exit 1) / Groq karşılıkları yerinde (doküman-only → build gerekmedi). Aktif Faz **18**, Adım **task**; sıradaki **TASK-18.07** (5-dil gözle doğrulama gate). Versiyon Sonu Durumu **içerik_fazları**. **Sıradaki: `/devflow:run-task` (TASK-18.07).** Açık: `GROQ_API_KEY` Vercel env (18.08).
 
 <!-- KURAL: Bu satır her oturum sonunda ÜZERİNE YAZILIR — tek satır, tek cümle. "Önceki:" / "Eski:" prefix ile kümülatif yığma YASAK; HTML comment'e sarma da yasak (CLAUDE.md → Doküman Disiplini). Tarih + kısa özet yeterli; detay için git log + ilgili PHASE/TASK dokümanları. -->
 
@@ -9,7 +9,7 @@
 ## Aktif Faz
 
 **Faz:** **Faz 18 — v0.5 Chatbot: ücretsiz sağlayıcı geçişi + canlıya alma** (🔄 girildi; discuss-phase ✅ 2026-07-21). Fazlar 1–17 ✅; v0.5 ilk içerik fazı. Milestone / 5 kabul kriteri → `docs/DECISIONS.md` 2026-07-21; kapsam kararları → `phases/PHASE-18.md`.
-**Adım:** **task** — TASK-18.05 ✅ (dev/ops kimlik referansları — `.env.example`/`README.md`/`CLAUDE.md` Anthropic→Groq, CLAUDE onaylı). Sıradaki **TASK-18.06** (`_dev/` stack dokümanları — M5 + OVERVIEW Korumalı → onay + MEMORY env, kabul kriteri 5). **Sıradaki: `/devflow:run-task` (TASK-18.06).**
+**Adım:** **task** — TASK-18.06 ✅ (`_dev/` stack dokümanları — M5 + OVERVIEW Korumalı→onay alındı + MEMORY env; kabul kriteri 5). Sıradaki **TASK-18.07** (5-dil gözle doğrulama gate; kabul kriteri 4 — marka mührü). **Sıradaki: `/devflow:run-task` (TASK-18.07).**
 
 **v0.5 kapsamı ve açık kalemler** (re-kickoff 2026-07-21):
 
@@ -23,7 +23,7 @@
 
 **Kapatıldı:** BULGU-S2 / BULGU-S9 = `page.route` harness artefaktı (memory'de, takip gerektirmez).
 
-**İlerleme:** TASK-18.05 ✅ (2026-07-22) — dev/ops kimlik referansları `.env.example`+`README.md`+`CLAUDE.md` (onaylı) Anthropic→Groq hizalandı; grep eski 0 (exit 1) / GROQ karşılıkları yerinde, `next build` temiz. 5/8 task tamam; sıradaki 18.06 (`_dev/` stack docs M5+OVERVIEW Korumalı→onay+MEMORY env). Kritik kapı korunuyor: 07 (5-dil mühür) geçmeden 08 (go-live) yok; 08 env-önce-merge-sonra. Sıradaki: `/devflow:run-task` (TASK-18.06).
+**İlerleme:** TASK-18.06 ✅ (2026-07-22) — `_dev/` stack dokümanları M5 + OVERVIEW (Korumalı→onay alındı) + MEMORY env Anthropic→Groq hizalandı; grep eski 0 (exit 1) / Groq karşılıkları yerinde (doküman-only). Kabul kriteri 5 ✅. 6/8 task tamam; sıradaki 18.07 (5-dil gözle doğrulama gate). Kritik kapı korunuyor: 07 (5-dil mühür) geçmeden 08 (go-live) yok; 08 env-önce-merge-sonra. Sıradaki: `/devflow:run-task` (TASK-18.07).
 **Aktif Faz Dokümanı:** `phases/PHASE-18.md` (🔄 Faz 18). Faz geçmişi → `PHASES.md`; v0.4 release → `docs/RELEASE-v0.4.md`; Faz 17 → `phases/PHASE-17.md`.
 
 ---
@@ -41,15 +41,15 @@
 
 ## Aktif Task
 
-**Task:** **TASK-18.06 — `_dev/` stack dokümanları** (`M5-Chatbot-API.md` + `OVERVIEW.md` stack satırı [Korumalı → kullanıcı onayı] + MEMORY "Chatbot env" satırı; Anthropic→Groq stack hizalama; kabul kriteri 5). ⬜ Bekliyor; henüz koşulmadı. Bağımlılık: 18.03 ✅. `/devflow:run-task` ile başlat.
+**Task:** **TASK-18.07 — 5-dil gözle doğrulama gate** (test key ile node harness; kabul kriteri 4 — marka mührü; 5 dilde çıktı gözle doğrulanır → go-live öncesi kritik kapı). ⬜ Bekliyor; henüz koşulmadı. Bağımlılık: 18.03 ✅ + 18.04 ✅. `/devflow:run-task` ile başlat.
 **Durum:** Faz 18 🔄 (v0.5 içerik fazı, Adım task). Versiyon Sonu Durumu **`içerik_fazları`**. **Canlı `df7c293`** (branch üzeri çalışma; go-live 18.08).
-**İlerleme:** TASK-18.05 ✅ (2026-07-22) — dev/ops kimlik referansları (`.env.example`/`README.md`/`CLAUDE.md` onaylı) Anthropic→Groq hizalandı; grep eski 0 / GROQ yerinde, build temiz. 5/8 task. Sıradaki adım: `/devflow:run-task` (TASK-18.06, yeni oturum).
+**İlerleme:** TASK-18.06 ✅ (2026-07-22) — `_dev/` stack dokümanları M5 + OVERVIEW (onaylı) + MEMORY env Anthropic→Groq hizalandı; grep eski 0 / Groq yerinde (doküman-only). Kabul kriteri 5 ✅. 6/8 task. Sıradaki adım: `/devflow:run-task` (TASK-18.07, yeni oturum).
 
 ---
 
 ## Task Durumu (Aktif Faz)
 
-> **Faz 18 aktif (🔄)** — discuss ✅ + research ✅ + plan ✅ + verify-plan ✅; 8 task, 5 tamam (18.01 ✅, 18.02 ✅, 18.03 ✅, 18.04 ✅, 18.05 ✅), sıradaki 18.06 (Adım task). Detay/icra → `tasks/TASK-18.0X.md`; snapshot + bağımlılık zinciri → `phases/PHASE-18.md`.
+> **Faz 18 aktif (🔄)** — discuss ✅ + research ✅ + plan ✅ + verify-plan ✅; 8 task, 6 tamam (18.01 ✅, 18.02 ✅, 18.03 ✅, 18.04 ✅, 18.05 ✅, 18.06 ✅), sıradaki 18.07 (Adım task). Detay/icra → `tasks/TASK-18.0X.md`; snapshot + bağımlılık zinciri → `phases/PHASE-18.md`.
 
 | # | Task | Durum | Açıklama |
 |---|------|-------|----------|
@@ -58,7 +58,7 @@
 | 18.03 | TASK-18.03 | ✅ Tamamlandı | Groq geçişi + system prompt cerrahi (route + package; C.1/C.3/C.4/C.5) |
 | 18.04 | TASK-18.04 | ✅ Tamamlandı | Offline kopya ×5 `chat.error` (C.2) |
 | 18.05 | TASK-18.05 | ✅ Tamamlandı | Dev/ops kimlik (env/README/CLAUDE — onay alındı) |
-| 18.06 | TASK-18.06 | ⬜ Bekliyor | Stack docs (M5+OVERVIEW+MEMORY; kriter-5) |
+| 18.06 | TASK-18.06 | ✅ Tamamlandı | Stack docs (M5+OVERVIEW onaylı+MEMORY; kriter-5) |
 | 18.07 | TASK-18.07 | ⬜ Bekliyor | 5-dil gözle doğrulama gate (kriter-4) |
 | 18.08 | TASK-18.08 | ⬜ Bekliyor | Go-live (env → merge v0.5→main → duman) |
 
@@ -66,17 +66,17 @@
 
 ## Son Task Özetleri
 
-> **Faz 18: 5/8 task tamam (18.01 ✅, 18.02 ✅, 18.03 ✅, 18.04 ✅, 18.05 ✅).** Faz 17 task özetleri → `phases/PHASE-17.md`.
+> **Faz 18: 6/8 task tamam (18.01 ✅, 18.02 ✅, 18.03 ✅, 18.04 ✅, 18.05 ✅, 18.06 ✅).** Faz 17 task özetleri → `phases/PHASE-17.md`.
+
+**TASK-18.06 — `_dev/` stack dokümanları** (✅ 2026-07-22)
+- `M5-Chatbot-API.md` (7 nokta) + `OVERVIEW.md` (Korumalı → **kullanıcı onayı alındı**; 5 değişiklik: stack tablosu + "Claude chatbot" ifadeleri → Groq/Llama + kod-ağacı yorumu + Son Güncelleme) + `MEMORY.md` "Chatbot env" satırı Anthropic→Groq hizalandı: `@anthropic-ai/sdk`→`groq-sdk`, `claude-opus-4-8`→`llama-3.3-70b-versatile`, `ANTHROPIC_API_KEY`→`GROQ_API_KEY`.
+- M5 F5.1'e system prompt **TR-birincil** dil algılama + **rakam-uydurma yasağı** + sanitize saf modül per-mesaj **byte-cap 8192→400** yansıtıldı; MEMORY secret-örnek satırı (97) de factual GROQ'a hizalandı. `CLAUDE.md` dosya-adı referansları (OVERVIEW 115/119) + tarihsel DECISIONS dokunulmadı.
+- grep eski tanımlayıcı **0** (exit 1) / Groq karşılıkları yerinde. Doküman-only (`src/` değişmedi) → build gerekmedi. **Kabul kriteri 5 ✅.**
 
 **TASK-18.05 — Dev/ops kimlik referansları** (✅ 2026-07-22)
 - `.env.example` + `README.md` (satır 14/20/30/31/38) + `CLAUDE.md` (satır 284, Dokunulmaz → **kullanıcı onayı alındı**) Anthropic tanımlayıcıları Groq'a hizalandı: `ANTHROPIC_API_KEY`→`GROQ_API_KEY`, `claude-opus-4-8`→`llama-3.3-70b-versatile`, `@anthropic-ai/sdk`→`groq-sdk`, `console.anthropic.com`→`console.groq.com`.
 - Kapsam sınırı korundu: README task-dışı bayat içerik (Phase 1 / EN default / Bunker OS) ve `MASTER_PROMPT_v2.md` (brief/hassas) **dokunulmadı**; `.env.example` `CHAT_MODEL` yorumu belirli alt-model yerine Groq docs pointer'ı (halüsinasyon kaçınması).
 - grep eski tanımlayıcı **0** (exit 1) / GROQ karşılıkları yerinde, `next build` **temiz** (exit 0).
-
-**TASK-18.04 — Ziyaretçi offline kopya yeniden yazımı** (✅ 2026-07-22)
-- `messages/{tr,en,ar,de,es}.json` `chat.error` ×5 yeniden yazıldı: dev anahtar-adı iması ("ANTHROPIC_API_KEY ekleyin") kaldırıldı → ziyaretçiye uygun **geçici-hata** + e-posta CTA (`kivanc@kiwiailab.com`, system prompt CTA'sıyla tutarlı); byte-cap 400 + Groq 429/503 dahil her `!res.ok`'te göründüğü için genel geçici-hata tonu.
-- **DEĞER** değişimi (anahtar EKLEME/rename değil) → i18n disiplini korundu, parite otomatik yeşil; register namespace tonuyla eşleşti (DE=Sie, ES=tú, AR tekil informal, EN nötr); AR RTL native + e-posta LTR gömülü.
-- `npm run test` **52 passed**, `next build` **temiz** (exit 0), JSON ×5 valid, grep anahtar-adı **0**.
 
 <!-- KURAL: Sadece son 2 task özeti tutulur, daha eskileri silinir (gerçek silme — HTML comment yasak). -->
 <!-- KURAL: Sadece aktif fazın task'leri gösterilir. Geçmiş fazların bilgileri phases/ klasöründedir. -->
@@ -92,8 +92,8 @@
 
 ## Hızlı Erişim
 
-**Aktif Task:** **TASK-18.06 — `_dev/` stack dokümanları** (⬜ Bekliyor; bağımlılık 18.03 ✅; `M5-Chatbot-API.md` + `OVERVIEW.md` [Korumalı → onay] + MEMORY env satırı; kabul kriteri 5). Sıradaki adım **`/devflow:run-task`**. Detay → `tasks/TASK-18.06.md`.
-**Aktif Faz:** **Faz 18 🔄** (v0.5 Chatbot Groq geçişi + canlıya alma; discuss ✅ + research ✅ + plan ✅ + verify-plan ✅, Adım task; 18.01 ✅, 18.02 ✅, 18.03 ✅, 18.04 ✅, 18.05 ✅). **Aktif Versiyon v0.5.** Versiyon Sonu Durumu **`içerik_fazları`**. **Canlı `main` = `df7c293`**; aktif branch `revize/v0.5-chatbot-groq`. Faz dokümanı: `phases/PHASE-18.md`.
+**Aktif Task:** **TASK-18.07 — 5-dil gözle doğrulama gate** (⬜ Bekliyor; bağımlılık 18.03 ✅ + 18.04 ✅; test key node harness; kabul kriteri 4 — marka mührü; go-live öncesi kritik kapı). Sıradaki adım **`/devflow:run-task`**. Detay → `tasks/TASK-18.07.md`.
+**Aktif Faz:** **Faz 18 🔄** (v0.5 Chatbot Groq geçişi + canlıya alma; discuss ✅ + research ✅ + plan ✅ + verify-plan ✅, Adım task; 18.01 ✅, 18.02 ✅, 18.03 ✅, 18.04 ✅, 18.05 ✅, 18.06 ✅). **Aktif Versiyon v0.5.** Versiyon Sonu Durumu **`içerik_fazları`**. **Canlı `main` = `df7c293`**; aktif branch `revize/v0.5-chatbot-groq`. Faz dokümanı: `phases/PHASE-18.md`.
 **v0.5 kaynağı (karar + 5 kabul kriteri):** `docs/DECISIONS.md` 2026-07-21. M5 içerik + OVERVIEW stack satırı implementasyon fazına ertelendi.
 **Sonraki versiyon adayları (→ `PRD/VERSIONS.md`):** v0.6 booking/takvim · çeviri senkronu (non-TR + AR) · BULGU-S3 craft cila · TB-3 / npm audit / brief mobil perf.
 **Task Sistemi:** `tasks/TASKS-README.md`
@@ -103,4 +103,4 @@
 
 ---
 
-**Son Güncelleme:** 2026-07-22 — **TASK-18.05 ✅ (dev/ops kimlik referansları).** Repo-kök dev/kurulum dokümanları `.env.example` + `README.md` (satır 14/20/30/31/38) + `CLAUDE.md` (satır 284, Dokunulmaz → **kullanıcı onayı alındı** 2026-07-22) Anthropic tanımlayıcıları Groq'a hizalandı: `ANTHROPIC_API_KEY`→`GROQ_API_KEY`, `claude-opus-4-8`→`llama-3.3-70b-versatile`, `@anthropic-ai/sdk`→`groq-sdk`, `console.anthropic.com`→`console.groq.com`. `.env.example` `CHAT_MODEL` yorumu belirli Groq alt-modeli isimlendirmek yerine `console.groq.com/docs/models` pointer'ı verildi (PHASE-18 research yalnız `llama-3.3-70b-versatile`'ı kanonik doğruladı → halüsinasyon kaçınması). Kapsam sınırı korundu: README task-dışı bayat içerik (Phase 1 / EN default / Bunker OS / MASTER_PROMPT link) ve `MASTER_PROMPT_v2.md` (brief/hassas — drift raporlanır ama körlemesine değiştirilmez) **dokunulmadı**; tarihsel `_dev/` kayıtları dokunulmadı. Test: grep eski tanımlayıcı (ANTHROPIC_API_KEY/claude-opus-4-8/claude-sonnet-4-6/@anthropic-ai/sdk/console.anthropic.com) **0 eşleşme** (exit 1); grep GROQ karşılıkları hepsi yerinde; `next build` **temiz** (exit 0). Aktif Faz **18**, Adım **task**; sıradaki **TASK-18.06** (`_dev/` stack dokümanları — M5 + OVERVIEW stack satırı [Korumalı → onay] + MEMORY "Chatbot env" satırı; kabul kriteri 5). Versiyon Sonu Durumu **içerik_fazları** (değişmedi). **Sıradaki: `/devflow:run-task` (TASK-18.06)** (yeni oturum). Açık: `GROQ_API_KEY` Vercel env (18.08, kullanıcı aksiyonu).
+**Son Güncelleme:** 2026-07-22 — **TASK-18.06 ✅ (`_dev/` stack dokümanları — kabul kriteri 5).** `M5-Chatbot-API.md` (7 nokta) + `OVERVIEW.md` (Korumalı → **kullanıcı onayı alındı** 2026-07-22; 5 değişiklik: stack tablosu satır 42 + "Claude chatbot" ifadeleri satır 28/52 → Groq/Llama + kod-ağacı yorumu satır 67 + Son Güncelleme satır 123) + `MEMORY.md` "Chatbot env" satırı (43) Anthropic→Groq hizalandı: `@anthropic-ai/sdk`→`groq-sdk`, `claude-opus-4-8`→`llama-3.3-70b-versatile`, `ANTHROPIC_API_KEY`→`GROQ_API_KEY`. M5 F5.1'e system prompt **TR-birincil** dil algılama + **rakam-uydurma yasağı** + sanitize saf modül (`@/lib/chat-sanitize`) per-mesaj **byte-cap 8192→400** yansıtıldı; `messages.stream()` → OpenAI-uyumlu `chat.completions.create({stream})`. MEMORY secret-örnek satırı (97) da factual GROQ'a hizalandı; MEMORY index başlık "Son Güncelleme" (öğrenim log'u) + `CLAUDE.md` dosya-adı referansları (OVERVIEW 115/119) + tarihsel DECISIONS **dokunulmadı**. Test: grep eski provider tanımlayıcı (M5+OVERVIEW+MEMORY) **0 eşleşme** (exit 1); Groq karşılıkları yerinde. Doküman-only (`src/` değişmedi) → build gerekmedi; test = grep doğrulaması. Aktif Faz **18**, Adım **task**; sıradaki **TASK-18.07** (5-dil gözle doğrulama gate; kabul kriteri 4 — marka mührü). Versiyon Sonu Durumu **içerik_fazları** (değişmedi). **Sıradaki: `/devflow:run-task` (TASK-18.07)** (yeni oturum). Açık: `GROQ_API_KEY` Vercel env (18.08, kullanıcı aksiyonu).

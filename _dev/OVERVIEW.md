@@ -25,7 +25,7 @@ Ajansın teklifini (analiz → tekrarlayan işin tespiti → otomasyona bağlama
 Tekrarlayan operasyonel işi otomatikleştirmek isteyen işletmeler (spor salonu, klinik, e-ticaret, emlak, eğitim/danışmanlık, restoran/kafe) ve karar vericileri. Çok dilli kitle: TR (varsayılan), EN, AR, DE, ES.
 
 ### Kapsam
-**Dahil:** Tanıtım/pazarlama sitesi — ana sayfa + alt sayfalar (Crew OS showcase [public route `/crew-os`; eski `/bunker-os` → kalıcı redirect], Alpfit spor salonu yazılımı, vaka çalışmaları, bülten makaleleri), Living Flow WebGL, çok dilli i18n (RTL dahil), canlı Claude chatbot, SEO/sitemap, light/dark tema.
+**Dahil:** Tanıtım/pazarlama sitesi — ana sayfa + alt sayfalar (Crew OS showcase [public route `/crew-os`; eski `/bunker-os` → kalıcı redirect], Alpfit spor salonu yazılımı, vaka çalışmaları, bülten makaleleri), Living Flow WebGL, çok dilli i18n (RTL dahil), canlı chatbot (Groq/Llama), SEO/sitemap, light/dark tema.
 **Dahil değil:** Backend/otomasyon ürününün kendisi (Crew OS motoru — iç adıyla *Bunker OS*) — o ayrı bir repo'dur (`NorthAIII/kiwi-ai-lab`, private). Forum/bülten için gerçek backend (şu an statik içerik), ödeme, kullanıcı hesapları.
 
 ---
@@ -39,7 +39,7 @@ Tekrarlayan operasyonel işi otomatikleştirmek isteyen işletmeler (spor salonu
 | WebGL / 3D | three.js + @react-three/fiber + @react-three/drei + custom GLSL |
 | Hareket | GSAP + ScrollTrigger, Lenis (smooth scroll) |
 | i18n | next-intl (tr varsayılan + en/ar/de/es, `as-needed` prefix, AR RTL) |
-| AI / Chatbot | @anthropic-ai/sdk — `/api/chat` streaming (varsayılan `claude-opus-4-8`, env `CHAT_MODEL`) |
+| AI / Chatbot | groq-sdk (OpenAI-uyumlu) — `/api/chat` streaming (varsayılan `llama-3.3-70b-versatile`, env `GROQ_API_KEY` + opsiyonel `CHAT_MODEL`) |
 | Tipografi | Fraunces (display serif) + Geist (grotesque sans) |
 | Deployment | Vercel (`north-ai/kiwi-ai-lab-v3`), repo `github.com/NorthAIII/kiwiwebsite.v3` |
 
@@ -49,7 +49,7 @@ Tekrarlayan operasyonel işi otomatikleştirmek isteyen işletmeler (spor salonu
 
 - **The Living Flow** — cursor/scroll'a tepki veren, lazy-load + degradasyonlu (mobil/düşük güç → az parçacık; reduced-motion/no-WebGL → statik SVG) WebGL imza alanı.
 - **Çok dilli site** — 5 dil, AR için RTL; locale-prefixli route'lar, dünya-ikonu dil değiştirici.
-- **Canlı Claude chatbot** — `/api/chat` üzerinden streaming, kullanıcı dilini algılar, key yoksa zarif "offline".
+- **Canlı chatbot (Groq/Llama)** — `/api/chat` üzerinden streaming, kullanıcı dilini algılar (TR-birincil), key yoksa zarif "offline".
 - **Light/Dark tema** — `localStorage` + FOUC önleyici script, Living Flow temaya uyumlu.
 - **Sektör/ürün showcase sayfaları** — Crew OS (route `/crew-os`), Alpfit (spor salonu), vaka çalışmaları, bülten.
 - **Scroll-koreografisi** — GSAP + Lenis + Reveal pattern; reduced-motion tam fallback.
@@ -64,7 +64,7 @@ Tekrarlayan operasyonel işi otomatikleştirmek isteyen işletmeler (spor salonu
 src/
 ├── app/
 │   ├── [locale]/            # Locale-prefixli sayfalar (home + alt sayfalar) + layout
-│   ├── api/chat/route.ts    # Claude streaming chat endpoint
+│   ├── api/chat/route.ts    # Groq streaming chat endpoint
 │   ├── layout.tsx           # Kök layout
 │   ├── globals.css          # Tailwind v4 @theme + tasarım token'ları + dark mode
 │   ├── sitemap.ts / robots.ts / icon.svg
@@ -120,4 +120,4 @@ CLAUDE.md repo kökünde olacaktır (`/CLAUDE.md`) — kickoff-verify'da oluştu
 
 ---
 
-**Son Güncelleme:** 2026-07-16 — re-kickoff (kickoff-verify): Crew OS showcase route referansları `/crew-os`'a hizalandı (public route v0.3 Faz 11'de rename edildi; eski `/bunker-os` → kalıcı redirect). Taksonomi/kimlik değişmedi.
+**Son Güncelleme:** 2026-07-22 — TASK-18.06 (v0.5): chatbot stack satırı + kimlik ifadeleri Anthropic/Claude → Groq/Llama hizalandı (`groq-sdk` / `llama-3.3-70b-versatile` / `GROQ_API_KEY`; kullanıcı onaylı, Korumalı doküman). Taksonomi/kimlik değişmedi.
