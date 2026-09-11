@@ -43,3 +43,4 @@ yarn-error.log*
 # DevFlow audit canvas (yerel SQLite — git'e girmez; ayna canvas.tsv izlenir)
 _dev/.audit/canvas.db
 _dev/.audit/canvas.db-*
+_dev/.audit/canvas.tsv.tmp*
