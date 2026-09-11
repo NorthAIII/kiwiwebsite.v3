@@ -36,11 +36,27 @@ gövdesinin fallback metni olup olmadığına bak, şüphede runtime log'u oku.
   gerekçesinin bir kısmı sonradan prompt'ta kapatılmıştı → kör reddetmek yerine yeniden sınandı.
   (Sonuç değişmedi, ama karar artık taze kanıta dayanıyor.)
 
+## İkinci tuzak: `max_tokens` bir tavan değil, peşin **rezervasyon**
+
+Model düzeltildikten sonra canlı yine hata verdi; runtime log **farklı** bir sebep gösterdi:
+**429, OTPM (output tokens per minute) limiti 1000, talep 1024.** Burst sorunu değildi —
+Groq ücretsiz tier `max_tokens`'ı peşin rezerve ettiği için 1024 isteyen **her** çağrı
+tek başına karşılanamaz durumdaydı. Yani `max_tokens` yalnız "en fazla şu kadar üret"
+demek değil, "şu kadarını bana ayır" demektir; dakikalık kotadan **istek anında** düşer.
+
+**Kural:** `max_tokens`'ı gerçekten ihtiyaç duyulan uzunluğa göre seç, cömert bırakma.
+Bu projede 512 (prompt 2–3 cümle istiyor, ölçülen en uzun yanıt ~509 karakter). Yükseltmek
+canlı chatbot'u kırar — gerekçe `route.ts`'te çağrı yerinde yorum olarak duruyor.
+
+**Tekrar eden ders:** İki canlı arıza da art arda çıktı ve **ikisi de yalnız runtime log'unda
+görünüyordu**; dıştan bakınca ikisi de aynı görünüyordu (HTTP 200 + fallback metni). Bir
+canlı arızayı düzeltince "tamam" deme — **aynı yoldan tekrar doğrula**, arkasında ikinci
+bir sebep durabilir.
+
 ## Kota notu (2026-09, Groq ücretsiz tier)
 
-1.000 istek/gün + **8.000 token/dakika**. İstek başına ~1.500 token *rezerve* edilir
-(system prompt + `max_tokens`) → dakikada ~5 eşzamanlı istekten sonra **429**. Zarif offline
-fallback devreye girer (honest degradation). Kapasite kaldıracı: `max_tokens`'ı düşürmek.
+1.000 istek/gün + 8.000 token/dakika + **1.000 çıktı token/dakika (OTPM)**. Tükenirse 429 →
+zarif offline fallback (honest degradation). Hacim büyürse ücretli Dev Tier yolu açık.
 
 İlgili: [vercel-git-disconnect](vercel-git-disconnect-deploy-tetiklenmez.md) (canlı-teyit
 disiplininin aynı ailesi — "deploy oldu" ≠ "doğru kod çalışıyor").

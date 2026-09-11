@@ -15,7 +15,7 @@
 | Sektörler derinleştirme (6 sektör, özgün içerik) | `features/sektorler-derinlestirme.md` | v0.1 |
 | Site geneli TR kopya revizesi (marka sesi) | `features/kopya-revizesi.md` | v0.1 |
 | Alpfit Plus ürün vitrini (F2.8 zengin yeniden tasarım) | `features/alpfit-plus.md` | v0.4 |
-| Chatbot: ücretsiz sağlayıcı geçişi (Anthropic Opus → Groq/`llama-3.3-70b-versatile`) + canlıya alma | `docs/DECISIONS.md` (2026-07-21) | v0.5 |
+| Chatbot: ücretsiz sağlayıcı geçişi (Anthropic Opus → Groq; model `qwen/qwen3.8-27b`) + canlıya alma | `docs/DECISIONS.md` (2026-07-21) | v0.5 |
 
 **v0.1 teması:** Türkçe içerik & mesaj revizesi — **ana sayfa odaklı, cerrahi** (prd-refine 2026-06-28 reframe: kopya zaten güçlü; baştan-sona rewrite değil, nokta-atışı düzeltmeler + ses taraması). TR tek kaynak; çeviri versiyon-sınırında (bkz. VIZYON §5).
 
@@ -64,7 +64,7 @@
 
 > **v0.5 re-kickoff 2026-07-21'de Aktif Versiyon olarak damgalandı** (Chatbot ücretsiz sağlayıcı geçişi + canlıya alma; detay altta). v0.6 ve sonrası numarasız aday — sıra prd-refine / discuss-phase'de netleşir.
 
-- **v0.5 — Chatbot: ücretsiz sağlayıcı geçişi + canlıya alma** ✳️ **AKTİF** (re-kickoff 2026-07-21 damgaladı). Anthropic Opus → **Groq · `llama-3.3-70b-versatile`** ($0/kartsız; DECISIONS 2026-07-21'de 5 kabul kriteri). Canlı 503/offline'ı da çözer. M5 merkez (`route.ts` + system prompt), M4 (TR-birincil dil algılama), OVERVIEW stack satırı. Hardening (chatbot per-mesaj max-byte cap) + **canlıya alma** bu içerik fazına dahil (kickoff 2026-07-21). M5 içerik + OVERVIEW stack satırı implementasyon fazında güncellenir (kod↔doküman drift önleme).
+- **v0.5 — Chatbot: ücretsiz sağlayıcı geçişi + canlıya alma** ✳️ **AKTİF** (re-kickoff 2026-07-21 damgaladı). Anthropic Opus → **Groq** ($0/kartsız; DECISIONS 2026-07-21'de 5 kabul kriteri). Go-live'da Groq `llama-3.3-70b-versatile`'ı emekliye ayırmış olduğu için model `qwen/qwen3.8-27b` seçildi (DECISIONS 2026-09-11). Canlı 503/offline'ı da çözer. M5 merkez (`route.ts` + system prompt), M4 (TR-birincil dil algılama), OVERVIEW stack satırı. Hardening (chatbot per-mesaj max-byte cap) + **canlıya alma** bu içerik fazına dahil (kickoff 2026-07-21). M5 içerik + OVERVIEW stack satırı implementasyon fazında güncellenir (kod↔doküman drift önleme).
 - **v0.6 — Booking + takvim entegrasyonu** (v0.5'ten ertelendi). Otomatik demo/randevu + botun takvime erişimi; tool/function calling + takvim sistemi + PII/spam güvenliği (Cal.com/Google Calendar seçimi açık). Ayrı ve daha büyük iş.
 - **Çeviri senkronu (numarasız aday):** alt sayfa EN/AR/DE/ES güncellemesi — alpfit stale-TR dahil, **ziyaretçi-görünür** (versiyon-sınırı işi; TR tek kaynak, VIZYON §5). + **AR-dil stratejisi** açık kalem.
 - **Craft cila (numarasız aday):** alt-sayfa masaüstü imza alanı boşluğu (BULGU-S3; Craft üst eksen).

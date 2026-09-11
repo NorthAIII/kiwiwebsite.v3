@@ -76,7 +76,7 @@
 
 ### Kullanılacak Araçlar/Kütüphaneler
 - **`groq-sdk`** (npm, güncel) — OpenAI-uyumlu Groq istemcisi; `@anthropic-ai/sdk`'nin **yerini alır** (ekle+çıkar, net 0). `package.json` Dokunulmaz → onay alındı. Kaynak: **yeni** bağımlılık.
-- **Model `llama-3.3-70b-versatile`** — Groq **üretim** modeli (deprecated değil); **131.072** token context, **32.768** max completion → mevcut `max_tokens: 1024` bol yeter. Kaynak: `console.groq.com/docs/models`.
+- **Model `llama-3.3-70b-versatile`** — Groq **üretim** modeli (deprecated değil); **131.072** token context, **32.768** max completion → mevcut `max_tokens: 1024` bol yeter. Kaynak: `console.groq.com/docs/models`. ⚠️ **Bu bulgu 2026-09-11'de geçersizleşti** — model emekliye ayrıldı ve `max_tokens: 1024` ücretsiz tier OTPM limitine (1000) takıldı; ikisi de yalnız **canlı runtime log'unda** görüldü. Araştırma o günün gerçeğiydi, kayıt olarak duruyor; güncel gerçeklik → **Go-live** bölümü.
 - **Base URL** `https://api.groq.com/openai/v1` — groq-sdk'ye **gömülü**, ayrıca yapılandırma gerektirmez. Kaynak: dış (SDK varsayılanı).
 
 ### Dikkat Edilecekler
@@ -96,8 +96,8 @@
 - **[Karar C.2] Offline hata kopyası yeniden yazılır — dev anahtar-adı kaldırılır** (kullanıcı onaylı). `messages/*.json:494` ×5 "Add an ANTHROPIC_API_KEY" → ziyaretçiye uygun kopya ("birazdan tekrar deneyin / e-posta"). Gerekçe: canlıya alınınca offline = geçici hata (anahtar-eksik değil) → anahtar-adı iması yanlış olurdu; craft + dürüstlük. TR kaynak yazılır, non-TR değer-senkronu implementasyon task'ında. Bu bir **değer** değişimi (anahtar EKLEME/rename değil) → i18n disiplini korunur; ama tanımlayıcı TR dahil yanlış olduğundan bu fazın işi (çeviri-senkronu numarasız adayından ayrı).
 - **[Karar C.3] System prompt cerrahi düzenleme** (discuss kararının somutlaşması): İngilizce talimat dili korunur; dil satırı (`route.ts:14`) TR **eklenir + varsayılan yapılır** ("You support Turkish, English, Arabic, German, and Spanish… **Default to Turkish** if unclear"); **"asla fiyat/rakam/istatistik/tarih uydurma; bilmediğin somut sayıyı söyleme → keşif görüşmesine yönlendir"** kuralı eklenir (dürüstlük; `gpt-oss` bu yüzden elendi). Crew OS taksonomisi **zaten doğru** (prompt "Our flagship layer is Crew OS", Bunker sızmıyor ✓); booking sözü yok, keşif görüşmesi/e-posta CTA korunur (takvim v0.6). Tam yeniden yazım yok. **→ TASK-18.07 gate'i bu dil kuralını sertleştirdi:** "Default to Turkish if unclear" **kaldırıldı**, yerine "kullanıcının son mesajının dilinde yanıtla + tek dil/tek script, başka dil/karakter karıştırma, yalnız gerçekten belirsizse TR" geldi; ayrıca `temperature: 0.2` eklendi. Gerekçe: llama varsayılan sıcaklıkta EN sorularını TR/başka dile düşürüyor + çok-dilli script sızdırıyordu. Detay → aşağıda **Gözle Doğrulama** bölümü + DECISIONS 2026-07-22.
 - **[Karar C.4] Fallback stream-hata metni TR'ye çevrilir** (`route.ts:73`, "The assistant hit an error…" → TR). Bu, i18n `error` (offline) string'inden **ayrı** — runtime stream-içi enjekte edilen kenar-durum metni.
-- **[Karar C.5] `CHAT_MODEL` override deseni korunur** (`route.ts:6`, repoda-tanımlı); yeni varsayılan `process.env.CHAT_MODEL ?? "llama-3.3-70b-versatile"`.
-- **[Karar C.6] Sanitizasyon+byte-cap saf fonksiyona çıkarılır** (Vitest node testi için); `max_tokens: 1024` + `text/plain` streaming sözleşmesi + `slice(-12)` geçmiş sınırı korunur. Byte-cap her tutulan mesajın `content`'ine uygulanır (yalnız trailing değil — history de istemciden gelir/güvenilmez). Kesin dosya konumu + cap değeri (öneri 8192) plan-phase.
+- **[Karar C.5] `CHAT_MODEL` override deseni korunur** (`route.ts:6`, repoda-tanımlı). **→ Varsayılan model TASK-18.08 go-live'ında `qwen/qwen3.8-27b` oldu:** Groq `llama-3.3-70b-versatile`'ı bu faz sürerken emekliye ayırdı (canlı 404). Override deseninin kendisi değişmedi — zaten tam bu durum için korunmuştu. Detay → aşağıda **Go-live** bölümü + DECISIONS 2026-09-11.
+- **[Karar C.6] Sanitizasyon+byte-cap saf fonksiyona çıkarılır** (Vitest node testi için); `max_tokens: 1024` + `text/plain` streaming sözleşmesi + `slice(-12)` geçmiş sınırı korunur. **→ `max_tokens` go-live'da zorunlu olarak 512'ye indi** (OTPM limiti; aşağıda **Go-live**). Byte-cap her tutulan mesajın `content`'ine uygulanır (yalnız trailing değil — history de istemciden gelir/güvenilmez). Kesin dosya konumu + cap değeri (öneri 8192) plan-phase.
 
 ---
 
@@ -116,7 +116,7 @@
 | 18.05 | TASK-18.05 | ✅ Tamamlandı | Dev/ops kimlik referansları — .env.example, README.md, CLAUDE.md (Dokunulmaz → onay alındı) |
 | 18.06 | TASK-18.06 | ✅ Tamamlandı | `_dev/` stack dokümanları — M5 + OVERVIEW (Korumalı → onay alındı) + MEMORY env (kabul kriteri 5) |
 | 18.07 | TASK-18.07 | ✅ Tamamlandı | 5-dil gözle doğrulama gate (kabul kriteri 4 — marka mührü); 1. koşu başarısız → prompt sertleştirildi + `temperature: 0.2` → 2 koşu GREEN |
-| 18.08 | TASK-18.08 | ⬜ Bekliyor | Go-live — GROQ_API_KEY Vercel env (kullanıcı) + merge v0.5 → main + canlı duman testi (milestone) |
+| 18.08 | TASK-18.08 | ✅ Tamamlandı | Go-live — GROQ_API_KEY Vercel env + merge v0.5 → main + canlı duman testi; **iki canlı arıza** (model emekliliği + OTPM) teşhis edilip düzeltildi (milestone) |
 
 **Durum simgeleri:** ⬜ Bekliyor | 🔄 Devam ediyor | ⏸️ Duraklatıldı | ✅ Tamamlandı | 🔴 Bloke | ❌ İptal
 
@@ -150,6 +150,53 @@
 - **Artık küçük craft lekeleri (bloke değil, dürüst kayıt):** (1) TR "Crew OS nedir" yanıtında ~%50 "observable ve measured" (prompt'un İngilizce ifadesi TR'ye yankılanıyor — anlam bozmuyor); (2) nadir tek bozuk token ("cụreleri", Latin-diakritik; regex-dışı, 1 örnekte). Ağır marka-kırıcı hatalar (yanlış-dil yanıt, Latin-dışı tam-kelime) tamamen gitti. İstenirse sonraki cila: prompt'ta "observable and measured" ifadesini yumuşat.
 
 **Verdict: kabul kriteri 4 ✅ — go-live (18.08) kapısı AÇILDI.** Test key hiçbir dosya/log/committe yazılmadı; harness scratchpad'de koşturuldu + silindi.
+
+---
+
+## Go-live — Canlıya Alma (TASK-18.08, 2026-09-11)
+
+> Milestone. Kullanıcı `GROQ_API_KEY`'i Vercel Production env'e ekledi → redeploy → canlı duman testi. Kanıt-artefaktı disiplini (MEMORY) uygulandı: her iddia curl çıktısı / runtime log / `git merge-base` ile bağlandı.
+
+### Devralınan durum
+
+Faz 18'in kod tarafı 2026-07-22'de `main`'e alınmıştı (`275323a`, Vercel deploy `success`) ama **env hiç eklenmemişti** — `vercel env ls` projede **sıfır** environment variable gösterdi. Temmuzdaki "trigger redeploy to pick up GROQ_API_KEY env" boş commit'i anahtar eklenmeden atılmış, task da kapatılmamıştı. Bu oturum önce o boşluğu kapattı.
+
+### İki canlı arıza — ikisi de yalnız runtime log'unda görünür
+
+Env eklendikten sonra `/api/chat` **503'ten 200'e** döndü ama yanıt gövdesi stream-içi hata fallback'iydi. Dıştan bakan bir gözlemci (HTTP 200 + metin akıyor) "çalışıyor" sanır; `next build`, Vitest 52/52 ve curl'ün üçü de yeşildi. Sebebi veren tek şey `vercel logs` oldu — **iki kez, iki farklı sebeple**:
+
+| # | Runtime hatası | Kök neden | Düzeltme |
+|---|---|---|---|
+| 1 | `404 model_not_found` | Groq `llama-3.3-70b-versatile`'ı (ve tüm Llama sohbet hattını) emekliye ayırdı — research'teki "deprecated değil" damgasından ~7 hafta sonra | Model yeniden seçildi → `qwen/qwen3.8-27b` |
+| 2 | `429 rate_limit_exceeded` OTPM 1000 < 1024 | Ücretsiz tier `max_tokens`'ı **peşin rezerve** ediyor → 1024 isteyen her çağrı tek başına karşılanamaz | `max_tokens: 1024 → 512` + çağrı yerine gerekçe yorumu |
+
+**Ders (memory'ye taşındı):** Bir canlı arızayı düzeltince "tamam" deme — aynı yoldan tekrar doğrula, arkasında ikinci sebep durabilir. → [groq-model-emekliligi](../memory/groq-model-emekliligi-runtime-404.md).
+
+### Model yeniden seçimi — eleme kriteri ikinci kez uygulandı
+
+Kalan Groq sohbet modelleri arasında `openai/gpt-oss-120b` vardı; o da DECISIONS 2026-07-21'de **rakam uydurduğu için elenmişti**. Elenme gerekçesinin bir kısmı aradan geçen sürede prompt'ta kapatıldığı için (TR-birincil dil kuralı + "asla rakam uydurma" yasağı) aday **kör reddedilmedi, yeniden sınandı**. TASK-18.07'nin marka mührü harness'i yeniden koşuldu (route.ts'ten runtime çıkarılan nihai prompt/parametreler, 5 dil × 3 temsili soru, mekanik garble/taksonomi/para-deseni dedektörleri):
+
+| Model | Dil sadakati | Garble | Taksonomi | Dürüstlük | Gecikme |
+|---|---|---|---|---|---|
+| `qwen/qwen3.8-27b` | 15/15 | 0/15 | 0 Bunker | **0 ihlal** | 340–590ms |
+| `openai/gpt-oss-120b` | 15/15 | 0/15 | 0 Bunker | **2 ihlal** | ~1.2s |
+
+`gpt-oss-120b` temmuzki başarısızlığını **sertleştirilmiş prompt altında** birebir tekrarladı: ES gym yanıtında uydurma müşteri sonucu ("reduce en un 30 %"), TR fiyat yanıtında uydurma aralık ("ayda birkaç bin TL"). `qwen3.8-27b` aynı probu 5 dilde de rakam vermeyi reddedip keşif görüşmesine yönlendirerek geçti. Ön-elemede `qwen3.6-27b` (`<think>` bloklarını yanıt gövdesine sızdırıyor) ve `compound-mini` (gereksiz agentic web arama, yavaş) düştü.
+
+### Canlı doğrulama — kanıt artefaktları
+
+- **5 dil canlı `kiwiailab.com/api/chat`**: TR/EN/AR/DE/ES → hepsi doğru dilde, marka sesinde, `Bunker` sızıntısı yok, booking sözü yok, keşif-görüşmesi/e-posta CTA yerinde. EN "What is Crew OS?" İngilizce yanıtladı (18.07'nin düzelttiği dil-düşüşü canlıda da temiz). TR fiyat probu rakam vermeyi **reddetti** → dürüstlük konvansiyonu canlıda ✓.
+- **Regresyon**: `/` · `/crew-os` · `/spor-salonu-yazilimi` · `/vaka-calismalari` · `/en` · `/ar` · `/de` · `/es` → 8/8 **200**; AR `<html lang="ar" dir="rtl">` ✓.
+- **Ataş kanıtı**: `git merge-base --is-ancestor` ile hem v0.5 HEAD (`3a48bca`) hem go-live fix (`3699f57`) `origin/main` ataşı doğrulandı. Canlı deploy `3699f57`, GitHub commit status `Vercel success`.
+- **Yerel kapılar**: `next build` temiz (37 sayfa) + Vitest **52/52**.
+
+### Artık durum (bloke değil, dürüst kayıt)
+
+- **Kota tavanı:** ücretsiz tier 1.000 istek/gün + 8.000 TPM + **1.000 OTPM**. Tükenirse Groq 429 → mevcut zarif offline fallback (honest degradation). Hacim büyürse ücretli Dev Tier açık, $0 hedefi şimdilik korunuyor.
+- **`GROQ_API_KEY` yalnız Production'da.** Preview env'e eklenmedi → `revize/...` preview deploy'larında chatbot offline görünür. Kullanıcıya önerildi, bilinçli açık.
+- **Küçük craft lekesi:** TR gym yanıtında "doğum günü ve doğum günü sonrası" gibi seyrek tekrar; anlam bozulmuyor, marka-kırıcı değil. 18.07'nin kayıtlı "observable ve measured" yankısıyla aynı kategoride — prompt cilası numarasız aday.
+
+**Verdict: milestone ✅ — chatbot canlıda çalışıyor.** v0.4'ten devralınan `/api/chat` 503/offline açık takip kalemi **kapandı**.
 
 ---
 
