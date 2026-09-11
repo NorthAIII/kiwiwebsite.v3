@@ -47,7 +47,12 @@ export async function POST(req: Request) {
         // OpenAI-uyumlu: system prompt messages dizisinin ILK elemanı (Groq drop-in).
         const completion = await client.chat.completions.create({
           model: MODEL,
-          max_tokens: 1024,
+          // 512 üst sınır değil zorunluluk: Groq ücretsiz tier bu modelde dakikada
+          // 1000 çıktı token'ı veriyor (OTPM) ve max_tokens'ı peşin rezerve ediyor —
+          // 1024 istemek her çağrıyı 429 ile reddettiriyordu. Yanıtlar zaten 2-3 cümle
+          // (ölçülen en uzun çıktı ~509 karakter); düşük değer eşzamanlı ziyaretçi
+          // kapasitesini de artırır. Yükseltme = canlı chatbot'u kırar.
+          max_tokens: 512,
           // düşük sıcaklık: marka sesi tutarlılığı + çok-dilli script sızıntısını (code-switch) bastırır
           temperature: 0.2,
           stream: true,
