@@ -10,7 +10,7 @@
 
 ### F5.1: Chat API endpoint → Faz —
 
-**Açıklama:** `src/app/api/chat/route.ts` — Node.js runtime (max 30s). Varsayılan model `process.env.CHAT_MODEL ?? "llama-3.3-70b-versatile"` (Groq). System prompt: Kiwi asistanı kimliği, **kullanıcının son mesajının dilinde yanıt** (TR/EN/AR/DE/ES; **tek dil/tek script — başka dil/karakter karıştırma yok**; yalnız dil gerçekten belirlenemezse TR fallback — TASK-18.07 marka mührü gate'inde sertleştirildi, "Default to Turkish if unclear" kaldırıldı), çıktı-odaklı/sade ton, **"fiyat/rakam/istatistik/tarih uydurma yasağı"** (dürüstlük konvansiyonu), satın-alma niyetinde "ücretsiz keşif görüşmesi"/e-posta (`kivanc@kiwiailab.com`) önerisi, 2–3 cümle yanıt. POST `{messages:[...]}`; sanitizasyon saf modüle çıkarıldı (`@/lib/chat-sanitize`, Vitest node ile test edilebilir): rol whitelist, boş içerik filtresi, son 12 mesaj, **per-mesaj UTF-8 byte-cap 8192 → aşımda 400 reddet** (sessiz kırpma yok), sonda user mesajı zorunlu. OpenAI-uyumlu `chat.completions.create({ stream: true, temperature: 0.2 })` ile text/plain stream, `max_tokens: 1024` (`temperature: 0.2` marka sesi tutarlılığı + script sızıntısı bastırma — 18.07).
+**Açıklama:** `src/app/api/chat/route.ts` — Node.js runtime (max 30s). Varsayılan model `process.env.CHAT_MODEL ?? "qwen/qwen3.8-27b"` (Groq). System prompt: Kiwi asistanı kimliği, **kullanıcının son mesajının dilinde yanıt** (TR/EN/AR/DE/ES; **tek dil/tek script — başka dil/karakter karıştırma yok**; yalnız dil gerçekten belirlenemezse TR fallback — TASK-18.07 marka mührü gate'inde sertleştirildi, "Default to Turkish if unclear" kaldırıldı), çıktı-odaklı/sade ton, **"fiyat/rakam/istatistik/tarih uydurma yasağı"** (dürüstlük konvansiyonu), satın-alma niyetinde "ücretsiz keşif görüşmesi"/e-posta (`kivanc@kiwiailab.com`) önerisi, 2–3 cümle yanıt. POST `{messages:[...]}`; sanitizasyon saf modüle çıkarıldı (`@/lib/chat-sanitize`, Vitest node ile test edilebilir): rol whitelist, boş içerik filtresi, son 12 mesaj, **per-mesaj UTF-8 byte-cap 8192 → aşımda 400 reddet** (sessiz kırpma yok), sonda user mesajı zorunlu. OpenAI-uyumlu `chat.completions.create({ stream: true, temperature: 0.2 })` ile text/plain stream, `max_tokens: 1024` (`temperature: 0.2` marka sesi tutarlılığı + script sızıntısı bastırma — 18.07).
 
 **Kabul Kriterleri:**
 - `GROQ_API_KEY` yoksa istek zarif şekilde başarısız olur (503; UI "offline" gösterir).
@@ -46,7 +46,8 @@
 ## Teknik Notlar
 
 - "Thinking" durumu Living Flow imzasını taklit eder — generic yükleniyor spinner'ı / "online" noktası kullanılmaz (brief).
-- Groq SDK versiyonu `^1.3.0` (OpenAI-uyumlu API); model varsayılanı `llama-3.3-70b-versatile`.
+- Groq SDK versiyonu `^1.3.0` (OpenAI-uyumlu API); model varsayılanı `qwen/qwen3.8-27b`. Groq `llama-3.3-70b-versatile`'ı 2026-07 ile 2026-09 arasında emekliye ayırdı (canlı 404 `model_not_found`) → TASK-18.08 go-live'ında model yeniden seçildi; sağlayıcı/SDK/mimari değişmedi (DECISIONS 2026-09-11).
+- Ücretsiz kota (2026-09): 1.000 istek/gün + **8.000 token/dakika**. İstek başına ~1.500 token rezerve edilir (system prompt + `max_tokens: 1024`) → dakikada ~5 eşzamanlı istekten sonra Groq 429 döner ve mevcut zarif offline fallback devreye girer.
 - Vercel'de canlı çalışması için env'e `GROQ_API_KEY` eklenmeli.
 - Bekleyen iş: chatbot'u gerçek "book a call" formuna/akışına bağlama (MASTER_PROMPT v2 §8).
 

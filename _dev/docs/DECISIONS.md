@@ -9,6 +9,35 @@
 
 <!-- Her yeni karar aşağıdaki formatta en üste eklenir (en yeni en üstte) -->
 
+### 2026-09-11 — Chatbot modeli `llama-3.3-70b-versatile` → `qwen/qwen3.8-27b` (Groq modeli emekliye ayırdı; sağlayıcı kararı korunur)
+
+**Bağlam:** TASK-18.08 (go-live). Kullanıcı `GROQ_API_KEY`'i Vercel Production env'e ekledi, redeploy sonrası canlı `/api/chat` **503'ten 200'e** döndü ama stream **hata fallback'ine** düştü. Vercel runtime log'u kesin sebebi verdi: Groq **404 `model_not_found`** — *"The model `llama-3.3-70b-versatile` does not exist or you do not have access to it."* Anahtar geçerli (hata 401 değil). Groq model kataloğu kontrol edildi: **Llama sohbet modellerinin tamamı listeden kalkmış** (2026-07 research'te "üretim modeli, deprecated değil" diye doğrulanmıştı — aradan ~7 hafta geçti). Kalan genel sohbet modelleri: `openai/gpt-oss-{120b,20b}`, `qwen/qwen3.{6,8}-27b`, `groq/compound{,-mini}`.
+
+**Kısıt:** `gpt-oss-120b` DECISIONS 2026-07-21'de **bilinçli elenmişti** (fiyat sorularına uydurma rakam + TR'yi saymama). Elenme gerekçesinin bir kısmı o tarihten sonra prompt'ta kapatıldığı için (TR-birincil dil kuralı + "asla rakam uydurma" yasağı) aday **yeniden sınandı** — kör reddetme değil, kanıtla.
+
+**Yöntem:** TASK-18.07'nin marka mührü kapısı adaylara yeniden uygulandı — `route.ts`'ten runtime çıkarılan nihai SYSTEM_PROMPT/`max_tokens`/`temperature` (sıfır drift) + 5 dil (TR/EN/AR/DE/ES) × 3 temsili soru (fiyat-dürüstlük probu / "Crew OS nedir" / gym) = 15 yanıt/model; mekanik garble (CJK/Hangul/Kiril/Kana) + `bunker` sızıntısı + para/yüzde deseni dedektörleri. Ön-eleme: `qwen3.6-27b` `<think>` bloklarını yanıt gövdesine sızdırdığı için elendi; `compound-mini` (yerleşik web arama, agentic sistem) gereksiz ve yavaş bulundu.
+
+**Sonuçlar:**
+
+| Model | Dil sadakati | Garble | Taksonomi | Dürüstlük | Kesik | Gecikme |
+|---|---|---|---|---|---|---|
+| `qwen/qwen3.8-27b` | 15/15 | 0/15 | 0 Bunker | **0 ihlal** | 0 | 340–590ms |
+| `openai/gpt-oss-120b` | 15/15 | 0/15 | 0 Bunker | **2 ihlal** | 0 | ~1.2s |
+
+`gpt-oss-120b`'nin ihlalleri temmuzdaki elenme gerekçesinin birebir tekrarı, üstelik **sertleştirilmiş prompt altında**: ES gym yanıtında uydurma müşteri sonucu ("reduce en un 30 % el tiempo de gestión"), TR fiyat yanıtında uydurma aralık ("ayda birkaç bin TL civarında olabilir"). `qwen3.8-27b` aynı fiyat sorusunda rakam vermeyi **açıkça reddedip** keşif görüşmesine yönlendirdi (5 dilin hepsinde).
+
+**Seçenekler (AskUserQuestion):** (1) `qwen/qwen3.8-27b` — kapıyı temiz geçti. (2) `openai/gpt-oss-120b` — dürüstlük tavizi. (3) Daha geniş test. (4) Durdur, model seçimini ayrı işe bırak.
+
+**Karar (kullanıcı onaylı — Seçenek 1):** Varsayılan model `process.env.CHAT_MODEL ?? "qwen/qwen3.8-27b"`. **Değişen tek şey model adıdır** — sağlayıcı (Groq), SDK (`groq-sdk`), OpenAI-uyumlu streaming/sanitizasyon/zarif-offline sözleşmesi, system prompt, `temperature: 0.2`, `max_tokens: 1024` ve `CHAT_MODEL` override deseni (C.5) **korundu**. 2026-07-21 sağlayıcı kararı ve onun **dürüstlük-eleme kriteri** geçerliliğini koruyor; bu kayıt o kriterin ikinci kez uygulanmasıdır.
+
+**Operasyonel not (dürüst kayıt):** Ücretsiz kota 2026-09 itibarıyla **1.000 istek/gün + 8.000 token/dakika**. İstek başına ~1.500 token rezerve edilir (system prompt + `max_tokens: 1024`) → dakikada ~5 eşzamanlı istekten sonra Groq 429 döner, mevcut zarif offline fallback devreye girer. Tanıtım trafiği için yeterli; kapasite sıkışırsa ilk ucuz kaldıraç `max_tokens`'ı düşürmektir (yanıtlar zaten 2–3 cümle, gözlemlenen en uzun çıktı ~509 karakter) — numarasız aday.
+
+**Ders (memory'ye taşındı):** Üçüncü-parti model adları **bozulabilir bağımlılıktır**; "research'te deprecated değil" damgası haftalar sonra geçersizleşebilir ve hata yalnız **canlı runtime log'unda** görünür (build ve testler yakalamaz). → [groq-model-emekliligi](../memory/groq-model-emekliligi-runtime-404.md).
+
+**İlgili Task/Faz:** Faz 18 / TASK-18.08 (go-live). PHASE-18 C.5 + Araştırma Bulguları model satırı bu kayda pointer'landı.
+
+---
+
 ### 2026-07-22 — Chatbot system prompt dil kuralı sertleştirildi + `temperature: 0.2` (5-dil marka mührü gate bulgusu; C.3/C.5 refine)
 
 **Bağlam:** TASK-18.07 (kabul kriteri 4 — canlıya almadan 5-dil çıktı gözle doğrulama). Nihai `route.ts` prompt+model'iyle serversiz node harness (test key `.env.keys.local`, sandbox exit-144'ten kaçınıldı) 5 dil × 4 temsili soru koşuldu. **1. koşu reprodüktif başarısız** (2 tam koşu): (a) İngilizce sorular tutarlı biçimde **Türkçe/Korece'ye düştü** ("Do you offer automation for my gym?" 4/4 TR; "What is Crew OS?" 1 koşuda Korece) — kök neden prompt'taki *"Default to Turkish if unclear"* + llama-3.3-70b'nin kısa/özel-adlı EN sorularında zayıf dil algılaması; (b) **çok-dilli script bozulması** (CJK/Hangul/Kiril/Vietnamca karakter sızıntısı) TR/EN/AR'de aralıklı, craft'ı bozuyor. **Sağlam kalanlar:** dürüstlük 5/5 (uydurma rakam yok), Crew OS taksonomisi 5/5 (Bunker sızmadı).

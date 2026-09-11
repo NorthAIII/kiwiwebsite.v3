@@ -28,7 +28,7 @@ The site renders fully without an API key; only the chatbot needs one (it shows 
 | Var | Required | Purpose |
 | --- | --- | --- |
 | `GROQ_API_KEY` | for the chatbot | Powers the live assistant (`/api/chat`) |
-| `CHAT_MODEL` | optional | Defaults to `llama-3.3-70b-versatile`; see [Groq models](https://console.groq.com/docs/models) for alternatives |
+| `CHAT_MODEL` | optional | Defaults to `qwen/qwen3.8-27b`; see [Groq models](https://console.groq.com/docs/models) for alternatives |
 
 ## Deploy to Vercel
 

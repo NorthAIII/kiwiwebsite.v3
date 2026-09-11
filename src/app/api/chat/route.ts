@@ -4,7 +4,7 @@ import { sanitizeMessages } from "@/lib/chat-sanitize";
 export const runtime = "nodejs";
 export const maxDuration = 30;
 
-const MODEL = process.env.CHAT_MODEL ?? "llama-3.3-70b-versatile";
+const MODEL = process.env.CHAT_MODEL ?? "qwen/qwen3.8-27b";
 
 const SYSTEM_PROMPT = `You are the assistant for Kiwi AI Lab, an AI automation agency.
 
