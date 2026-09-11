@@ -80,7 +80,7 @@
 | 18.06 | TASK-18.06 | ✅ Tamamlandı | `_dev/` stack dokümanları — M5 + OVERVIEW (Korumalı → onay alındı) + MEMORY env (kabul kriteri 5) |
 | 18.07 | TASK-18.07 | ✅ Tamamlandı | 5-dil gözle doğrulama gate (kabul kriteri 4 — marka mührü); 1. koşu başarısız → prompt sertleştirildi + `temperature: 0.2` → 2 koşu GREEN |
 | 18.08 | TASK-18.08 | ✅ Tamamlandı | Go-live — GROQ_API_KEY Vercel env + merge v0.5 → main + canlı duman testi; **iki canlı arıza** (model emekliliği + OTPM) teşhis edilip düzeltildi (milestone) |
-| 18.09 | TASK-18.09 | ⬜ Bekliyor | **Düzeltme (verify 18):** girdi daraltma + hacim sınırı — sanitizer `{role,content}`'e indirger, mesaj sayısı + toplam byte sınırı (UAT 20/21) |
+| 18.09 | TASK-18.09 | ✅ Tamamlandı | **Düzeltme (verify 18):** girdi daraltma + hacim sınırı — mesaj `{role,content}`'e indirgeniyor, `MAX_INCOMING_MESSAGES` 100 + `MAX_TOTAL_BYTES` 16384 (UAT 20/21); Vitest 52→64 |
 | 18.10 | TASK-18.10 | ⬜ Bekliyor | **Düzeltme (verify 18):** marka mührü kopyası — SYSTEM_PROMPT CTA atfı + DE hitap kuralı + README model ailesi (UAT 19/28/29) |
 
 **Durum simgeleri:** ⬜ Bekliyor | 🔄 Devam ediyor | ⏸️ Duraklatıldı | ✅ Tamamlandı | 🔴 Bloke | ❌ İptal
