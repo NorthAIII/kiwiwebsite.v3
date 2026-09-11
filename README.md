@@ -11,7 +11,7 @@ Built per [`MASTER_PROMPT.md`](MASTER_PROMPT.md). This is **Phase 1**: one deplo
 - **GSAP + ScrollTrigger** + **Lenis** smooth scroll · custom cursor
 - **next-intl** — EN default, AR/DE/ES scaffolded (locale-prefixed routes, RTL-ready)
 - **Fraunces** (display serif) + **Geist** (grotesque sans)
-- **groq-sdk** — live streaming multilingual chatbot (Llama 3.3 on Groq)
+- **groq-sdk** — live streaming multilingual chatbot on Groq (model set via `CHAT_MODEL`, see below)
 
 ## Local development
 

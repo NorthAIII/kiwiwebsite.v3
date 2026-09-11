@@ -9,6 +9,26 @@
 
 <!-- Her yeni karar aşağıdaki formatta en üste eklenir (en yeni en üstte) -->
 
+### 2026-09-11 — Chatbot prompt'u ziyaretçi arayüzüne **betimleyici** atıf yapar; sabit UI etiketi gömülmez (+ dil-başına hitap düzeyi)
+
+**Bağlam:** TASK-18.10 (verify 18 düzeltme turu). Canlı UAT senaryo 28 + 29 iki kopya kusuru buldu. (1) SYSTEM_PROMPT ziyaretçiyi `the "Book a call" button`'a yönlendiriyordu; sitede o etiketli buton **hiçbir locale'de yok** (TR «Ücretsiz keşif görüşmesi al», DE «Kostenloses Erstgespräch buchen», AR «احجز مكالمة استكشافية مجانية», EN «Book a free discovery call», ES «Agenda una llamada de descubrimiento gratuita»). Canlı TR ve AR yanıtları İngilizce etiketi tırnak içinde andı → ziyaretçi sayfada olmayan bir adı arar (dürüstlük konvansiyonu) ve dört dilde İngilizce sızıntısı doğar (18.07'nin "tek dil / tek script" kuralıyla gerginlik). Etiket Anthropic dönemi prompt'undan değişmeden taşınmıştı; 18.07'nin kapısı bu ekseni ölçmüyordu. (2) `messages/de.json` **%100 formal** (20 `Sie` / 7 `Ihre` / 6 `Ihr` / 2 `Ihnen`, 0 `du`) ama canlı DE yanıtı `deine`/`Du` kullandı — prompt hitap düzeyi hakkında hiçbir şey söylemiyordu, model kendi varsayılanına düşüyordu.
+
+**Seçenekler:** (1) Prompt'a beş locale'in CTA etiketini tek tek göm. (2) Etiketi tırnaklı sabit ad olmaktan çıkar, butona **işlevine göre** atıf yap ve modele etiket alıntılamayı yasakla. (3) Yalnız DE hitabını düzelt, CTA'ya dokunma.
+
+**Karar — Seçenek 2, hitap kuralı beş dile birden yazıldı:**
+- **Atıf konvansiyonu (kalıcı):** Çeviri sistemine bağlı olmayan bir yüzey (chatbot prompt'u, README, doküman) ziyaretçiye görünen bir UI öğesine atıf yapacaksa **etiketi kopyalamaz, işlevini betimler** ("the free discovery call button on the page") ve yanıt kendi dilinde yazar. Prompt'a ayrıca açık yasak eklendi: buton adını tırnak içinde ya da başka bir dilde alıntılama yok. E-posta CTA'sı (`kivanc@kiwiailab.com`) sabit kalır — o beş dilde de doğru.
+- **Hitap düzeyi:** Prompt artık sitenin hitabını izlemeyi söylüyor — TR formal (siz), DE formal (Sie), ES samimi (tú), AR ikinci tekil şahıs, EN nötr; tek düzey tüm yanıt boyunca korunur. Kapsam beş dil, çünkü tek dili düzeltmek aynı sınıfın diğer varyantlarını açık bırakır.
+
+**Gerekçe:** Etiketi gömmek tam da bu bulgunun kök nedenini yeniden üretir — site kopyası `messages/*.json`'da değişince prompt sessizce bayatlar ve bot var olmayan bir butona yönlendirir. Betimleyici atıf i18n'e bağımlı değildir, beş dilde de doğru kalır ve dil sızıntısı yaratmaz. Tek kaynak ilkesi (model adı yalnız tek yerde tutulur — 2026-09-11 kararı) aynı oturumda `README.md:14`'e de uygulandı: satır artık yalnız sağlayıcıyı/SDK'yı anıyor, model varsayılanı yalnız env tablosunda.
+
+**Doğrulama:** 18.07'nin marka mührü harness'i (route.ts'ten runtime çıkarılan prompt/model/parametreler — sıfır drift) 5 dil × 4 temsili soru ile **iki kez** koşuldu: **2 × 20 yanıt, 0 ihlal.** Yeni eksenler temiz (hiçbir yanıt buton adı alıntılamadı; DE 4/4 `Sie`/`Ihre`, 0 `du`/`dein`) ve 18.07 regresyon eksenleri bozulmadı (dil sadakati 5/5 · garble 0 · `Bunker` 0 · fiyat probunda uydurma rakam 0). Kapının kendisi bozuk girdiyle sınandı: canlıda ölçülen kusurlu yanıt sınıflarına 8 ihlalle kırmızı bastı, boş kapsamda PASS basmadı (exit 2).
+
+**Sapmayanlar:** `temperature: 0.2`, `max_tokens: 512`, dürüstlük yasağı ve 18.07'nin dil bloğu **değişmedi** — prompt'a yalnız ekleme yapıldı. `messages/*.json` dosyalarına dokunulmadı, i18n anahtar paritesi etkilenmedi.
+
+**İlgili Task/Faz:** TASK-18.10 (Faz 18, verify düzeltme turu 2/2)
+
+---
+
 ### 2026-09-11 — Chatbot modeli `llama-3.3-70b-versatile` → `qwen/qwen3.8-27b` (Groq modeli emekliye ayırdı; sağlayıcı kararı korunur)
 
 **Bağlam:** TASK-18.08 (go-live). Kullanıcı `GROQ_API_KEY`'i Vercel Production env'e ekledi, redeploy sonrası canlı `/api/chat` **503'ten 200'e** döndü ama stream **hata fallback'ine** düştü. Vercel runtime log'u kesin sebebi verdi: Groq **404 `model_not_found`** — *"The model `llama-3.3-70b-versatile` does not exist or you do not have access to it."* Anahtar geçerli (hata 401 değil). Groq model kataloğu kontrol edildi: **Llama sohbet modellerinin tamamı listeden kalkmış** (2026-07 research'te "üretim modeli, deprecated değil" diye doğrulanmıştı — aradan ~7 hafta geçti). Kalan genel sohbet modelleri: `openai/gpt-oss-{120b,20b}`, `qwen/qwen3.{6,8}-27b`, `groq/compound{,-mini}`.
