@@ -6,6 +6,18 @@ export const maxDuration = 30;
 
 const MODEL = process.env.CHAT_MODEL ?? "qwen/qwen3.8-27b";
 
+// Üst-akış zaman aşımı (TASK-18.11). Değerler tahminle değil ölçümle seçildi —
+// canlı 20 çağrı (2026-09-12): ilk-token p50 369ms · p90 7.4s · en yavaş BAŞARILI
+// yanıt 17.4s; parçalar arası en büyük boşluk 73ms; 20 çağrının 1'i 30s'de 504.
+// Platformun maxDuration=30'u tek kapı olduğunda fonksiyon öldürülür ve aşağıdaki
+// catch HİÇ çalışmaz — ziyaretçi 30s bekleyip ham 504 alır. Bu sınırlar o kapıdan
+// önce devreye girer, böylece asılı çağrı bizim fallback metnimizle kapanır.
+const FIRST_TOKEN_TIMEOUT_MS = 20_000; // ölçülen en yavaş meşru yanıtın (17.4s) üstünde
+const STREAM_IDLE_TIMEOUT_MS = 5_000; // ölçülen en büyük parça arası boşluğun (73ms) ~68 katı
+const TOTAL_BUDGET_MS = 24_000; // hiçbir bileşim maxDuration=30'a yaklaşamasın
+
+const FALLBACK_MESSAGE = "\n\n(Asistan bir hataya takıldı. Lütfen tekrar deneyin.)";
+
 const SYSTEM_PROMPT = `You are the assistant for Kiwi AI Lab, an AI automation agency.
 
 What Kiwi AI Lab does: we map a business, find where repetitive work leaks time and money, and wire it to automation — recurring tasks, messages (SMS/WhatsApp), and approval chains. We ship sector-ready products (gyms, clinics, e-commerce, real estate), run 7/24 assistants, and work 1:1 with the founder. Our flagship layer is Crew OS, where a client's automations live and run, observable and measured.
@@ -45,7 +57,28 @@ export async function POST(req: Request) {
 
   const stream = new ReadableStream<Uint8Array>({
     async start(controller) {
+      // Tek iptal sinyali, yeniden kurulabilir bekçi: ilk token için uzun,
+      // parçalar arası sessizlik için kısa sınır — ikisi de aynı controller'ı
+      // iptal eder ve toplam bütçeyle kırpılır.
+      const upstream = new AbortController();
+      const startedAt = Date.now();
+      let timedOut = false;
+      let watchdog: ReturnType<typeof setTimeout> | undefined;
+
+      const arm = (ms: number) => {
+        clearTimeout(watchdog);
+        const budgetLeft = TOTAL_BUDGET_MS - (Date.now() - startedAt);
+        watchdog = setTimeout(
+          () => {
+            timedOut = true;
+            upstream.abort();
+          },
+          Math.max(0, Math.min(ms, budgetLeft))
+        );
+      };
+
       try {
+        arm(FIRST_TOKEN_TIMEOUT_MS);
         // OpenAI-uyumlu: system prompt messages dizisinin ILK elemanı (Groq drop-in).
         const completion = await client.chat.completions.create({
           model: MODEL,
@@ -59,20 +92,44 @@ export async function POST(req: Request) {
           temperature: 0.2,
           stream: true,
           messages: [{ role: "system", content: SYSTEM_PROMPT }, ...sanitized],
+        }, {
+          signal: upstream.signal,
+          // Retry KAPALI: SDK varsayılanı 2 ve yeniden deneme uykusu üst-akışın
+          // `retry-after` başlığını dinliyor — ücretsiz tier kota dolduğunda bu
+          // dakikalar sürebilir ve uyku bizim AbortSignal'imizle kesilemez, yani
+          // retry ziyaretçiyi tam da kaldırdığımız 30s duvarına iter. Zarif
+          // degradasyon zaten bizde: hata anında fallback metni akar.
+          maxRetries: 0,
         });
 
         for await (const chunk of completion) {
+          arm(STREAM_IDLE_TIMEOUT_MS);
           controller.enqueue(
             encoder.encode(chunk.choices[0]?.delta?.content ?? "")
           );
         }
+
+        // Akış ortasında iptal ettiysek buraya SESSİZCE düşeriz: groq-sdk'nın SSE
+        // iteratörü abort'u yutar (Stream.fromSSEResponse → `if (isAbortError(e)) return`),
+        // yani catch çalışmaz. Fallback burada enqueue edilmezse ziyaretçi yarım
+        // cümlede asılı kalır.
+        if (timedOut) {
+          console.error(
+            `chat stream timeout (mid-stream) after ${Date.now() - startedAt}ms`
+          );
+          controller.enqueue(encoder.encode(FALLBACK_MESSAGE));
+        }
       } catch (err) {
-        console.error("chat stream error", err);
-        // surface a clean fallback to the client rather than a hard cut
-        controller.enqueue(
-          encoder.encode("\n\n(Asistan bir hataya takıldı. Lütfen tekrar deneyin.)")
+        console.error(
+          timedOut
+            ? `chat stream timeout (no first token) after ${Date.now() - startedAt}ms`
+            : "chat stream error",
+          err
         );
+        // surface a clean fallback to the client rather than a hard cut
+        controller.enqueue(encoder.encode(FALLBACK_MESSAGE));
       } finally {
+        clearTimeout(watchdog);
         controller.close();
       }
     },

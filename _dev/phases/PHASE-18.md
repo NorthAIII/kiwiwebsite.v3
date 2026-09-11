@@ -82,7 +82,7 @@
 | 18.08 | TASK-18.08 | ✅ Tamamlandı | Go-live — GROQ_API_KEY Vercel env + merge v0.5 → main + canlı duman testi; **iki canlı arıza** (model emekliliği + OTPM) teşhis edilip düzeltildi (milestone) |
 | 18.09 | TASK-18.09 | ✅ Tamamlandı | **Düzeltme (verify 18):** girdi daraltma + hacim sınırı — mesaj `{role,content}`'e indirgeniyor, `MAX_INCOMING_MESSAGES` 100 + `MAX_TOTAL_BYTES` 16384 (UAT 20/21); Vitest 52→64 |
 | 18.10 | TASK-18.10 | ✅ Tamamlandı | **Düzeltme (verify 18):** marka mührü kopyası — betimleyici CTA atfı + etiket-alıntılama yasağı, 5 dil hitap kuralı, README model ailesi (UAT 19/28/29); harness 2×20 yanıt 0 ihlal |
-| 18.11 | TASK-18.11 | ⬜ Bekliyor | **Düzeltme (verify 18, 2. tur):** üst-akış zaman aşımı — asılı Groq çağrısı `maxDuration = 30`'a dayanıp ziyaretçiyi 30 s bekletiyor (UAT senaryo 33; 47 canlı çağrının 2'si 504) |
+| 18.11 | TASK-18.11 | ✅ Tamamlandı | **Düzeltme (verify 18, 2. tur):** üst-akış zaman aşımı — ilk token 20 s · sessizlik 5 s · toplam 24 s + SDK retry kapalı; değer canlı ölçümle seçildi (en yavaş meşru yanıt 17,4 s) ve kullanıcı onayladı (UAT 33); Vitest 64→69 |
 
 **Durum simgeleri:** ⬜ Bekliyor | 🔄 Devam ediyor | ⏸️ Duraklatıldı | ✅ Tamamlandı | 🔴 Bloke | ❌ İptal
 

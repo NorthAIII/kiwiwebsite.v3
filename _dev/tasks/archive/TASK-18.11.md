@@ -1,6 +1,6 @@
 # TASK-18.11: Üst-akış zaman aşımı — asılı Groq çağrısı ziyaretçiyi 30 s bekletmesin
 
-**Durum:** ⬜ Bekliyor
+**Durum:** ✅ Tamamlandı
 **Modül:** M5 — Chatbot & API (`modules/M5-Chatbot-API.md`)
 **Feature:** C1 (chatbot sağlayıcı geçişi + canlıya alma) — kabul kriteri 1'in "zarif offline korunur" ayağı
 **Faz:** Phase 18 (`phases/PHASE-18.md`)
@@ -44,17 +44,17 @@ Faz kapsamıyla ilişki: discuss-phase'in hardening kararı per-mesaj byte cap't
 
 ## Alt Görevler
 
-- [ ] **1. Üst-akış zaman aşımı ekle**
+- [x] **1. Üst-akış zaman aşımı ekle**
   - `client.chat.completions.create(...)` çağrısına iptal sinyali ver (`groq-sdk` istek seçeneklerinde `signal` / `timeout` desteği önce doğrulanır — SDK'nın kendi seçeneği varsa o tercih edilir, yoksa `AbortSignal.timeout(...)`)
   - Değer `maxDuration = 30`'un **altında** kalmalı; ölçülen p90 (7,5 s) ile 30 s tavanı arasında bir pay bırakılır
   - Dosya: `src/app/api/chat/route.ts`
 
-- [ ] **2. Stream-ortası asılmayı da kapat**
+- [x] **2. Stream-ortası asılmayı da kapat**
   - İlk token geldikten sonra akış durursa `!res.ok` kapısı devrede **değildir** (başlıklar gönderilmiştir) → ziyaretçi yarım mesajla kalır. Parçalar arası sessizlik için de bir üst sınır gerekir (chunk'lar arası zamanlayıcı ya da tüm okuma döngüsü için tek sinyal)
   - Zaman aşımında mevcut TR fallback metni **enqueue edilir** (hard-cut yok — kriter 1)
   - Dosya: `src/app/api/chat/route.ts`
 
-- [ ] **3. Davranışı testle mühürle**
+- [x] **3. Davranışı testle mühürle**
   - Asılı/yavaş sağlayıcı taklidi ile: zaman aşımı sınırında yanıtın 200 + fallback metniyle kapandığını, `maxDuration`'a hiç dayanmadığını sınayan test
   - Dosya: `tests/` (uygun katman seçilir — route seviyesinde `fetch` stub'ı yeterli, LLM gerekmez)
 
@@ -85,12 +85,12 @@ tests/
 
 ## Test Kriterleri
 
-- [ ] Asılı sağlayıcı taklidi: istek **zaman aşımı sınırında** kapanıyor, `maxDuration`'a (30 s) hiç dayanmıyor — ölçülen süre loglanır
-- [ ] Asılı sağlayıcıda yanıt **200 + TR fallback metni** (hard-cut yok, 504 yok) — kriter 1'in "zarif offline" ayağı
-- [ ] Stream-ortası sessizlik: ilk token geldikten sonra akış durursa yanıt fallback metniyle **kapanıyor**, yarım mesajda asılı kalmıyor
-- [ ] Negatif kontrol: normal hızlı yanıt (ve ölçülen p90 civarındaki yavaş yanıt) **kesilmiyor** — meşru trafik etkilenmiyor
-- [ ] Ürettiğim kapıyı sınadım: zaman aşımı kodu geçici olarak devre dışı bırakılınca yeni test **kırmızı** oluyor
-- [ ] `npm run test` yeşil (mevcut 64 test kırılmaz) + `next build` exit 0
+- [x] Asılı sağlayıcı taklidi: istek **zaman aşımı sınırında** kapanıyor, `maxDuration`'a (30 s) hiç dayanmıyor — ölçülen süre loglanır
+- [x] Asılı sağlayıcıda yanıt **200 + TR fallback metni** (hard-cut yok, 504 yok) — kriter 1'in "zarif offline" ayağı
+- [x] Stream-ortası sessizlik: ilk token geldikten sonra akış durursa yanıt fallback metniyle **kapanıyor**, yarım mesajda asılı kalmıyor
+- [x] Negatif kontrol: normal hızlı yanıt (ve ölçülen p90 civarındaki yavaş yanıt) **kesilmiyor** — meşru trafik etkilenmiyor
+- [x] Ürettiğim kapıyı sınadım: zaman aşımı kodu geçici olarak devre dışı bırakılınca yeni test **kırmızı** oluyor
+- [x] `npm run test` yeşil (mevcut 64 test kırılmaz) + `next build` exit 0
 - [ ] `kanal: UAT` — canlı `/api/chat`'te 504 oranı yeniden ölçülür (en az ~30 çağrı); sonucu belirleyen katman canlı serving zinciridir, yerel stub değil
 
 ---
@@ -112,19 +112,71 @@ tests/
 
 ## Tamamlanma Kriterleri
 
-- [ ] Tüm alt görevler tamamlandı
-- [ ] Tüm test kriterleri karşılandı
-- [ ] Git commit & push yapıldı (conventional commits formatı)
-- [ ] Bu doküman güncellendi (oturum kaydı)
-- [ ] DURUM.md güncellendi
+- [x] Tüm alt görevler tamamlandı
+- [x] Tüm test kriterleri karşılandı
+- [x] Git commit & push yapıldı (conventional commits formatı)
+- [x] Bu doküman güncellendi (oturum kaydı)
+- [x] DURUM.md güncellendi
 
 ---
 
 ## Oturum Kayıtları
 
-### Oturum — [TARİH]
+### Oturum — 2026-09-12
 
-**Durum:** [⬜ Bekliyor]
+**Durum:** ✅ Tamamlandı
+
+**Yapılanlar:**
+- **Ölçüm önce, değer sonra.** Canlı `/api/chat`'e 20 çağrı atıldı (TTFB + parça-arası boşluk + toplam süre ölçüldü). Bulgu, task yazılırken elde olan p90 7,5 s tablosunu **değiştirdi**: ilk-token p50 369 ms · p90 7,4 s · **en yavaş BAŞARILI yanıt 17,4 s**; parçalar arası en büyük boşluk **73 ms**; 20 çağrının 1'i yine **30,2 s'de 504** (arıza canlıda yeniden üretildi).
+- **Üç sınır, tek sinyal.** `route.ts`'te tek `AbortController` + yeniden kurulabilir bekçi (`arm()`): ilk token için **20 s**, parçalar arası sessizlik için **5 s**, hepsinin üstünde **24 s toplam bütçe** (her kurulumda kalan bütçeyle kırpılır). Üçü de `maxDuration = 30`'un altında kalır → fonksiyon platformca öldürülmez, kendi `catch`'imiz çalışır.
+- **SDK retry'ı kapatıldı** (`maxRetries: 0`): groq-sdk'nın yeniden deneme uykusu üst-akışın `retry-after` başlığını dinliyor ve bizim `AbortSignal`'imizle kesilemiyor — ücretsiz tier kota dolduğunda tam da kaldırdığımız 30 s duvarını geri getirirdi.
+- **Stream-ortası ayak ayrıca kapatıldı:** groq-sdk'nın SSE iteratörü abort'u **sessizce yutuyor** (`Stream.fromSSEResponse` → `if (isAbortError(e)) return`), yani ortada iptal edilen akışta `catch` **hiç çalışmıyor**. Döngü sonrasına `if (timedOut)` kapısı konuldu; fallback orada enqueue ediliyor.
+- **5 yeni test** (`tests/chat-route-timeout.test.ts`): gerçek `route.ts` + gerçek `groq-sdk`, yalnız `globalThis.fetch` sahte (SDK istemciyi POST içinde kurup fetch'i o an global'den alıyor → SDK'nın gerçek abort/stream semantiği ölçülüyor), zaman `vi.useFakeTimers` ile sanal.
+
+**Sorunlar:**
+- *Zaman aşımı değeri task'ın önerdiği aralıkla çelişti:* task (A) ~12–15 s öneriyordu, ama bugünkü ölçümde **başarılı** bir yanıt 17,4 s sürdü — 12–15 s o yanıtı hata metnine çevirirdi ("meşru yavaş yanıtı kesme" uyarısı). Ölçüm öneriyi geçersiz kıldığı için değer kullanıcıya soruldu → **20 s onaylandı**.
+- *Stream-ortası iptal sessizce geçiyordu:* ilk kurulumda yalnız abort vardı; groq-sdk'nın abort'u yutması yüzünden ziyaretçi yarım cümlede kalıyordu. Gate A2 bunu birebir gösterdi (aşağıda).
+
+**Kararlar:**
+- **İlk token 20 s / sessizlik 5 s / toplam 24 s:** 20 s ölçülen en yavaş meşru yanıtın (17,4 s) üstünde, 5 s ölçülen en büyük parça-arası boşluğun (73 ms) ~68 katı, 24 s `maxDuration = 30`'a 6 s pay bırakır. Kazanç yalnız "8 s daha az bekleme" değil: bekleyiş artık platform tarafından öldürülmekle değil **bizim dürüst fallback metnimizle** bitiyor.
+- **`maxRetries: 0`:** zarif degradasyon zaten bizde; SDK retry'ı yalnız `retry-after` uykusuyla bütçeyi patlatma riski getiriyor.
+- docs/DECISIONS.md'ye eklendi: **Evet** (2026-09-12).
+
+**Kalan İşler:**
+- Canlı 504 oranının yeniden ölçümü **`kanal: UAT`** — sonucu belirleyen katman canlı serving zinciri; bu oturumun işi değil, `verify-phase` Adım'ına ait (task kriterinde de öyle işaretli).
+
+**Son Yaklaşım:** Task kapandı; kalan tek ayak canlı ölçüm ve o UAT kanalına ait.
+
+**Sonraki Adım Detayı:** `/devflow:verify-phase 18` — faz baştan koşulur; senaryo 33 yeniden ölçülür (≥30 canlı çağrı, 504 oranı + ziyaretçinin gördüğü metin).
+
+**Dosya Değişiklikleri:**
+- `src/app/api/chat/route.ts` → üç zaman sınırı sabiti + `FALLBACK_MESSAGE` tek yere alındı; `start(controller)` içinde `AbortController` + `arm()` bekçisi; `create()` çağrısına `signal` + `maxRetries: 0`; döngü içinde her parçada bekçi yeniden kurulur; döngü sonrasında `if (timedOut)` fallback kapısı; `finally`'de `clearTimeout`.
+- `tests/chat-route-timeout.test.ts` → YENİ, 5 test.
+- `_dev/modules/M5-Chatbot-API.md` · `_dev/docs/DECISIONS.md` · `_dev/DURUM.md` · `_dev/phases/PHASE-18.md` → kayıt.
+
+**Test Sonuçları:**
+- **Yeni suite (yerel, sahte HTTP katmanı — canlı serving zinciri kapsam dışı):** 5/5 yeşil, 162 ms. Kapsam: ilk-token asılması · stream-ortası sessizlik · sınır-altı sonsuz damlama (toplam bütçe) · hızlı yanıt negatif kontrolü · **17,4 s'lik meşru yavaş yanıt** negatif kontrolü.
+- **Tam suite:** Vitest **69/69** (7 dosya; 64 → 69). `npx tsc --noEmit` exit 0. `next build` exit 0 (37 sayfa).
+- **Ürettiğim kapıyı sınadım — bozuk girdi, iki ayrı bozma:**
+  - *Gate A1 (bekçi tamamen devre dışı = düzeltme öncesi hâl):* 3 test **kırmızı** (ilk-token · stream-ortası · toplam bütçe), 2 negatif kontrol yeşil kaldı — yeşil kalan ayak silinmedi, doğru ayağın neyi ölçtüğünü kanıtlayan kontrol grubu odur.
+  - *Gate A2 (abort duruyor, yalnız stream-ortası `if (timedOut)` fallback'i kaldırıldı):* 2 test **kırmızı** ("yarım mesajda kalıyor"), ilk-token testi **yeşil** kaldı — iki ayağın gerçekten farklı şeyi ölçtüğü böyle görüldü. groq-sdk'nın abort'u yutması tam burada görünür hâle geldi.
+- **Ürettiğim kapıyı sınadım — boş kapsam:** `GROQ_API_KEY` boşaltılınca route üst-akışa hiç gitmiyor; suite **sessizce PASS basmadı**, 5 testin 5'i `expected "vi.fn()" to be called at least once` ile kırmızı oldu (her test sahte fetch'in çağrıldığını ayrıca doğruluyor).
+- **Ölçülmeyen:** canlı serving zincirinde zaman aşımının gerçek davranışı (Vercel fonksiyon sınırıyla etkileşim) — `kanal: UAT`.
+
+---
+
+## Sonuç Özeti
+
+**Tamamlanma Tarihi:** 2026-09-12
+
+**Ne Yapıldı:**
+- `/api/chat` artık üst-akış asılmasında platformun 30 s duvarına dayanmıyor: ilk token 20 s, parçalar arası sessizlik 5 s, toplam 24 s sınırlarıyla kendi zarif fallback'ine düşüyor; SDK retry'ı kapatıldı (kesilemeyen `retry-after` uykusu bütçeyi patlatıyordu).
+- Davranış 5 testle mühürlendi; gerçek SDK + sahte HTTP katmanı + sanal zaman.
+
+**Öğrenilenler:**
+- **groq-sdk'da iki ayrı zaman aşımı yüzeyi var ve ikisi de yetmiyor:** istemci/istek `timeout`'u yalnız **başlıklara kadar** sayar (`fetchWithTimeout` `finally`'de `clearTimeout`) ve `isTimeout` dalında **retry'lanır** (varsayılan 2 → en kötü hâlde 3 kat bekleme). Akış başladıktan sonraki sessizliği hiçbiri kapatmaz.
+- **SSE iteratörü abort'u yutar** (`if (isAbortError(e)) return`) → iptal ortada olursa `catch` çalışmaz; fallback döngü **sonrasında** bir bayrakla enqueue edilmeli.
+- **Ölçüm bir kez değil, o gün yapılır:** task'ın dayandığı p90 7,5 s tablosu bir gün sonra 17,4 s'lik meşru bir kuyruk gösterdi. Değer ölçümle seçilmeseydi çalışan bir yanıt hata metnine çevrilecekti.
 
 ---
 

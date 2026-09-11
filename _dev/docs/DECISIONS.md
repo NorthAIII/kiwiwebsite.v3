@@ -9,6 +9,34 @@
 
 <!-- Her yeni karar aşağıdaki formatta en üste eklenir (en yeni en üstte) -->
 
+### 2026-09-12 — `/api/chat` üst-akış zaman aşımı: ilk token 20 s · sessizlik 5 s · toplam 24 s; SDK retry kapalı
+
+**Bağlam:** TASK-18.11 (verify 18, ikinci düzeltme turu). UAT senaryo 33 canlıda **47 çağrının 2'sinin ~30,5 s'de 504** döndüğünü ölçtü. Kök neden: `chat.completions.create(...)` çağrısında iptal sinyali yoktu, yani tek kapı platformun `maxDuration = 30`'uydu. O sınırda fonksiyon öldürülür ve `route.ts`'in `catch` bloğu **hiç çalışmaz** — ziyaretçi 30 saniye "Düşünüyor" bekleyip ham 504 üzerinden offline kopyasına düşer. Marka & Craft üst ekseninde bu, sitenin canlı demosundaki en görünür kusur sınıfıydı.
+
+**Ölçüm (canlı `/api/chat`, 20 çağrı, 2026-09-12):** ilk-token p50 **369 ms** · p90 **7,4 s** · en yavaş **başarılı** yanıt **17,4 s**; parçalar arası en büyük boşluk **73 ms**; 20 çağrının 1'i yine 30,2 s'de 504 (arıza yeniden üretildi). Task (A) ~12–15 s öneriyordu ama o aralık bugünkü 17,4 s'lik **başarılı** yanıtı hata metnine çevirirdi — ölçüm öneriyi geçersiz kıldı.
+
+**Seçenekler (AskUserQuestion):** (1) 20 s — ölçülen en yavaş meşru yanıtın üstünde. (2) 15 s — ~%5 kesme riski. (3) 12 s — ziyaretçi en az bekler, kesme oranı belirgin artar.
+
+**Karar (kullanıcı onaylı — Seçenek 1), üç sınır tek sinyalde:**
+- `FIRST_TOKEN_TIMEOUT_MS = 20_000` — ölçülen en yavaş meşru yanıtın (17,4 s) üstünde; meşru trafiği kesmez.
+- `STREAM_IDLE_TIMEOUT_MS = 5_000` — parçalar arası sessizlik; ölçülen en büyük boşluğun (73 ms) ~68 katı.
+- `TOTAL_BUDGET_MS = 24_000` — her kurulumda kalan bütçeyle kırpılır; hiçbir bileşim `maxDuration = 30`'a yaklaşamaz (6 s pay).
+- Tek `AbortController` + her parçada yeniden kurulan bekçi (`arm()`); ikisi de aynı sinyali iptal eder.
+
+**Gerekçe:** Asıl kazanç "8 s daha az bekleme" değil, **bekleyişin sahibinin değişmesi** — yanıt artık platform tarafından öldürülmek yerine bizim dürüst fallback metnimizle, 200 olarak kapanıyor. Dar bir sınır (12–15 s) kusuru azaltmaz, yerini değiştirir: çalışan yanıtlar hata metnine dönerdi.
+
+**İkinci karar — `maxRetries: 0` (bu çağrıda):** groq-sdk varsayılanı 2 ve yeniden deneme uykusu üst-akışın `retry-after` başlığını dinliyor; ücretsiz tier kota dolduğunda bu dakikalar sürebilir ve uyku **bizim `AbortSignal`'imizle kesilemez** — yani retry, tam da kaldırdığımız 30 s duvarını geri getirir. Zarif degradasyon zaten bizde olduğu için retry'ın getirisi küçük, riski doğrudan bu bulgunun sınıfında.
+
+**Teknik tuzak (kalıcı):** groq-sdk'nın iki zaman aşımı yüzeyi de tek başına yetmez — istemci/istek `timeout`'u yalnız **başlıklara kadar** sayar (`fetchWithTimeout` `finally`'de temizlenir) ve `isTimeout` dalında retry'lanır. Ayrıca SSE iteratörü abort'u **sessizce yutar** (`Stream.fromSSEResponse` → `if (isAbortError(e)) return`): akış ortasında iptal edilirse `catch` çalışmaz, fallback döngü **sonrasında** bir bayrakla enqueue edilmelidir; aksi hâlde ziyaretçi yarım cümlede kalır.
+
+**Doğrulama:** `tests/chat-route-timeout.test.ts` — gerçek `route.ts` + gerçek `groq-sdk`, yalnız `globalThis.fetch` sahte, zaman sanal (`vi.useFakeTimers`); 5/5 yeşil, tam suite 64 → **69**, `next build` exit 0. Kapı bozuk girdiyle iki kez sınandı: bekçi tamamen kapatılınca 3 test kırmızı (2 negatif kontrol yeşil kaldı — kontrol grubu), yalnız stream-ortası fallback'i kaldırılınca 2 test kırmızı / ilk-token testi yeşil. Boş kapsamda sessiz PASS yok: üst-akışa hiç gidilmediğinde 5 testin 5'i kırmızı. **Ölçülmeyen:** canlı serving zincirindeki davranış → `verify-phase` (senaryo 33 yeniden ölçülür).
+
+**Sapmayanlar:** `max_tokens: 512`, `temperature: 0.2`, model, system prompt, streaming sözleşmesi (`text/plain` + `no-store`), `chat-sanitize` ve `Chatbot.tsx` **değişmedi**. Fallback metni yeniden yazılmadı, yalnız tek sabite (`FALLBACK_MESSAGE`) alındı. Hız sınırı / origin kontrolü bu kararın kapsamı **değil** (senaryo 23, v0.6 adayı).
+
+**İlgili Task/Faz:** TASK-18.11 (Faz 18, verify düzeltme turu 2)
+
+---
+
 ### 2026-09-11 — Chatbot prompt'u ziyaretçi arayüzüne **betimleyici** atıf yapar; sabit UI etiketi gömülmez (+ dil-başına hitap düzeyi)
 
 **Bağlam:** TASK-18.10 (verify 18 düzeltme turu). Canlı UAT senaryo 28 + 29 iki kopya kusuru buldu. (1) SYSTEM_PROMPT ziyaretçiyi `the "Book a call" button`'a yönlendiriyordu; sitede o etiketli buton **hiçbir locale'de yok** (TR «Ücretsiz keşif görüşmesi al», DE «Kostenloses Erstgespräch buchen», AR «احجز مكالمة استكشافية مجانية», EN «Book a free discovery call», ES «Agenda una llamada de descubrimiento gratuita»). Canlı TR ve AR yanıtları İngilizce etiketi tırnak içinde andı → ziyaretçi sayfada olmayan bir adı arar (dürüstlük konvansiyonu) ve dört dilde İngilizce sızıntısı doğar (18.07'nin "tek dil / tek script" kuralıyla gerginlik). Etiket Anthropic dönemi prompt'undan değişmeden taşınmıştı; 18.07'nin kapısı bu ekseni ölçmüyordu. (2) `messages/de.json` **%100 formal** (20 `Sie` / 7 `Ihre` / 6 `Ihr` / 2 `Ihnen`, 0 `du`) ama canlı DE yanıtı `deine`/`Du` kullandı — prompt hitap düzeyi hakkında hiçbir şey söylemiyordu, model kendi varsayılanına düşüyordu.
