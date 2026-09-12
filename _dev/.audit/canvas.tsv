@@ -1,5 +1,5 @@
 # DevFlow audit canvas — otomatik üretildi (kaynak: canvas.db). Elle düzenleme.
-# meta: current_convention_version=2; schema_version=2
+# meta: current_convention_version=3; schema_version=2
 id	path	status	status_reason	checked_version	last_checked	content_hash	exclude	added_at	size_accepted
 1	CLAUDE.md	pending		1	2026-07-18	cf9b48f3690ff9f7bbeeceded7b13fe3fa3d7d0f6afd37d84d52e11969530d9f	0	2026-07-18	
 2	_dev/DURUM.md	pending		1	2026-07-21	8803be32562f3be7df27869a49320b75b1264b494bb4e5c4b0f602be29bd665a	0	2026-07-18	
@@ -19,18 +19,19 @@ id	path	status	status_reason	checked_version	last_checked	content_hash	exclude	a
 15	_dev/PRD/features/nasil-calisir-4-adim.md	pending					0	2026-07-18	
 16	_dev/PRD/features/sektorler-derinlestirme.md	pending					0	2026-07-18	
 17	_dev/QUALITY.md	pending					0	2026-07-18	
-18	_dev/docs/DECISIONS.md	pending					0	2026-07-18	
+18	_dev/docs/DECISIONS.md	urgent	urgent:token-hard				0	2026-07-18	
 19	_dev/docs/RELEASE-v0.2.md	pending					0	2026-07-18	
 20	_dev/docs/RELEASE-v0.4.md	pending					0	2026-07-18	
 21	_dev/docs/REVIZE-BACKLOG.md	pending					0	2026-07-18	
 22	_dev/docs/TESTING.md	pending					0	2026-07-18	
 23	_dev/docs/UMAMI-ANALYTICS.md	pending					0	2026-07-18	
-24	_dev/docs/perf/README.md	pending					0	2026-07-18	
+24	_dev/docs/perf/README.md	urgent	urgent:token-hard				0	2026-07-18	
 25	_dev/memory/a11y-olcum-tema-tuzagi.md	pending					0	2026-07-18	
 26	_dev/memory/aria-hidden-color-contrast-muafiyeti-degil.md	pending					0	2026-07-18	
 27	_dev/memory/axe-offscreen-inline-contrast.md	pending					0	2026-07-18	
 28	_dev/memory/axe-webgl-contrast-incomplete.md	pending					0	2026-07-18	
 29	_dev/memory/devflow-sistemi.md	pending					0	2026-07-18	
+157	_dev/memory/groq-model-emekliligi-runtime-404.md	pending					0	2026-09-12	
 30	_dev/memory/lighthouse-lantern-render-timing-korligi.md	pending					0	2026-07-18	
 31	_dev/memory/next-config-redirect-locale-prefix.md	pending					0	2026-07-18	
 32	_dev/memory/perf-olcum-devcontainer-kurulumu.md	pending					0	2026-07-18	
@@ -52,19 +53,22 @@ id	path	status	status_reason	checked_version	last_checked	content_hash	exclude	a
 48	_dev/phases/PHASE-11.md	pending					0	2026-07-18	
 49	_dev/phases/PHASE-12.md	pending					0	2026-07-18	
 50	_dev/phases/PHASE-13.md	pending					0	2026-07-18	
-51	_dev/phases/PHASE-14.md	pending					0	2026-07-18	
-52	_dev/phases/PHASE-15.md	pending					0	2026-07-18	
+51	_dev/phases/PHASE-14.md	pending					0	2026-07-18	2026-09-12|0cf2e347a4418dbb0d2e2f847e5959914dfd4d839cdbac3def16e7f529e5ea30|dondurulmuş faz dokümanı (PHASES ✅): bölme yasak; içerik-koruyan reformat 20k altına indirmiyor (ölçüldü, en iyi ~110 token) — kalan doluluk meşru (audit-docs 2026-09-12)
+52	_dev/phases/PHASE-15.md	pending					0	2026-07-18	2026-09-12|0d9374e994b442a14327c31c9d9efc5ae892616d56b57d3ab2eeb0bb89989e00|dondurulmuş faz dokümanı (PHASES ✅): bölme yasak; içerik-koruyan reformat 20k altına indirmiyor (ölçüldü, en iyi ~110 token) — kalan doluluk meşru (audit-docs 2026-09-12)
 53	_dev/phases/PHASE-16.md	pending					0	2026-07-18	
 54	_dev/phases/PHASE-17-ARASTIRMA.md	pending					0	2026-07-18	
-55	_dev/phases/PHASE-17.md	pending					0	2026-07-18	
+55	_dev/phases/PHASE-17.md	pending					0	2026-07-18	2026-09-12|c3e7c0f293e001fc36dd0c36fd876b4d812e890e597c776ce585caccb96927fc|dondurulmuş faz dokümanı (PHASES ✅): bölme yasak; içerik-koruyan reformat 20k altına indirmiyor (ölçüldü, en iyi ~110 token) — kalan doluluk meşru (audit-docs 2026-09-12)
+158	_dev/phases/PHASE-18-ARASTIRMA.md	pending					0	2026-09-12	
+159	_dev/phases/PHASE-18-GOLIVE.md	pending					0	2026-09-12	
+160	_dev/phases/PHASE-18.md	pending					0	2026-09-12	
 56	_dev/phases/PHASE-2.md	pending					0	2026-07-18	
-57	_dev/phases/PHASE-3.md	pending					0	2026-07-18	
-58	_dev/phases/PHASE-4.md	pending					0	2026-07-18	
+57	_dev/phases/PHASE-3.md	pending					0	2026-07-18	2026-09-12|19b1d90b8ac378ab8647839e868d764f62e048367c2e77f8ee832f17f6927c0f|dondurulmuş faz dokümanı (PHASES ✅): bölme yasak; içerik-koruyan reformat 20k altına indirmiyor (ölçüldü, en iyi ~110 token) — kalan doluluk meşru (audit-docs 2026-09-12)
+58	_dev/phases/PHASE-4.md	pending					0	2026-07-18	2026-09-12|73effc16ce6291dd71969024a578553effe7f34d54c910fd2ec32f847caa29fb|dondurulmuş faz dokümanı (PHASES ✅): bölme yasak; içerik-koruyan reformat 20k altına indirmiyor (ölçüldü, en iyi ~110 token) — kalan doluluk meşru (audit-docs 2026-09-12)
 59	_dev/phases/PHASE-5.md	pending					0	2026-07-18	
 60	_dev/phases/PHASE-6.md	pending					0	2026-07-18	
 61	_dev/phases/PHASE-7.md	pending					0	2026-07-18	
 62	_dev/phases/PHASE-8.md	pending					0	2026-07-18	
-63	_dev/phases/PHASE-9.md	pending					0	2026-07-18	
+63	_dev/phases/PHASE-9.md	pending					0	2026-07-18	2026-09-12|7b836e30fae7d3376d2e1d7d1d92f9add0acc57e28c74db58728f07c6054def6|dondurulmuş faz dokümanı (PHASES ✅): bölme yasak; içerik-koruyan reformat 20k altına indirmiyor (ölçüldü, en iyi ~110 token) — kalan doluluk meşru (audit-docs 2026-09-12)
 64	_dev/tasks/TASKS-README.md	pending					0	2026-07-18	
 65	_dev/tasks/archive/TASK-1.01.md	pending					0	2026-07-18	
 66	_dev/tasks/archive/TASK-1.02.md	pending					0	2026-07-18	
@@ -108,6 +112,17 @@ id	path	status	status_reason	checked_version	last_checked	content_hash	exclude	a
 104	_dev/tasks/archive/TASK-17.06.md	pending					0	2026-07-18	
 105	_dev/tasks/archive/TASK-17.07.md	pending					0	2026-07-18	
 106	_dev/tasks/archive/TASK-17.08.md	pending					0	2026-07-18	
+161	_dev/tasks/archive/TASK-18.01.md	pending					0	2026-09-12	
+162	_dev/tasks/archive/TASK-18.02.md	pending					0	2026-09-12	
+163	_dev/tasks/archive/TASK-18.03.md	pending					0	2026-09-12	
+164	_dev/tasks/archive/TASK-18.04.md	pending					0	2026-09-12	
+165	_dev/tasks/archive/TASK-18.05.md	pending					0	2026-09-12	
+166	_dev/tasks/archive/TASK-18.06.md	pending					0	2026-09-12	
+167	_dev/tasks/archive/TASK-18.07.md	pending					0	2026-09-12	
+168	_dev/tasks/archive/TASK-18.08.md	pending					0	2026-09-12	
+169	_dev/tasks/archive/TASK-18.09.md	pending					0	2026-09-12	
+170	_dev/tasks/archive/TASK-18.10.md	pending					0	2026-09-12	
+171	_dev/tasks/archive/TASK-18.11.md	pending					0	2026-09-12	
 107	_dev/tasks/archive/TASK-2.01.md	pending					0	2026-07-18	
 108	_dev/tasks/archive/TASK-2.02.md	pending					0	2026-07-18	
 109	_dev/tasks/archive/TASK-2.03.md	pending					0	2026-07-18	

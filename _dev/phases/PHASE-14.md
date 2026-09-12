@@ -152,8 +152,8 @@ Discuss-phase'in araştırmaya bıraktığı soru: bu cloud devcontainer'da runt
   - Test scriptleri `npm test` / `npm run test:e2e` — **repoda-tanımlı** (`package.json` scripts).
   - Tohum test dosyaları `tests/seo-redirects.test.ts`·`seo-metadata.test.ts`·`i18n-parity.test.ts`·`e2e/home-a11y.spec.ts`·`e2e/subpages-a11y.spec.ts` — **repoda-tanımlı**.
   - `routes-manifest.json` — **build çıktısı** (`.next/`, her `next build`'de üretilir; `seo-redirects` testi buna dayanır).
-  - Redirect kaynakları `/bunker-os`→`/crew-os`, `/forum`→`/`, `/forum/:slug*`→`/bulten/:slug*` + 5-locale twin'leri — **repoda-tanımlı** ([next.config.ts:27-48](next.config.ts#L27-L48)).
-  - Canonical/hreflang helper `localePath` + `localizedAlternates` — **repoda-tanımlı** ([src/i18n/metadata.ts:17](src/i18n/metadata.ts#L17), [:30](src/i18n/metadata.ts#L30)).
+  - Redirect kaynakları `/bunker-os`→`/crew-os`, `/forum`→`/`, `/forum/:slug*`→`/bulten/:slug*` + 5-locale twin'leri — **repoda-tanımlı** ([next.config.ts:27-48](../../next.config.ts#L27-L48)).
+  - Canonical/hreflang helper `localePath` + `localizedAlternates` — **repoda-tanımlı** ([src/i18n/metadata.ts:17](../../src/i18n/metadata.ts#L17), [:30](../../src/i18n/metadata.ts#L30)).
   - 5 alt sayfa route'ları `/crew-os`·`/spor-salonu-yazilimi`·`/vaka-calismalari`·`/bulten/ai-sdr-araclari`·`/bulten/claude-opus-4-8-fable-5` — **repoda-tanımlı** (`src/app/[locale]/…` teyitli).
   - `ANTHROPIC_API_KEY` yokluğu → chatbot offline (S7 0-token) — **dış/env** (bu ortamda tanımsız; değer asla yazılmaz).
 
