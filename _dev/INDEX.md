@@ -74,7 +74,7 @@
 
 | Doküman | İçerik |
 |---------|--------|
-| `docs/DECISIONS.md` | Önemli mimari ve tasarım kararları |
+| `docs/DECISIONS.md` | Önemli mimari ve tasarım kararları (güncel seri; giriş noktası) — eski kararlar tarih-aralığı arşivlerinde: `docs/DECISIONS-2026-07-02..2026-07-18.md`, `docs/DECISIONS-2026-06-27..2026-07-01.md` |
 | `docs/TESTING.md` | Test convention notu: komutlar + test yerleri + 3 katman (Vitest node/jsdom + Playwright/axe) + a11y ölçüm disiplini (özet/pointer) + kümülatif beklenti + CI |
 | `docs/REVIZE-BACKLOG.md` | Güçlü revize ham girdisi: kullanıcı tespitleri + bekleyen işler (PRD tohumu) |
 | `docs/UMAMI-ANALYTICS.md` | Umami analytics entegrasyon spec'i (bekliyor — kod, değerler, uyarılar) |
@@ -205,7 +205,7 @@ kiwiwebsite.v3/
 
 ---
 
-**Son Güncelleme:** 2026-09-12 — audit-docs: `docs/perf/README.md` versiyon arşivlerine bölündü (`README-v0.1.md` + `README-v0.2.md` kaydı eklendi).
+**Son Güncelleme:** 2026-09-12 — audit-docs: `docs/DECISIONS.md` iki tarih-aralığı arşivine bölündü ve `docs/perf/README.md` versiyon arşivlerine ayrıldı; iki bölmenin çocukları kaydedildi.
 
 <!-- KURAL: Bu satır her güncellemede ÜZERİNE YAZILIR. "Önceki:" prefix ile kümülatif yığma YASAK (CLAUDE.md → Doküman Disiplini). -->
 <!-- KURAL: Tamamlanmış fazların task arşiv listesini INDEX'e ekleme — `ls _dev/tasks/archive/` zaten görür. INDEX yalnızca aktif klasör konumlarını gösterir; statik liste dokümanı değildir. -->
