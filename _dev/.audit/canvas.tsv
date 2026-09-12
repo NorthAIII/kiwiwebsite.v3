@@ -25,7 +25,9 @@ id	path	status	status_reason	checked_version	last_checked	content_hash	exclude	a
 21	_dev/docs/REVIZE-BACKLOG.md	pending					0	2026-07-18	
 22	_dev/docs/TESTING.md	pending					0	2026-07-18	
 23	_dev/docs/UMAMI-ANALYTICS.md	pending					0	2026-07-18	
-24	_dev/docs/perf/README.md	urgent	urgent:token-hard				0	2026-07-18	
+172	_dev/docs/perf/README-v0.1.md	pending					0	2026-09-12	
+173	_dev/docs/perf/README-v0.2.md	pending					0	2026-09-12	
+24	_dev/docs/perf/README.md	pending					0	2026-07-18	
 25	_dev/memory/a11y-olcum-tema-tuzagi.md	pending					0	2026-07-18	
 26	_dev/memory/aria-hidden-color-contrast-muafiyeti-degil.md	pending					0	2026-07-18	
 27	_dev/memory/axe-offscreen-inline-contrast.md	pending					0	2026-07-18	

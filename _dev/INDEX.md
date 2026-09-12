@@ -80,7 +80,7 @@
 | `docs/UMAMI-ANALYTICS.md` | Umami analytics entegrasyon spec'i (bekliyor — kod, değerler, uyarılar) |
 | `docs/RELEASE-v0.2.md` | v0.2 production release runbook & checklist (hafif operasyonel oturum: temiz pencere → PR/merge → canlı duman testi → Umami +1). run-task 10'dan önce. |
 | `docs/RELEASE-v0.4.md` | **v0.4** TR production release kaydı (2026-07-16, canlı `f173234`): `revize/alpfit-plus`→`main` ff-merge + canlı duman testi ✓; TR tam, non-TR stale-TR ertelendi; açık takip chatbot env. |
-| `docs/perf/` | Ana sayfa Lighthouse perf/a11y tabanları (`README.md` = metodoloji+koşu tablosu+a11y kırılımı; `home-{mobile,desktop}-<tarih>.{html,json}` kanonik artefaktlar). İlk taban: v0.1 2026-06-28 (TD3). |
+| `docs/perf/` | Ana sayfa Lighthouse perf/a11y tabanları (`README.md` = tuzaklar + kanonik artefakt index'i + aktif v0.3 ölçümleri + metodoloji; `README-v0.1.md` / `README-v0.2.md` = kapanmış versiyonların koşu arşivleri; `home-{mobile,desktop}-<tarih>.{html,json}` kanonik artefaktlar). İlk taban: v0.1 2026-06-28 (TD3). |
 | `docs/alpfit-plus-artifact.html` | **v0.4** — Alpfit Plus tasarım referansı (kullanıcı artifact'i v2, saf HTML/CSS; nihai hedef düzen). Port kaynağı; feature `PRD/features/alpfit-plus.md`. |
 
 ---
@@ -205,7 +205,7 @@ kiwiwebsite.v3/
 
 ---
 
-**Son Güncelleme:** 2026-07-21 — audit-docs: SESSION-NOTES tarifi güncellendi (bayat açık-soru örnekleri Crew OS URL / Living Flow kapsamı temizlendi — ikisi de çözülmüştü); `prd-note` okuma senaryosu eklendi (template uygunluğu).
+**Son Güncelleme:** 2026-09-12 — audit-docs: `docs/perf/README.md` versiyon arşivlerine bölündü (`README-v0.1.md` + `README-v0.2.md` kaydı eklendi).
 
 <!-- KURAL: Bu satır her güncellemede ÜZERİNE YAZILIR. "Önceki:" prefix ile kümülatif yığma YASAK (CLAUDE.md → Doküman Disiplini). -->
 <!-- KURAL: Tamamlanmış fazların task arşiv listesini INDEX'e ekleme — `ls _dev/tasks/archive/` zaten görür. INDEX yalnızca aktif klasör konumlarını gösterir; statik liste dokümanı değildir. -->
