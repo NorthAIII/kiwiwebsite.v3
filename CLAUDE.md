@@ -4,6 +4,8 @@
 **Repo:** `/home/kivanc/projects/kiwiwebsite.v3` (`github.com/NorthAIII/kiwiwebsite.v3`, public)
 **DevFlow Dokümanları:** `/home/kivanc/projects/kiwiwebsite.v3/_dev/`
 
+<!-- KURAL: CLAUDE.md bölmesi ertelendi (bilinçli) — 2026-09-12 audit-docs, kullanıcı kararı: güncel şablona göç (4 doktrin çocuğu + @import + şablon dolgusu: Onay Ölçütü, Oturum Kapanışı, Paralel Oturum Farkındalığı, prensip #12/#13) oturum yükünü ~17k→~49k token çıkarıyor ve parent'ı ~22k ile eşik üstüne itiyor (motor şablonu templates/CLAUDE-MD.md kendisi ~20.1k); motor şablonu düzelince yeniden açılır. -->
+
 ---
 
 ## DevFlow Nedir?
