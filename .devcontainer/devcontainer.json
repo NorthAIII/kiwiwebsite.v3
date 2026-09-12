@@ -1,10 +1,23 @@
 {
-  "name": "Test Dev Container",
+  "name": "kiwiwebsite.v3",
   "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+  // Chrome (Playwright/Lighthouse) varsayılan 64 MB /dev/shm'de çöküyor.
+  "runArgs": ["--shm-size=2g"],
+  "features": {
+    // CI ile aynı Node (vitest@4 engines node>=24).
+    "ghcr.io/devcontainers/features/node:1": { "version": "24" },
+    // DevFlow audit/doc script'leri python3 ister.
+    "ghcr.io/devcontainers/features/python:1": { "version": "os-provided" },
+    "ghcr.io/devcontainers/features/github-cli:1": {}
+  },
+  // Bağımlılıklar + WebGL veren sistem Chrome'u (bundled chromium WebGL vermiyor).
+  "postCreateCommand": "npm ci && npx playwright install --with-deps chrome",
+  "forwardPorts": [3000],
   "customizations": {
     "vscode": {
       "extensions": [
-        "anthropic.claude-code"
+        "anthropic.claude-code",
+        "bradlc.vscode-tailwindcss"
       ]
     }
   }
