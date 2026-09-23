@@ -13,6 +13,10 @@
   // Bağımlılıklar + WebGL veren sistem Chrome'u (bundled chromium WebGL vermiyor).
   "postCreateCommand": "npm ci && npx playwright install --with-deps chrome",
   "forwardPorts": [3000],
+  // gh oturumu host'tan paylaşılıyor, konteyner içinde tekrar giriş gerekmez.
+  "mounts": [
+    "source=${localEnv:HOME}/.config/gh,target=/home/vscode/.config/gh,type=bind"
+  ],
   "customizations": {
     "vscode": {
       "extensions": [
