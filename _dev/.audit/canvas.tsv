@@ -1,5 +1,5 @@
 # DevFlow audit canvas — otomatik üretildi (kaynak: canvas.db). Elle düzenleme.
-# meta: current_convention_version=3; schema_version=2
+# meta: current_convention_version=4; schema_version=2
 id	path	status	status_reason	checked_version	last_checked	content_hash	exclude	added_at	size_accepted
 1	CLAUDE.md	pending		1	2026-07-18	cf9b48f3690ff9f7bbeeceded7b13fe3fa3d7d0f6afd37d84d52e11969530d9f	0	2026-07-18	
 2	_dev/DURUM.md	pending		1	2026-07-21	8803be32562f3be7df27869a49320b75b1264b494bb4e5c4b0f602be29bd665a	0	2026-07-18	

@@ -1,6 +1,6 @@
 # DURUM — Proje Dashboard
 
-**Son Güncelleme:** 2026-09-12 — **TASK-18.11 ✅:** `/api/chat` üst-akış zaman aşımı (ilk token 20 s · sessizlik 5 s · toplam 24 s · SDK retry kapalı). Değer canlı ölçümle seçildi (en yavaş meşru yanıt 17,4 s) ve kullanıcı onayladı. Vitest 64→69. Fazın 11 task'ı da ✅ → sıradaki adım `/devflow:verify-phase 18` (baştan).
+**Son Güncelleme:** 2026-09-29 — **verify-phase 18 3. koşumu kapatıldı:** 39 senaryo, **36 ✅ / 3 ❌**. 18.11 zaman aşımı sözleşmesi geçti (33–35, 37–38). Kapsam-içi 2 bulgu düzeltme task'ı bekliyor (36 fallback metni sabit TR · 39 bayat Anthropic referansları); senaryo 23 kapsam-dışı (v0.6).
 
 <!-- KURAL: Bu satır her oturum sonunda ÜZERİNE YAZILIR — tek satır, tek cümle. "Önceki:" / "Eski:" prefix ile kümülatif yığma YASAK; HTML comment'e sarma da yasak (CLAUDE.md → Doküman Disiplini). Tarih + kısa özet yeterli; detay için git log + ilgili PHASE/TASK dokümanları. -->
 
@@ -9,7 +9,7 @@
 ## Aktif Faz
 
 **Faz:** **Faz 18 — v0.5 Chatbot: ücretsiz sağlayıcı geçişi + canlıya alma** (🔄 girildi; discuss-phase ✅ 2026-07-21). Fazlar 1–17 ✅; v0.5 ilk içerik fazı. Milestone / 5 kabul kriteri → `docs/DECISIONS.md` 2026-07-21; kapsam kararları → `phases/PHASE-18.md`.
-**Adım:** **verify** — verify 2. kez baştan koşuldu (2026-09-12): **33 senaryo, 31 ✅ / 2 ❌**; açtığı tek kapsam-içi düzeltme **TASK-18.11 ✅ tamamlandı** (üst-akış zaman aşımı). Fazın 11 task'ının hepsi ✅. Kapsam-dışı kalan tek kalem senaryo 23 (hız sınırı/origin → v0.6). **Sıradaki: `/devflow:verify-phase 18` — faz yine baştan koşulur; senaryo 33'ün canlı ölçümü (≥30 çağrı, 504 oranı) orada yapılır.**
+**Adım:** **task** — verify 3. kez baştan koşuldu (2026-09-12, kapanışı 2026-09-29): **39 senaryo, 36 ✅ / 3 ❌**. Kapsam-içi açık: **senaryo 36** (zaman aşımı/stream-hata fallback metni `route.ts`'te sabit TR — EN/DE/AR/ES ziyaretçi Türkçe hata görüyor; `chat.error` 5 dilde hazır ama bu yolda kullanılmıyor) ve **senaryo 39** (`.github/workflows/ci.yml:12` yorumu + `MASTER_PROMPT_v2.md` §6/§7 hâlâ Anthropic/Claude tarif ediyor). Kapsam-dışı: senaryo 23 (hız sınırı/origin → v0.6). **Sıradaki: iki düzeltme task'ının dokümanını yaz (TASK-18.12 = 36, TASK-18.13 = 39) → `/devflow:run-task`; bittiğinde verify yine baştan.**
 
 **v0.5 kapsamı ve açık kalemler** (re-kickoff 2026-07-21):
 
@@ -23,7 +23,7 @@
 
 **Kapatıldı:** BULGU-S2 / BULGU-S9 = `page.route` harness artefaktı (memory'de, takip gerektirmez).
 
-**İlerleme:** verify-phase 18 yeniden koşumu (2026-09-12) — **33 senaryo / 31 ✅ / 2 ❌**. Küme 29→33 büyüdü: serving zinciri teyidi (30), parse-öncesi gövde sınırı (31) ve canlıda görülen 504 sınıfının iki sorusu (32 ziyaretçi ne görüyor · 33 neden bekliyor). Ölçüm katmanları: in-process route (sağlayıcıya giden payload yakalandı), canlı `kiwiailab.com` (~47 çağrı), gerçek tarayıcı (`page.route` ile 504 enjeksiyonu). CI `main` HEAD yeşil, Vitest 64/64, `next build` exit 0.
+**İlerleme:** verify-phase 18 3. koşumu (2026-09-12) — **39 senaryo / 36 ✅ / 3 ❌**. Küme 33→39: 18.11 zaman aşımı sözleşmesi (34 iki asılma ayağı · 35 meşru yavaş yanıt · 36 fallback dili · 37 `maxRetries: 0` · 38 kümülatif test) + 19'un sınıf süpürmesinden 39. Canlı ~90 çağrı, **0 × 504** (önceki tur 47'de 2). CI `main` HEAD yeşil, Vitest 69/69, `next build` exit 0. Go-live detayı `PHASE-18-GOLIVE.md`'ye bölündü.
 **Aktif Faz Dokümanı:** `phases/PHASE-18.md` (🔄 Faz 18). Faz geçmişi → `PHASES.md`; v0.4 release → `docs/RELEASE-v0.4.md`; Faz 17 → `phases/PHASE-17.md`.
 
 ---
@@ -41,13 +41,13 @@
 
 ## Aktif Task
 
-**Task:** **yok** — fazın 11 task'ı da ✅. Son tamamlanan: `tasks/archive/TASK-18.11.md` (üst-akış zaman aşımı).
-**Durum:** Faz 18 🔄 (v0.5 içerik fazı, Adım **verify**). Versiyon Sonu Durumu **`içerik_fazları`**. Chatbot canlıda çalışıyor; 18.09 + 18.10 düzeltmeleri canlıda teyitli (senaryo 30). 18.11 yerelde mühürlendi, **canlı teyidi verify'a ait**.
-**İlerleme:** İkinci düzeltme turu kapandı. Sıradaki: `/devflow:verify-phase 18` — baştan koşum.
+**Task:** **yok (açılacak)** — TASK-18.12 (senaryo 36, fallback metni yerelleştirme) + TASK-18.13 (senaryo 39, bayat Anthropic referansları). Son tamamlanan: `tasks/archive/TASK-18.11.md`.
+**Durum:** Faz 18 🔄 (v0.5 içerik fazı, Adım **task**). Versiyon Sonu Durumu **`içerik_fazları`**. Chatbot canlıda çalışıyor; 18.09/18.10/18.11 düzeltmelerinin üçü de canlıda teyitli (senaryo 30).
+**İlerleme:** Üçüncü verify turu kapandı; 2 kapsam-içi düzeltme (senaryo 36, 39) task dokümanı bekliyor.
 
 ## Task Durumu (Aktif Faz)
 
-> **Faz 18 aktif (🔄)** — discuss ✅ + research ✅ + plan ✅ + verify-plan ✅ + UAT **iki kez** koşuldu; **11 task: 11 ✅** → Adım **verify**. Detay/icra → `tasks/archive/TASK-18.YY.md`; snapshot + Go-live + UAT → `phases/PHASE-18.md`.
+> **Faz 18 aktif (🔄)** — discuss ✅ + research ✅ + plan ✅ + verify-plan ✅ + UAT **üç kez** koşuldu; **11 task: 11 ✅** + 2 düzeltme açılacak → Adım **task**. Detay/icra → `tasks/archive/TASK-18.YY.md`; snapshot + Go-live + UAT → `phases/PHASE-18.md`.
 
 | # | Task | Durum | Açıklama |
 |---|------|-------|----------|
@@ -93,7 +93,7 @@
 
 ## Hızlı Erişim
 
-**Aktif Task:** **yok** — fazın 11 task'ı da ✅. Son tamamlanan: `tasks/archive/TASK-18.11.md` (üst-akış zaman aşımı).
+**Aktif Task:** **yok (açılacak)** — TASK-18.12 (senaryo 36) + TASK-18.13 (senaryo 39). Son tamamlanan: `tasks/archive/TASK-18.11.md`.
 **Aktif Faz:** **Faz 18 🔄** (v0.5 Chatbot Groq geçişi + canlıya alma; discuss ✅ + research ✅ + plan ✅ + verify-plan ✅ + 11 task ✅ + UAT ×2, Adım **verify**). **Aktif Versiyon v0.5.** Versiyon Sonu Durumu **`içerik_fazları`**. **Canlı `main` = `9109517`**; chatbot canlıda (`qwen/qwen3.8-27b`). Faz dokümanı: `phases/PHASE-18.md` (→ **Go-live** + **UAT Sonuçları**); araştırma detayı → `phases/PHASE-18-ARASTIRMA.md`.
 **v0.5 kaynağı (karar + 5 kabul kriteri):** `docs/DECISIONS.md` 2026-07-21; go-live'daki model + `max_tokens` kararları → DECISIONS 2026-09-11.
 **Sonraki versiyon adayları (→ `PRD/VERSIONS.md`):** v0.6 booking/takvim · çeviri senkronu (non-TR + AR) · BULGU-S3 craft cila · TB-3 / npm audit / brief mobil perf · chatbot prompt cilası (TR yankı/tekrar lekeleri) · `GROQ_API_KEY` Preview env · **`/api/chat` hız sınırı / origin kontrolü** (verify 18 senaryo 23) · **npm audit `next` aralık-içi güncelleme** (1 kritik, Dokunulmaz onayı gerekir).
