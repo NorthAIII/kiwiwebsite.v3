@@ -1,6 +1,6 @@
 # DURUM — Proje Dashboard
 
-**Son Güncelleme:** 2026-10-02 — **TASK-18.12 ✅:** chatbot hata notu artık ziyaretçinin dilinde (Referer → `NEXT_LOCALE` → TR, metin `chat.error`); Vitest 69 → 86. Sırada TASK-18.13.
+**Son Güncelleme:** 2026-10-02 — **TASK-18.13 ✅:** bayat Anthropic referansları kapandı (`ci.yml` yorumu + brief §6/§7 + üç yaşayan `_dev` dokümanı); Faz 18'in 13 task'ı da ✅ → sırada verify-phase 18.
 
 <!-- KURAL: Bu satır her oturum sonunda ÜZERİNE YAZILIR — tek satır, tek cümle. "Önceki:" / "Eski:" prefix ile kümülatif yığma YASAK; HTML comment'e sarma da yasak (CLAUDE.md → Doküman Disiplini). Tarih + kısa özet yeterli; detay için git log + ilgili PHASE/TASK dokümanları. -->
 
@@ -9,7 +9,7 @@
 ## Aktif Faz
 
 **Faz:** **Faz 18 — v0.5 Chatbot: ücretsiz sağlayıcı geçişi + canlıya alma** (🔄 girildi; discuss-phase ✅ 2026-07-21). Fazlar 1–17 ✅; v0.5 ilk içerik fazı. Milestone / 5 kabul kriteri → `docs/DECISIONS.md` 2026-07-21; kapsam kararları → `phases/PHASE-18.md`.
-**Adım:** **task** — verify 3. koşumunun (2026-09-12, 39 senaryo / 36 ✅ / 3 ❌) iki kapsam-içi açığından **senaryo 36 kapandı** (TASK-18.12 ✅: hata notu ziyaretçinin dilinde; canlı teyit verify'da). Kalan: **senaryo 39** (`.github/workflows/ci.yml:12` yorumu + `MASTER_PROMPT_v2.md` §6/§7 hâlâ Anthropic/Claude tarif ediyor) → TASK-18.13. Kapsam-dışı: senaryo 23 (hız sınırı/origin → v0.6). **Sıradaki: `/devflow:run-task`** — aktif TASK-18.13; bitince verify yine baştan.
+**Adım:** **verify** — verify 3. koşumunun (2026-09-12, 39 senaryo / 36 ✅ / 3 ❌) iki kapsam-içi açığı da kapandı: **senaryo 36** (TASK-18.12 ✅, hata notu ziyaretçinin dilinde) ve **senaryo 39** (TASK-18.13 ✅, `ci.yml` yorumu + `MASTER_PROMPT_v2.md` §6/§7 Groq'a hizalandı). İkisinin de canlı/CI teyidi verify'da. Kapsam-dışı: senaryo 23 (hız sınırı/origin → v0.6). **Sıradaki: `/devflow:verify-phase 18`** — baştan (4. koşum).
 
 **v0.5 kapsamı ve açık kalemler** (re-kickoff 2026-07-21):
 
@@ -41,13 +41,13 @@
 
 ## Aktif Task
 
-**Task:** **TASK-18.13** — `tasks/TASK-18.13.md` (bayat Anthropic referansları — `ci.yml` yorumu + `MASTER_PROMPT_v2.md` §6/§7; UAT 39). Son tamamlanan: `tasks/archive/TASK-18.12.md`.
-**Durum:** Faz 18 🔄 (v0.5 içerik fazı, Adım **task**). Versiyon Sonu Durumu **`içerik_fazları`**. Chatbot canlıda çalışıyor; 18.09/18.10/18.11 düzeltmelerinin üçü de canlıda teyitli (senaryo 30).
-**İlerleme:** Üçüncü verify turunun iki düzeltme task'ından **18.12 ✅** (2026-10-02), 18.13 bekliyor. O da bitince `/devflow:verify-phase 18` yine **baştan** koşulur.
+**Task:** yok — Faz 18'in 13 task'ı da ✅. Son tamamlanan: `tasks/archive/TASK-18.13.md`.
+**Durum:** Faz 18 🔄 (v0.5 içerik fazı, Adım **verify**). Versiyon Sonu Durumu **`içerik_fazları`**. Chatbot canlıda çalışıyor; 18.09/18.10/18.11 düzeltmelerinin üçü de canlıda teyitli (senaryo 30).
+**İlerleme:** Üçüncü verify turunun iki düzeltme task'ı da ✅ (18.12 + 18.13, 2026-10-02). Sırada `/devflow:verify-phase 18` — yine **baştan**.
 
 ## Task Durumu (Aktif Faz)
 
-> **Faz 18 aktif (🔄)** — discuss ✅ + research ✅ + plan ✅ + verify-plan ✅ + UAT **üç kez** koşuldu; **13 task: 12 ✅ + 1 ⬜** → Adım **task**. Detay/icra → `tasks/archive/TASK-18.YY.md`; snapshot + Go-live + UAT → `phases/PHASE-18.md`.
+> **Faz 18 aktif (🔄)** — discuss ✅ + research ✅ + plan ✅ + verify-plan ✅ + UAT **üç kez** koşuldu; **13 task: 13 ✅** → Adım **verify**. Detay/icra → `tasks/archive/TASK-18.YY.md`; snapshot + Go-live + UAT → `phases/PHASE-18.md`.
 
 | # | Task | Durum | Açıklama |
 |---|------|-------|----------|
@@ -63,23 +63,23 @@
 | 18.10 | TASK-18.10 | ✅ Tamamlandı | **Düzeltme:** betimleyici CTA atfı + etiket-alıntılama yasağı + 5 dil hitap kuralı + README model ailesi (UAT 19/28/29) |
 | 18.11 | TASK-18.11 | ✅ Tamamlandı | **Düzeltme (2. tur):** üst-akış zaman aşımı — 20 s / 5 s / 24 s + SDK retry kapalı (UAT 33); Vitest 64→69 |
 | 18.12 | TASK-18.12 | ✅ Tamamlandı | **Düzeltme (3. tur):** hata/zaman-aşımı notu ziyaretçinin dilinde — Referer → `NEXT_LOCALE` → TR, metin `chat.error` (UAT 36); Vitest 69→86 |
-| 18.13 | TASK-18.13 | ⬜ Bekliyor | **Düzeltme (3. tur):** bayat Anthropic referansları — `ci.yml` yorumu + `MASTER_PROMPT_v2.md` §6/§7 (UAT 39) |
+| 18.13 | TASK-18.13 | ✅ Tamamlandı | **Düzeltme (3. tur):** bayat Anthropic referansları — `ci.yml` yorumu + `MASTER_PROMPT_v2.md` §6/§7 + üç yaşayan `_dev` dokümanı (UAT 39) |
 
 ---
 
 ## Son Task Özetleri
 
-> **Faz 18: 12 ✅ + 1 ⬜.** Faz 17 task özetleri → `phases/PHASE-17.md`.
+> **Faz 18: 13 ✅.** Faz 17 task özetleri → `phases/PHASE-17.md`.
+
+**TASK-18.13 — Bayat Anthropic referansları** (✅ 2026-10-02 · detay `tasks/archive/TASK-18.13.md`)
+- `ci.yml:12` yorumu ve `MASTER_PROMPT_v2.md` §6/§7 Groq'a hizalandı (brief'e model adı kopyalanmadı, varsayılan kodda). `_dev/` içindeki üç yaşayan kopya da kapandı: TESTING, M6, repo-haritası memory'si.
+- Süpürme `_dev/` hariç 5 eşleşme bıraktı, hepsi gerekçeli sınıf dışı: v1 brief (v2 onu geçersiz kılıyor) + bülten slug'ı `claude-opus-4-8-fable-5` ×4. Çapada 8 eşleşme vardı, kontrol grubu `GROQ_API_KEY` 7 dosyada bulundu.
+- Brief'in yetkisi/kalan bayatlığı ve Korumalı `ILKELER.md:34` sahipsizdi → `PRD/NOTES.md` (prd-review). Build exit 0, Vitest 86/86.
 
 **TASK-18.12 — Hata notu ziyaretçinin dilinde** (✅ 2026-10-02 · detay `tasks/archive/TASK-18.12.md`)
 - `route.ts`'in sabit TR `FALLBACK_MESSAGE`'ı kalktı. Dil istekten çözülüyor (Referer prefix'i → `NEXT_LOCALE` cookie'si → TR; Accept-Language yok), metin `messages/<locale>.json` → `chat.error`'dan ve yalnız hata anında yükleniyor. Ayraç yalnız yarım yanıtın ardına ekleniyor.
 - Ölçüm: next-intl, tarayıcı dili sayfayla aynıysa cookie yazmıyor; gerçek Chrome'da EN/AR/ES'de cookie yoktu, dil yalnız Referer'dan geldi. Yerel `next start` + Chrome: 5/5 doğru, AR RTL doğru.
 - Vitest 69 → **86**, build exit 0. Kapı 3 bozuk girdiyle sınandı (çapa 18 / sabit-TR 8 / koşulsuz ayraç 14 kırmızı), boş kapsamda sessiz PASS yok. Canlı teyit verify'da.
-
-**TASK-18.11 — Üst-akış zaman aşımı** (✅ 2026-09-12)
-- `route.ts`'e tek `AbortController` + her parçada yeniden kurulan bekçi: ilk token **20 s**, parçalar arası sessizlik **5 s**, toplam **24 s** — üçü de `maxDuration = 30`'un altında, yani asılı çağrı platformca öldürülmek yerine kendi fallback metnimizle 200 olarak kapanıyor. SDK retry'ı kapatıldı (`maxRetries: 0`): yeniden deneme uykusu `retry-after`'ı dinliyor ve AbortSignal ile kesilemiyor.
-- Değer ölçümle seçildi: 20 canlı çağrıda ilk-token p50 369 ms · p90 7,4 s · **en yavaş başarılı 17,4 s** (1 çağrı yine 504). Task'ın önerdiği 12–15 s o meşru yanıtı keserdi → kullanıcıya soruldu, **20 s onaylandı**.
-- 5 yeni test (gerçek SDK + sahte `fetch` + sanal zaman); Vitest **64 → 69**, build exit 0. Kapı iki kez bozuk girdiyle sınandı (bekçi kapalı → 3 kırmızı; yalnız stream-ortası fallback kalkınca → 2 kırmızı), boş kapsamda sessiz PASS yok.
 
 <!-- KURAL: Sadece son 2 task özeti tutulur, daha eskileri silinir (gerçek silme — HTML comment yasak). -->
 <!-- KURAL: Sadece aktif fazın task'leri gösterilir. Geçmiş fazların bilgileri phases/ klasöründedir. -->
@@ -95,10 +95,10 @@
 
 ## Hızlı Erişim
 
-**Aktif Task:** **TASK-18.13** (senaryo 39). Son tamamlanan: `tasks/archive/TASK-18.12.md`.
-**Aktif Faz:** **Faz 18 🔄** (v0.5 Chatbot Groq geçişi + canlıya alma; discuss ✅ + research ✅ + plan ✅ + verify-plan ✅ + 12 task ✅ + UAT ×3, Adım **task**). **Aktif Versiyon v0.5.** Versiyon Sonu Durumu **`içerik_fazları`**. **Canlı = `main` HEAD** (her push deploy); chatbot canlıda (`qwen/qwen3.8-27b`). Faz dokümanı: `phases/PHASE-18.md` (→ **Go-live** + **UAT Sonuçları**); araştırma detayı → `phases/PHASE-18-ARASTIRMA.md`.
+**Aktif Task:** yok (13/13 ✅). Son tamamlanan: `tasks/archive/TASK-18.13.md`.
+**Aktif Faz:** **Faz 18 🔄** (v0.5 Chatbot Groq geçişi + canlıya alma; discuss ✅ + research ✅ + plan ✅ + verify-plan ✅ + 13 task ✅ + UAT ×3, Adım **verify**). **Aktif Versiyon v0.5.** Versiyon Sonu Durumu **`içerik_fazları`**. **Canlı = `main` HEAD** (her push deploy); chatbot canlıda (`qwen/qwen3.8-27b`). Faz dokümanı: `phases/PHASE-18.md` (→ **Go-live** + **UAT Sonuçları**); araştırma detayı → `phases/PHASE-18-ARASTIRMA.md`.
 **v0.5 kaynağı (karar + 5 kabul kriteri):** `docs/DECISIONS.md` 2026-07-21; go-live'daki model + `max_tokens` kararları → DECISIONS 2026-09-11.
-**Sonraki versiyon adayları (→ `PRD/VERSIONS.md`):** **ana sayfa mesaj netliği / ilk-ekran anlaşılırlığı** (kullanıcı 2026-10-02: ziyaretçi kim olduğumuzu ve ne yaptığımızı anlamadan çıkıyor; teşhis + hero çapası çelişkisi → `PRD/NOTES.md`; booking/takvimle önceliği yarışır, sıra prd-refine'da damgalanır) · v0.6 booking/takvim · çeviri senkronu (non-TR + AR) · BULGU-S3 craft cila · TB-3 / npm audit / brief mobil perf · chatbot prompt cilası (TR yankı/tekrar lekeleri) · `GROQ_API_KEY` Preview env · **`/api/chat` hız sınırı / origin kontrolü** (verify 18 senaryo 23) · **npm audit `next` aralık-içi güncelleme** (1 kritik, Dokunulmaz onayı gerekir).
+**Sonraki versiyon adayları (→ `PRD/VERSIONS.md`):** **ana sayfa mesaj netliği / ilk-ekran anlaşılırlığı** (kullanıcı 2026-10-02: ziyaretçi kim olduğumuzu ve ne yaptığımızı anlamadan çıkıyor; teşhis + hero çapası çelişkisi → `PRD/NOTES.md`; booking/takvimle önceliği yarışır, sıra prd-refine'da damgalanır) · v0.6 booking/takvim · çeviri senkronu (non-TR + AR) · BULGU-S3 craft cila · TB-3 / npm audit / brief mobil perf · chatbot prompt cilası (TR yankı/tekrar lekeleri) · `GROQ_API_KEY` Preview env · **`/api/chat` hız sınırı / origin kontrolü** (verify 18 senaryo 23) · **npm audit `next` aralık-içi güncelleme** (1 kritik, Dokunulmaz onayı gerekir) · **brief'in yetkisi + kalan bayatlığı** (OVERVIEW "çelişkide v2 geçerli" + Korumalı `ILKELER.md:34` örneği; → `PRD/NOTES.md`).
 **Task Sistemi:** `tasks/TASKS-README.md`
 **PRD (karar kaynağı):** `PRD/VIZYON.md` · `PRD/VERSIONS.md` · `PRD/features/`
 **Revize Backlog (bilinen sorunlar):** `docs/REVIZE-BACKLOG.md`

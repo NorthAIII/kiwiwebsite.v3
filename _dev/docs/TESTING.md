@@ -71,7 +71,7 @@ Push ve PR'da (tüm branch'ler — `revize/...` dahil) otomatik koşar: `.github
 - **fast** — `npm ci` → `next build` → `npm run test` (Vitest)
 - **a11y** — `npm ci` → `playwright install chromium` → `npm run test:e2e` (Playwright/axe)
 
-CI yalnız **doğrular, deploy etmez** (Vercel hâlâ yalnız `main`→deploy). `ANTHROPIC_API_KEY` CI'da yok → chatbot offline fallback'e düşer; `/` build + a11y scan etkilenmez. Repo public → run/job durumu auth'suz REST API ile de okunabilir (`gh` yoksa; detay → MEMORY "Ortam & Araç Notları").
+CI yalnız **doğrular, deploy etmez** (Vercel hâlâ yalnız `main`→deploy). `GROQ_API_KEY` CI'da yok → chatbot offline fallback'e düşer; `/` build + a11y scan etkilenmez. Repo public → run/job durumu auth'suz REST API ile de okunabilir (`gh` yoksa; detay → MEMORY "Ortam & Araç Notları").
 
 ---
 

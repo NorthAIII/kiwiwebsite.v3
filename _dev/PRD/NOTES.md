@@ -24,3 +24,15 @@ Bulgu: sorun **içerik yokluğu değil, sıralama ve ilk-ekran yoğunluğu**.
 
 **Sonuç:** **Sonraki versiyonun (v0.6 adayı) ana konusu: ana sayfa mesaj netliği / ilk-ekran anlaşılırlığı.** Sıra kullanıcı kararıyla belirlendi (2026-10-02): **önce Faz 18 kapanır** (TASK-18.12 + 18.13), sonra bu konuya temiz zeminde girilir — faz ortasında yeni konu açılmaz. Girilecek kapı `prd-refine` (versiyon tanımı + hero çapası kararı + alternatif kopya karşılaştırması). Mevcut v0.6 adayı booking/takvim bu konuyla **önceliği yarışır** — sıralama prd-refine'da damgalanır.
 ---
+### Kalıcı yetki dokümanlarında kalan bayatlık — brief'in yetkisi yeniden değerlendirilmeli
+**Tarih:** 2026-10-02
+**Bağlam:** TASK-18.13 (UAT 39), ürün ağacındaki bayat Anthropic referanslarını kapattı. `MASTER_PROMPT_v2.md` §6/§7'de yalnız sağlayıcı satırları hizalandı, çünkü task'ın sınırı buydu. Task dokümanı geri kalanın "ayrı bir kalem olarak kayda geçtiğini" söylüyordu, ama DURUM/PRD/PHASES'te böyle bir kayıt yoktu. Bu not o kaydı açar.
+
+**Açık kalanlar:**
+- **Brief'in geri kalanı v0.1'den beri gerçeklikten kopuk.** Örnekler: §5 «Nasıl çalışır (3 adım)» (v0.1'de 4 adım oldu), «Bunker OS sayfası (`/bunker-os`)» (v0.3'te `/crew-os` oldu), `/forum/...` (şimdi `/bulten/...`), §2 «AR/DE/ES EN'i aynalıyor».
+- **Brief'in yetkisi.** `OVERVIEW.md:12` brief için "çelişkide v2 geçerli" diyor. Pratikte karar kaynağı artık `PRD/VIZYON.md` + `docs/DECISIONS.md` (VIZYON §3 bunu taksonomi için zaten söylüyor: "brief eski; PRD geçerli"). Seçenekler: (a) brief tarihsel ilan edilir ve OVERVIEW cümlesi düzeltilir, (b) brief baştan hizalanır. OVERVIEW Korumalı → kullanıcı kararı gerekir.
+- **`ILKELER.md:34`** sır ilkesinin örneğinde hâlâ `ANTHROPIC_API_KEY` yazıyor (ilke doğru, örnek bayat). ILKELER Korumalı ve doğal güncelleme noktası prd/prd-refine/prd-review olduğu için TASK-18.13'te dokunulmadı.
+- **Kardeş yüzeyler.** `README.md:5` hâlâ v1'e (`MASTER_PROMPT.md`) bağlanıyor ve "Phase 1" diyor (TASK-18.05 bunu kapsam-dışı bırakmıştı). v1'in §6.7'si Claude'u tarif ediyor; v1 tarihsel olduğu için bu beklenen bir durum.
+
+**Sonuç:** Konu prd-review'a (ya da daha önce açılırsa prd-refine'a) aittir. Tek kararla kapanabilir: brief'in yetkisi belirlenir, sonra OVERVIEW cümlesi + ILKELER örneği + README bağlantısı o karara göre hizalanır.
+---

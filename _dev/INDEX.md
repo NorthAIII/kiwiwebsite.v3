@@ -46,7 +46,7 @@
 | `PRD/features/kopya-revizesi.md` | Site-geneli TR ses/ton + F5 dürüstlük konvansiyonu + F6 hero ikincil CTA — R4. |
 | `PRD/features/alpfit-plus.md` | **v0.4** — Alpfit (F2.8) sayfası "Alpfit Plus" zengin ürün vitrini yeniden tasarımı: bölümler + dürüstlük 4/4 gerçek + 5-dil namespace + kabul kriterleri (AP1–AP3). |
 | `PRD/SESSION-NOTES.md` | PRD çalışma kanvası: mevcut durum analizi, sahipli açık kalemler (sonraki versiyon adayları), keşfedilmemiş alanlar. |
-| `PRD/NOTES.md` | Geliştirme sırası fikir/analiz/karar log'u (append-only; konsolidasyon prd-review'da). Şu an boş — chatbot Groq/llama sağlayıcı notu prd-review 2026-07-21'de DECISIONS + VERSIONS'a mezun edildi. |
+| `PRD/NOTES.md` | Geliştirme sırasında tutulan fikir/analiz/karar log'u (append-only; konsolidasyon prd-review'da). Açık notların güncel listesi dosyanın kendisindedir. |
 
 ### Modül Dokümanları (İlgili Modül Gerektiğinde OKU)
 
@@ -205,7 +205,7 @@ kiwiwebsite.v3/
 
 ---
 
-**Son Güncelleme:** 2026-09-12 — audit-docs: `docs/DECISIONS.md` iki tarih-aralığı arşivine bölündü ve `docs/perf/README.md` versiyon arşivlerine ayrıldı; iki bölmenin çocukları kaydedildi.
+**Son Güncelleme:** 2026-10-02 — TASK-18.13: `PRD/NOTES.md` satırındaki bayat "şu an boş" iddiası kaldırıldı (dosyada iki açık not var).
 
 <!-- KURAL: Bu satır her güncellemede ÜZERİNE YAZILIR. "Önceki:" prefix ile kümülatif yığma YASAK (CLAUDE.md → Doküman Disiplini). -->
 <!-- KURAL: Tamamlanmış fazların task arşiv listesini INDEX'e ekleme — `ls _dev/tasks/archive/` zaten görür. INDEX yalnızca aktif klasör konumlarını gösterir; statik liste dokümanı değildir. -->

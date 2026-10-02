@@ -84,7 +84,7 @@
 | 18.10 | TASK-18.10 | ✅ Tamamlandı | **Düzeltme (verify 18):** marka mührü kopyası — betimleyici CTA atfı + etiket-alıntılama yasağı, 5 dil hitap kuralı, README model ailesi (UAT 19/28/29); harness 2×20 yanıt 0 ihlal |
 | 18.11 | TASK-18.11 | ✅ Tamamlandı | **Düzeltme (verify 18, 2. tur):** üst-akış zaman aşımı — ilk token 20 s · sessizlik 5 s · toplam 24 s + SDK retry kapalı; değer canlı ölçümle seçildi (en yavaş meşru yanıt 17,4 s) ve kullanıcı onayladı (UAT 33); Vitest 64→69 |
 | 18.12 | TASK-18.12 | ✅ Tamamlandı | **Düzeltme (verify 18, 3. tur):** chatbot hata/zaman-aşımı notu ziyaretçinin dilinde — Referer prefix'i → `NEXT_LOCALE` → TR, metin `chat.error` (yalnız hata anında yüklenir); yerelde gerçek Chrome 5/5 (UAT 36); Vitest 69→86 |
-| 18.13 | TASK-18.13 | ⬜ Bekliyor | **Düzeltme (verify 18, 3. tur):** ürün ağacındaki bayat Anthropic referansları — `ci.yml` yorumu + `MASTER_PROMPT_v2.md` §6/§7 (UAT 39) |
+| 18.13 | TASK-18.13 | ✅ Tamamlandı | **Düzeltme (verify 18, 3. tur):** ürün ağacındaki bayat Anthropic referansları — `ci.yml` yorumu + `MASTER_PROMPT_v2.md` §6/§7 (dar güncelleme; model adı kopyalanmadı) + üç yaşayan `_dev` kopyası; süpürmede kalan 5 eşleşme gerekçeli sınıf dışı (UAT 39) |
 
 **Durum simgeleri:** ⬜ Bekliyor | 🔄 Devam ediyor | ⏸️ Duraklatıldı | ✅ Tamamlandı | 🔴 Bloke | ❌ İptal
 
@@ -213,4 +213,4 @@
 ---
 
 **Oluşturulma:** 2026-07-21
-**Son Güncelleme:** 2026-10-02 — **TASK-18.12 ✅ (üçüncü düzeltme turu 1/2).** Hata/zaman-aşımı notu ziyaretçinin dilinde: Referer → `NEXT_LOCALE` → TR, metin `chat.error`. Vitest 69 → 86, kapı 3 bozuk girdiyle sınandı. Canlı teyit (senaryo 36) verify'a kaldı. Sırada TASK-18.13.
+**Son Güncelleme:** 2026-10-02 — **TASK-18.13 ✅ (üçüncü düzeltme turu 2/2).** Bayat Anthropic referansları kapandı: `ci.yml` yorumu + brief §6/§7 + üç yaşayan `_dev` dokümanı. Brief'in yetkisi → `PRD/NOTES.md`. 13/13 task ✅ → sırada verify-phase 18 (4. koşum, baştan).

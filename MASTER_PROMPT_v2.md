@@ -33,13 +33,13 @@ Açık zeminde ince yarı-saydam mürekkep çizgileri + yumuşak düğümler; ç
 
 ## 6. Tech & build
 - Next.js 15 (App Router, TS), Tailwind v4, R3F + drei + custom GLSL, GSAP + ScrollTrigger, Lenis, next-intl.
-- Chatbot: `/api/chat` (Node runtime) Claude'u stream eder, varsayılan `claude-opus-4-8` (env `CHAT_MODEL`), EN/TR/AR/DE/ES algılar; `ANTHROPIC_API_KEY` yoksa zarif "offline" durumu.
+- Chatbot: `/api/chat` (Node runtime) Groq'u stream eder (`groq-sdk`, OpenAI-uyumlu); model env `CHAT_MODEL` ile seçilir, varsayılanı kodda (`src/app/api/chat/route.ts`); EN/TR/AR/DE/ES algılar; `GROQ_API_KEY` yoksa zarif "offline" durumu. (Sağlayıcı v0.5'te Anthropic/Claude'dan Groq'a geçti — `_dev/docs/DECISIONS.md` 2026-07-21.)
 - Performans: Lighthouse hedef ≥95 perf / ≥100 a11y, LCP < 2.5s, WebGL lazy + degradable.
 - Erişilebilirlik: semantik HTML, focus state, klavye nav, RTL-doğru, reduced-motion yolu.
 
 ## 7. Dağıtım
 - Repo: `github.com/NorthAIII/kiwiwebsite.v3` (branch `main`). Her push → Vercel `north-ai/kiwi-ai-lab-v3` otomatik deploy.
-- Chatbot canlıda çalışsın diye Vercel env'e `ANTHROPIC_API_KEY` eklenmeli.
+- Chatbot canlıda çalışsın diye Vercel env'de (Production) `GROQ_API_KEY` tanımlı olmalı.
 
 ## 8. Bekleyen işler (sonraki adımlar)
 - **Sosyal medya gerçek profil linkleri** (Instagram / X / LinkedIn — şu an `#` placeholder).

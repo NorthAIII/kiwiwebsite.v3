@@ -55,7 +55,7 @@
 
 ### F6.4: Vercel deploy & env yönetimi → Faz —
 
-**Açıklama:** Vercel projesi `north-ai/kiwi-ai-lab-v3`; her `main` push → otomatik deploy. Env: `ANTHROPIC_API_KEY` (chatbot için), opsiyonel `CHAT_MODEL`. `.env.example` referans.
+**Açıklama:** Vercel projesi `north-ai/kiwi-ai-lab-v3`; her `main` push → otomatik deploy. Env: `GROQ_API_KEY` (chatbot için; yalnız Production'da — Preview'de chatbot offline), opsiyonel `CHAT_MODEL`. `.env.example` referans.
 
 **Kabul Kriterleri:**
 - main push'ta Vercel otomatik build/deploy yapar.
@@ -77,4 +77,4 @@
 
 ---
 
-**Son Güncelleme:** 2026-06-27
+**Son Güncelleme:** 2026-10-02 — TASK-18.13: F6.4 env satırı `ANTHROPIC_API_KEY` → `GROQ_API_KEY` (v0.5 sağlayıcı geçişi; anahtar yalnız Production'da).

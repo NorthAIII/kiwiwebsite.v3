@@ -9,7 +9,7 @@
 # prod build'i (`next build && next start`) kendi koşar (playwright.config:
 # reuseExistingServer=false in CI) → ayrı `next build` adımı gerekmez.
 #
-# ANTHROPIC_API_KEY CI'da yok → chatbot offline fallback'e düşer; `/` build + a11y
+# GROQ_API_KEY CI'da yok → chatbot offline fallback'e düşer; `/` build + a11y
 # scan etkilenmez (PHASE-5 Dikkat #8). Secret CI'a eklenmez (gerek yok).
 
 name: CI
