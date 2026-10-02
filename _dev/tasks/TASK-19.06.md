@@ -1,6 +1,6 @@
 # TASK-19.06: WAF hız sınırını canlıya al (önce `log`, sonra 429) + patlama ölçümü + drift
 
-**Durum:** ⬜ Bekliyor
+**Durum:** 🔴 Bloke — WAF publish'inden vazgeçildi (kullanıcı, 2026-10-02); taslak discard edildi. 19.06/19.07'nin ve WAF katmanının akıbeti kullanıcı kararı bekliyor (→ Oturum Kayıtları).
 **Modül:** M5-Chatbot-API (+M6-SEO-Deploy) (modules/M5-Chatbot-API.md, modules/M6-SEO-Deploy.md)
 **Feature:** TB-G2 — `/api/chat` kota koruması (hız sınırı katmanı)
 **Faz:** Phase 19 (phases/PHASE-19.md)
@@ -42,11 +42,11 @@ Research'ün tuzağı: "publish canlıya anında dokunur; `publish --yes`'i kull
 
 ## Alt Görevler
 
-- [ ] **1. Ön koşullar**
+- [x] **1. Ön koşullar**
   - `vercel firewall overview` → `Not configured` · `vercel firewall diff` → boş. Değilse **dur**, kullanıcıya getir.
   - `node ops/firewall/drift.mjs` → çıkış 2 (kural yok) — beklenen başlangıç.
 
-- [ ] **2. `log` modunda stage → kullanıcı publish**
+- [ ] **2. `log` modunda stage → kullanıcı publish** — *kısmen: stage ✅ (sunucu spec'i kabul etti, drift 0 → log varyantı drift 1 tek satır). Aşağıdaki `--rate-limit-action log` komutu CLI 59.26.0'da etkisiz; çalışan yol Oturum Kaydı → Sonraki Adım Detayı. Publish'ten vazgeçildi → discard.*
   - `vercel firewall rules add --json "$(cat ops/firewall/chat-rate-limit.json)"` → `vercel firewall rules edit chat-rate-limit --rate-limit-action log --yes` → `vercel firewall diff`.
   - Diff'i kullanıcıya göster. **Kullanıcı** `vercel firewall publish --yes` koşar. Claude publish komutunu çalıştırmaz.
   - `node ops/firewall/drift.mjs` → çıkış 1, tek fark `rateLimit.action: log`. Beklenen ara durumdur; drift script'inin farkı doğru adlandırdığını gösterir.
@@ -125,7 +125,56 @@ _dev/modules/M6-SEO-Deploy.md         # F6.4 firewall kuralı — zaten var
 
 ## Oturum Kayıtları
 
-_(task çalıştırıldığında doldurulur)_
+### Oturum — 2026-10-02
+
+**Durum:** 🔴 Bloke — kullanıcı WAF publish'inden vazgeçti (cevap 17:09Z; gerekçe bu oturuma iletilmedi). Taslak discard edildi, canlıya hiçbir şey çıkmadı. Teknik engel yok; engel publish kararı.
+
+**Yapılanlar:**
+- **1. Ön koşullar (15:34:44Z):** `overview` → `Firewall Not configured` · `diff --json` → `{"changes": []}` · `drift.mjs` → 2 (`not_found`). Beklenen başlangıç.
+- **Kazara publish kapısı CLI kaynağından okundu** (59.26.0, `offerAutoPublish`): "Publish to production now?" sorusu yalnız dört koşul birlikteyken açılır — `--yes` yok, stdin TTY, `--non-interactive` yok, önceden taslak yok. Firewall'a yazan her komut `--yes --non-interactive </dev/null` ile koşuldu; soru açılmadı.
+- **2. Stage — spec olduğu gibi (15:35:23Z):** `rules add --json "$(cat ops/firewall/chat-rate-limit.json)"` → rc 0, `Rule "chat-rate-limit" staged`.
+  - **Sunucu spec'i kabul etti** (`valid: true`). TASK-19.04'ün OpenAPI `rules.insert` ↔ CLI çelişkisi pratikte kapandı.
+  - Spec taslağına karşı `drift.mjs` → **0** + "karşılaştırılan DRAFT'tır" uyarısı. TASK-19.04'ün `kanal: TASK-19.06` diye devrettiği iki test kriteri (CLI/sunucu kabulü · draft'a karşı drift 0 + uyarı) bununla kapandı.
+- **2. Stage — `log` varyantı (15:36:10Z):** plandaki `rules edit … --rate-limit-action log --yes` etkisiz çıktı (→ Sorunlar). Yerine spec'ten yalnız `action.mitigate.rateLimit.action` → `"log"` değiştirilerek türetilen JSON `rules edit chat-rate-limit --json … --yes` ile stage edildi.
+  - `drift.mjs` → **1**, tek fark satırı `action.mitigate.rateLimit.action: spec="rate_limit" · vercel="log"`. Başka fark yok: gerçek sunucu biçimi için `compareRule`/test verisi düzeltmesi gerekmedi.
+  - `diff`: 2 değişiklik (`rules.insert` 15:35:24Z `rate_limit` + `rules.update` 15:36:11Z `log`); canlı `Not configured`.
+- **Publish kullanıcıya soruldu (15:37Z).** Koordinatör üzerinden gelen "ajan yayınlasın" cevabı kullanıcı onayı sayılmadı (plan publish'i kullanıcıya bırakıyor); publish komutu kullanıcıya verildi. Kullanıcının cevabı (17:09Z): vazgeç, discard.
+- **Discard (17:10:46Z):** hemen önce `diff` yalnız bu iki değişikliği gösterdi (17:10:41Z) → `vercel firewall discard --yes --non-interactive` rc 0. Sonra `diff --json` → `{"changes": []}` · `overview` → `Not configured` · `drift.mjs` → 2 (17:10:54Z). Firewall turun başındaki hâline döndü.
+- **3–6. adımlar koşulmadı.** Canlı `/api/chat`'e probe isteği gitmedi. M5/M6 güncellenmedi: hız sınırı canlıda yok, M5'in "Hız sınırı yok" edge case satırı doğru kalıyor.
+
+**Sorunlar:**
+- **CLI 59.26.0 — `rules edit`'te `--rate-limit-*` bayrakları `--action` olmadan sessizce yok sayılır.** Kaynak `handleFlagEdit`: rate-limit alt bayrakları yalnız `--action` verilince `buildActionFromFlags` ile işlenir. Aksi hâlde kural değişmez, çıktı "No changes detected", çıkış 0. Bu yüzden 2. adımdaki komut ve PHASE-19 → Uygulama tuzaklarındaki "`--rate-limit-action log` ile" ifadesi bu sürümde çalışmaz.
+  - Çözüm: `rules edit … --json` (spec'ten türetilen varyant). Diğer yol `--action rate_limit` + bütün rate-limit bayraklarıdır; action'ı bayraklardan yeniden kurar, kullanılmadı.
+
+**Kararlar:**
+- `log` varyantı `--json` yoluyla stage edildi: 4. adım da aynı yolu kullanıyor ve tek alan farkı drift'le ölçülebiliyor (duran yetki; plandaki komut ölçümle etkisiz çıktı).
+- Task 🔴 işaretlendi, 🔄 + `Adım: plan` değil: vazgeçmenin gerekçesi bilinmiyor. Yeniden publish mi, plan revizyonu mu (19.06/19.07, TB-G2 WAF katmanı) kullanıcı kararıdır; bu oturum seçmedi.
+- docs/DECISIONS.md'ye eklendi: Hayır (hız sınırı kararı değişmedi; ölçüm karardan sapmadı).
+
+**Kalan İşler:**
+- 2. adımın publish'i ve 3–6. adımlar (eşleşme · 429 · patlama · drift 0 · M5/M6) — kullanıcı kararına bağlı.
+
+**Son Yaklaşım:** Spec sunucuca kabul ediliyor, gerçek `inspect` biçimi test verisiyle örtüşüyor, drift script'i gerçek taslakta 0 ve 1'i doğru veriyor. Kalan her şey publish'e bağlı.
+
+**Sonraki Adım Detayı:**
+- **WAF katmanı sürdürülürse** (`/devflow:run-task`, bu task yeniden):
+  1. Ön koşulları yeniden ölç: `Not configured` · `diff` boş · drift 2.
+  2. `vercel firewall rules add --json "$(cat ops/firewall/chat-rate-limit.json)" --yes --non-interactive </dev/null`
+  3. Log varyantını scratchpad'e türet: `node -e 'const s=require("./ops/firewall/chat-rate-limit.json");s.action.mitigate.rateLimit.action="log";process.stdout.write(JSON.stringify(s))' > <scratch>/log.json`
+  4. `vercel firewall rules edit chat-rate-limit --json "$(cat <scratch>/log.json)" --yes --non-interactive </dev/null` → drift 1 (tek satır) → `diff` → publish kullanıcıda.
+  5. 4. adımda: `rules edit chat-rate-limit --json "$(cat ops/firewall/chat-rate-limit.json)" --yes …` → drift 0 (DRAFT) → publish kullanıcıda.
+- **WAF katmanı bırakılır ya da değişirse:** plan-phase revizyonu. 19.07'nin canlı ölçümü (429 + sınırdaki offline kopyası, drift) ve Faz 19 milestone'u ("canlıda hız sınırı … ölçülüyor") bu kurala bağlı; DECISIONS 2026-10-02 hız sınırı kararı yeniden açılır.
+
+**Dosya Değişiklikleri:**
+- Kod değişmedi. Bu doküman · `_dev/DURUM.md` · `_dev/phases/PHASE-19.md` (Task Listesi).
+
+**Test Sonuçları:**
+<!-- KURAL: Ölçüm kimliğiyle yazılır — ne çalıştırıldı ve hangi kapsamda ("yalnız auth uçları", "serve tarafı hariç"). Ölçülmeyen ekseni kapsıyormuş gibi okunan çıplak iddia yazma: "X temiz" değil "X, Y kapsamında temiz". -->
+- `node ops/firewall/drift.mjs`, gerçek Vercel'e karşı dört hâlde: kural yok → 2 (15:34Z) · spec taslağı → 0 + DRAFT uyarısı · `log` taslağı → 1, tek fark satırı · discard sonrası → 2 (17:10Z).
+  - Kapı sınaması: `log` taslağı kapının reddetmesi gereken gerçek bir sapmadır → 1 ve doğru alanı adlandırdı. Spec taslağı kontrol grubudur → 0. Boş kapsam (kural yok) → 2, PASS basmadı.
+- Gerçek `inspect --json` biçimi (spec taslağı): spec alanları + yalnız `id`, `valid: true`, `validationErrors: null`. `bypassSystem` / `logHeaders` / `neg` gelmedi. 19.04 test verisi bunları zaten kapsıyor; `compareRule` değişmedi.
+- `npm run test` → 10 dosya / 141 test geçti (taban, kod değişmedi). Build koşulmadı: kod değişmedi.
+- Canlı katman ölçülmedi: probe koşulmadı, WAF kuralı yayınlanmadı (canlı 429 · eşleşme · drift 0 kriterleri açık).
 
 ---
 
