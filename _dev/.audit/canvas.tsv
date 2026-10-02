@@ -6,7 +6,7 @@ id	path	status	status_reason	checked_version	last_checked	content_hash	exclude	a
 3	_dev/ILKELER.md	pending		1	2026-07-21	4b90e9061a5bbc91135b1502ddbcac12d43794a402eae8a94bda5d896c8a2da9	0	2026-07-18	
 4	_dev/INDEX.md	pending		1	2026-07-21	347be3cc8e33c760d1c5f2bc7367af07e0cf1e15baed353105846d1c5a1a21ff	0	2026-07-18	
 5	_dev/MEMORY.md	conformant		5	2026-10-02	3d4e0954dfe1f84f26b159d5e69b1bca7df3cb38a4dfbdaee9f0bc08952c0199	0	2026-07-18	
-6	_dev/MODULE-MAP.md	pending					0	2026-07-18	
+6	_dev/MODULE-MAP.md	conformant		5	2026-10-02	381d8cb7cd9e18337cc2aaf2ac9edd490ba4bcb964220b242b2b8fb9cd68f2ec	0	2026-07-18	
 7	_dev/OVERVIEW.md	pending					0	2026-07-18	
 8	_dev/PHASES.md	pending					0	2026-07-18	
 156	_dev/PRD/NOTES.md	pending					0	2026-07-21	

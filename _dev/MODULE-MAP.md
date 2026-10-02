@@ -4,9 +4,9 @@
 **Ne zaman okunmalı:** Planlama ve review sırasında
 **Not:** Modül detayları `modules/` klasöründeki ayrı dosyalardadır. Bu doküman sadece genel harita ve matristir.
 
-> **DevFlow-öncesi durum:** Site DevFlow eklenmeden önce inşa edildi. Aşağıdaki feature'ların tamamı mevcut kodda **çalışır halde** (Durum ✅), ama hiçbiri bir DevFlow fazından geçmediği için Faz sütunu "—"dır. Güçlü revize ilerledikçe, yeniden ele alınan/eklenen feature'lar için yeni feature satırları ve faz atamaları eklenecektir.
+> **DevFlow-öncesi baz:** Site DevFlow eklenmeden önce inşa edildi. Matrisin F-satırları (F1.1–F6.4) o baz kodu temsil eder — **çalışır halde** (✅), DevFlow fazından geçmedikleri için Faz sütunu "—". Revize ile gelen işler matrisin altında kendi versiyon/faz satırlarıyla (iş birimleri) izlenir.
 
-> **Taksonomi (DECISIONS 2026-06-27):** Bayrak katman sitede her zaman **Crew OS** (public ad); **Bunker OS** iç kod adıdır, kullanıcıya görünmez (iki ürün değil, aynı şey). **Alpfit** ayrı, bağımsız dikey üründür. Aşağıda F2.5 (ana sayfa Crew OS teaser) ve F2.7 (Crew OS showcase sayfası) bu ada göre adlandırıldı — sayfanın route'u **artık public `/crew-os`** (Faz 11'de rename edildi; eski `/bunker-os` → kalıcı 308 redirect, 5 locale). İç kod adı yalnız kod dosya/dizin adlarında kalır (`components/bunker-os/`, `Bunker.tsx` — taksonomi izin veriyor, URL'de sızmıyor).
+> **Taksonomi:** F2.5 (ana sayfa teaser) ve F2.7 (showcase sayfası) public ad **Crew OS** ile adlandırıldı; sayfanın route'u `/crew-os` (Faz 11; eski `/bunker-os` → kalıcı 308, 5 locale). İç kod adı yalnız kod dosya/dizin adlarında kalır (`components/bunker-os/`, `Bunker.tsx`). **Alpfit** ayrı üründür (F2.8). Kural ve gerekçe → `CLAUDE.md` → Ürün taksonomisi (DECISIONS 2026-06-27).
 
 ---
 
@@ -22,7 +22,7 @@ Kiwi Website v3
 ├── M2: Sayfalar & Bölümler (IA/İçerik)
 │   ├── F2.1: Ana sayfa kompozisyonu                       → —
 │   ├── F2.2: Hero bölümü                                  → —
-│   ├── F2.3: "Nasıl çalışır" bölümü (şu an 3 adım)        → —
+│   ├── F2.3: "Nasıl çalışır" bölümü (4 adım — R1)         → —
 │   ├── F2.4: Sektör çözümleri (interaktif seçici)         → —
 │   ├── F2.5: Crew OS teaser bölümü (ana sayfa flagship)   → —
 │   ├── F2.6: Bülten/Forum bölümü + makale sayfaları       → —
@@ -63,7 +63,7 @@ M6 (SEO/Deploy) ─────────────────────>
 - **M1 → M2/M3/M5:** Tasarım token'ları (renk/tipografi/tema) ve Living Flow tüm görünür yüzeyin tabanıdır; Hero, Crew OS (route `/crew-os`), Alpfit sayfaları ve chatbot "thinking" durumu Living Flow motifini kullanır.
 - **M3 → M2:** Bölümler Reveal/Magnetic/SmoothScroll primitive'lerine dayanır.
 - **M4 → M2/M3/M5:** Tüm görünür metin i18n'den gelir; Nav/Footer dil değiştirici M4'e bağlı.
-- **M5 → M1:** Chatbot "thinking" animasyonu Living Flow motifini taklit eder.
+- **M1 → M5:** Chatbot "thinking" animasyonu Living Flow motifini taklit eder.
 - **M6:** Diğer tüm modüllerin üzerine oturan yayın/SEO katmanı (metadata route'ları i18n'e bağlı).
 
 ---
@@ -84,6 +84,8 @@ M6 (SEO/Deploy) ─────────────────────>
 ## Feature-Faz Matrisi
 
 > **Durum (DevFlow-öncesi):** ✅ = mevcut kodda var ve çalışıyor (Faz "—" = DevFlow fazı dışında inşa edildi). Revize fazları girildikçe ilgili feature'lar için yeni satır/faz atanır.
+
+<!-- KURAL: Matris iki proje-özgü genişletme taşır (Claude kararı · 2026-10-02 · audit-docs — kickoff-docs 19aa28b'den beri projenin matris formatı; ❌ Faz 6 review cebbdca): (1) F-satırlarının (DevFlow-öncesi baz) altında versiyon/faz bazlı iş-birimi satırları — F-dışı kimlikler (R/TD/S/A11Y/D1/P/E/A/SEO/B/TB/AP/REL/C1/TB-G…), kalın ayraç satırlarıyla gruplanır; (2) lejantta ❌ İptal durum simgesi. Template'te karşılıkları yok; korunur. -->
 
 | Feature | Modül | Versiyon | Faz | Durum |
 |---------|-------|----------|-----|-------|
@@ -138,7 +140,7 @@ M6 (SEO/Deploy) ─────────────────────>
 | P1: WebGL-dışı mobil perf kazanımları (font/JS bundle/asset/render-path; imza dokunulmaz) | M6 (+M1) | v0.2 | 6 | ✅ |
 | P2: Living Flow mobil degradasyon ayarı (DPR cap/particle/erken static; craft korunur) | M1 | v0.2 | 6 | ❌ İptal |
 | **— v0.2 analytics iş birimi (Faz 7 — site-geneli ölçüm) —** | | | | |
-| E1: Umami self-hosted analytics (`next/script`, `[locale]/layout.tsx` head, afterInteractive; pageview-only, canlıda gözle doğrulanır) | M6 | v0.2 | 7 | 🟡 |
+| E1: Umami self-hosted analytics (`next/script`, `[locale]/layout.tsx` head, afterInteractive; pageview-only, canlıda gözle doğrulanır) | M6 | v0.2 | 7 | ✅ |
 | **— v0.2 versiyon-sonu teknik borç iş birimleri (Faz 8) —** | | | | |
 | TD4: `text-pulse` ink-panel dark-inversion süpürmesi (alt sayfalar; `--color-pulse-ink` swap yay) | M1 (+M2/M3) | v0.2 | 8 | ✅ |
 | TD5: Alt-sayfa derin a11y denetimi (5 alt sayfa, 5 dil/AR RTL derin; ana sayfa çıtası a11y=100 çift-tema + axe WCAG-AA 0) | M2 (+M1/M3/M4) | v0.2 | 8 | ✅ |
@@ -160,7 +162,7 @@ M6 (SEO/Deploy) ─────────────────────>
 | TB-2: `/forum` locale-prefix gap (`/en/forum`→404) + tüm config redirect denetimi (çıplak+prefixli iki-giriş, sessiz 404 gap yok) | M6 | v0.3 | 13 | ✅ |
 | **— v0.3 versiyon-sonu senaryo testi (Faz 14 — çapraz doğrulama, yeni feature üretmez) —** | | | | |
 | S1–S9: v0.3 ana sayfa + 5 alt sayfa uçtan-uca senaryo doğrulaması (giriş/yolculuk/mod/kontrol/taksonomi/5-dil/chatbot/v0.3-guardrail/adversarial; delta: crew-os route + sayfa-boyu nabız + SEO metadata + logo) | tümü | v0.3 | 14 | ✅ |
-| **— v0.4 Alpfit Plus ürün vitrini iş birimleri (F2.8 zengin yeniden tasarım; faz/iş-birimi bölünmesi discuss-phase 15'te damgalanır) —** | | | | |
+| **— v0.4 Alpfit Plus ürün vitrini iş birimleri (F2.8 zengin yeniden tasarım; Faz 15) —** | | | | |
 | AP1: Alpfit Plus sayfası port + yeni bölümler (Hero/before-after · Sorun · 4 Rol · Mobil uygulama mockup'ları · 9 Özellik · Neden/rekabet · Fiyat · Yol haritası+Store · Kapanış) → React + Tailwind v4 token; primitive'ler (Reveal/PageHeader/Footer) yeniden kullanılır | M2 (+M1/M3) | v0.4 | 15 | ✅ |
 | AP2: 5-dil i18n namespace (yeni içerik `messages/*.json`; TR birincil, non-TR versiyon-sınırı; component-içi TR/EN deseni terk edilir) | M4 (+M2) | v0.4 | 15 | ✅ |
 | AP3: SEO/metadata (ürün konumuna göre başlık/description; route `/spor-salonu-yazilimi` korunur) | M6 (+M2) | v0.4 | 15 | ✅ |
@@ -170,11 +172,11 @@ M6 (SEO/Deploy) ─────────────────────>
 | TB-D2: npm audit / bağımlılık denetimi (rapor + onaylı güncelleme; `package-lock` dokunulmaz) | M6 | v0.4 | 16 | ✅ |
 | **— v0.4 versiyon-sonu senaryo testi (Faz 17 — çapraz doğrulama, yeni feature üretmez) —** | | | | |
 | S1–S9: v0.4 ana sayfa + 5 alt sayfa uçtan-uca senaryo doğrulaması (giriş/yolculuk/mod/kontrol/taksonomi/5-dil/chatbot/v0.4-guardrail/adversarial; delta: Alpfit Plus ürün vitrini 9 bölüm + `alpfit` namespace parite + before/after Living Flow + dürüstlük 4/4 + canlı duman/test-what's-live) | tümü | v0.4 | 17 | ✅ |
-| **— v0.5 Chatbot ücretsiz sağlayıcı geçişi + canlıya alma iş birimi (M5 merkez; iş-birimi/faz bölünmesi discuss-phase 18'de damgalanır) —** | | | | |
+| **— v0.5 Chatbot ücretsiz sağlayıcı geçişi + canlıya alma iş birimi (M5 merkez; Faz 18) —** | | | | |
 | C1: Chatbot sağlayıcı geçişi (Anthropic Opus → Groq; model `qwen/qwen3.8-27b`) + canlıya alma (`route.ts` Groq streaming/sanitizasyon/offline korunur + system prompt TR-birincil dil algılama + "fiyat/rakam uydurma" yasağı + hardening per-mesaj max-byte cap + 5-dil gözle doğrulama + canlı deploy) | M5 (+M4, OVERVIEW stack) | v0.5 | 18 | ✅ |
 | **— v0.5 versiyon-sonu teknik borç iş birimleri (Faz 19 — güvenlik: Faz 18 Güvenlik ⚠️'sinin iki gerekçesi) —** | | | | |
 | TB-G1: Bağımlılık güvenlik yaması (`next` 15.5.19→15.5.27 aralık-içi + `npm audit fix` force'suz; yalnız `package-lock.json` değişir, Next 16 yok; regresyon: suite + First Load JS farkı + preview duman) | M6 | v0.5 | 19 | 🔄 |
-| TB-G2: `/api/chat` kota koruması (hız sınırı + origin kontrolü; $0, yeni harici servis yok; kural repo'da kod; sınıra takılan → mevcut 5-dil offline kopyası, UI/i18n dokunulmaz) | M5 (+M6) | v0.5 | 19 | 🔄 |
+| TB-G2: `/api/chat` kota koruması (hız sınırı Vercel WAF kuralında — tanımı repo'da JSON spec, CLI + drift kontrolü; origin kontrolü kodda, same-origin kuralı; $0, yeni harici servis yok; sınıra takılan → mevcut 5-dil offline kopyası, UI/i18n dokunulmaz) | M5 (+M6) | v0.5 | 19 | 🔄 |
 
 **Durum simgeleri:**
 - ⬜ **Bekliyor** — Fazı henüz başlamadı
@@ -183,14 +185,14 @@ M6 (SEO/Deploy) ─────────────────────>
 - ✅ **Tamamlandı** — Tüm kabul kriterleri karşılandı, UAT'tan geçti (review-phase'de set edilir)
 - ❌ **İptal** — Faz içinde bilinçle koşulmadı/iptal edildi (kod değişmedi); gerekçe `docs/DECISIONS.md`'de
 
-> **E1 (Umami analytics) 🟡 Kısmen (Faz 7, 2026-07-01):** Kod-tarafı tam — bileşen + `[locale]/layout.tsx` head entegrasyonu + izole render testi ✅, perf regresyonsuz ✅ (7.01/7.02), UAT 1-8 ✅, 8 kalite ekseni ✅. Milestone'un **canlı gözle-doğrulama çekirdeği** (S9-10: kiwiailab.com panelinde +1) yapısal kısıt gereği (`data-domains=kiwiailab.com` preview saymaz + merge = tüm revizeyi ilk kez production'a almak) **v0.2 production release** adımına bilinçle ertelendi → o release sonrası canlıda kapanınca ✅ olur. Dürüst kayıt (sahte-geçmiş engellendi, verify re-run kanıtı); gerekçe → `phases/PHASE-7.md` + `docs/DECISIONS.md` 2026-07-01.
+> **E1 (Umami analytics) ✅:** kod Faz 7'de; canlı +1 doğrulaması yapısal olarak merge-sonrasıydı ve v0.2 production release'te (2026-07-02) kapandı → `docs/RELEASE-v0.2.md` §4, `docs/UMAMI-ANALYTICS.md`.
 >
-> **P2 (Living Flow mobil degradasyon) ❌ İptal (Faz 6, 2026-06-30):** craft-gate'te iptal — müdahale gerekçesi kanıtlı bir Lantern lab artefaktıydı (gerçek-cihaz açığı değil), imza Living Flow simüle-sayı için riske atılmadı. Kod değişmedi. Kalan brief mobil açık dürüstçe kaydedildi (`docs/DECISIONS.md` 2026-06-30). P1 (L1+L2+L3) ✅ ölçülebilir iyileşme sağladı (sürücü L3).
+> **P2 (Living Flow mobil degradasyon) ❌ İptal (Faz 6, 2026-06-30):** craft-gate'te bilinçle koşulmadı, kod değişmedi; P1 ✅ ölçülebilir iyileşme sağladı. Gerekçe ve kalan brief mobil açığı → `docs/DECISIONS.md` 2026-06-30 (arşiv: `docs/DECISIONS-2026-06-27..2026-07-01.md`).
 
 > Modül detayları (sorumluluk, feature kabul kriterleri, edge case'ler) → `modules/MX-ModulAdi.md`
 > Versiyon sütunu PRD'deki VERSIONS.md'den aktarılır. Faz sütunu sadece planlanmış fazlar için doldurulur, henüz planlanmamış feature'lar "—" kalır.
-> **R1–R4 = v0.1 revize iş birimleri** (kaynak: `_dev/PRD/features/` → `nasil-calisir-4-adim.md`, `sektorler-derinlestirme.md`, `crew-os-bolumu.md`, `kopya-revizesi.md`). Mevcut F2.3/F2.4/F2.5 + M4 üstüne **cerrahi** inşa ederler (baseline ✅ satırları korunur). Faz numarası verilmedi — tek v0.1 içerik fazı discuss-phase'de damgalanır (PHASES.md → Sıradaki Fazlar).
+> **R1–R4 = v0.1 revize iş birimleri** (kaynak: `_dev/PRD/features/` → `nasil-calisir-4-adim.md`, `sektorler-derinlestirme.md`, `crew-os-bolumu.md`, `kopya-revizesi.md`). Mevcut F2.3/F2.4/F2.5 + M4 üstüne **cerrahi** inşa ettiler (baseline ✅ satırları korunur — F2.3 satırındaki "3 adım" baz kaydıdır); Faz 1'de ✅.
 
 ---
 
-**Son Güncelleme:** 2026-10-02 — discuss-phase 19: v0.5 versiyon-sonu teknik borç iş birimleri eklendi — **TB-G1** (bağımlılık güvenlik yaması) + **TB-G2** (`/api/chat` kota koruması), Faz 19, Durum 🔄. Mevcut satırlar değişmedi. Kaynak: `phases/PHASE-19.md`.
+**Son Güncelleme:** 2026-10-02 — audit-docs: E1 ✅ (v0.2 release'te kapanmıştı), bayat gelecek-zaman ifadeleri ve "şu an 3 adım" gerçeğe çekildi, TB-G2 araştırma kararına hizalandı, taksonomi ve P2 notları kaynağa işaretle kısaldı, matris genişletmeleri KURAL'la kaydedildi.
