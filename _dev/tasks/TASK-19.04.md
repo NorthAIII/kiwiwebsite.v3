@@ -49,7 +49,7 @@ Konum ve ad bu planda seçildi: dosya `ops/firewall/`, kural adı `chat-rate-lim
 - [ ] **2. Gerçek `inspect` çıktısını öğren (canlıya dokunmadan)**
   - `vercel firewall diff` → başlangıçta draft yok olmalı. Varsa **dur**: başka bir değişiklik bekliyor, kullanıcıya sor.
   - Spec'i draft olarak stage et: `vercel firewall rules add --json "$(cat ops/firewall/chat-rate-limit.json)"`. CLI şemayı kabul etmeli; reddederse spec'i düzelt.
-  - `vercel firewall rules inspect chat-rate-limit --json` → gerçek çıktı biçimini kaydet (id/zaman damgası gibi alanlar dahil). Draft görünmüyorsa `rules list` ile teyit et.
+  - `vercel firewall rules inspect chat-rate-limit --json` → gerçek çıktı biçimini kaydet (id/zaman damgası gibi alanlar dahil). `inspect` bekleyen draft varsa draft'ı, yoksa canlı kuralı okur (CLI 59.26.0 kaynağı: `config = draft ?? active`; verify-plan 2026-10-02). Stage edilen kural bu yüzden burada görünür.
   - `vercel firewall diff` → yalnız bu kural görünmeli → **`vercel firewall discard`** ile draft'ı geri al. Publish TASK-19.06'da, önce `log` modunda yapılacak. Discard'dan önce diff'te başka değişiklik olmadığını gör; discard bütün draft'ları siler.
   - Bu adım **publish içermez**; canlı firewall `Not configured` kalır (`vercel firewall overview` ile teyit).
 
@@ -57,8 +57,9 @@ Konum ve ad bu planda seçildi: dosya `ops/firewall/`, kural adı `chat-rate-lim
   - Bağımlılıksız Node (ESM). İki parça:
     - (a) Dışa açık saf fonksiyon `compareRule(spec, live)` → `{ drift: boolean, diffs: [...] }`. Yalnız anlamlı alanları karşılaştırır: `name`, `active`, `conditionGroup`, `action.mitigate`. id, zaman damgası ve sunucunun eklediği varsayılan alanları yok sayar. Hangi alanların sunucu tarafından eklendiğini 2. adımdaki gerçek çıktıdan belirle.
     - (b) CLI girişi: `vercel firewall rules inspect chat-rate-limit --json`'ı `execFile` ile koşar, spec'i okur, farkı insan-okur biçimde basar.
+    - (c) Draft uyarısı: inspect'ten önce `vercel firewall diff --json`'ı koşar. Bekleyen değişiklik varsa "karşılaştırılan draft'tır, canlı kural değil" uyarısını basar. Çıkış kodu uyarıdan etkilenmez; böylece 2. adımın draft'a karşı ölçümü geçerli kalır, ama ileride draft beklerken koşan biri canlıyı ölçtüğünü sanmaz.
   - Çıkış kodları: 0 = eşleşiyor · 1 = drift · 2 = kural yok / CLI hatası.
-  - Başlık yorumu: ne işe yaradığı, nasıl koşulduğu (`node ops/firewall/drift.mjs`), spec'in nasıl uygulandığı (`rules add/edit --json` → `diff` → `publish`'i **kullanıcı** koşar), değerlerin gerekçesi (6/10 dk = 864/gün < 1.000 günlük kota) ve DECISIONS 2026-10-02 pointer'ı.
+  - Başlık yorumu: ne işe yaradığı, nasıl koşulduğu (`node ops/firewall/drift.mjs`), draft beklerken neyi ölçtüğü (draft-önce `inspect`), spec'in nasıl uygulandığı (`rules add/edit --json` → `diff` → `publish`'i **kullanıcı** koşar), değerlerin gerekçesi (6/10 dk = 864/gün < 1.000 günlük kota) ve DECISIONS 2026-10-02 pointer'ı.
 
 - [ ] **4. Test — `tests/firewall-drift.test.ts`**
   - `compareRule` için:
@@ -88,6 +89,7 @@ tests/
 - **Yeni npm paketi yok** (`@vercel/firewall` elendi); `package.json` dokunulmaz. Script yalnız Node yerleşikleri + kurulu `vercel` CLI kullanır.
 - `ops/` `.gitignore`'da değil; `.vercel/` gitignore'da — spec'i oraya koyma.
 - `tsconfig` `allowJs: true`, `include` `**/*.ts` → `.mjs` dosyası tip kontrolüne girmez, `.ts` test onu import edebilir. `next build` `tests/`'i tip kontrol eder; test strict geçmeli.
+- **Import yan etkisiz olmalı.** Test `drift.mjs`'i import eder; CLI girişi (b) yalnız script doğrudan koşulduğunda çalışmalı (ör. `import.meta.url === pathToFileURL(process.argv[1]).href` kapısı). Aksi hâlde `npm run test` her koşuda `vercel` CLI'ı çağırır.
 - Kural adı `chat-rate-limit` spec, script ve sonraki task'larda **aynı** kalır.
 
 ---
@@ -95,8 +97,8 @@ tests/
 ## Test Kriterleri
 
 - [ ] CLI spec'i kabul ediyor: `vercel firewall rules add --json` draft'ı oluşturdu, `vercel firewall diff` yalnız `chat-rate-limit`'i gösterdi.
-- [ ] 2. adımın draft'ına karşı `node ops/firewall/drift.mjs` → çıkış 0 (stage edilen kural spec'le eşleşiyor). Bunu discard'dan **önce** koş; çıkış kodu oturum kaydına.
-- [ ] Discard sonrası: `vercel firewall diff` boş, `vercel firewall overview` → `Not configured`. `node ops/firewall/drift.mjs` → çıkış 2 (kural yok).
+- [ ] 2. adımın draft'ına karşı `node ops/firewall/drift.mjs` → çıkış 0 (stage edilen kural spec'le eşleşiyor) ve çıktı draft uyarısını basıyor. Bunu discard'dan **önce** koş; çıkış kodu oturum kaydına.
+- [ ] Discard sonrası: `vercel firewall diff` boş, `vercel firewall overview` → `Not configured`. `node ops/firewall/drift.mjs` → çıkış 2 (kural yok), draft uyarısı yok.
 - [ ] `npx vitest run tests/firewall-drift.test.ts` → geçiyor; `npm run test` → tüm suite geçiyor.
 - [ ] `npm run build` temiz.
 

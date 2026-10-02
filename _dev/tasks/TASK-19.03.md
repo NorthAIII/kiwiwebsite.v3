@@ -47,7 +47,7 @@ Kapı neden ilk iş: yabancı bir origin anahtar durumunu (503) ya da gövde do�
 
 - [ ] **2. Mevcut route testlerini kapıdan geçir — `tests/chat-route-timeout.test.ts`**
   - `chatRequest` yardımcısı varsayılan olarak `sec-fetch-site: same-origin` göndersin. Çağıranın verdiği başlıklar bunu ezebilsin; locale testlerinin `referer`/`cookie` başlıkları aynen çalışmalı.
-  - 13 testin hiçbirinin anlamı değişmez. Yalnız istek kapıdan geçer hâle gelir.
+  - 22 testin (13 `it` tanımı; ikisi döngüyle çoğalır — `vitest list`) hiçbirinin anlamı değişmez. Yalnız istek kapıdan geçer hâle gelir.
 
 - [ ] **3. Route seviyesinde kapı sözleşmesi — `tests/chat-route-origin.test.ts`**
   - Gerçek `route.ts`, sahte `globalThis.fetch` (mevcut desen). Senaryolar:
@@ -65,7 +65,7 @@ Kapı neden ilk iş: yabancı bir origin anahtar durumunu (503) ya da gövde do�
   - Harcanan Groq çağrısı sayısını kayda geçir (beklenen: 1).
 
 - [ ] **5. M5'i güncelle**
-  - F5.1 açıklaması: origin kapısı (ilk iş, 403, log).
+  - F5.1 açıklaması: origin kapısı (ilk iş, 403, log). Mevcut açıklama satırının (L13, ~2.400 karakter, `doc-scan` uzun-satır bayrağı) sonuna ekleme; "Hata notu dili" gibi kendi paragrafı olarak yaz (CLAUDE.md → Format ve Sıkıştırma).
   - Kabul kriteri ekle: "Same-origin olmayan istek 403 alır; gövde okunmaz, sağlayıcı çağrılmaz."
   - Edge case satırının origin yarısını "yok" → "var (TASK-19.03)" olarak güncelle. Hız sınırı yarısı TASK-19.06'ya kalır.
 
@@ -93,7 +93,7 @@ tests/chat-route-origin.test.ts     # YENİ — route seviyesinde kapı sözleş
 
 ## Test Kriterleri
 
-- [ ] `npm run test` → `chat-route-timeout` (13 test, anlamı değişmeden) + `chat-route-origin` + `chat-origin` + kalan suite geçiyor.
+- [ ] `npm run test` → `chat-route-timeout` (22 test, anlamı değişmeden) + `chat-route-origin` + `chat-origin` + kalan suite geçiyor.
 - [ ] Route sözleşmesi: yabancı Origin ve curl-benzeri istek 403, üst-akış çağrılmadı. Anahtar yokken de 403 (503'ten önce). Same-origin + bozuk gövde 400, model çağrılmadı.
 - [ ] `npm run build` temiz.
 - [ ] Yerel `next start` + Chrome: chatbot mesajı yanıt alıyor (offline değil). curl yabancı Origin → 403.

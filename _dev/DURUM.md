@@ -1,6 +1,6 @@
 # DURUM — Proje Dashboard
 
-**Son Güncelleme:** 2026-10-02 — **plan-phase 19:** 7 task yazıldı (TB-G1: 19.01 · TB-G2: 19.02–19.06 · birleştirme + canlı ölçüm: 19.07) → sırada verify-plan.
+**Son Güncelleme:** 2026-10-02 — **verify-plan 19:** 7 task review edildi (4 mekanik düzeltme + 3 onaylı yapısal değişiklik) → sırada TASK-19.01.
 
 <!-- KURAL: Bu satır her oturum sonunda ÜZERİNE YAZILIR — tek satır, tek cümle. "Önceki:" / "Eski:" prefix ile kümülatif yığma YASAK; HTML comment'e sarma da yasak (CLAUDE.md → Doküman Disiplini). Tarih + kısa özet yeterli; detay için git log + ilgili PHASE/TASK dokümanları. -->
 
@@ -9,7 +9,7 @@
 ## Aktif Faz
 
 **Faz:** **Faz 19 — v0.5 versiyon-sonu teknik borç — güvenlik (bağımlılık yaması + `/api/chat` kota koruması)** 🔄. Fazlar 1–18 ✅.
-**Adım:** **verify-plan** — plan-phase 19 ✅ (2026-10-02): 7 task dokümanı yazıldı (`tasks/TASK-19.01`–`19.07`). Sıra: dal + yama → origin modülü → route kapısı → WAF spec + drift → probe → WAF canlı (`log` → 429, publish kullanıcıda) → preview kapısı + ff-merge + canlı ölçüm. Dal `revize/v0.5-teknik-borc` (19.01 açar). **Sıradaki: `/devflow:verify-plan`**.
+**Adım:** **task** — verify-plan 19 ✅ (2026-10-02): 7 task dokümanı (`tasks/TASK-19.01`–`19.07`) review edildi, düzeltmeler task dokümanlarında. Sıra: dal + yama → origin modülü → route kapısı → WAF spec + drift → probe → WAF canlı (`log` → 429, publish kullanıcıda) → preview kapısı + ff-merge + canlı ölçüm. Dal `revize/v0.5-teknik-borc` (19.01 açar). **Sıradaki: `/devflow:run-task` → TASK-19.01**.
 
 **v0.5 durumu ve açık kalemler:**
 
@@ -26,7 +26,7 @@
    - Chatbot prompt cilası (TR "observable ve measured" yankısı, seyrek kelime tekrarı) + `route.ts` `max_tokens` gerekçe yorumunun inceltilmesi (retro 18).
    - Brief mobil perf açığı (≈90 / LCP >2.5s; metodolojik duvar, DECISIONS 2026-06-30).
 
-**İlerleme:** Faz 19 kapsamlandı, araştırıldı ve planlandı (2026-10-02) — 2 iş birimi (TB-G1, TB-G2), 7 task, 0/7 tamam. Faz 18 ✅ (13 task, UAT 43/44, Vitest 86).
+**İlerleme:** Faz 19 kapsamlandı, araştırıldı, planlandı ve plan doğrulandı (2026-10-02) — 2 iş birimi (TB-G1, TB-G2), 7 task, 0/7 tamam. Faz 18 ✅ (13 task, UAT 43/44, Vitest 86).
 **Aktif Faz Dokümanı:** `phases/PHASE-19.md`. Son tamamlanan faz → `phases/PHASE-18.md`; faz geçmişi → `PHASES.md`.
 
 ---
@@ -44,9 +44,9 @@
 
 ## Aktif Task
 
-**Task:** yok — plan ✅, verify-plan bekleniyor. İlk task: `tasks/TASK-19.01.md` (dalı açar).
-**Durum:** Fazlar 1–18 ✅, Faz 19 🔄. Versiyon Sonu Durumu **`teknik_borç`**. Chatbot canlıda; canlı = `main` HEAD.
-**İlerleme:** plan-phase 19 (2026-10-02) — task listesi `phases/PHASE-19.md` → Task Listesi. Sırada `/devflow:verify-plan`.
+**Task:** **TASK-19.01** — Dal aç + TB-G1 force'suz `npm audit fix` + yerel kapılar (`tasks/TASK-19.01.md`; dalı açar).
+**Durum:** ⬜ Bekliyor. Fazlar 1–18 ✅, Faz 19 🔄. Versiyon Sonu Durumu **`teknik_borç`**. Chatbot canlıda; canlı = `main` HEAD.
+**İlerleme:** verify-plan 19 ✅ (2026-10-02) — task listesi `phases/PHASE-19.md` → Task Listesi. Sırada `/devflow:run-task`.
 
 ## Task Durumu (Aktif Faz)
 
@@ -80,8 +80,8 @@
 
 ## Hızlı Erişim
 
-**Aktif Task:** yok (verify-plan bekleniyor; ilk task `tasks/TASK-19.01.md`). Son tamamlanan task: `tasks/archive/TASK-18.13.md`.
-**Aktif Faz:** **Faz 19 — v0.5 versiyon-sonu teknik borç — güvenlik**, Adım **verify-plan**. **Aktif Versiyon v0.5.** Versiyon Sonu Durumu **`teknik_borç`**. **Canlı = `main` HEAD** (her push deploy); chatbot canlıda (`qwen/qwen3.8-27b`). Faz dokümanı: `phases/PHASE-19.md`; son tamamlanan: `phases/PHASE-18.md` (alt-dokümanlar: `-ARASTIRMA` · `-GOLIVE` · `-UAT`).
+**Aktif Task:** `tasks/TASK-19.01.md` (⬜, dalı açar). Son tamamlanan task: `tasks/archive/TASK-18.13.md`.
+**Aktif Faz:** **Faz 19 — v0.5 versiyon-sonu teknik borç — güvenlik**, Adım **task**. **Aktif Versiyon v0.5.** Versiyon Sonu Durumu **`teknik_borç`**. **Canlı = `main` HEAD** (her push deploy); chatbot canlıda (`qwen/qwen3.8-27b`). Faz dokümanı: `phases/PHASE-19.md`; son tamamlanan: `phases/PHASE-18.md` (alt-dokümanlar: `-ARASTIRMA` · `-GOLIVE` · `-UAT`).
 **v0.5 kaynağı (karar + 5 kabul kriteri):** `docs/DECISIONS.md` 2026-07-21; go-live'daki model + `max_tokens` kararları → DECISIONS 2026-09-11; zaman aşımı → 2026-09-12; ziyaretçi dilinde sunucu metni → 2026-10-02.
 **Sonraki versiyon adayları (→ `PRD/VERSIONS.md`):** **ana sayfa mesaj netliği / ilk-ekran anlaşılırlığı** (kullanıcı 2026-10-02: ziyaretçi kim olduğumuzu ve ne yaptığımızı anlamadan çıkıyor; teşhis + hero çapası çelişkisi → `PRD/NOTES.md`; booking/takvimle önceliği yarışır, sıra prd-refine'da damgalanır) · v0.6 booking/takvim · çeviri senkronu (non-TR + AR) · BULGU-S3 craft cila · **brief'in yetkisi + kalan bayatlığı** (OVERVIEW "çelişkide v2 geçerli" + Korumalı `ILKELER.md:34` örneği; → `PRD/NOTES.md`) · **dal kuralı go-live sonrası** (canlı feature düzeltmeleri `main`'de mi, Preview env + revize branch mi; retro 18 → prd-review). Faz 19'a alınmayan sahipli teknik açıklar yukarıda (Aktif Faz → madde 7).
 **Task Sistemi:** `tasks/TASKS-README.md`

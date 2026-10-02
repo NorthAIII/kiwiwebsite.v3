@@ -183,7 +183,7 @@ mekanizma: "`npm audit` kritik + high 0" → kritik 0, kalan 2 high (`next`'in b
 | 19.04 | TASK-19.04 | ⬜ Bekliyor | TB-G2 hız sınırı — WAF kural spec'i `ops/firewall/chat-rate-limit.json` + `drift.mjs` + test (stage → inspect → discard; publish yok) |
 | 19.05 | TASK-19.05 | ⬜ Bekliyor | TB-G2 ölçüm — `ops/probe-chat-guard.mjs` (model çağırmaz) + yerel doğrulama + TESTING.md canlı katman |
 | 19.06 | TASK-19.06 | ⬜ Bekliyor | TB-G2 hız sınırı canlı — WAF `log` → 429 (publish kullanıcıda) + patlama ölçümü + drift 0 + M5/M6 |
-| 19.07 | TASK-19.07 | ⬜ Bekliyor | Milestone — preview kapısı (duman + origin probu) → ff-merge `main` → canlı ölçüm (3 host, tarayıcı, 429, drift, audit) |
+| 19.07 | TASK-19.07 | ⬜ Bekliyor | Milestone — preview kapısı (duman + origin probu) → ff-merge `main` → canlı ölçüm (3 host, tarayıcı, 429 + sınırdaki offline kopyası, drift, audit) |
 
 **Durum simgeleri:** ⬜ Bekliyor | 🔄 Devam ediyor | ⏸️ Duraklatıldı | ✅ Tamamlandı | 🔴 Bloke | ❌ İptal
 

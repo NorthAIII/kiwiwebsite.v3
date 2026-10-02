@@ -10,7 +10,7 @@
 
 ## Hedef
 
-`revize/v0.5-teknik-borc`'u `main`'e al ve fazın milestone'unu canlıda ölç. Önce dal HEAD'inin **preview**'u iki kapıdan geçer: TB-G1'in duman testi ve Vercel'deki `host` varsayımının ilk ölçümü. Sonra ff-merge ve deploy teyidi gelir. En son canlıda origin kapısı, üç meşru host, gerçek tarayıcı, patlama → 429, drift ve regresyon kanıt artefaktına bağlanır. Task, milestone'un her maddesi canlı kanıtla kayıtlı olduğunda biter.
+`revize/v0.5-teknik-borc`'u `main`'e al ve fazın milestone'unu canlıda ölç. Önce dal HEAD'inin **preview**'u iki kapıdan geçer: TB-G1'in duman testi ve Vercel'deki `host` varsayımının ilk ölçümü. Sonra ff-merge ve deploy teyidi gelir. En son canlıda origin kapısı, üç meşru host, gerçek tarayıcı, patlama → 429, sınıra takılan ziyaretçinin offline kopyası, drift ve regresyon kanıt artefaktına bağlanır. Task, milestone'un her maddesi canlı kanıtla kayıtlı olduğunda biter.
 
 ---
 
@@ -70,11 +70,12 @@ Preview'da `GROQ_API_KEY` yok (bilinçli, DURUM madde 2). Origin kapısı 503 an
     - `--base https://kiwiailab.com` → 403 · 403 · 400. UAT 18 senaryo 23'ün probu artık reddediliyor.
   - **Pencere B** (6 POST): `--base https://www.kiwiailab.com` ve `--base https://kiwi-ai-lab-v3.vercel.app` → her biri 403 · 403 · 400. Üç host'tan meşru gönderim 403 almıyor.
   - **Pencere C** (patlama, en son): `--base https://kiwiailab.com --burst-only` → temiz pencerede 7. istekte 429. Sonra IP'n ≤10 dk sınırlıdır.
+  - **Sınırdaki ziyaretçi deneyimi** (Pencere C'nin hemen ardından, IP hâlâ 429'dayken): gerçek Chrome'da `https://kiwiailab.com/` (TR, `NEXT_LOCALE=tr` cookie'si) ve `https://kiwiailab.com/en` → chatbot'a birer mesaj. İkisinde de o dilin offline kopyası (`chat.error`) görünüyor, UI takılı kalmıyor. İstek edge'de 429 alır ve fonksiyona ulaşmaz, Groq kotası harcanmaz. DOM metni ya da ekran görüntüsü kanıt artefaktına girer. Milestone'un "sınıra takılan ziyaretçi offline kopyasını görüyor" maddesinin tek gözlemi budur.
   - Probe'un herhangi bir origin senaryosunda 429 görürsen sonuç "ölçülemedi"dir, başarısız değil: pencereyi bekle, o senaryoyu tekrarla.
 
 - [ ] **5. Yan kanıtlar**
   - `vercel logs --environment production --since 1h --json`: `console.warn` red satırları yalnız probe'un yabancı/başlıksız isteklerine ait. Gerçek tarayıcı isteği için red yok (yanlış-pozitif yok).
-  - `node ops/firewall/drift.mjs` → çıkış 0.
+  - `node ops/firewall/drift.mjs` → çıkış 0, draft uyarısı yok (karşılaştırılan canlı kuraldır).
   - `main`'de `npm audit` → kritik 0 · kalan yalnız gerekçeli 2 high (TB-G1).
   - Canlı regresyon (GET): 30 URL 200 · 6 redirect 308 · AR `dir="rtl"`. TR için `NEXT_LOCALE=tr` cookie.
 
@@ -93,10 +94,10 @@ Kod **değişmez.** Git birleştirme (dal → `main`), Vercel Production deploy 
 
 ## Dikkat Noktaları
 
-- **Pencere bütçesi pazarlık dışı.** Preview probu da, origin senaryoları da, tarayıcı mesajı da aynı IP sayacına yazar (WAF'ın preview'a uygulanıp uygulanmadığı bilinmiyor; uygulandığını varsay). Planlanan sıra: preview → ≥10 dk → A → ≥10 dk → B → ≥10 dk → C. Toplam ~30+ dk bekleme bilinçlidir.
+- **Pencere bütçesi pazarlık dışı.** Preview probu da, origin senaryoları da, tarayıcı mesajı da aynı IP sayacına yazar (WAF'ın preview'a uygulanıp uygulanmadığı bilinmiyor; uygulandığını varsay). Planlanan sıra: preview → ≥10 dk → A → ≥10 dk → B → ≥10 dk → C → aynı 429 penceresinde offline gözlemi. Toplam ~30+ dk bekleme bilinçlidir.
 - **Birleştirme ff-only.** `main` dalın tabanından ilerlemişse (ör. araya doküman commit'i girdiyse) dur, kullanıcıya sor. Rebase ya da merge commit'i sessizce yapma.
 - **Canlıya dokunma kuralı** bu task'ta bilinçli olarak kalkar (fazın kararı). Birleştirme yalnız 1. ve 2. adımların kapıları yeşilken yapılır.
-- **Gerçek chatbot mesajı yalnız bir tane** (Groq günlük kotası ziyaretçilerle ortak).
+- **Gerçek chatbot mesajı yalnız bir tane** (Groq günlük kotası ziyaretçilerle ortak). Pencere C sonrasındaki iki offline-gözlem mesajı edge'de 429 alır, Groq'a ulaşmaz; bu sayıya girmez.
 - **Streaming yanıtta Playwright `response.finished()` dönmeyebilir** (MEMORY host envanteri). Akışın bittiğini DOM'dan oku.
 - **Milestone'un `mekanizma:` satırı** "kritik + high 0"ı "kritik 0 + gerekçeli 2 high"a daralttı. Canlıdaki "kural repo'da kod" = spec + drift 0. Kayıt bu daraltılmış ölçütlere göre yazılır, örtük genişletme yok.
 - **Yan gözlem (kapsam dışı):** `www.kiwiailab.com` apex'e yönlenmeden 200 dönüyor. Bu task düzeltmez, yalnız probe'da meşru host olarak kullanır.
@@ -112,6 +113,7 @@ Kod **değişmez.** Git birleştirme (dal → `main`), Vercel Production deploy 
 - [ ] Canlı `www` ve `vercel.app`: kendi Origin 400 (403 değil) — `kanal: UAT`.
 - [ ] Canlı gerçek tarayıcı: chatbot yanıt veriyor; log'da bu istek için red yok — `kanal: UAT`.
 - [ ] Canlı patlama: temiz pencerede 7. istekte 429 — `kanal: UAT`.
+- [ ] Canlı sınırdaki ziyaretçi: 429 altında `/` ve `/en`'de chatbot o dilin offline kopyasını gösteriyor — `kanal: UAT`.
 - [ ] `node ops/firewall/drift.mjs` → 0; `main`'de `npm audit` → kritik 0 + gerekçeli 2 high.
 - [ ] Canlı regresyon: 30 URL 200, 6 redirect 308, AR RTL.
 

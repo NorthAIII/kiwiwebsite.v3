@@ -41,9 +41,9 @@ Research elle tutulan host listesi yerine **same-origin kuralını** seçti, ç�
 - [ ] **1. Modülü yaz — `src/lib/chat-origin.ts`**
   - İmza: `export function isSameOriginRequest(headers: Headers): boolean`. Yalnız `Headers` alır, `Request`'e ya da Next'e bağımlı değildir.
   - Kural (DECISIONS 2026-10-02):
-    1. `Origin` başlığı var ve `null` değilse → `new URL(origin).host`, isteğin `host` başlığına eşit olmalı. Karşılaştırma küçük harfle yapılır; port dahil (`localhost:3000`), şema karşılaştırılmaz. Parse edilemeyen `Origin` → `false`.
-    2. `Origin` yoksa ya da değeri `null` dizgesiyse → yalnız `Sec-Fetch-Site: same-origin` kabul edilir. Bu başlık tarayıcıda JS ile set edilemez; gizlilik ayarı yüzünden Origin'i düşen meşru tarayıcıyı korur.
-    3. `host` başlığı yoksa → `false`.
+    1. `host` başlığı yoksa → `false`. Bu ön koşul iki yoldan da önce gelir (fail-closed); `Sec-Fetch-Site` yolu da `host`'suz isteği kabul etmez.
+    2. `Origin` başlığı var ve `null` değilse → `new URL(origin).host`, isteğin `host` başlığına eşit olmalı. Karşılaştırma küçük harfle yapılır; port dahil (`localhost:3000`), şema karşılaştırılmaz. Parse edilemeyen `Origin` → `false`.
+    3. `Origin` yoksa ya da değeri `null` dizgesiyse → yalnız `Sec-Fetch-Site: same-origin` kabul edilir. Bu başlık tarayıcıda JS ile set edilemez; gizlilik ayarı yüzünden Origin'i düşen meşru tarayıcıyı korur.
     4. Diğer her durum → `false`.
   - Başlık yorumu: kuralı, neden liste değil same-origin olduğunu, neden `Sec-Fetch-Site`'ın yedek olduğunu ve "curl iki başlığı da sahteler, o yolun kapısı WAF" sınırını yaz. Kaynak: DECISIONS 2026-10-02. `chat-sanitize.ts`'in yorum yoğunluğunu izle.
 
@@ -55,6 +55,7 @@ Research elle tutulan host listesi yerine **same-origin kuralını** seçti, ç�
     - Büyük/küçük harf farkı (`host: KiwiAILab.com`)
     - `Origin` yok + `Sec-Fetch-Site: same-origin`
     - `Origin: null` + `Sec-Fetch-Site: same-origin`
+    - Eşleşen Origin + `Sec-Fetch-Site: cross-site` → **kabul** (Origin kuralı belirleyicidir). Bu satırı açıkça test et ki kuralın önceliği sabitlensin.
   - Reddedilenler:
     - Yabancı Origin (`https://evil.example`) — UAT 18 senaryo 23'ün vektörü
     - Alt alan adı / benzer ad (`https://kiwiailab.com.evil.example`, `https://evilkiwiailab.com`)
@@ -62,8 +63,7 @@ Research elle tutulan host listesi yerine **same-origin kuralını** seçti, ç�
     - Origin yok + `Sec-Fetch-Site` yok (curl) · `cross-site` · `same-site` · `none`
     - `Origin: null` + `Sec-Fetch-Site` yok
     - Parse edilemeyen Origin (`not a url`)
-    - `host` başlığı yok
-    - Eşleşen Origin + `Sec-Fetch-Site: cross-site` (Origin kuralı belirleyicidir → kabul). Bu satırı açıkça test et ki kuralın önceliği sabitlensin.
+    - `host` başlığı yok — iki yolda da: Origin'li istek ve Origin yok + `Sec-Fetch-Site: same-origin`
 
 ---
 

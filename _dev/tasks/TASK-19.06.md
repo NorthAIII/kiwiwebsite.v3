@@ -99,7 +99,7 @@ _dev/modules/M6-SEO-Deploy.md         # F6.4 firewall kuralı — zaten var
 
 - [ ] `log` aşaması: Vercel tarafında kuralın eşleşmesi görüldü (overview/traffic), ziyaretçi bloklanmadı (13 istek 400) — `kanal: UAT`.
 - [ ] Canlı patlama: temiz pencerede 429 geldi, kaçıncı istekte olduğu kayıtlı (beklenen 7) — `kanal: UAT` (WAF yalnız Vercel serving zincirinde).
-- [ ] `node ops/firewall/drift.mjs` → çıkış 0 (canlı kural spec'le birebir).
+- [ ] `node ops/firewall/drift.mjs` → çıkış 0, draft uyarısı yok (karşılaştırılan canlı kural; spec'le birebir).
 - [ ] `vercel firewall diff` → boş (bekleyen draft yok).
 - [ ] M5/M6 hız sınırını, publish sahipliğini ve drift kontrolünü anlatıyor.
 
