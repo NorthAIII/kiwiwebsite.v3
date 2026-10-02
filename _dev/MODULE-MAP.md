@@ -172,6 +172,9 @@ M6 (SEO/Deploy) ─────────────────────>
 | S1–S9: v0.4 ana sayfa + 5 alt sayfa uçtan-uca senaryo doğrulaması (giriş/yolculuk/mod/kontrol/taksonomi/5-dil/chatbot/v0.4-guardrail/adversarial; delta: Alpfit Plus ürün vitrini 9 bölüm + `alpfit` namespace parite + before/after Living Flow + dürüstlük 4/4 + canlı duman/test-what's-live) | tümü | v0.4 | 17 | ✅ |
 | **— v0.5 Chatbot ücretsiz sağlayıcı geçişi + canlıya alma iş birimi (M5 merkez; iş-birimi/faz bölünmesi discuss-phase 18'de damgalanır) —** | | | | |
 | C1: Chatbot sağlayıcı geçişi (Anthropic Opus → Groq; model `qwen/qwen3.8-27b`) + canlıya alma (`route.ts` Groq streaming/sanitizasyon/offline korunur + system prompt TR-birincil dil algılama + "fiyat/rakam uydurma" yasağı + hardening per-mesaj max-byte cap + 5-dil gözle doğrulama + canlı deploy) | M5 (+M4, OVERVIEW stack) | v0.5 | 18 | ✅ |
+| **— v0.5 versiyon-sonu teknik borç iş birimleri (Faz 19 — güvenlik: Faz 18 Güvenlik ⚠️'sinin iki gerekçesi) —** | | | | |
+| TB-G1: Bağımlılık güvenlik yaması (`next` 15.5.19→15.5.27 aralık-içi + `npm audit fix` force'suz; yalnız `package-lock.json` değişir, Next 16 yok; regresyon: suite + First Load JS farkı + preview duman) | M6 | v0.5 | 19 | 🔄 |
+| TB-G2: `/api/chat` kota koruması (hız sınırı + origin kontrolü; $0, yeni harici servis yok; kural repo'da kod; sınıra takılan → mevcut 5-dil offline kopyası, UI/i18n dokunulmaz) | M5 (+M6) | v0.5 | 19 | 🔄 |
 
 **Durum simgeleri:**
 - ⬜ **Bekliyor** — Fazı henüz başlamadı
@@ -190,4 +193,4 @@ M6 (SEO/Deploy) ─────────────────────>
 
 ---
 
-**Son Güncelleme:** 2026-10-02 — review-phase 18: **C1** Durum 🔄→✅ (kabul kriterlerinin hepsi karşılandı, UAT 4. koşum 43/44 — tek ❌ senaryo 23 kapsam-dışı). Baseline ve v0.1–v0.4 satırları değişmedi. Kaynak: `phases/PHASE-18.md`, `docs/DECISIONS.md` 2026-07-21 → 2026-10-02.
+**Son Güncelleme:** 2026-10-02 — discuss-phase 19: v0.5 versiyon-sonu teknik borç iş birimleri eklendi — **TB-G1** (bağımlılık güvenlik yaması) + **TB-G2** (`/api/chat` kota koruması), Faz 19, Durum 🔄. Mevcut satırlar değişmedi. Kaynak: `phases/PHASE-19.md`.
