@@ -15,6 +15,8 @@
 
 **Milestone:** `next` aralık-içi `15.5.27`'de ve `npm audit` **kritik + high 0** (kalan moderate varsa gerekçesiyle kayıtlı). `/api/chat` tek kaynaktan sınırsız tüketilemiyor: canlıda **hız sınırı** ve **yabancı origin reddi** ölçülüyor (UAT 18 senaryo 23'ün probu artık reddediliyor). Sınıra takılan ziyaretçi mevcut 5 dilli offline kopyasını görüyor. Kural repo'da kod olarak duruyor. Guardrail'ler (`next build`, Vitest, CI a11y, First Load JS, i18n parite, tüm sayfa/locale/redirect 200/308) regresyonsuz. Değişiklikler `main`'de canlı.
 
+mekanizma: "`npm audit` kritik + high 0" → kritik 0, kalan 2 high (`next`'in build-zamanı `postcss@8.4.31` pin'i) gerekçesiyle kayıtlı (kullanıcı kararı); "kural repo'da kod" → hız sınırı Vercel WAF kuralı (tanımı repo'da JSON spec, CLI ile uygulanır + drift kontrolü), origin kontrolü kodda (araştırma kararı)
+
 ### Feature Listesi
 
 (MODULE-MAP ve modules/ referansı)
@@ -65,20 +67,105 @@
 
 ## Araştırma Bulguları
 
-> Bu bölüm `/devflow:research-phase` oturumunda doldurulur.
+> Bu bölüm `/devflow:research-phase` oturumunda dolduruldu (2026-10-02). Ölçümler aynı gün yapıldı; kararlar kullanıcı onaylı.
 
 ### Değerlendirilen Yaklaşımlar
-- [Yaklaşım 1]: [Açıklama, artılar, eksiler]
-- **Seçilen:** [Hangisi ve neden]
+
+**TB-G1 — bağımlılık yaması**
+
+- **Force'suz `npm audit fix` (aralık-içi):** `next` 15.5.27 dahil her yükseltme mevcut caret aralığının içinde, `package.json` değişmez. 9 açığın 7'sini kapatır. Kalan 2 high, `next`'in kendi içine sabitlediği `postcss@8.4.31`'den gelir (→ Dikkat Edilecekler).
+- **+ `overrides` (`next` → `postcss` 8.5.28):** high 0 verir. Ama Dokunulmaz `package.json`'a, framework'ün tam sabitlediği iç bağımlılığı ezen kalıcı bir istisna ekler; Next 16'ya dek hatırlanıp kaldırılmalıdır. Faz 16 emsaliyle aynı gerekçeyle elendi.
+- **Next 16:** `postcss` 8.5.23 pin'iyle tek temiz yol, ama major olduğu için kapsam dışı.
+- **Seçilen:** force'suz fix + kalan 2 high'ın gerekçeli kaydı (kullanıcı kararı).
+
+**TB-G2 — hız sınırı**
+
+- **Vercel WAF rate-limit kuralı:** edge'de, fonksiyondan önce sayar; engellenen trafik faturalanmaz. Hobby'de projede 1 kural, IP/JA4 anahtarı, sabit pencere 10 s–10 dk, 1M izinli istek dahil ($0). Eksi: `vercel.json` hız sınırı tanımlayamaz (`routes[].mitigate` yalnız `deny`/`challenge`). Deploy'la uygulanan config-as-code yoktur; kural Vercel'de yaşar.
+- **`@vercel/firewall` SDK (`checkRateLimit`):** limit değerleri yine dashboard kuralında durur, üstüne yeni paket ister. Hem drift hem Dokunulmaz onayı → elendi.
+- **Runtime Cache sayacı (`@vercel/functions` → `getCache`):** yeni paket ister ve atomik artırma yoktur. Hobby'de takımın bütün projeleri (afrodia, alpfit…) tek cache'i paylaşır ve LRU ile birbirinin kaydını silebilir; kullanımı ücretlidir. Elendi.
+- **Kod-içi bellek sayacı:** repo'da durur ve test edilir, ama sayaç fonksiyon instance'ı başınadır. Deploy ve cold start'ta sıfırlanır, ölçeklenmede bölünür; garanti canlıda ölçülemez. Elendi.
+- **Harici store (Upstash vb.):** kapsam kararıyla dışarıda (yeni harici servis yok).
+- **Seçilen:** WAF kuralı. Tanımı repo'da JSON spec olarak durur; CLI ile uygulanır ve drift kontrolü yapılır (kullanıcı kararı).
+
+**TB-G2 — origin kontrolü**
+
+- **Elle tutulan host izin listesi:** canlıda üç host 200 dönüyor (→ Dikkat Edilecekler). Liste her yeni alias'ta bayatlar.
+- **`vercel.json` / WAF header kuralı (`mitigate: deny`):** config olarak durur ama birim-testlenemez. İki başlığı (Origin ↔ Host) birbiriyle karşılaştıramaz, regex host listesine düşer.
+- **Kodda same-origin kuralı (Origin host'u = isteğin `host`'u):** listesizdir, bütün alias'ları ve `localhost`'u kendiliğinden kapsar. Saf fonksiyondur → Vitest node.
+- **Seçilen:** kodda same-origin kuralı.
 
 ### Kullanılacak Araçlar/Kütüphaneler
-- [Araç 1]: [Versiyon, ne için]
+
+- **`next` 15.5.27** (`backport` dist-tag'i, 15.5.x'in son yaması) ve aralık-içi yan yükseltmeler: `sharp` 0.35.5 · `postcss` (kök + vite) 8.5.28 · `vitest`/`@vitest/mocker` 4.1.11 · `undici` 7.30.0 · `nanoid` 3.3.19 · `@tailwindcss/postcss` 4.3.3 · `fflate` (`three-stdlib` altında) 0.6.11.
+- **Vercel WAF custom rule** (`rate_limit`, `fixed_window`). Yönetimi kurulu `vercel` CLI 59.26.0 ile: `firewall rules add --json`, `firewall rules inspect --json`, `firewall diff`. `firewall publish`'i kullanıcı koşar.
+- **Vitest node** — origin modülünün birim testi.
+- **Bağımlılıksız Node `fetch` probe script'i** — repo'da durur, elle tetiklenir.
+- **Yeni npm paketi yok** — TB-G2 `package.json`'a dokunmaz.
 
 ### Dikkat Edilecekler
-- [Tuzak/Risk 1]: [Nasıl kaçınılacak]
+
+**Devralınan iddiaların ölçümü (2026-10-02):**
+
+- *"9 açık force'suz kapanır, yalnız lock değişir"* → **kısmen çürüdü.** "Yalnız lock" doğrulandı: her yükseltme mevcut aralığın içinde (registry metadata'sı). Ama `next@15.5.27` `postcss`'i hâlâ **tam `8.4.31`'e** sabitliyor. Bu kopya 2 high (GHSA-6g55-p6wh-862q, GHSA-r28c-9q8g-f849) + 2 moderate taşıyor ve `next`'i de "via" high gösterecek.
+  - Beklenen son durum: **kritik 0 · high 2 · moderate 0**. Bu tahmin registry metadata'sı ve npm bulk advisory API'sinden hesaplandı.
+  - Scratch kopyada `npm audit fix` simülasyonuna bu oturumda izin verilmedi. Task gerçek koşuyla teyit eder; sapma görürse durur.
+- Discuss dry-run listesinde olmayan **`fflate`** da aralık-içi kapanıyor: moderate, `@react-three/drei` → `three-stdlib` altında `0.6.10`; `three-stdlib` `^0.6.9` istediği için `0.6.11`'e çıkar. Lock diff'inde görünmesi beklenir.
+- *"`sharp` 0.34→0.35 build'i kırabilir"* → **etki yüzeyi pratikte sıfır.**
+  - `next@15.5.27`'nin optional aralığı `^0.34.3 || ^0.35.4`, yani 0.35.5 aralık-içi.
+  - `sharp@0.35.5` `node >=20.9.0` istiyor: Vercel projesi 24.x, CI 24 (`.github/workflows/ci.yml`), yerel 24.21 ✓.
+  - `src/`'de `next/image` ve statik görsel import'u **yok**; sharp ne build'de ne çalışma anında çağrılıyor. `/_next/image` Vercel'de platform altyapısında işlenir. `next build` + duman testi yeterli.
+- *"UI ve i18n dokunulmaz — 429/403 mevcut offline kopyasına düşer"* → **doğrulandı.** `Chatbot.tsx` her `!res.ok`'ta `setOffline(true)` → `chat.error` gösterir; bayrak bir sonraki gönderimde `send`'in başında sıfırlanır. Yanıtsız kalan kullanıcı mesajı geçmişte durur, sonraki istekte ardışık iki `user` mesajı gider. `sanitizeMessages` sıra kuralı koymadığı için bunu kabul eder.
+- *"Hız sınırı / origin kontrolü hiçbir katmanda yok"* → **doğrulandı:**
+  - `route.ts`'de kontrol yok.
+  - `src/middleware.ts` matcher'ı `api`'yi atlıyor.
+  - `vercel.json`/`vercel.ts` yok.
+  - `vercel firewall overview` → `Firewall: Not configured`.
+- *"Limit probe'ları 400 gövdeyle sayacı tetikler"* → **doğrulandı (tasarım gereği).** WAF koşulu (path + method) fonksiyondan önce değerlendirilir ve yanıt kodundan bağımsız sayar. Origin 403'leri de sayaca girer.
+- *"Origin izin listesi: prod alan adları + yerel dev"* → **ölçüldü:** canlıda **üç host** 200 dönüyor: `kiwiailab.com`, yönlendirmesiz `www.kiwiailab.com` ve `kiwi-ai-lab-v3.vercel.app`. Liste yerine same-origin kuralı seçildi (→ Teknik Kararlar).
+- *"Limit değeri meşru ziyaretçi profiliyle ölçülerek seçilir"* → **doğrulanamadı.**
+  - Hobby'de log saklama ~1 saat: `vercel logs --since 7d` yalnız son 23 dk'yı döndürdü, kayıtlar IP de taşımıyor.
+  - Umami'de chat olayı yok.
+  - Kullanıcı değeri kota aritmetiğiyle seçti (→ Teknik Kararlar).
+
+**Çekirdek etkileşimin ölçüm katmanı (kullanıcı kararı):** Fazın asıl davranışı, yani canlıda 429 ve yabancı origin'e 403, Vercel serving zincirinde gerçekleşir. Vitest node yalnız origin mantığını ölçer; yerel Playwright ise WAF'sız `next start`'ı görür. Canlı katman **repo'da kalıcı, elle tetiklenen bir probe script'iyle** ölçülür (son task + UAT). Script model çağırmaz (400 gövde) ve CI'da koşmaz.
+
+**Uygulama tuzakları:**
+
+- **WAF publish canlıya anında dokunur, deploy'dan bağımsızdır.** Kural yalnız draft olarak stage edilir (`vercel firewall rules add --json …`, `vercel firewall diff`). `vercel firewall publish --yes`'i **kullanıcı** koşar, merge/canlı task'ında. Önce `--rate-limit-action log` ile eşleşme probe'la görülür, sonra 429'a geçilir (Vercel'in kademeli yayın pratiği).
+- **Kendi IP'n de sayılır.** Hobby'de system bypass yok (`Requires Pro or Enterprise`); probe patlaması geliştiricinin IP'sini ≤10 dk 429'da tutar. Bu yüzden origin probe'ları önce, limit patlaması en son koşulur. Pencere hizası bilinmediği için patlama 429 görene dek gönderir (en fazla 2×6+1 = 13 istek) ve kaçıncı istekte geldiğini raporlar.
+- **Sayaçlar bölge başınadır.** Farklı edge bölgelerinden gelen tek kaynak limiti N kat aşabilir; dağıtık kötüye kullanım zaten kapsam dışı. Fonksiyon bölgesi tek: `iad1`.
+- **Hobby kural bütçesi:** toplam 3 custom rule, bunun 1'i rate-limit. Bu faz rate-limit slotunu tüketir. Persistent action (`--duration`) Hobby'de yok.
+- **Bilinçli kalıntı:** 6/10 dk'da sabit pencerenin başında 6 istek × `max_tokens` 512 rezervasyonu, Groq'un 1.000 OTPM'ini ~3 dk doyurabilir. Tek Hobby rate-limit kuralı ikinci (dakikalık) bir boyuta izin vermiyor. Sonuç: tek kaynak günlük kotayı bitiremez, ama dakikalık kotayı periyodik olarak doldurabilir.
+- **Origin kuralının `host` kaynağı:** `req.headers.get("host")`'un Vercel'de herkese açık host'u taşıması beklenir. Probe bunu canlıda teyit eder: apex, `www` ve `vercel.app` üzerinden meşru gönderim 403 almamalı.
+- **Gelecekteki sağlık kontrolü** (kapsam dışı) aynı-origin başlıklarını göndermeli; 6/10 dk limitine de sayılır (GitHub Actions IP'leri değişkendir).
+- **Yan gözlem (kapsam dışı):** `www.kiwiailab.com` apex'e yönlenmeden 200 dönüyor. Canonical metadata apex'i gösterdiği için SEO zararı sınırlı.
+
+**Tanımlayıcı kaynakları:**
+
+- `GROQ_API_KEY` — dış (Vercel env, yalnız Production).
+- `src/app/api/chat/route.ts`, `src/components/Chatbot.tsx`, `src/lib/chat-sanitize.ts`, `src/middleware.ts` — mevcut.
+- Origin modülü (öneri `src/lib/chat-origin.ts`) ve testi (öneri `tests/chat-origin.test.ts`) — yeni.
+- WAF kural spec'i (JSON, `_dev/` dışında proje dosyası; konum ve kural adı plan-phase'de) — yeni.
+- Probe script'i (konum plan-phase'de) — yeni.
+- Vercel proje bağı `.vercel/project.json` — mevcut, gitignore'da (`kiwi-ai-lab-v3`, takım `north-ai`, plan Hobby).
 
 ### Teknik Kararlar
-- [Karar 1]: [Gerekçe]
+
+- **TB-G1 — force'suz `npm audit fix`; kritik 0, kalan 2 high gerekçeli kayıt (kullanıcı kararı).** `next`'in gömülü `postcss@8.4.31`'i yalnız webpack build zincirinde (CSS bloğu, minimizer, font loader) çalışır. Advisory'ler saldırgan kontrollü CSS ister; işlenen tek CSS repo'nun kendisidir. Bu, Faz 16 kararının devamıdır (`docs/DECISIONS-2026-07-02..2026-07-18.md` → 2026-07-16): o gün aynı kopya 2 moderate taşıyordu, bugün 2 high + 2 moderate. Kapanış yolu Next 16 (`postcss` 8.5.23). → DECISIONS 2026-10-02.
+- **TB-G2 hız sınırı — Vercel WAF rate-limit kuralı:**
+  - Koşul: `path eq /api/chat` VE `method eq POST`.
+  - Sayım: `fixed_window`, **600 s**, **6 istek**, anahtar `ip`; aşımda varsayılan **429**.
+  - Tanım repo'da JSON spec'tir; CLI ile stage edilir, kullanıcı publish eder. Drift, `vercel firewall rules inspect --json` çıktısı spec'le karşılaştırılarak görülür.
+  - Canlı kopya Vercel'de yaşar. "Kural repo'da kod" bu ölçüde daraldı (kullanıcı kararı). → DECISIONS 2026-10-02.
+- **Limit değeri 6/10 dk (kullanıcı kararı).** Hobby'nin 10 dk tavanında, tek IP'nin günlük 1.000 kotanın altında kaldığı en yüksek değer budur (6 × 144 = 864/gün). Karşılaştırma: 10/10 dk = 1.440/gün, 20/10 dk = 2.880/gün. Bedeli: 10 dk içinde 7. mesajı gönderen ziyaretçi offline kopyasını görür ve en fazla 10 dk bekler.
+- **Origin kontrolü kodda, same-origin kuralıyla:**
+  - `Origin` varsa host'u isteğin `host` başlığına eşit olmalı.
+  - `Origin` yoksa ya da `null` ise yalnız `Sec-Fetch-Site: same-origin` kabul edilir. Bu başlık tarayıcıda JS ile set edilemez; gizlilik ayarı yüzünden Origin'i düşen meşru tarayıcıyı korur.
+  - Diğer her durumda 403.
+  - Kontrol `POST`'un ilk işidir: gövde parse'ından ve 503 anahtar kapısından önce gelir. Saf fonksiyondur, Vitest node ile test edilir.
+  - curl iki başlığı da sahteleyebilir; o yolun kapısı WAF'tır (iki katman birbirinin yerini tutmaz — discuss kararı).
+- **Canlı ölçüm — repo'da probe script'i (kullanıcı kararı).** Senaryolar: yabancı Origin → 403 · Origin'siz → 403 · kendi Origin + 400 gövde → 400 (kapıdan geçti, model çağrılmadı) · patlama → 429. UAT 18 senaryo 23'ün probu bu script'in ilk senaryosudur.
+- **Yeni bağımlılık yok.** TB-G2 `package.json`'a dokunmaz; `@vercel/firewall`, `@vercel/functions`, `vercel.json`/`vercel.ts` eklenmez.
 
 ---
 

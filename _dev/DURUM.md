@@ -1,6 +1,6 @@
 # DURUM — Proje Dashboard
 
-**Son Güncelleme:** 2026-10-02 — **discuss-phase 19:** Versiyon Sonu Durumu `teknik_borç`; Faz 19 (güvenlik: `next` yaması + `/api/chat` kota koruması) kapsamlandı → sırada research-phase.
+**Son Güncelleme:** 2026-10-02 — **research-phase 19:** TB-G1 force'suz yama (kritik 0, 2 high gerekçeli), TB-G2 hız sınırı Vercel WAF 6/10 dk + origin kodda same-origin → sırada plan-phase.
 
 <!-- KURAL: Bu satır her oturum sonunda ÜZERİNE YAZILIR — tek satır, tek cümle. "Önceki:" / "Eski:" prefix ile kümülatif yığma YASAK; HTML comment'e sarma da yasak (CLAUDE.md → Doküman Disiplini). Tarih + kısa özet yeterli; detay için git log + ilgili PHASE/TASK dokümanları. -->
 
@@ -9,7 +9,7 @@
 ## Aktif Faz
 
 **Faz:** **Faz 19 — v0.5 versiyon-sonu teknik borç — güvenlik (bağımlılık yaması + `/api/chat` kota koruması)** 🔄. Fazlar 1–18 ✅.
-**Adım:** **research** — discuss-phase 19 ✅ (2026-10-02): kapsam TB-G1 (`next` 15.5.27 + `npm audit fix` force'suz, yalnız lock) + TB-G2 (hız sınırı + origin, $0, kural repo'da kod, UI/i18n dokunulmaz); dal `revize/v0.5-teknik-borc`, faz sonu merge. **Sıradaki: `/devflow:research-phase`**.
+**Adım:** **plan** — research-phase 19 ✅ (2026-10-02): TB-G1 force'suz `npm audit fix` → kritik 0, `next`'e gömülü `postcss@8.4.31`'in 2 high'ı gerekçeli kayıt; TB-G2 hız sınırı Vercel WAF kuralı (6 istek / 10 dk / IP, tanımı repo'da JSON spec) + origin kontrolü kodda same-origin + repo'da canlı probe script'i. Dal `revize/v0.5-teknik-borc`, faz sonu merge. **Sıradaki: `/devflow:plan-phase`**.
 
 **v0.5 durumu ve açık kalemler:**
 
@@ -18,7 +18,7 @@
 3. **Booking + takvim → v0.6** — ayrı/büyük iş (tool/function calling + takvim + PII/spam güvenliği).
 4. **Çeviri senkronu** (non-TR + AR alpfit stale-TR, 133 leaf yapısal tam / değerler Türkçe, **ziyaretçi-görünür**) + **AR-dil stratejisi** → numarasız aday.
 5. **BULGU-S3 craft** — alt-sayfa hero'ları (Alpfit + crew-os) `high` masaüstünde animasyonlu Living Flow göstermiyor (Craft üst eksen) → craft cila numarasız aday.
-6. **Faz 19 kapsamında (güvenlik):** npm audit 9 açık (1 kritik / 4 high / 4 moderate, çoğu `next@15.5.19`'da) → TB-G1; `/api/chat` hız sınırı / origin kontrolü yok (UAT 18 senaryo 23) → TB-G2. Detay → `phases/PHASE-19.md`.
+6. **Faz 19 kapsamında (güvenlik):** npm audit 9 açık (1 kritik / 4 high / 4 moderate, çoğu `next@15.5.19`'da) → TB-G1; `/api/chat` hız sınırı / origin kontrolü yok (UAT 18 senaryo 23) → TB-G2. Araştırma kararları → `phases/PHASE-19.md` → Araştırma Bulguları + DECISIONS 2026-10-02.
 7. **Sahipli teknik açıklar (Faz 19'a alınmadı → prd-review'da yeniden tartılır):**
    - TB-3 runtime invariant tohumu (Faz 12'den).
    - **Canlı chatbot sağlık kontrolü yok** (retro 18): model emekliliği ve kota tükenmesi yalnız `vercel logs`'ta görünür, Llama deploy olmadan emekliye ayrıldı → günlük sentetik kontrol adayı (eklenirse TB-G2'nin origin/limit kapısından geçmeli).
@@ -26,7 +26,7 @@
    - Chatbot prompt cilası (TR "observable ve measured" yankısı, seyrek kelime tekrarı) + `route.ts` `max_tokens` gerekçe yorumunun inceltilmesi (retro 18).
    - Brief mobil perf açığı (≈90 / LCP >2.5s; metodolojik duvar, DECISIONS 2026-06-30).
 
-**İlerleme:** Faz 19 kapsamlandı (2026-10-02) — 2 iş birimi (TB-G1, TB-G2); task'lar plan-phase'de. Faz 18 ✅ (13 task, UAT 43/44, Vitest 86).
+**İlerleme:** Faz 19 kapsamlandı ve araştırıldı (2026-10-02) — 2 iş birimi (TB-G1, TB-G2); task'lar plan-phase'de. Faz 18 ✅ (13 task, UAT 43/44, Vitest 86).
 **Aktif Faz Dokümanı:** `phases/PHASE-19.md`. Son tamamlanan faz → `phases/PHASE-18.md`; faz geçmişi → `PHASES.md`.
 
 ---
@@ -44,9 +44,9 @@
 
 ## Aktif Task
 
-**Task:** yok — Faz 19 henüz planlanmadı (discuss ✅ → research → plan).
+**Task:** yok — Faz 19 henüz planlanmadı (discuss ✅ → research ✅ → plan).
 **Durum:** Fazlar 1–18 ✅, Faz 19 🔄. Versiyon Sonu Durumu **`teknik_borç`**. Chatbot canlıda; canlı = `main` HEAD.
-**İlerleme:** discuss-phase 19 (2026-10-02) — kapsam kararları `phases/PHASE-19.md` → Kapsam Tartışması. Sırada `/devflow:research-phase`.
+**İlerleme:** research-phase 19 (2026-10-02) — bulgular `phases/PHASE-19.md` → Araştırma Bulguları. Sırada `/devflow:plan-phase`.
 
 ## Task Durumu (Aktif Faz)
 
@@ -73,7 +73,7 @@
 ## Hızlı Erişim
 
 **Aktif Task:** yok (Faz 19 planlanmadı). Son tamamlanan task: `tasks/archive/TASK-18.13.md`.
-**Aktif Faz:** **Faz 19 — v0.5 versiyon-sonu teknik borç — güvenlik**, Adım **research**. **Aktif Versiyon v0.5.** Versiyon Sonu Durumu **`teknik_borç`**. **Canlı = `main` HEAD** (her push deploy); chatbot canlıda (`qwen/qwen3.8-27b`). Faz dokümanı: `phases/PHASE-19.md`; son tamamlanan: `phases/PHASE-18.md` (alt-dokümanlar: `-ARASTIRMA` · `-GOLIVE` · `-UAT`).
+**Aktif Faz:** **Faz 19 — v0.5 versiyon-sonu teknik borç — güvenlik**, Adım **plan**. **Aktif Versiyon v0.5.** Versiyon Sonu Durumu **`teknik_borç`**. **Canlı = `main` HEAD** (her push deploy); chatbot canlıda (`qwen/qwen3.8-27b`). Faz dokümanı: `phases/PHASE-19.md`; son tamamlanan: `phases/PHASE-18.md` (alt-dokümanlar: `-ARASTIRMA` · `-GOLIVE` · `-UAT`).
 **v0.5 kaynağı (karar + 5 kabul kriteri):** `docs/DECISIONS.md` 2026-07-21; go-live'daki model + `max_tokens` kararları → DECISIONS 2026-09-11; zaman aşımı → 2026-09-12; ziyaretçi dilinde sunucu metni → 2026-10-02.
 **Sonraki versiyon adayları (→ `PRD/VERSIONS.md`):** **ana sayfa mesaj netliği / ilk-ekran anlaşılırlığı** (kullanıcı 2026-10-02: ziyaretçi kim olduğumuzu ve ne yaptığımızı anlamadan çıkıyor; teşhis + hero çapası çelişkisi → `PRD/NOTES.md`; booking/takvimle önceliği yarışır, sıra prd-refine'da damgalanır) · v0.6 booking/takvim · çeviri senkronu (non-TR + AR) · BULGU-S3 craft cila · **brief'in yetkisi + kalan bayatlığı** (OVERVIEW "çelişkide v2 geçerli" + Korumalı `ILKELER.md:34` örneği; → `PRD/NOTES.md`) · **dal kuralı go-live sonrası** (canlı feature düzeltmeleri `main`'de mi, Preview env + revize branch mi; retro 18 → prd-review). Faz 19'a alınmayan sahipli teknik açıklar yukarıda (Aktif Faz → madde 7).
 **Task Sistemi:** `tasks/TASKS-README.md`

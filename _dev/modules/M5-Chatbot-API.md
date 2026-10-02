@@ -29,7 +29,7 @@
 - Key yok → 503 offline; sağlayıcı/stream hatası → hard-cut yerine kontrollü fallback mesajı.
 - Sağlayıcı asılı kalırsa (ilk token hiç gelmez ya da akış ortada susar) ziyaretçi 30 s beklemez: üst-akış zaman aşımı devreye girer ve aynı fallback metni akar. Zaman aşımı olmadan tek kapı platformun `maxDuration`'ıdır — o sınırda fonksiyon öldürülür, `catch` **hiç çalışmaz**, ziyaretçi ham 504 alır (UAT 18 senaryo 33'te canlıda 47 çağrının 2'si).
 - Kötüye kullanım: girdi uzunluğu/rol enjeksiyonu sanitize edilmeli (güvenlik ekseni). Üç hacim sınırı birbirinin yerini tutmaz: per-mesaj cap tek uzun mesajı, toplam byte çok sayıda sınır-altı mesajı, sayı kapısı dev dizinin taranmasını kapatır.
-- Hız sınırı / origin kontrolü **yok** (route, middleware ve `vercel.json` katmanlarının hiçbirinde) → kimliksiz POST sınırsız; günlük kota dışarıdan tüketilebilir. Kapsam-dışı kayıt, v0.6 adayı (UAT 18 senaryo 23).
+- Hız sınırı / origin kontrolü **yok** (route, middleware ve `vercel.json` katmanlarının hiçbirinde) → kimliksiz POST sınırsız; günlük kota dışarıdan tüketilebilir (UAT 18 senaryo 23). Faz 19 / TB-G2 kapatıyor: hız sınırı Vercel WAF kuralı, origin kontrolü kodda (DECISIONS 2026-10-02); bu satır uygulama task'ında güncellenir.
 - Model adı geçerliliği (env override yanlışsa).
 - Locale sinyali yoksa ya da yanıltıcıysa hata notu TR'ye düşer. Örnekler: Referer'ı tümden kapatan gizlilik ayarı + tarayıcı dili sayfayla aynı olduğu için cookie'nin hiç yazılmamış olması. Accept-Language'e bilinçle bakılmaz; `/de`'deki tr-TR tarayıcıyı yanlış dile götürürdü.
 
@@ -62,4 +62,4 @@
 
 ---
 
-**Son Güncelleme:** 2026-10-02 — review-phase 18: Teknik Notlar'daki kota satırı ölçüme hizalandı — OTPM talebi her zaman tam `max_tokens` değil, ama ona kadar çıkabiliyor; 512 değişmedi. Sözleşme, sınırlar ve kabul kriterleri aynı.
+**Son Güncelleme:** 2026-10-02 — research-phase 19: F5.1 hız sınırı/origin edge case'i "v0.6 adayı" → Faz 19 / TB-G2 kapsamında (mekanizma kararı DECISIONS 2026-10-02). Sözleşme ve kabul kriterleri değişmedi.

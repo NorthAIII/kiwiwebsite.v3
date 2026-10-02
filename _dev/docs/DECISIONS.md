@@ -9,6 +9,58 @@
 
 <!-- Her yeni karar aşağıdaki formatta en üste eklenir (en yeni en üstte) -->
 
+### 2026-10-02 — `/api/chat` kota koruması: hız sınırı Vercel WAF'ta (6 istek / 10 dk / IP), origin kontrolü kodda same-origin kuralıyla
+
+**Bağlam:** Faz 19 research (TB-G2). `/api/chat` kimliksiz ve sınırsızdı; Groq'un günlük 1.000 isteklik ücretsiz kotası dışarıdan tüketilebiliyordu (UAT 18 senaryo 23). Discuss kararları: maliyet $0, yeni harici servis yok, kural repo'da kod olarak yaşar. Config-as-code mümkün değilse research bunu açıkça getirir. Proje Vercel **Hobby** planında.
+
+**Seçenekler (hız sınırı):**
+1. **Vercel WAF rate-limit kuralı** — edge'de, fonksiyondan önce sayar; Hobby'de 1 kural, sabit pencere 10 s–10 dk, 1M istek dahil.
+2. `@vercel/firewall` SDK — limit değerleri yine dashboard'da durur, üstüne yeni paket ister.
+3. Runtime Cache sayacı — yeni paket ister ve atomik değildir. Hobby'de takımın bütün projeleri tek cache'i paylaşır, kayıtlar LRU ile silinebilir.
+4. Kod-içi bellek sayacı — sayaç instance başınadır; deploy ve cold start'ta sıfırlanır.
+
+**Karar (kullanıcı onaylı):**
+- Hız sınırı **Seçenek 1**: `POST /api/chat`, `fixed_window` 600 s, **6 istek**, anahtar `ip`, aşımda 429. Kuralın tanımı repo'da JSON spec olarak durur; `vercel firewall` CLI ile stage edilir, publish'i kullanıcı yapar. Drift, CLI çıktısı spec'le karşılaştırılarak görülür.
+- Origin kontrolü **kodda**, same-origin kuralıyla:
+  - `Origin` host'u isteğin `host` başlığına eşit olmalı.
+  - Origin yoksa ya da `null` ise yalnız `Sec-Fetch-Site: same-origin` kabul edilir.
+  - Aksi hâlde 403.
+- Canlı katman, repo'da elle tetiklenen ve model çağırmayan bir probe script'iyle ölçülür.
+
+**Gerekçe:**
+- `vercel.json` hız sınırı tanımlayamaz (`routes[].mitigate` yalnız `deny`/`challenge`). Deploy'la uygulanan config-as-code Hobby'de yoktur. Repo'daki spec + CLI, dashboard'da tek başına duran kuralın görünmez drift'ini kapatan en yakın yoldur. "Kural repo'da kod" taahhüdü bu ölçüde daraldı.
+- **6/10 dk**, 10 dk tavanında tek IP'nin günlük kotanın altında kaldığı en yüksek değerdir (864/gün). Meşru ziyaretçi profili ölçülemedi: Hobby log saklama ~1 saat, kayıtlar IP taşımıyor, Umami'de chat olayı yok.
+- Origin için liste yerine same-origin kuralı seçildi, çünkü canlıda üç host 200 dönüyor (apex, `www`, `vercel.app`); kural bunların hepsini ve `localhost`'u listesiz kapsar ve Vitest ile test edilir.
+- Bilinçli kalıntılar:
+  - Sayaçlar bölge başınadır.
+  - Dakikalık OTPM kotası (1.000) pencere başındaki 6'lık patlamayla periyodik doyabilir; Hobby ikinci bir rate-limit kuralına izin vermiyor.
+  - Dağıtık kötüye kullanım kapsam dışıdır.
+- Sınıra takılan ziyaretçi `Chatbot.tsx`'in `!res.ok` kapısıyla mevcut 5 dilli offline kopyasını görür; UI ve i18n değişmez.
+
+**İlgili Task/Faz:** Faz 19 (research; TB-G2). Bulgular → `phases/PHASE-19.md` → Araştırma Bulguları. İleride eklenecek sağlık kontrolü aynı-origin başlıklarını göndermeli ve bu limite sayılır.
+
+### 2026-10-02 — npm audit (v0.5 sonu): force'suz yama; kritik 0, Next'e gömülü `postcss@8.4.31`'in 2 high'ı gerekçeyle kabul, overrides yok
+
+**Bağlam:** Faz 19 research (TB-G1). `npm audit`: 9 açık (1 kritik / 4 high / 4 moderate). Kritik açık `next@15.5.19`'daydı (Image Optimization API RCE).
+- Force'suz düzeltme her paketi mevcut caret aralığında yükseltir: `next` 15.5.27 (`backport`), `sharp` 0.35.5, `postcss` 8.5.28, `vitest` 4.1.11, `undici` 7.30.0, `nanoid` 3.3.19, `@tailwindcss/postcss` 4.3.3, `fflate` 0.6.11. `package.json` değişmez.
+- Ama `next@15.5.27` `postcss`'i hâlâ **tam `8.4.31`'e** sabitliyor. Faz 16'da (2026-07-16, arşiv) 2 moderate olarak kabul edilen bu kopya, bugün 2 high (GHSA-6g55-p6wh-862q, GHSA-r28c-9q8g-f849) + 2 moderate taşıyor.
+- Beklenen son durum: kritik 0 · high 2 (`postcss` + via `next`) · moderate 0. Tahmin registry metadata'sı ve bulk advisory API'sinden hesaplandı; task gerçek koşuyla teyit eder.
+
+**Seçenekler:**
+1. **Gerekçeli kayıt** — milestone'daki "kritik + high 0" ölçütü "kritik 0 + gerekçeli 2 high"a daralır.
+2. `overrides` ile `next` → `postcss` 8.5.28 — Dokunulmaz `package.json` değişir ve framework'ün iç pin'i ezilir.
+3. Next 16 (`postcss` 8.5.23) — major, kapsam dışı.
+
+**Karar (kullanıcı onaylı):** Seçenek 1. `--force` ve `overrides` kullanılmaz.
+
+**Gerekçe:**
+- Gömülü kopya yalnız webpack build zincirinde çalışır: CSS bloğu, minimizer, font loader; çalışma anındaki tek kullanıcısı AMP optimizer'dır, o da bu sitede yok.
+- Advisory'ler saldırgan kontrollü CSS (sourceMappingURL) ister; işlenen CSS repo'nun kendisidir. Kötü niyetli bir bağımlılık zaten build'de kod çalıştırabildiği için yeni bir vektör açılmaz.
+- `overrides`, Faz 16'daki aynı gerekçeyle reddedildi: framework'le savaşan kalıcı istisna, ILKELER kalıcılık.
+- Upstream çözüm geldi ama yalnız 16.x'te. Kalan kayıt Next 16 yükseltmesinde kendiliğinden kapanır.
+
+**İlgili Task/Faz:** Faz 19 (research; TB-G1). Yeniden değerlendirme tetikleyicisi: Next 16 yükseltmesi ya da 15.5.x hattına `postcss` bump'ı gelmesi. Bulgular → `phases/PHASE-19.md` → Araştırma Bulguları.
+
 ### 2026-10-02 — Memory mezuniyeti: i18n "anahtar varlığı ≠ değer tazeliği" disiplini
 
 i18n "anahtar varlığı ≠ değer tazeliği" süreç disiplini artık `tests/i18n-parity.test.ts` (CI `fast` job → `npm run test`; 5 dilin anahtar kümesi karşılaştırılır, değerler değil) tarafından yakalanıyor — memory'den mezun edildi. (Claude kararı · audit-docs; politika yarısı zaten CLAUDE.md → Projeye Özgü Kurallar → i18n'de.)
