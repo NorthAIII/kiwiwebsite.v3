@@ -43,7 +43,7 @@
 
 ### F2.3: "Nasıl çalışır" bölümü → Faz —
 
-**Açıklama:** `HowItWorks.tsx` — şu an 3 adım (Analiz · Tespit · Otomasyon), aralarında GSAP ScrollTrigger ile animasyonlu SVG bağlayıcı (Living Flow motifi).
+**Açıklama:** `HowItWorks.tsx` — 4 adım (Analiz · Çözüm · Otomasyon · Raporlama; v0.1 R1), aralarında GSAP ScrollTrigger ile animasyonlu SVG bağlayıcı (Living Flow motifi).
 
 **Kabul Kriterleri:**
 - Adımlar scroll'da koreografik açılır; bağlayıcı çizgi scrub ile çizilir.
