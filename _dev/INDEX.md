@@ -25,6 +25,7 @@
 6. **PHASES.md** — Faz durum özeti + sıradaki fazlar
 7. **QUALITY.md** — Kalite eksenleri ve kontrol noktaları
 8. **ILKELER.md** — Proje ilkeleri / yön (prd, prd-refine, prd-review, kickoff, discuss, research, plan'da OKU)
+9. **BULGULAR.md** — Proje sorun kanvası index'i: Gelen Kutusu (kaynak işaretli kapsam-dışı gözlemler) + Açık Bulgular + Kapsama + Bilinçli Tercihler. Atomlar `bulgular/B-NNN-<slug>.md`'de (tek tek listelenmez; ilk atomda oluşur).
 
 ### Projeye Özgü Sabitler (Her Oturumda OKU)
 
@@ -170,6 +171,7 @@ kiwiwebsite.v3/
     ├── MODULE-MAP.md
     ├── PHASES.md
     ├── QUALITY.md
+    ├── BULGULAR.md           # proje sorun kanvası index'i (atomlar: bulgular/, ilk atomda oluşur)
     │
     ├── PRD/                  # VIZYON, VERSIONS, features/, SESSION-NOTES
     │
@@ -205,7 +207,7 @@ kiwiwebsite.v3/
 
 ---
 
-**Son Güncelleme:** 2026-10-02 — review-phase 18: Faz Dokümanları bölümündeki "henüz faz dokümanı yok" ve hiyerarşideki "phases/ (henüz boş)" bayat ifadeleri düzeltildi; alt-doküman deseni (`PHASE-N-<EK>.md`) eklendi.
+**Son Güncelleme:** 2026-10-02 — TASK-19.04 oturumu: `BULGULAR.md` (proje sorun kanvası) açıldı → Planlama Dokümanları + hiyerarşi.
 
 <!-- KURAL: Bu satır her güncellemede ÜZERİNE YAZILIR. "Önceki:" prefix ile kümülatif yığma YASAK (CLAUDE.md → Doküman Disiplini). -->
 <!-- KURAL: Tamamlanmış fazların task arşiv listesini INDEX'e ekleme — `ls _dev/tasks/archive/` zaten görür. INDEX yalnızca aktif klasör konumlarını gösterir; statik liste dokümanı değildir. -->
