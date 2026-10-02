@@ -21,7 +21,7 @@ id	path	status	status_reason	checked_version	last_checked	content_hash	exclude	a
 17	_dev/QUALITY.md	pending					0	2026-07-18	
 174	_dev/docs/DECISIONS-2026-06-27..2026-07-01.md	pending					0	2026-09-12	
 175	_dev/docs/DECISIONS-2026-07-02..2026-07-18.md	pending					0	2026-09-12	
-18	_dev/docs/DECISIONS.md	pending					0	2026-07-18	
+18	_dev/docs/DECISIONS.md	conformant		5	2026-10-02	96aa723274d39404d2ae964f265ae33ae511796f2b3477ceec64129f9aeed611	0	2026-07-18	
 19	_dev/docs/RELEASE-v0.2.md	pending					0	2026-07-18	
 20	_dev/docs/RELEASE-v0.4.md	pending					0	2026-07-18	
 21	_dev/docs/REVIZE-BACKLOG.md	pending					0	2026-07-18	

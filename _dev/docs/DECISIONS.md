@@ -23,6 +23,8 @@
 
 **İlgili Task/Faz:** TASK-19.01 (Faz 19, TB-G1). Ölçüm detayı → `tasks/archive/TASK-19.01.md`. Yeniden değerlendirme tetikleyicisi değişmedi: Next 16 yükseltmesi ya da 15.5.x hattına `postcss` bump'ı gelmesi.
 
+---
+
 ### 2026-10-02 — `/api/chat` kota koruması: hız sınırı Vercel WAF'ta (6 istek / 10 dk / IP), origin kontrolü kodda same-origin kuralıyla
 
 **Bağlam:** Faz 19 research (TB-G2). `/api/chat` kimliksiz ve sınırsızdı; Groq'un günlük 1.000 isteklik ücretsiz kotası dışarıdan tüketilebiliyordu (UAT 18 senaryo 23). Discuss kararları: maliyet $0, yeni harici servis yok, kural repo'da kod olarak yaşar. Config-as-code mümkün değilse research bunu açıkça getirir. Proje Vercel **Hobby** planında.
@@ -53,6 +55,8 @@
 
 **İlgili Task/Faz:** Faz 19 (research; TB-G2). Bulgular → `phases/PHASE-19.md` → Araştırma Bulguları. İleride eklenecek sağlık kontrolü aynı-origin başlıklarını göndermeli ve bu limite sayılır.
 
+---
+
 ### 2026-10-02 — npm audit (v0.5 sonu): force'suz yama; kritik 0, Next'e gömülü `postcss@8.4.31`'in 2 high'ı gerekçeyle kabul, overrides yok
 
 **Bağlam:** Faz 19 research (TB-G1). `npm audit`: 9 açık (1 kritik / 4 high / 4 moderate). Kritik açık `next@15.5.19`'daydı (Image Optimization API RCE).
@@ -75,9 +79,13 @@
 
 **İlgili Task/Faz:** Faz 19 (research; TB-G1). Yeniden değerlendirme tetikleyicisi: Next 16 yükseltmesi ya da 15.5.x hattına `postcss` bump'ı gelmesi. Bulgular → `phases/PHASE-19.md` → Araştırma Bulguları.
 
+---
+
 ### 2026-10-02 — Memory mezuniyeti: i18n "anahtar varlığı ≠ değer tazeliği" disiplini
 
 i18n "anahtar varlığı ≠ değer tazeliği" süreç disiplini artık `tests/i18n-parity.test.ts` (CI `fast` job → `npm run test`; 5 dilin anahtar kümesi karşılaştırılır, değerler değil) tarafından yakalanıyor — memory'den mezun edildi. (Claude kararı · audit-docs; politika yarısı zaten CLAUDE.md → Projeye Özgü Kurallar → i18n'de.)
+
+---
 
 ### 2026-10-02 — Sunucunun ziyaretçiye akıttığı metin ziyaretçinin dilinde: Referer prefix'i → `NEXT_LOCALE` cookie'si → TR; metin `messages/*.json`'dan
 
