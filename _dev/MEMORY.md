@@ -8,7 +8,7 @@
 > kanca hakkı testi, sınıflar ve eşikler, kümeleme/mezuniyet supapları, ne yazılır ne yazılmaz.
 > Yöntem oraya, kayıt buraya: index'e konan her karakter her oturumda yeniden ödenir.
 
-**Son Güncelleme:** 2026-10-02 — audit-docs kanca supap turu: yöntem bölümleri motora göçtü, 7 gövde-satırı atoma taşındı, i18n parite disiplini CI testine mezun edildi, kancalar sınıfına indirildi.
+**Son Güncelleme:** 2026-10-02 — TASK-19.01: host araç envanterine yerel `test:e2e` tuzağı eklendi (`:3000` yabancı dinleyici + `reuseExistingServer`, bundled headless shell yok → override config); kanca güncellendi.
 
 <!-- KURAL: Bu satır her güncellemede ÜZERİNE YAZILIR. "Önceki:" prefix ile kümülatif yığma YASAK (CLAUDE.md → Doküman Disiplini). -->
 
@@ -54,7 +54,7 @@
 - Chatbot env: `GROQ_API_KEY` (zorunlu, canlıda Vercel env'de), `CHAT_MODEL` (opsiyonel, varsayılan `qwen/qwen3.8-27b`).
 - [Repo haritası](memory/repo-haritasi.md) — frontend = `NorthAIII/kiwiwebsite.v3` (bu repo, public); backend ayrı/private = `NorthAIII/kiwi-ai-lab`; eski repo'lar terk edilmiş öncül (yeniden kullanma).
 - [CI (GitHub Actions) gözlemi `gh` olmadan da yapılabilir](memory/ci-actions-rest-gozlemi.md) — public repo: `/actions/runs?head_sha=<sha>` auth'suz REST.
-- [Host UAT araç envanteri](memory/host-uat-arac-envanteri.md) — host: node 24 · system Chrome 153 · `gh`/`vercel` CLI yetkili · `next start`+Chrome çalışıyor (exit 144 yok).
+- [Host UAT araç envanteri](memory/host-uat-arac-envanteri.md) — host: node 24 · system Chrome 153 · `gh`/`vercel` yetkili · `:3000` yabancı → yerel `test:e2e`'yi override config'le koş.
 - [DevFlow sistemi](memory/devflow-sistemi.md) — DevFlow özel araç (`github.com/36337/DevFlow`); bu yüzden public repo'da `.claude/` gitignore'da, `_dev/` commit'lenir.
 - [Standalone Playwright'te WebGL → `channel:'chrome'` şart](memory/playwright-bundled-chromium-webgl-yok.md)
 - [Vercel Git-disconnect → deploy tetiklenmez](memory/vercel-git-disconnect-deploy-tetiklenmez.md) — deploy teyidi auth'suz REST: `/deployments` + `/commits/<sha>/statuses`.

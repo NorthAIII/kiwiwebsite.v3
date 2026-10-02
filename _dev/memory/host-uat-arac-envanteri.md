@@ -10,6 +10,15 @@
 
 **Bu host'ta `next start` + gerçek Chrome çalışıyor.** Exit 144 görülmedi; yerel sunucu, sahte üst-akış sunucusu ve Chrome aynı node sürecinden başlatılıp kapatıldı. [Cloud devcontainer'daki `page.route` çaresi](sandbox-runtime-browser-page-route.md) burada zorunlu değil. Yine de ortam değişince önce kendin ölç.
 
+**Bu host'ta `npm run test:e2e` olduğu gibi koşmaz (ölçüm 2026-10-02, TASK-19.01):**
+- `:3000` (ve `:3100`) sahibi okunamayan yabancı bir dinleyicide. Repo `playwright.config.ts` `:3000`'e sabit ve yerelde `reuseExistingServer: true`, yani suite yabancı sunucuyu ölçer: yanlış ölçüm, hata vermez.
+- Bundled `chromium_headless_shell` kurulu değil; launch hatası verir.
+- **Çare (repo'ya dokunmadan):** scratchpad'de override config yaz:
+  - aynı `testDir` (mutlak yol), `testMatch` ve `retries: 0`;
+  - `Desktop Chrome` descriptor + `channel: "chrome"`;
+  - boş bir port (ör. `3217`) için `baseURL`.
+  - Sunucuyu kendin `next start -p <port>` ile başlat, dinleyen PID'i doğrula, sonra `npx playwright test --config <override>` koştur. Cookie domain'i `localhost` olduğu için baseURL'de `localhost` kalmalı.
+
 **Pratik notlar:**
 - **Auth'suz GitHub REST limiti 60 istek/saat ve IP başına.** Paralel oturumlarla paylaşıldığı için koşum ortasında tükenebilir (403 `rate limit exceeded`). O durumda aynı uçları yetkili `gh api` ile oku.
 - **Canlı chatbot arızasının kök nedeni `vercel logs` ile okunur:** `vercel logs --environment production --since 30m --level error --json`. `--status-code <kod>` filtresi de çalışıyor; bilinen bir 400/413 ile kontrol et, boş sonuç tek başına kanıt değildir.

@@ -9,6 +9,20 @@
 
 <!-- Her yeni karar aşağıdaki formatta en üste eklenir (en yeni en üstte) -->
 
+### 2026-10-02 — npm audit gerçek sonucu (TASK-19.01): kritik 0 · high 1 · moderate 1 kabul edildi
+
+**Bağlam:** TASK-19.01, aşağıdaki "npm audit (v0.5 sonu)" kararının beklentisini gerçek koşuyla ölçtü. Beklenen sonuç kritik 0 · high 2 (`postcss` + via `next`) · moderate 0'dı. Task'ın durma kuralı, beklenmeyen bir severity görülürse durup kullanıcıya getirmeyi söylüyordu; bu oldu.
+
+**Ölçülen:** force'suz `npm audit fix`'ten sonra, `npm ci` ile yeniden kurulumun ardından `npm audit --json`:
+- kritik 0 · **high 1** · **moderate 1**. Kalan paket kümesi beklenenle aynı; başka paket yok.
+- high: `node_modules/next/node_modules/postcss` 8.4.31. Üzerinde 4 advisory var: GHSA-6g55-p6wh-862q ve GHSA-r28c-9q8g-f849 (high), GHSA-qx2v-qp2m-jg93 ve GHSA-fxqj-rqcc-2cmp (moderate).
+- moderate: `next` (via `postcss`). Research bunun high görüneceğini varsaymıştı; npm via etiketini moderate verdi. Nedeni ölçülmedi.
+- İkisinin de tek düzeltme yolu `next@16.3.8`'dir (major).
+
+**Karar (kullanıcı kararı, 2026-10-02, koşum orkestratörü üzerinden):** Gerçek sonuç kabul edildi. Bir önceki kararın gerekçesi ve kalıntı tanımı değişmeden geçerlidir: kök aynı (Next'e gömülü postcss pin'i), `overrides`/`--force` yok, kapanış yolu Next 16. Faz 19 milestone'undaki "kritik 0 + gerekçeli 2 high" ifadesinin ölçülmüş karşılığı bu kayıttır: kritik 0 + gerekçeli 1 high + 1 moderate.
+
+**İlgili Task/Faz:** TASK-19.01 (Faz 19, TB-G1). Ölçüm detayı → `tasks/archive/TASK-19.01.md`. Yeniden değerlendirme tetikleyicisi değişmedi: Next 16 yükseltmesi ya da 15.5.x hattına `postcss` bump'ı gelmesi.
+
 ### 2026-10-02 — `/api/chat` kota koruması: hız sınırı Vercel WAF'ta (6 istek / 10 dk / IP), origin kontrolü kodda same-origin kuralıyla
 
 **Bağlam:** Faz 19 research (TB-G2). `/api/chat` kimliksiz ve sınırsızdı; Groq'un günlük 1.000 isteklik ücretsiz kotası dışarıdan tüketilebiliyordu (UAT 18 senaryo 23). Discuss kararları: maliyet $0, yeni harici servis yok, kural repo'da kod olarak yaşar. Config-as-code mümkün değilse research bunu açıkça getirir. Proje Vercel **Hobby** planında.
