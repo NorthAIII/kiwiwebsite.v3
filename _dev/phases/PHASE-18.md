@@ -83,12 +83,12 @@
 | 18.09 | TASK-18.09 | ✅ Tamamlandı | **Düzeltme (verify 18):** girdi daraltma + hacim sınırı — mesaj `{role,content}`'e indirgeniyor, `MAX_INCOMING_MESSAGES` 100 + `MAX_TOTAL_BYTES` 16384 (UAT 20/21); Vitest 52→64 |
 | 18.10 | TASK-18.10 | ✅ Tamamlandı | **Düzeltme (verify 18):** marka mührü kopyası — betimleyici CTA atfı + etiket-alıntılama yasağı, 5 dil hitap kuralı, README model ailesi (UAT 19/28/29); harness 2×20 yanıt 0 ihlal |
 | 18.11 | TASK-18.11 | ✅ Tamamlandı | **Düzeltme (verify 18, 2. tur):** üst-akış zaman aşımı — ilk token 20 s · sessizlik 5 s · toplam 24 s + SDK retry kapalı; değer canlı ölçümle seçildi (en yavaş meşru yanıt 17,4 s) ve kullanıcı onayladı (UAT 33); Vitest 64→69 |
-| 18.12 | TASK-18.12 | ⬜ Bekliyor | **Düzeltme (verify 18, 3. tur):** chatbot hata/zaman-aşımı metni ziyaretçinin dilinde aksın — `FALLBACK_MESSAGE` sabit TR, EN/DE/AR/ES ziyaretçi Türkçe hata görüyor (UAT 36) |
+| 18.12 | TASK-18.12 | ✅ Tamamlandı | **Düzeltme (verify 18, 3. tur):** chatbot hata/zaman-aşımı notu ziyaretçinin dilinde — Referer prefix'i → `NEXT_LOCALE` → TR, metin `chat.error` (yalnız hata anında yüklenir); yerelde gerçek Chrome 5/5 (UAT 36); Vitest 69→86 |
 | 18.13 | TASK-18.13 | ⬜ Bekliyor | **Düzeltme (verify 18, 3. tur):** ürün ağacındaki bayat Anthropic referansları — `ci.yml` yorumu + `MASTER_PROMPT_v2.md` §6/§7 (UAT 39) |
 
 **Durum simgeleri:** ⬜ Bekliyor | 🔄 Devam ediyor | ⏸️ Duraklatıldı | ✅ Tamamlandı | 🔴 Bloke | ❌ İptal
 
-**Bağımlılık zinciri:** 18.01 (branch) → 18.02 (sanitize) → 18.03 (Groq+prompt) → 18.04/18.05/18.06 (kopya+kimlik+docs) → 18.07 (5-dil mühür) → 18.08 (go-live). Kritik kapı: 18.07 geçmeden 18.08 yapılmaz; 18.08 env-önce-merge-sonra. **Düzeltme turu (verify 18):** 18.09 ve 18.10 birbirinden bağımsız — sırası serbest; ikisi de bittikten sonra `/devflow:verify-phase 18` baştan koşuldu (2026-09-12). **İkinci düzeltme turu:** 18.11 (üst-akış zaman aşımı) — bittiğinde `/devflow:verify-phase 18` yine baştan koşuldu (3. koşum, 36 ✅ / 3 ❌). **Üçüncü düzeltme turu (açılacak):** 18.12 (senaryo 36 — fallback metni ziyaretçi dilinde) ve 18.13 (senaryo 39 — `ci.yml` yorumu + `MASTER_PROMPT_v2.md` bayat Anthropic tarifi); birbirinden bağımsız. İkisi bitince verify yine **baştan**.
+**Bağımlılık zinciri:** 18.01 (branch) → 18.02 (sanitize) → 18.03 (Groq+prompt) → 18.04/18.05/18.06 (kopya+kimlik+docs) → 18.07 (5-dil mühür) → 18.08 (go-live). Kritik kapı: 18.07 geçmeden 18.08 yapılmaz; 18.08 env-önce-merge-sonra. **Düzeltme turu (verify 18):** 18.09 ve 18.10 birbirinden bağımsız — sırası serbest; ikisi de bittikten sonra `/devflow:verify-phase 18` baştan koşuldu (2026-09-12). **İkinci düzeltme turu:** 18.11 (üst-akış zaman aşımı) — bittiğinde `/devflow:verify-phase 18` yine baştan koşuldu (3. koşum, 36 ✅ / 3 ❌). **Üçüncü düzeltme turu (2026-10-02):** 18.12 (senaryo 36 — fallback metni ziyaretçi dilinde) ve 18.13 (senaryo 39 — `ci.yml` yorumu + `MASTER_PROMPT_v2.md` bayat Anthropic tarifi); birbirinden bağımsız. İkisi bitince verify yine **baştan**.
 
 ---
 
@@ -213,4 +213,4 @@
 ---
 
 **Oluşturulma:** 2026-07-21
-**Son Güncelleme:** 2026-09-11 — **TASK-18.10 ✅ (düzeltme turu 2/2).** SYSTEM_PROMPT'a betimleyici CTA atfı + buton-etiketi alıntılama yasağı ve 5 dil hitap kuralı (TR/DE formal · ES samimi · AR ikinci tekil · EN nötr) eklendi; `README.md:14` model ailesinden arındırıldı. 18.07 marka mührü harness'i iki kez koşuldu: **2×20 yanıt, 0 ihlal** — yeni eksenler temiz (buton adı alıntılanmadı; DE 4/4 `Sie`, 0 `du`), 18.07 regresyon eksenleri (dil 5/5 · garble 0 · Bunker 0 · uydurma rakam 0) bozulmadı. Kapı bozuk girdiyle sınandı (8 ihlal) ve boş kapsamda PASS basmadı (exit 2). Vitest 64/64 + `next build` exit 0. **Fazın bekleyen task'ı kalmadı → `/devflow:verify-phase 18` baştan koşulur.**
+**Son Güncelleme:** 2026-10-02 — **TASK-18.12 ✅ (üçüncü düzeltme turu 1/2).** Hata/zaman-aşımı notu ziyaretçinin dilinde: Referer → `NEXT_LOCALE` → TR, metin `chat.error`. Vitest 69 → 86, kapı 3 bozuk girdiyle sınandı. Canlı teyit (senaryo 36) verify'a kaldı. Sırada TASK-18.13.

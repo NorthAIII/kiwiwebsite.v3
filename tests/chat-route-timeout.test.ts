@@ -11,12 +11,35 @@
 // gerçek beklemek testi CI'da işlemez hâle getirirdi. Ölçülen süreler sanal
 // saatten okunur — assertion'lar bu yüzden gerçek gecikmeye değil, kodun
 // zamanlama sözleşmesine bakar.
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { readFileSync } from "node:fs";
+import { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
+import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { POST } from "@/app/api/chat/route";
+import { routing } from "@/i18n/routing";
 
-const FALLBACK = "(Asistan bir hataya takıldı. Lütfen tekrar deneyin.)";
+// Beklenen hata notu `messages/<locale>.json` → `chat.error`'dan, route'un kullandığı
+// dinamik import'tan BAĞIMSIZ bir yoldan (doğrudan dosya okuma) türetilir — kopya
+// değişince test kendiliğinden izler, sabit metin gömülmez (TASK-18.12).
+const messagesDir = join(dirname(fileURLToPath(import.meta.url)), "..", "messages");
+function chatError(locale: string): string {
+  const raw = readFileSync(join(messagesDir, `${locale}.json`), "utf8");
+  return (JSON.parse(raw) as { chat: { error: string } }).chat.error;
+}
+/** Balona akan not: parantezli `chat.error`. */
+const noteFor = (locale: string) => `(${chatError(locale)})`;
+const FALLBACK = noteFor(routing.defaultLocale); // header'sız istek → TR
 /** route.ts → `export const maxDuration = 30`; hiçbir yol buna dayanmamalı. */
 const MAX_DURATION_MS = 30_000;
+
+// Route notu ilk hata anında dinamik import'la yükler — gerçek I/O, zamanlayıcı değil.
+// Sahte saatin `advanceTimersByTimeAsync`'i bu I/O'yu beklemez: önbellek soğukken sanal
+// saat pencerenin sonuna (35 s) atlar ve ilk testin ölçtüğü kapanış anı modül yükleme
+// yerine o sıçramayı okur. Önbelleği ısıtmak zamanlama sözleşmesini I/O'dan ayırır
+// (prod'da yükleme ms mertebesinde; aynı dosya yolu → aynı modül kaydı).
+beforeAll(async () => {
+  await Promise.all(routing.locales.map((l) => import(`../messages/${l}.json`)));
+});
 
 type UpstreamScript = {
   /** Üst-akış hiç yanıt vermez (ilk token gelmez) — canlıda 504 üreten sınıf. */
@@ -113,12 +136,26 @@ function fakeUpstream(script: UpstreamScript) {
   });
 }
 
-function chatRequest(content = "Spor salonum için ne yapabilirsiniz?") {
+function chatRequest(
+  content = "Spor salonum için ne yapabilirsiniz?",
+  headers: Record<string, string> = {}
+) {
   return new Request("http://localhost/api/chat", {
     method: "POST",
-    headers: { "content-type": "application/json" },
+    headers: { "content-type": "application/json", ...headers },
     body: JSON.stringify({ messages: [{ role: "user", content }] }),
   });
+}
+
+/** Üst-akış HTTP hatası — canlıda bu yolu tetikleyen sınıf: Groq ücretsiz tier 429 (OTPM). */
+function failingUpstream(status = 429) {
+  return vi.fn(
+    async () =>
+      new Response(
+        JSON.stringify({ error: { message: "Rate limit reached", type: "tokens" } }),
+        { status, headers: { "content-type": "application/json" } }
+      )
+  );
 }
 
 /** Yanıt gövdesini okur ve akışın KAPANDIĞI sanal anı döndürür. */
@@ -135,11 +172,14 @@ async function drain(res: Response) {
 }
 
 /** Senaryoyu koşar; sanal saatte maxDuration kadar ilerletir. */
-async function run(script: UpstreamScript) {
-  const fetchMock = fakeUpstream(script);
+async function run(
+  script: UpstreamScript | ReturnType<typeof failingUpstream>,
+  headers: Record<string, string> = {}
+) {
+  const fetchMock = typeof script === "function" ? script : fakeUpstream(script);
   vi.stubGlobal("fetch", fetchMock);
   const startedAt = Date.now();
-  const res = await POST(chatRequest());
+  const res = await POST(chatRequest(undefined, headers));
   const collected = drain(res);
   // Bir tık fazla: maxDuration'a dayanan bir yol olsaydı bu pencerede görünürdü.
   await vi.advanceTimersByTimeAsync(MAX_DURATION_MS + 5_000);
@@ -229,5 +269,129 @@ describe("chat route — üst-akış zaman aşımı (TASK-18.11)", () => {
     expect(text).not.toContain(FALLBACK);
     expect(elapsed).toBeGreaterThanOrEqual(17_400);
     expect(elapsed).toBeLessThan(MAX_DURATION_MS);
+  });
+});
+
+// TASK-18.12 — hata/zaman-aşımı notu ziyaretçinin baktığı sayfanın dilinde.
+// Kaynak sırası route.ts'te: Referer locale prefix'i → NEXT_LOCALE cookie → tr.
+// Üst-akış hatası 429 ile üretilir: canlıda bu yolu en sık tetikleyen sınıf
+// (Groq ücretsiz tier OTPM, UAT 18 senaryo 36).
+describe("chat route — hata notu ziyaretçi dilinde (TASK-18.12)", () => {
+  const SITE = "https://kiwiailab.com";
+  /** Ziyaretçinin baktığı sayfa: TR prefixsiz (`as-needed`), diğerleri `/xx`. */
+  const pageOf = (locale: string) =>
+    locale === routing.defaultLocale ? `${SITE}/` : `${SITE}/${locale}`;
+  const otherNotes = (locale: string) =>
+    routing.locales.filter((l) => l !== locale).map(noteFor);
+
+  beforeEach(() => {
+    vi.useFakeTimers();
+    vi.stubEnv("GROQ_API_KEY", "test-key-not-real");
+    vi.spyOn(console, "error").mockImplementation(() => {});
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
+    vi.unstubAllGlobals();
+    vi.unstubAllEnvs();
+    vi.restoreAllMocks();
+  });
+
+  it("kapsam 5 dil ve her dilin notu dolu ve birbirinden farklı (boş kapsamda sessiz PASS yok)", () => {
+    expect([...routing.locales]).toEqual(["tr", "en", "ar", "de", "es"]);
+    const notes = routing.locales.map(chatError);
+    for (const n of notes) expect(n.length).toBeGreaterThan(20);
+    expect(new Set(notes).size).toBe(routing.locales.length);
+  });
+
+  for (const locale of routing.locales) {
+    it(`[${locale}] üst-akış hatası → gövdede yalnız o dilin notu, boş satırla başlamadan`, async () => {
+      const upstream = failingUpstream(429);
+      const { res, text } = await run(upstream, { referer: pageOf(locale) });
+
+      expect(upstream).toHaveBeenCalledTimes(1); // gerçekten üst-akışa gidildi, retry yok
+      expect(res.status).toBe(200);
+      expect(text).toBe(noteFor(locale)); // ayraç yok: balonda yalnız not var
+      for (const other of otherNotes(locale)) expect(text).not.toContain(other);
+    });
+  }
+
+  it("Referer yoksa NEXT_LOCALE cookie'si kullanılır (başka cookie'lerin arasında)", async () => {
+    const upstream = failingUpstream(429);
+    const { text } = await run(upstream, {
+      cookie: "theme=dark; NEXT_LOCALE=ar; umami.disabled=1",
+    });
+    expect(upstream).toHaveBeenCalled();
+    expect(text).toBe(noteFor("ar"));
+  });
+
+  it("Referer'daki locale prefix'i cookie'yi ezer (baktığı sayfa > hatırlanan tercih)", async () => {
+    const upstream = failingUpstream(429);
+    const { text } = await run(upstream, {
+      referer: `${SITE}/es/crew-os`,
+      cookie: "NEXT_LOCALE=de",
+    });
+    expect(upstream).toHaveBeenCalled();
+    expect(text).toBe(noteFor("es"));
+  });
+
+  it("origin'e kırpılmış Referer (path yok) prefix taşımaz → cookie'ye geçilir", async () => {
+    const upstream = failingUpstream(429);
+    const { text } = await run(upstream, {
+      referer: `${SITE}/`,
+      cookie: "NEXT_LOCALE=de",
+    });
+    expect(upstream).toHaveBeenCalled();
+    expect(text).toBe(noteFor("de"));
+  });
+
+  const toDefault: Array<[string, Record<string, string>]> = [
+    ["kaynak yok", {}],
+    ["tanınmayan prefix", { referer: `${SITE}/fr/crew-os` }],
+    ["bozuk Referer", { referer: "not a url" }],
+    ["tanınmayan cookie değeri", { cookie: "NEXT_LOCALE=xx" }],
+    ["benzer adlı başka cookie", { cookie: "XNEXT_LOCALE=en" }],
+    ["prefix gibi görünen alt yol", { referer: `${SITE}/crew-os/en` }],
+  ];
+  for (const [label, headers] of toDefault) {
+    it(`locale çözülemezse TR'ye düşer — ${label}`, async () => {
+      const upstream = failingUpstream(429);
+      const { res, text } = await run(upstream, headers);
+      expect(upstream).toHaveBeenCalled();
+      expect(res.status).toBe(200);
+      expect(text).toBe(noteFor(routing.defaultLocale));
+    });
+  }
+
+  it("stream-ortası zaman aşımı: yarım yanıt korunur, ardına o dilin notu boş satırla eklenir", async () => {
+    const { res, text, fetchMock } = await run(
+      {
+        chunks: ["Für Ihr Fitnessstudio ", "automatisieren wir Mitgliedschafts"],
+        chunkGapMs: 100,
+        stallAfterChunks: true,
+      },
+      { referer: `${SITE}/de` }
+    );
+
+    expect(fetchMock).toHaveBeenCalled();
+    expect(res.status).toBe(200);
+    expect(text).toBe(
+      `Für Ihr Fitnessstudio automatisieren wir Mitgliedschafts\n\n${noteFor("de")}`
+    );
+    for (const other of otherNotes("de")) expect(text).not.toContain(other);
+  });
+
+  it("negatif kontrol — hızlı yanıtta hiçbir dilin notu yok, akış kesilmez", async () => {
+    const { text, fetchMock } = await run(
+      {
+        chunks: ["We automate ", "membership reminders."],
+        chunkGapMs: 30,
+      },
+      { referer: `${SITE}/en`, cookie: "NEXT_LOCALE=en" }
+    );
+
+    expect(fetchMock).toHaveBeenCalled();
+    expect(text).toBe("We automate membership reminders.");
+    for (const locale of routing.locales) expect(text).not.toContain(chatError(locale));
   });
 });

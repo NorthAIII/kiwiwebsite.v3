@@ -9,6 +9,28 @@
 
 <!-- Her yeni karar aşağıdaki formatta en üste eklenir (en yeni en üstte) -->
 
+### 2026-10-02 — Sunucunun ziyaretçiye akıttığı metin ziyaretçinin dilinde: Referer prefix'i → `NEXT_LOCALE` cookie'si → TR; metin `messages/*.json`'dan
+
+**Bağlam:** TASK-18.12 (verify 18, üçüncü düzeltme turu, UAT senaryo 36). `route.ts`'in hata/zaman-aşımı notu sabit Türkçeydi (`FALLBACK_MESSAGE`); EN/DE/AR/ES ziyaretçi canlıda Türkçe cümle görüyordu. TASK-18.11 bu yolu **ana** degradasyon yolu yaptı: asılı çağrı artık 504 değil 200+not ile kapanıyor, `Chatbot.tsx`'in `!res.ok` kapısı devreye girmiyor ve 5 dilde hazır `chat.error` atlanıyordu. Canlıda yol gerçekten tetikleniyor: hızlı ardışık 20 çağrının 5'i, kök neden Groq ücretsiz tier 429. Route locale'i bilmiyor, çünkü middleware matcher `api`'yi atlıyor.
+
+**Seçenekler (locale kaynağı):** (a) Referer'ın locale prefix'i. (b) `NEXT_LOCALE` cookie'si. (c) `Accept-Language`. (d) İstemcinin gövdeye `locale` eklemesi; `Chatbot.tsx` değişir ve TASK-18.09'un `{role,content}` daraltmasıyla kesişir.
+
+**Karar (kullanıcı onaylı — task önerisi):** sıra **Referer prefix'i → `NEXT_LOCALE` → `routing.defaultLocale`**. Tanınmayan ya da bozuk değer bir sonrakine geçer. (c) bilinçle dışarıda: tarayıcı dili baktığı sayfanın dilinden ayrışabilir. (d) seçilmedi; UI ve sanitizer dokunulmadı.
+
+**Ölçümle güçlenen gerekçe:** next-intl 4 cookie'yi yalnız tarayıcı dili sayfa locale'inden **farklıysa** yazıyor (`syncCookie`). Gerçek tarayıcıda en-US→`/en`, ar→`/ar`, es-ES→`/es` ziyaretçilerinde cookie **yoktu**; tr-TR tarayıcıyla `/de`'ye gelende ise `de` vardı. Yani tek başına (b) çoğu ziyaretçide boş döner, (c) ise tam bu tr-TR→`/de` vakasında yanlış dili verirdi. Referer zorunlu birincil kaynak. Chrome same-origin `fetch`'te onu tam path'le gönderdi, site `Referrer-Policy` ayarlamıyor. Prefixsiz ya da origin'e kırpılmış Referer cookie'ye geçer. Prefixsiz `/`'de cookie TR dışı olamaz: middleware öyle bir cookie ile `/xx`'e yönlendirir.
+
+**Metin kaynağı (duran yetkiyle):** yeni anahtar açılmadı, `chat.error` yeniden kullanıldı. Böylece aynı arıza sınıfı 504'le de 200+notla da ziyaretçiye aynı cümleyle ulaşıyor. Kota dolduğunda "tekrar deneyin"in yanında e-posta çıkışı kalıyor. 5 dil kopyası da UAT 4'te doğrulanmış. Not parantezli (sistem notu) ve `\n\n` ayracı yalnız ziyaretçiye metin ulaştıysa ekleniyor.
+
+**Konvansiyon (kalıcı):** Sunucu tarafında ziyaretçiye görünen her metin (bugün yalnız bu not; ileride ör. v0.6 booking hata/onay metinleri) `messages/<locale>.json`'dan gelir ve locale bu sırayla çözülür. Mesaj dosyası `request.ts` deseniyle **dinamik import**la yalnız gerektiğinde yüklenir. next-intl `getTranslations` route'ta kullanılmadı: plugin alias'ına bağlı, Vitest'te çözülmüyor. 2026-09-11 "UI etiketine i18n dışından sabit adla atıf yok" kuralının sunucu-metni karşılığıdır.
+
+**Doğrulama:** `tests/chat-route-timeout.test.ts` 5 → 22 test, tam suite 69 → **86**, `next build` exit 0. 5 dilin lazy chunk'ı `route.js.nft.json` ile fonksiyona izleniyor. Kapı bozuk girdiyle üç kez sınandı: çapadaki gerçek route 18 kırmızı, sabit-TR çözüm 8 kırmızı (TR kontrol grubu yeşil), koşulsuz ayraç 14 kırmızı. Boş kapsamda sessiz PASS yok. Yerelde `next start` + system Chrome ile 5/5 doğru; AR'de RTL ve parantez aynalaması doğru. **Ölçülmeyen:** canlı serving zinciri → verify-phase (senaryo 36).
+
+**Sapmayanlar:** zaman sınırları (20 / 5 / 24 s), `maxRetries: 0`, `max_tokens: 512`, prompt, streaming sözleşmesi, `chat-sanitize`, `Chatbot.tsx`, `messages/*.json`. Kota/hız sınırı bu kararın konusu değil (senaryo 23, v0.6).
+
+**İlgili Task/Faz:** TASK-18.12 (Faz 18, verify düzeltme turu 3). Discuss-phase 18'deki "API içi stream-hata fallback metni TR'ye çevrilir" kararı bu kayıtla aşıldı.
+
+---
+
 ### 2026-09-12 — `/api/chat` üst-akış zaman aşımı: ilk token 20 s · sessizlik 5 s · toplam 24 s; SDK retry kapalı
 
 **Bağlam:** TASK-18.11 (verify 18, ikinci düzeltme turu). UAT senaryo 33 canlıda **47 çağrının 2'sinin ~30,5 s'de 504** döndüğünü ölçtü. Kök neden: `chat.completions.create(...)` çağrısında iptal sinyali yoktu, yani tek kapı platformun `maxDuration = 30`'uydu. O sınırda fonksiyon öldürülür ve `route.ts`'in `catch` bloğu **hiç çalışmaz** — ziyaretçi 30 saniye "Düşünüyor" bekleyip ham 504 üzerinden offline kopyasına düşer. Marka & Craft üst ekseninde bu, sitenin canlı demosundaki en görünür kusur sınıfıydı.

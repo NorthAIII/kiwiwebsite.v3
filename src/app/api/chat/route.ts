@@ -1,5 +1,6 @@
 import Groq from "groq-sdk";
 import { sanitizeMessages } from "@/lib/chat-sanitize";
+import { routing, type Locale } from "@/i18n/routing";
 
 export const runtime = "nodejs";
 export const maxDuration = 30;
@@ -16,7 +17,56 @@ const FIRST_TOKEN_TIMEOUT_MS = 20_000; // ölçülen en yavaş meşru yanıtın 
 const STREAM_IDLE_TIMEOUT_MS = 5_000; // ölçülen en büyük parça arası boşluğun (73ms) ~68 katı
 const TOTAL_BUDGET_MS = 24_000; // hiçbir bileşim maxDuration=30'a yaklaşamasın
 
-const FALLBACK_MESSAGE = "\n\n(Asistan bir hataya takıldı. Lütfen tekrar deneyin.)";
+// Hata/zaman aşımı metni ziyaretçinin baktığı sayfanın dilinde akar (TASK-18.12).
+// Route locale'i bilmez (middleware matcher `api`'yi atlar), o yüzden dil istekten
+// çözülür. Kaynak sırası:
+//   1. Referer'ın ilk path segmenti (`/en/crew-os` → en): ziyaretçinin gerçekten
+//      baktığı sayfa. Prefixsiz yol (TR, `as-needed`) ya da origin'e kırpılmış
+//      Referer prefix taşımaz → sonraki kaynağa geçilir.
+//   2. `NEXT_LOCALE` cookie'si (routing.ts'te özelleştirilmedi → varsayılan ad):
+//      next-intl middleware'i onu yalnız tarayıcı dili sayfa locale'inden FARKLIYSA
+//      yazar, yazdığında da sayfayla senkron tutar. Dili tarayıcısıyla aynı olan
+//      ziyaretçide hiç yoktur → birincil kaynak olamaz, Referer'ın yedeğidir.
+// Accept-Language BİLİNÇLE kullanılmaz: tarayıcı dili baktığı sayfanın dilinden
+// ayrışabilir (`/de`'deki ziyaretçinin tarayıcısı tr-TR olabilir).
+// Hiçbiri yoksa ya da tanınmayan bir değer taşıyorsa → varsayılan locale (tr).
+const LOCALE_COOKIE = "NEXT_LOCALE";
+
+function isLocale(value: string | null | undefined): value is Locale {
+  return !!value && (routing.locales as readonly string[]).includes(value);
+}
+
+function resolveVisitorLocale(headers: Headers): Locale {
+  const referer = headers.get("referer");
+  if (referer) {
+    try {
+      const segment = new URL(referer).pathname.split("/")[1];
+      if (isLocale(segment)) return segment;
+    } catch {
+      // bozuk Referer → sonraki kaynak
+    }
+  }
+  const cookie = headers
+    .get("cookie")
+    ?.match(new RegExp(`(?:^|;\\s*)${LOCALE_COOKIE}=([^;]*)`))?.[1];
+  if (isLocale(cookie)) return cookie;
+  return routing.defaultLocale;
+}
+
+// Metin i18n'den gelir — route'a ziyaretçi-görünür sabit gömülmez. `chat.error`,
+// HTTP hatasında `Chatbot.tsx`'in gösterdiği offline kopyasının ta kendisi: aynı arıza
+// sınıfı (üst-akış cevap vermedi) 504 ile de 200+fallback ile de ziyaretçiye aynı
+// cümleyle ulaşır, ve kota dolduğunda "tekrar dene"nin yanında e-posta çıkışı verir.
+// Mesaj dosyası yalnız hata anında yüklenir (request.ts ile aynı dinamik import),
+// normal akış bu maliyeti hiç ödemez.
+async function fallbackNote(headers: Headers): Promise<string> {
+  const locale = resolveVisitorLocale(headers);
+  const messages: { chat: { error: string } } = (
+    await import(`../../../../messages/${locale}.json`)
+  ).default;
+  // Parantez: balonda asistanın sesi değil, sistem notu olarak okunsun.
+  return `(${messages.chat.error})`;
+}
 
 const SYSTEM_PROMPT = `You are the assistant for Kiwi AI Lab, an AI automation agency.
 
@@ -63,7 +113,16 @@ export async function POST(req: Request) {
       const upstream = new AbortController();
       const startedAt = Date.now();
       let timedOut = false;
+      let streamed = false; // ziyaretçiye en az bir parça metin ulaştı mı
       let watchdog: ReturnType<typeof setTimeout> | undefined;
+
+      // İki hata dalı (catch + stream-ortası zaman aşımı) tek yoldan kapanır.
+      // Ayraç yalnız yarım yanıtın ardına eklenir; hiç token gelmediyse balon
+      // boş satırlarla başlamasın.
+      const enqueueFallback = async () => {
+        const note = await fallbackNote(req.headers);
+        controller.enqueue(encoder.encode(streamed ? `\n\n${note}` : note));
+      };
 
       const arm = (ms: number) => {
         clearTimeout(watchdog);
@@ -104,9 +163,9 @@ export async function POST(req: Request) {
 
         for await (const chunk of completion) {
           arm(STREAM_IDLE_TIMEOUT_MS);
-          controller.enqueue(
-            encoder.encode(chunk.choices[0]?.delta?.content ?? "")
-          );
+          const content = chunk.choices[0]?.delta?.content ?? "";
+          if (content) streamed = true;
+          controller.enqueue(encoder.encode(content));
         }
 
         // Akış ortasında iptal ettiysek buraya SESSİZCE düşeriz: groq-sdk'nın SSE
@@ -117,7 +176,7 @@ export async function POST(req: Request) {
           console.error(
             `chat stream timeout (mid-stream) after ${Date.now() - startedAt}ms`
           );
-          controller.enqueue(encoder.encode(FALLBACK_MESSAGE));
+          await enqueueFallback();
         }
       } catch (err) {
         console.error(
@@ -127,7 +186,7 @@ export async function POST(req: Request) {
           err
         );
         // surface a clean fallback to the client rather than a hard cut
-        controller.enqueue(encoder.encode(FALLBACK_MESSAGE));
+        await enqueueFallback();
       } finally {
         clearTimeout(watchdog);
         controller.close();
