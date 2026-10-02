@@ -1,4 +1,5 @@
 import Groq from "groq-sdk";
+import { isSameOriginRequest } from "@/lib/chat-origin";
 import { sanitizeMessages } from "@/lib/chat-sanitize";
 import { routing, type Locale } from "@/i18n/routing";
 
@@ -83,6 +84,25 @@ How to address the visitor: match the level of address the site itself uses — 
 Your job: answer questions about what Kiwi can automate for the visitor's business, give one concrete example when useful, and — when someone shows buying intent — invite them to book a free discovery call (they can use the free discovery call button on the page or email kivanc@kiwiailab.com). Refer to that button by what it does, in the language of your reply — never quote a button label in quotation marks or in another language. Keep replies short and specific: two or three sentences, no filler, no bullet-point dumps unless asked.`;
 
 export async function POST(req: Request) {
+  // Origin kapısı İLK iştir (TB-G2, DECISIONS 2026-10-02): yabancı bir origin ne anahtar
+  // durumunu (503) ne gövde doğrulama ayrıntısını (400) öğrenir; gövde okunmadan, sağlayıcı
+  // çağrılmadan reddedilir. Kural ve sınırı → `@/lib/chat-origin`. Ziyaretçi 403'ü görmez:
+  // Chatbot.tsx her `!res.ok`'ta 5 dilli `chat.error` kopyasını gösterir.
+  if (!isSameOriginRequest(req.headers)) {
+    // Yanlış-pozitif 403 chatbot'u sessizce kapatır ve canlıda yalnız `vercel logs`'ta
+    // görünür (ör. serving zincirinde `host` beklenmedik bir değer taşırsa) — teşhis için
+    // yalnız kararı veren üç başlık loglanır; gövde ve diğer başlıklar loglanmaz.
+    console.warn(
+      "chat origin rejected",
+      JSON.stringify({
+        origin: req.headers.get("origin"),
+        host: req.headers.get("host"),
+        secFetchSite: req.headers.get("sec-fetch-site"),
+      })
+    );
+    return new Response("Forbidden.", { status: 403 });
+  }
+
   const apiKey = process.env.GROQ_API_KEY;
   if (!apiKey) {
     return new Response("Chat provider is not configured.", { status: 503 });

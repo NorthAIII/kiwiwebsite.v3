@@ -136,13 +136,25 @@ function fakeUpstream(script: UpstreamScript) {
   });
 }
 
+/**
+ * Route'un ilk işi origin kapısıdır (TASK-19.03) → bu dosyanın senaryoları kapıdan
+ * GEÇEN istekle koşar: tarayıcının aynı-origin işareti + isteğin `host`'u. `host` şart:
+ * `new Request` onu kendiliğinden koymaz, kural ise host'suz isteği reddeder.
+ * Çağıranın başlıkları varsayılanları ezer (locale testlerinin `referer`/`cookie`'si aynen
+ * geçer). Kapının kendi sözleşmesi → `chat-route-origin.test.ts`.
+ */
 function chatRequest(
   content = "Spor salonum için ne yapabilirsiniz?",
   headers: Record<string, string> = {}
 ) {
   return new Request("http://localhost/api/chat", {
     method: "POST",
-    headers: { "content-type": "application/json", ...headers },
+    headers: {
+      "content-type": "application/json",
+      host: "localhost",
+      "sec-fetch-site": "same-origin",
+      ...headers,
+    },
     body: JSON.stringify({ messages: [{ role: "user", content }] }),
   });
 }

@@ -179,7 +179,7 @@ mekanizma: "`npm audit` kritik + high 0" → kritik 0, kalan 2 high (`next`'in b
 |---|------|-------|----------|
 | 19.01 | TASK-19.01 | ✅ Tamamlandı | TB-G1 — dalı aç + force'suz `npm audit fix` (yalnız lock) + yerel kapılar (build, First Load JS farkı, Vitest, Playwright/axe, 30 URL + redirect duman) |
 | 19.02 | TASK-19.02 | ✅ Tamamlandı | TB-G2 origin — saf `src/lib/chat-origin.ts` (same-origin kuralı) + Vitest node matrisi |
-| 19.03 | TASK-19.03 | ⬜ Bekliyor | TB-G2 origin — kapıyı `route.ts`'in ilk işi yap (403 + red logu) + route testleri + yerel gerçek tarayıcı + M5 |
+| 19.03 | TASK-19.03 | ✅ Tamamlandı | TB-G2 origin — kapıyı `route.ts`'in ilk işi yap (403 + red logu) + route testleri + yerel gerçek tarayıcı + M5 |
 | 19.04 | TASK-19.04 | ⬜ Bekliyor | TB-G2 hız sınırı — WAF kural spec'i `ops/firewall/chat-rate-limit.json` + `drift.mjs` + test (stage → inspect → discard; publish yok) |
 | 19.05 | TASK-19.05 | ⬜ Bekliyor | TB-G2 ölçüm — `ops/probe-chat-guard.mjs` (model çağırmaz) + yerel doğrulama + TESTING.md canlı katman |
 | 19.06 | TASK-19.06 | ⬜ Bekliyor | TB-G2 hız sınırı canlı — WAF `log` → 429 (publish kullanıcıda) + patlama ölçümü + drift 0 + M5/M6 |

@@ -23,5 +23,8 @@
 - **Auth'suz GitHub REST limiti 60 istek/saat ve IP başına.** Paralel oturumlarla paylaşıldığı için koşum ortasında tükenebilir (403 `rate limit exceeded`). O durumda aynı uçları yetkili `gh api` ile oku.
 - **Canlı chatbot arızasının kök nedeni `vercel logs` ile okunur:** `vercel logs --environment production --since 30m --level error --json`. `--status-code <kod>` filtresi de çalışıyor; bilinen bir 400/413 ile kontrol et, boş sonuç tek başına kanıt değildir.
 - **Playwright'i scratchpad'den kullanmak için CJS + mutlak yol yeter:** `require("/home/kivanc/projects/kiwiwebsite.v3/node_modules/playwright")`. Harness'ı proje ağacına yazmak gerekmez.
-- **Streaming `/api/chat` yanıtında Playwright `response.finished()` dönmeyebilir.** Ölçümde süresiz asıldı. Akışın bittiğini DOM'dan oku: Thinking göstergesinin kaybolması ya da balon metninin beklenen sonla bitmesi.
+- **Streaming `/api/chat` yanıtında Playwright `response.finished()` dönmeyebilir.** Ölçümde süresiz asıldı. Akışın bittiğini DOM'dan oku, ama **Thinking'in kaybolmasından değil**: `Chatbot.tsx` onu yalnız balon içeriği boşken gösterir, ilk parçada kaybolur (TASK-19.03'te bekleme 402 ms'de döndü, harness tarayıcıyı akış ortasında kapattı).
+  - **Belirleyici işaret:** gönderdikten sonra inputa metin yaz (gönderme). Submit `disabled={streaming || !input.trim()}` olduğu için düğme yalnız `streaming=false` iken etkinleşir.
+  - Akış ortasında kapanan tarayıcı sunucu logunda `chat stream error TypeError: Invalid state: Controller is already closed` doğurur — harness artefaktıdır, üst-akış arızası değil.
+  - Tamamlanmış akışta bile Playwright tarayıcı kapanırken `requestfailed: net::ERR_ABORTED` raporlayabilir; tek başına arıza kanıtı değildir.
 - **Canlıda hata yolunu tetiklemek:** Groq ücretsiz tier'ın OTPM limiti (1000) dar. 8–12 eşzamanlı istek, sonraki isteği büyük olasılıkla 429'a düşürür. Günlük kota (1000 istek) ziyaretçilerle ortaktır; çağrı sayısını kayda geçir.

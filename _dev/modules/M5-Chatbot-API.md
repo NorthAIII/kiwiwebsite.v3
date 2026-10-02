@@ -12,9 +12,18 @@
 
 **Açıklama:** `src/app/api/chat/route.ts` — Node.js runtime (max 30s). Varsayılan model `process.env.CHAT_MODEL ?? "qwen/qwen3.8-27b"` (Groq). System prompt: Kiwi asistanı kimliği, **kullanıcının son mesajının dilinde yanıt** (TR/EN/AR/DE/ES; **tek dil/tek script — başka dil/karakter karıştırma yok**; yalnız dil gerçekten belirlenemezse TR fallback — TASK-18.07 marka mührü gate'inde sertleştirildi, "Default to Turkish if unclear" kaldırıldı), çıktı-odaklı/sade ton, **dil-başına hitap düzeyi** (sitenin hitabını izler: TR/DE formal — *siz*/*Sie*, ES samimi — *tú*, AR ikinci tekil, EN nötr; tek düzey yanıt boyunca korunur — TASK-18.10), **"fiyat/rakam/istatistik/tarih uydurma yasağı"** (dürüstlük konvansiyonu), satın-alma niyetinde "ücretsiz keşif görüşmesi" önerisi — sayfadaki butona **işlevine göre betimleyici** atıf + **buton etiketini tırnak içinde/başka dilde alıntılama yasağı** (etiket `messages/*.json`'da değişince prompt bayatlamasın; TASK-18.10, DECISIONS 2026-09-11) — ve e-posta (`kivanc@kiwiailab.com`), 2–3 cümle yanıt. POST `{messages:[...]}`; sanitizasyon saf modüle çıkarıldı (`@/lib/chat-sanitize`, Vitest node ile test edilebilir): ham dizi uzunluğu kapısı (**`MAX_INCOMING_MESSAGES` 100**, filtreden ÖNCE), rol whitelist, boş içerik filtresi, her mesajın **`{role, content}`'e indirgenmesi** (istemcinin `name`/`tool_calls`/serbest alanları sağlayıcı payload'ına geçmez; `content` bir kez okunur), son 12 mesaj, **per-mesaj UTF-8 byte-cap 8192** ve **tutulan setin toplamı için `MAX_TOTAL_BYTES` 16384** → üçünde de aşımda 400 reddet (sessiz kırpma yok), sonda user mesajı zorunlu. OpenAI-uyumlu `chat.completions.create({ stream: true, temperature: 0.2 })` ile text/plain stream, `max_tokens: 512` (`temperature: 0.2` marka sesi tutarlılığı + script sızıntısı bastırma — 18.07; `max_tokens` go-live'da OTPM kotası nedeniyle 1024→512 indi — 18.08). **Üst-akış zaman aşımı (TASK-18.11):** çağrı tek bir `AbortController`'a bağlı, bekçi her parçada yeniden kurulur — ilk token için **20 s**, parçalar arası sessizlik için **5 s**, hepsinin üstünde **24 s toplam bütçe**; üçü de `maxDuration = 30`'un altında kalır, ayrıca SDK retry'ı bu çağrıda **kapalı** (`maxRetries: 0` — yeniden deneme uykusu `retry-after`'ı dinler ve AbortSignal ile kesilemez). Akış ortasında iptal edilirse groq-sdk'nın SSE iteratörü abort'u **sessizce yutar** (catch çalışmaz) → fallback döngü sonrasında `timedOut` bayrağıyla enqueue edilir.
 
+**Origin kapısı (TASK-19.03):** `POST`'un ilk işi `isSameOriginRequest(req.headers)`'tir (`@/lib/chat-origin`, saf modül). Kural: `host` yoksa red; `Origin` varsa host:port'u isteğin `host`'una eşit olmalı (küçük harf, şema hariç); `Origin` yok ya da `null` ise yalnız `Sec-Fetch-Site: same-origin` kabul edilir. Listesizdir, bütün alias'ları ve `localhost`'u kendiliğinden kapsar.
+
+Geçemeyen istek **403** alır: gövde okunmadan, 503 anahtar kapısından ve sağlayıcı çağrısından önce. Böylece yabancı origin ne anahtar durumunu ne gövde doğrulama ayrıntısını öğrenir. Ziyaretçi 403'ü görmez; UI her `!res.ok`'ta 5 dilli `chat.error` kopyasını gösterir (UI ve i18n değişmedi).
+
+Red tek satırla loglanır: `console.warn("chat origin rejected", {origin, host, secFetchSite})`. Gövde ve diğer başlıklar loglanmaz. Gerekçe: yanlış-pozitif 403 chatbot'u sessizce kapatır ve canlıda yalnız `vercel logs`'ta görünür. Vercel serving zincirinde `host`'un herkese açık host'u taşıdığı **henüz ölçülmedi** → TASK-19.07 probe'u + verify-phase.
+
+Kapı yalnız tarayıcı vektörünü kapatır; curl iki başlığı da sahteleyebilir, o yolun kapısı WAF hız sınırıdır. Kaynak: DECISIONS 2026-10-02.
+
 **Hata notu dili (TASK-18.12):** Üst-akış hatasında ya da zaman aşımında akan not ziyaretçinin baktığı sayfanın dilindedir. Route locale'i bilmez (middleware `api`'yi atlar). Dil istekten şu sırayla çözülür: `Referer`'ın ilk path segmenti → `NEXT_LOCALE` cookie'si → `tr`. `Accept-Language` kullanılmaz. Metin `messages/<locale>.json` → `chat.error`'dır, yani HTTP hatasında UI'ın gösterdiği offline kopyasıyla aynıdır. Yalnız hata anında dinamik import'la yüklenir ve parantez içinde akar; `\n\n` ayracı yalnız ziyaretçiye metin ulaştıysa eklenir. Konvansiyon ve gerekçe → DECISIONS 2026-10-02.
 
 **Kabul Kriterleri:**
+- Same-origin olmayan istek 403 alır; gövde okunmaz, sağlayıcı çağrılmaz. Kapı 503 anahtar kapısından da önce gelir.
 - `GROQ_API_KEY` yoksa istek zarif şekilde başarısız olur (503; UI "offline" gösterir).
 - Girdi sanitize edilir; geçmiş 12 mesajla sınırlanır; per-mesaj byte-cap aşımı 400 ile reddedilir.
 - Sağlayıcıya giden her mesaj yalnız `{role, content}` taşır — istemcinin eklediği başka alan geçmez.
@@ -29,7 +38,8 @@
 - Key yok → 503 offline; sağlayıcı/stream hatası → hard-cut yerine kontrollü fallback mesajı.
 - Sağlayıcı asılı kalırsa (ilk token hiç gelmez ya da akış ortada susar) ziyaretçi 30 s beklemez: üst-akış zaman aşımı devreye girer ve aynı fallback metni akar. Zaman aşımı olmadan tek kapı platformun `maxDuration`'ıdır — o sınırda fonksiyon öldürülür, `catch` **hiç çalışmaz**, ziyaretçi ham 504 alır (UAT 18 senaryo 33'te canlıda 47 çağrının 2'si).
 - Kötüye kullanım: girdi uzunluğu/rol enjeksiyonu sanitize edilmeli (güvenlik ekseni). Üç hacim sınırı birbirinin yerini tutmaz: per-mesaj cap tek uzun mesajı, toplam byte çok sayıda sınır-altı mesajı, sayı kapısı dev dizinin taranmasını kapatır.
-- Hız sınırı / origin kontrolü **yok** (route, middleware ve `vercel.json` katmanlarının hiçbirinde) → kimliksiz POST sınırsız; günlük kota dışarıdan tüketilebilir (UAT 18 senaryo 23). Faz 19 / TB-G2 kapatıyor: hız sınırı Vercel WAF kuralı, origin kontrolü kodda (DECISIONS 2026-10-02); bu satır uygulama task'ında güncellenir.
+- Origin kontrolü **var** (TASK-19.03, kodda): yabancı origin ve tarayıcı işareti taşımayan istek 403 alır. Ama curl başlıkları sahteleyebildiği için kotayı tek başına korumaz.
+- Hız sınırı **yok** (route, middleware ve `vercel.json` katmanlarının hiçbirinde) → başlıkları sahteleyen kimliksiz POST sınırsız; günlük kota dışarıdan tüketilebilir (UAT 18 senaryo 23). Faz 19 / TB-G2 kapatıyor: hız sınırı Vercel WAF kuralı (DECISIONS 2026-10-02); bu satır TASK-19.06'da güncellenir.
 - Model adı geçerliliği (env override yanlışsa).
 - Locale sinyali yoksa ya da yanıltıcıysa hata notu TR'ye düşer. Örnekler: Referer'ı tümden kapatan gizlilik ayarı + tarayıcı dili sayfayla aynı olduğu için cookie'nin hiç yazılmamış olması. Accept-Language'e bilinçle bakılmaz; `/de`'deki tr-TR tarayıcıyı yanlış dile götürürdü.
 
@@ -62,4 +72,4 @@
 
 ---
 
-**Son Güncelleme:** 2026-10-02 — research-phase 19: F5.1 hız sınırı/origin edge case'i "v0.6 adayı" → Faz 19 / TB-G2 kapsamında (mekanizma kararı DECISIONS 2026-10-02). Sözleşme ve kabul kriterleri değişmedi.
+**Son Güncelleme:** 2026-10-02 — TASK-19.03: F5.1'e origin kapısı paragrafı + 403 kabul kriteri eklendi; edge case'in origin yarısı "var", hız sınırı yarısı TASK-19.06'ya kaldı.
