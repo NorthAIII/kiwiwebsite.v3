@@ -76,7 +76,7 @@
 | Doküman | İçerik |
 |---------|--------|
 | `docs/DECISIONS.md` | Önemli mimari ve tasarım kararları (güncel seri; giriş noktası) — eski kararlar tarih-aralığı arşivlerinde: `docs/DECISIONS-2026-07-02..2026-07-18.md`, `docs/DECISIONS-2026-06-27..2026-07-01.md` |
-| `docs/TESTING.md` | Test convention notu: komutlar + test yerleri + 3 katman (Vitest node/jsdom + Playwright/axe) + a11y ölçüm disiplini (özet/pointer) + kümülatif beklenti + CI |
+| `docs/TESTING.md` | Test convention notu: komutlar + test yerleri + 3 katman (Vitest node/jsdom + Playwright/axe) + a11y ölçüm disiplini (özet/pointer) + kümülatif beklenti + CI + canlı katman (elle, CI dışı: `/api/chat` probe'u + WAF drift script'i, pencere bütçesi) |
 | `docs/REVIZE-BACKLOG.md` | Güçlü revize ham girdisi: kullanıcı tespitleri + bekleyen işler (PRD tohumu) |
 | `docs/UMAMI-ANALYTICS.md` | Umami analytics entegrasyon spec'i (bekliyor — kod, değerler, uyarılar) |
 | `docs/RELEASE-v0.2.md` | v0.2 production release runbook & checklist (hafif operasyonel oturum: temiz pencere → PR/merge → canlı duman testi → Umami +1). run-task 10'dan önce. |
@@ -207,7 +207,7 @@ kiwiwebsite.v3/
 
 ---
 
-**Son Güncelleme:** 2026-10-02 — TASK-19.04 oturumu: `BULGULAR.md` (proje sorun kanvası) açıldı → Planlama Dokümanları + hiyerarşi.
+**Son Güncelleme:** 2026-10-02 — TASK-19.05: `docs/TESTING.md` satırına yeni "Canlı Katman (elle, CI dışı)" bölümü eklendi.
 
 <!-- KURAL: Bu satır her güncellemede ÜZERİNE YAZILIR. "Önceki:" prefix ile kümülatif yığma YASAK (CLAUDE.md → Doküman Disiplini). -->
 <!-- KURAL: Tamamlanmış fazların task arşiv listesini INDEX'e ekleme — `ls _dev/tasks/archive/` zaten görür. INDEX yalnızca aktif klasör konumlarını gösterir; statik liste dokümanı değildir. -->

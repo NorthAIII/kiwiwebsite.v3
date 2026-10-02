@@ -75,4 +75,27 @@ CI yalnız **doğrular, deploy etmez** (Vercel hâlâ yalnız `main`→deploy). 
 
 ---
 
+## Canlı Katman (elle, CI dışı)
+
+Yukarıdaki üç katmanın göremediği davranış için ayrı bir katman. **CI'da koşmaz, elle tetiklenir** (kullanıcı kararı, Faz 19): canlıya istek atar ve koşanın IP'sini kilitleyebilir.
+
+**Neden ayrı:** `/api/chat` koruması iki katmandır (DECISIONS 2026-10-02). Vercel WAF hız sınırı (429) yalnız Vercel serving zincirinde vardır. Origin kapısının canlıda doğru çalışması da Vercel'in `host` başlığına hangi değeri verdiğine bağlıdır. Vitest yalnız origin mantığını ölçer; yerel `next start` ve CI koşucusu WAF'sızdır.
+
+| Script | Ne ölçer | Çıkış |
+|--------|----------|-------|
+| `ops/probe-chat-guard.mjs --base <url> [--burst \| --burst-only]` | Yabancı Origin → 403 · Origin'siz (curl) → 403 · kendi Origin → 400/503 ("kapıdan geçti"). `--burst`: ilk 429'a dek en fazla 13 istek, kaçıncıda geldiğini raporlar. **Model hiç çağrılmaz**: tek sabit gövde `{"messages":[]}`. | 0 eşleşme · 1 sapma · 2 ölçülemedi (argüman/ağ hatası ya da IP zaten sınırda) |
+| `ops/firewall/drift.mjs` | Vercel'deki WAF kuralı ↔ repo spec'i `ops/firewall/chat-rate-limit.json`. Yetkili `vercel` CLI ister. Bekleyen draft varsa draft'ı ölçer ve uyarır. | 0 eşleşme · 1 drift · 2 kural yok / CLI hatası |
+
+**Ne zaman koşulur:** WAF kuralı değiştiğinde (stage sonrası drift, publish sonrası probe) · `/api/chat` kapısı değişip canlıya çıktığında · versiyon-sonu UAT'de. Kullanım örnekleri ve senaryoların gerekçesi script başlıklarında.
+
+**Pencere bütçesi:**
+
+- WAF canlıyken IP başına 10 dakikada 6 istek sayılır. Origin senaryoları da sayılır (her koşu 3 istek, 403'ler dahil).
+- Hobby'de system bypass yok: patlama koşanın IP'sini ≤10 dk 429'da tutar ve o sürede aynı IP'den chatbot da offline görünür. Patlama her zaman **en son** koşulur.
+- Birden çok host (apex, `www`, `vercel.app`) probe'lanacaksa toplam istek önceden planlanır.
+
+**Yerelde:** `npm run build` → `next start -p <boş port>` → `--base http://localhost:<port>`. Anahtarsız 403 · 403 · 503, anahtarlı 403 · 403 · 400 beklenir. WAF olmadığı için `--burst` yerelde her zaman "sınır gözlenmedi" ve çıkış 1 verir; bu beklenen sonuçtur. Bu host'ta `:3000` yabancı bir dinleyicidedir, başka port kullan (→ MEMORY "Ortam & Araç Notları").
+
+---
+
 **Oluşturulma:** 2026-06-30 (TASK-5.05)
