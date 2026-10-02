@@ -4,7 +4,8 @@
 **Repo:** `/home/kivanc/projects/kiwiwebsite.v3` (`github.com/NorthAIII/kiwiwebsite.v3`, public)
 **DevFlow Dokümanları:** `/home/kivanc/projects/kiwiwebsite.v3/_dev/`
 
-<!-- KURAL: CLAUDE.md bölmesi ertelendi (bilinçli) — 2026-09-12 audit-docs, kullanıcı kararı: güncel şablona göç (4 doktrin çocuğu + @import + şablon dolgusu: Onay Ölçütü, Oturum Kapanışı, Paralel Oturum Farkındalığı, prensip #12/#13) oturum yükünü ~17k→~49k token çıkarıyor ve parent'ı ~22k ile eşik üstüne itiyor (motor şablonu templates/CLAUDE-MD.md kendisi ~20.1k); motor şablonu düzelince yeniden açılır. -->
+<!-- KURAL: CLAUDE.md bölmesi ertelendi (bilinçli) — 2026-09-12 audit-docs, kullanıcı kararı: güncel şablona göç (4 doktrin çocuğu + @import + şablon dolgusu: Onay Ölçütü, Oturum Kapanışı, Paralel Oturum Farkındalığı, prensip #12/#13) oturum yükünü ~17k→~49k token çıkarıyor ve parent'ı ~22k ile eşik üstüne itiyor (motor şablonu .claude/commands/devflow/templates/CLAUDE-MD.md kendisi ~20.1k); motor şablonu düzelince yeniden açılır. -->
+<!-- KURAL: Erteleme kapsamı (Claude kararı · 2026-10-02 · audit-docs, yukarıdaki kaydın gerekçesinden): erteleme güncel şablona göçün BÜTÜNÜNÜ kapsar — adı sayılmayan şablon dolguları (ör. Boyut ve Bölünme'nin "Kök CLAUDE.md doktrin parent'ıdır" ve "çizginin altında boyut işi yoktur" maddeleri), doktrin gövdelerinin yeni sürüm metni ve GIT-STRATEJI'ye bağlı protokol maddeleri dahil; bunlar tek tek uygulanmaz. Bugünkü yanlış iddiaların düzeltilmesi (kırık bağ, var olmayan komut) kapsam dışıdır, yapılır. Ölçüm 2026-10-02: yalnız Oturum Kapanışı + Paralel Oturum Farkındalığı dolgusu ≈11.5k token → parent ≈28.8k (kırmızı çizgi üstü; dolgu sırası kuralı önce bölmeyi ister); motor şablonu 20.779 token. -->
 
 ---
 
@@ -44,7 +45,7 @@ Her oturum başında MUTLAKA şu dokümanları oku:
 
 **Eksik okuma yasağı:** Bu listede veya sonradan okunan herhangi bir `_dev/` dokümanında Read uyarı/hata verirse kör deneme yapma — `doc-scan.sh` + `grep` ile haritalayıp hedefli parçalı oku; o da çalışmıyorsa dur, kullanıcıya bildir, yardım iste — yarım okuyup veya atlayarak devam etme. (Detay: Çalışma Prensipleri #10.)
 
-**Memory Migration:** `_dev/MEMORY.md` yoksa template'ten oluştur (index formatı). Claude Code'un local memory'sinde (`~/.claude/`) projeye özgü bilgi varsa (teknik tuzaklar, tercihler, öğrenimler vb.) her birini `_dev/memory/<slug>.md` dosyasına yaz ve MEMORY.md index'ine pointer ekle. Böylece tüm proje bilgisi repo içinde kalır. (Memory sistemi detayı: MEMORY.md → Memory Sistemi.)
+**Memory Migration:** `_dev/MEMORY.md` yoksa template'ten oluştur (index formatı). Claude Code'un local memory'sinde (`~/.claude/`) projeye özgü bilgi varsa (teknik tuzaklar, tercihler, öğrenimler vb.) her birini `_dev/memory/<slug>.md` dosyasına yaz ve MEMORY.md index'ine pointer ekle. Böylece tüm proje bilgisi repo içinde kalır. (Sistem detayı: `.claude/commands/devflow/lib/memory-sistemi.md` — lazy okunur; MEMORY.md yalnız index'tir.)
 
 **Native memory yönlendirmesi:** Proje bilgisi native (yerleşik) memory'de değil `_dev/`'de tutulur; bunu kalıcı kılmak için projenin native memory index'ine bir yönlendirme yazılır — kurulumunu/yenilemesini `kickoff-verify`, drift kontrolünü `audit-docs` yapar. **Değişmez kural:** native'e yönlendirme yazılmadan önce orada bilgi varsa ÖNCE `_dev/memory/`'ye taşınır (taşımadan üzerine yazma yok). Bu, DevFlow'un repo dışına yazdığı **tek** şeydir (bilinçli harness entegrasyonu); native memory proje-bazlı olduğu için içeriği bu projeye aittir.
 
@@ -66,7 +67,7 @@ Göreve göre ek dokümanlar gerekirse → INDEX.md'deki senaryolara bak.
   `Okuma: OVERVIEW ✓ · INDEX ✓ · DURUM ✓ · MEMORY ✓ | <komuta özgü ek dosyalar> ✓`
   - Dosya **yoksa** (ilk kurulum senaryosu) `—` ile işaretle (`OVERVIEW —`); yokluk hata değildir.
   - Dosya **yarım/parçalı** okunduysa (Read truncate/PARTIAL) ✓ **yazma** — Çalışma Prensipleri #10'u uygula (doc-scan + hedefli parçalı oku), tam okunmadan onaylama; çözülemiyorsa dur ve kullanıcıya bildir.
-  - Onay satırı yazılmadan komutun ilk adımına geçilmez. **`next` istisnası:** yalnız DURUM okuyup hedef komuta devreder; onay satırını **hedef komut** yazar. **Kapı dışı komutlar:** (a) protokol uygulamayan kurulum komutları (`map-codebase`, ilk-kickoff modu) — orada okunacak protokol dosyası yoktur; (b) oturum-sonu komutları (`pause`, `double-check`, `prd-save`) — ana komut protokolü zaten uygulamıştır, bunlar protokolü tekrar tetiklemez.
+  - Onay satırı yazılmadan komutun ilk adımına geçilmez. **Kapı dışı komutlar:** (a) protokol uygulamayan kurulum komutları (`map-codebase`, ilk-kickoff modu) — orada okunacak protokol dosyası yoktur; (b) oturum-sonu komutları (`pause`, `double-check`, `prd-save`) — ana komut protokolü zaten uygulamıştır, bunlar protokolü tekrar tetiklemez.
 
 ---
 
@@ -274,7 +275,7 @@ Kullanıcı `/devflow:` ile başlayan komutlar kullanabilir. Komut dosyaları `.
 **PRD:** `prd`, `prd-refine`, `prd-save`, `prd-note`, `prd-review`
 **Proje Başlatma:** `kickoff`, `kickoff-docs`, `kickoff-verify`, `map-codebase`
 **Faz Döngüsü:** `discuss-phase`, `research-phase`, `plan-phase`, `verify-plan`, `run-task`, `verify-phase`, `review-phase`
-**Yardımcı:** `next`, `quick`, `pause`, `resume`, `progress`, `double-check`, `audit-docs`, `step-by-step`, `guide-me`, `help`
+**Yardımcı:** `run-phase`, `quick`, `pause`, `resume`, `progress`, `double-check`, `audit-docs`, `audit-product`, `step-by-step`, `guide-me`, `help`
 
 ---
 
@@ -315,7 +316,7 @@ Bu dosyaları kullanıcı izni olmadan değiştirme:
 **Operasyonel:**
 - **Canlıya dokunma:** `main` canlı, revize `revize/...` branch'lerinde (→ Commit Stratejisi).
 - **Entegrasyon/3rd-party script eklerken canlıda gerçekten çalıştığını gözle doğrula** — "kod ekledim, tamamdır" deme (→ `_dev/MEMORY.md` Süreç Disiplinleri; örn. Umami → `docs/UMAMI-ANALYTICS.md`).
-- Performans bütçesi (brief): Lighthouse ≥95 perf / ≥100 a11y, LCP < 2.5s, near-zero CLS — revize sonrası regresyon yok (korunan taban, `ILKELER.md`).
+- Performans iki ayrı katmandır (→ `ILKELER.md`): **brief hedefi** Lighthouse ≥95 perf / ≥100 a11y, LCP < 2.5s, near-zero CLS; **korunan taban** v0.1'de ölçülen değerlerdir (a11y tabanı v0.2'de 100'e çıktı) — revize sonrası bu tabanın altına düşülmez (regresyon yok). İkisi eşitlenmez.
 
 ---
 

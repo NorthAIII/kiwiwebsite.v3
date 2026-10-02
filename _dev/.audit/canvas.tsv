@@ -1,7 +1,7 @@
 # DevFlow audit canvas — otomatik üretildi (kaynak: canvas.db). Elle düzenleme.
 # meta: current_convention_version=5; schema_version=2
 id	path	status	status_reason	checked_version	last_checked	content_hash	exclude	added_at	size_accepted
-1	CLAUDE.md	pending		1	2026-07-18	cf9b48f3690ff9f7bbeeceded7b13fe3fa3d7d0f6afd37d84d52e11969530d9f	0	2026-07-18	
+1	CLAUDE.md	conformant		5	2026-10-02	67594871ca72a2856675fca4dc4c1888894ef0a5038c9f7e7271b75918167d7d	0	2026-07-18	
 2	_dev/DURUM.md	pending		1	2026-07-21	8803be32562f3be7df27869a49320b75b1264b494bb4e5c4b0f602be29bd665a	0	2026-07-18	
 3	_dev/ILKELER.md	pending		1	2026-07-21	4b90e9061a5bbc91135b1502ddbcac12d43794a402eae8a94bda5d896c8a2da9	0	2026-07-18	
 4	_dev/INDEX.md	pending		1	2026-07-21	347be3cc8e33c760d1c5f2bc7367af07e0cf1e15baed353105846d1c5a1a21ff	0	2026-07-18	
@@ -74,6 +74,7 @@ id	path	status	status_reason	checked_version	last_checked	content_hash	exclude	a
 159	_dev/phases/PHASE-18-GOLIVE.md	pending					0	2026-09-12	
 177	_dev/phases/PHASE-18-UAT.md	pending					0	2026-10-02	
 160	_dev/phases/PHASE-18.md	pending					0	2026-09-12	
+187	_dev/phases/PHASE-19.md	pending					0	2026-10-02	
 56	_dev/phases/PHASE-2.md	pending					0	2026-07-18	
 57	_dev/phases/PHASE-3.md	pending					0	2026-07-18	2026-09-12|19b1d90b8ac378ab8647839e868d764f62e048367c2e77f8ee832f17f6927c0f|dondurulmuş faz dokümanı (PHASES ✅): bölme yasak; içerik-koruyan reformat 20k altına indirmiyor (ölçüldü, en iyi ~110 token) — kalan doluluk meşru (audit-docs 2026-09-12)
 58	_dev/phases/PHASE-4.md	pending					0	2026-07-18	2026-09-12|73effc16ce6291dd71969024a578553effe7f34d54c910fd2ec32f847caa29fb|dondurulmuş faz dokümanı (PHASES ✅): bölme yasak; içerik-koruyan reformat 20k altına indirmiyor (ölçüldü, en iyi ~110 token) — kalan doluluk meşru (audit-docs 2026-09-12)
@@ -82,6 +83,12 @@ id	path	status	status_reason	checked_version	last_checked	content_hash	exclude	a
 61	_dev/phases/PHASE-7.md	pending					0	2026-07-18	
 62	_dev/phases/PHASE-8.md	pending					0	2026-07-18	
 63	_dev/phases/PHASE-9.md	pending					0	2026-07-18	2026-09-12|7b836e30fae7d3376d2e1d7d1d92f9add0acc57e28c74db58728f07c6054def6|dondurulmuş faz dokümanı (PHASES ✅): bölme yasak; içerik-koruyan reformat 20k altına indirmiyor (ölçüldü, en iyi ~110 token) — kalan doluluk meşru (audit-docs 2026-09-12)
+188	_dev/tasks/TASK-19.02.md	pending					0	2026-10-02	
+189	_dev/tasks/TASK-19.03.md	pending					0	2026-10-02	
+190	_dev/tasks/TASK-19.04.md	pending					0	2026-10-02	
+191	_dev/tasks/TASK-19.05.md	pending					0	2026-10-02	
+192	_dev/tasks/TASK-19.06.md	pending					0	2026-10-02	
+193	_dev/tasks/TASK-19.07.md	pending					0	2026-10-02	
 64	_dev/tasks/TASKS-README.md	pending					0	2026-07-18	
 65	_dev/tasks/archive/TASK-1.01.md	pending					0	2026-07-18	
 66	_dev/tasks/archive/TASK-1.02.md	pending					0	2026-07-18	
@@ -138,6 +145,7 @@ id	path	status	status_reason	checked_version	last_checked	content_hash	exclude	a
 171	_dev/tasks/archive/TASK-18.11.md	pending					0	2026-09-12	
 178	_dev/tasks/archive/TASK-18.12.md	pending					0	2026-10-02	
 179	_dev/tasks/archive/TASK-18.13.md	pending					0	2026-10-02	
+194	_dev/tasks/archive/TASK-19.01.md	pending					0	2026-10-02	
 107	_dev/tasks/archive/TASK-2.01.md	pending					0	2026-07-18	
 108	_dev/tasks/archive/TASK-2.02.md	pending					0	2026-07-18	
 109	_dev/tasks/archive/TASK-2.03.md	pending					0	2026-07-18	
