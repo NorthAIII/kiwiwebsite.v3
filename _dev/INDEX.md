@@ -61,7 +61,7 @@
 
 ### Faz Dokümanları (Aktif Faz OKU)
 
-`phases/` klasöründe `PHASE-N.md` deseninde. Tek tek listelenmez — güncel faz listesi ve durumları **PHASES.md**'de, aktif faz **DURUM.md**'de. (Henüz faz dokümanı yok.)
+`phases/` klasöründe `PHASE-N.md` deseninde; büyüyen faz dokümanlarının alt-dokümanları `PHASE-N-<EK>.md` (keşif kapısı parent'taki "Alt Dokümanlar" listesi). Tek tek listelenmez — güncel faz listesi ve durumları **PHASES.md**'de, aktif faz **DURUM.md**'de.
 
 ### Task Dokümanları (Task Çalıştırırken OKU)
 
@@ -181,7 +181,7 @@ kiwiwebsite.v3/
     │   ├── M5-Chatbot-API.md
     │   └── M6-SEO-Deploy.md
     │
-    ├── phases/               # (henüz boş)
+    ├── phases/               # PHASE-N.md (+ PHASE-N-<EK>.md alt-dokümanları)
     │
     ├── tasks/
     │   ├── TASKS-README.md
@@ -205,7 +205,7 @@ kiwiwebsite.v3/
 
 ---
 
-**Son Güncelleme:** 2026-10-02 — TASK-18.13: `PRD/NOTES.md` satırındaki bayat "şu an boş" iddiası kaldırıldı (dosyada iki açık not var).
+**Son Güncelleme:** 2026-10-02 — review-phase 18: Faz Dokümanları bölümündeki "henüz faz dokümanı yok" ve hiyerarşideki "phases/ (henüz boş)" bayat ifadeleri düzeltildi; alt-doküman deseni (`PHASE-N-<EK>.md`) eklendi.
 
 <!-- KURAL: Bu satır her güncellemede ÜZERİNE YAZILIR. "Önceki:" prefix ile kümülatif yığma YASAK (CLAUDE.md → Doküman Disiplini). -->
 <!-- KURAL: Tamamlanmış fazların task arşiv listesini INDEX'e ekleme — `ls _dev/tasks/archive/` zaten görür. INDEX yalnızca aktif klasör konumlarını gösterir; statik liste dokümanı değildir. -->

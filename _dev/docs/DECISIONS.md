@@ -130,6 +130,8 @@
 
 ### 2026-07-21 — Chatbot AI sağlayıcısı: Anthropic (Opus) → Groq · `llama-3.3-70b-versatile` ($0 hedefi; implementasyon v0.5)
 
+> **Kısmen superseded by 2026-09-11** — yalnız model ayağı (`llama-3.3-70b-versatile` emekliye ayrıldı → `qwen/qwen3.8-27b`). Sağlayıcı kararı (Groq) ve dürüstlük-eleme kriteri geçerli. (review-phase 18)
+
 **Bağlam:** `audit-docs` oturumunda (2026-07-21) canlı kontrol chatbot'un `/api/chat` → **HTTP 503 (offline)** verdiğini teyit etti (Vercel'de `ANTHROPIC_API_KEY` yok). Kullanıcı stratejik yön açtı: Claude Code aboneliğine zaten ~$100/ay ödüyor, chatbot için **ekstra aylık API faturası istemiyor** → **$0 hedefi** ("Groq/Llama gibi ücretsiz bir AI gömemez miyiz?"). Mevcut kod en pahalı modeli (`claude-opus-4-8`) kullanıyor — maliyet korkusunun kaynağı bu. Karar öncesi çok-kaynak web araştırması + 5 dilde (TR/AR/DE/ES/EN) 3 turluk **canlı kalite testi** yapıldı (gerçek `route.ts` system prompt'u + temsili ziyaretçi soruları, OpenAI-uyumlu endpoint, kartsız ücretsiz key'ler).
 
 **Seçenekler (canlı test + araştırma):**

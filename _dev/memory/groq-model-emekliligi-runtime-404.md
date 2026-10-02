@@ -36,22 +36,42 @@ gövdesinin fallback metni olup olmadığına bak, şüphede runtime log'u oku.
   gerekçesinin bir kısmı sonradan prompt'ta kapatılmıştı → kör reddetmek yerine yeniden sınandı.
   (Sonuç değişmedi, ama karar artık taze kanıta dayanıyor.)
 
-## İkinci tuzak: `max_tokens` bir tavan değil, peşin **rezervasyon**
+## İkinci tuzak: `max_tokens` OTPM talebine **ona kadar** sayılabilir
 
 Model düzeltildikten sonra canlı yine hata verdi; runtime log **farklı** bir sebep gösterdi:
 **429, OTPM (output tokens per minute) limiti 1000, talep 1024.** Burst sorunu değildi —
-Groq ücretsiz tier `max_tokens`'ı peşin rezerve ettiği için 1024 isteyen **her** çağrı
-tek başına karşılanamaz durumdaydı. Yani `max_tokens` yalnız "en fazla şu kadar üret"
-demek değil, "şu kadarını bana ayır" demektir; dakikalık kotadan **istek anında** düşer.
+`max_tokens` limitin üstündeydi ve 1024 isteyen çağrı tek başına karşılanamıyordu (→ 512).
 
-**Kural:** `max_tokens`'ı gerçekten ihtiyaç duyulan uzunluğa göre seç, cömert bırakma.
-Bu projede 512 (prompt 2–3 cümle istiyor, ölçülen en uzun yanıt ~509 karakter). Yükseltmek
-canlı chatbot'u kırar — gerekçe `route.ts`'te çağrı yerinde yorum olarak duruyor.
+**İncelik (ölçüm, 2026-10-02, production log'u son 3 saat):** OTPM 429'larındaki "Requested"
+değeri hem **512** (= `max_tokens`) hem **78–332** aralığında görüldü. Yani Groq talebi her
+zaman tam `max_tokens` kadar saymıyor, ama ona kadar çıkabiliyor. "`max_tokens` her çağrıda
+peşin rezerve edilir" demek fazla güçlü; doğru hüküm: **`max_tokens` OTPM limitinin altında
+kalmalı, cömert bırakılmamalı.**
+
+**Kural:** `max_tokens`'ı gerçekten ihtiyaç duyulan uzunluğa göre seç. Bu projede 512 (prompt
+2–3 cümle istiyor, ölçülen en uzun yanıt ~509 karakter). Yükseltmek canlı chatbot'u kırar —
+gerekçe `route.ts`'te çağrı yerinde yorum olarak duruyor.
 
 **Tekrar eden ders:** İki canlı arıza da art arda çıktı ve **ikisi de yalnız runtime log'unda
 görünüyordu**; dıştan bakınca ikisi de aynı görünüyordu (HTTP 200 + fallback metni). Bir
 canlı arızayı düzeltince "tamam" deme — **aynı yoldan tekrar doğrula**, arkasında ikinci
 bir sebep durabilir.
+
+## Model ya da sağlayıcı değişiminde süpürme
+
+Kimlik bu projede birden çok yüzeyde yaşar; Faz 18'de süpürme üç turda tamamlanabildi
+(18.05 → 18.10 → 18.13), çünkü dosya listesiyle yapıldı. Dosya listesiyle değil **sınıf
+grep'iyle** süpür (eski + yeni ad), dışlama ölçütü klasör değil dokümanın tarihsel olup
+olmadığıdır (`_dev/` toptan dışlanırsa yaşayan dokümanlar da gizlenir).
+
+- **Model adı:** tek kaynak `src/app/api/chat/route.ts` varsayılanı; kopyaları README env
+  tablosu, `.env.example`, `_dev/OVERVIEW.md` stack satırı, `modules/M5-Chatbot-API.md`,
+  `MEMORY.md` "Chatbot env". Brief'e (`MASTER_PROMPT_v2.md`) bilinçle yazılmadı.
+- **Anahtar / SDK adı:** yukarıdakilere ek olarak `CLAUDE.md` Secret'lar satırı,
+  `.github/workflows/ci.yml` yorumu, `MASTER_PROMPT_v2.md` §6/§7, `_dev/docs/TESTING.md`,
+  `modules/M6-SEO-Deploy.md` F6.4, `memory/repo-haritasi.md`, `ILKELER.md` sır ilkesi örneği
+  (Korumalı — onay ister).
+- **Tarihsel kayıtlar** (DECISIONS, task arşivi, tamamlanmış faz dokümanları) hizalanmaz.
 
 ## Kota notu (2026-09, Groq ücretsiz tier)
 

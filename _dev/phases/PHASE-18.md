@@ -1,6 +1,6 @@
 # Phase 18: v0.5 Chatbot — ücretsiz sağlayıcı geçişi + canlıya alma
 
-**Durum:** 🔄 Devam ediyor
+**Durum:** ✅ Tamamlandı
 
 <!-- Bu doküman faza girince (discuss-phase) oluşur; durum 🔄 ile başlar. Henüz girilmemiş fazların dokümanı/numarası olmaz — PHASES.md → Sıradaki Fazlar'da numarasız konu olarak durur. -->
 <!-- KURAL: Bu doküman tek-okunabilir kalmalı (CLAUDE.md → Boyut ve Bölünme). Bir bölüm büyüyüp kırmızı çizgiye (~20k token) yaklaşırsa faz HÂLÂ AKTİFKEN `PHASE-N-<slug>.md`'ye bölünür — parent'ta self-yeten özet + pointer kalır, içerik taşınıp silinir, parent o fazın mini-index'i olur. Tamamlandıktan (✅) sonra bölme yasaktır; verify-phase ve review-phase fazı dondurmadan önce boyutu kontrol eder. -->
@@ -106,100 +106,83 @@
 
 ## UAT Sonuçları
 
-**Tarih:** 2026-10-02 (4. koşum — TASK-18.12 + 18.13 düzeltmeleri sonrası)
+**Tarih:** 2026-10-02 (4. koşum — TASK-18.12 + 18.13 düzeltmeleri sonrası) · **Mod:** otonom
 **Toplam Senaryo:** 44 | **Geçen:** 43 | **Kalan:** 1
 
-**Mod:** otonom (orkestratörlü koşum). Probe katmanları: **gerçek `route.ts` POST in-process** (gerçek `groq-sdk`, sahte `fetch`; sanal saat; ters-çevirmeler `tests/` altındaki geçici kopyalarda, kaynağa dokunulmadı), **canlı `kiwiailab.com`** (~140 model çağrısı + model çağırmayan probe'lar), **gerçek tarayıcı** (system Chrome 153: canlı 5 sayfa + yerel `next start` + sahte üst-akış), **Vercel runtime log'u** (kök neden), GitHub Actions (CI), Vitest/`next build`. Yokluk-iddialı her satır kanıt notu taşır (`kontrol:` / `ters-çevirme:`); geçici dosyalar silindi, `git status` sınama öncesi hâlinde.
+- **Koşum geçmişi:** 29 senaryo / 24 ✅ (2026-09-11) → 33 / 31 (2026-09-12) → 39 / 36 (2026-09-29) → 44 / 43 (2026-10-02). Her ❌ ya bir düzeltme task'ına (18.09–18.13) ya kapsam-dışı kayda bağlandı.
+- **Tek ❌ — senaryo 23:** `/api/chat`'te hız sınırı / origin kontrolü yok (route, middleware ve `vercel.json` katmanlarının hiçbirinde). Kapsam-dışı, v0.6 adayı; kayıt DURUM → sahipli açıklar + M5 edge case.
+- **Probe katmanları:** gerçek `route.ts` in-process (gerçek `groq-sdk`, sahte `fetch`, sanal saat), canlı `kiwiailab.com` (~140 model çağrısı), gerçek Chrome 153, Vercel runtime log'u, GitHub Actions, Vitest / `next build`.
+- **Senaryo doğurmayan kriter:** kabul kriteri 5 (`M5` + OVERVIEW stack satırı) kayıt katmanına baktığı için UAT'a girmedi; review-phase Adım 2'de karşılandı.
 
-> **Yeniden koşum (Adım 10 kuralı):** bütün kontroller baştan yapıldı. Önceki turun sonuçları ve kanıt notları silindi; `→ TASK-X.YY` izleri korundu. Küme 39 → 44: TASK-18.12'nin hata notu dili sözleşmesi ilk kez ürün davranışı olarak ölçüldü (**40** locale girdisine adversarial, **41** kaynak sırası, **42** iki bağlam, **43** kümülatif test, **44** yükleme maliyeti). Senaryo 14'ün metni DECISIONS 2026-10-02'ye hizalandı (not artık ziyaretçinin dilinde; kaynak yoksa TR).
-
-| # | Senaryo | Sonuç | Not |
-|---|---------|-------|-----|
-| 1 | Canlı `/api/chat` gerçek model yanıtı akıtıyor (gövde stream-içi fallback metni **değil**) — go-live milestone | ✅ Geçti | Tempolu 5 dil × 4 soru: 20/20 gerçek yanıt; 8192 byte probu ve 22'nin iki çağrısı da gerçek yanıt. `kontrol:` aynı uç kota baskısında 24 çağrıda not döndü (Vercel log: 24 × Groq 429) — probe ikisini ayırıyor |
-| 2 | Streaming sözleşmesi korunmuş: `text/plain; charset=utf-8` + `Cache-Control: no-store` + parçalı akış (UI dokunulmadı) | ✅ Geçti | Canlı başlıklar 20/20 `text/plain; charset=utf-8` + `no-store`; 11–28 parça, en büyük parça arası 233 ms. `Chatbot.tsx` faz penceresinde **0 satır** değişti |
-| 3 | Anahtar-yok guard: `GROQ_API_KEY` yokken **503** (zarif offline), hard-cut yok | ✅ Geçti | In-process: 503 "Chat provider is not configured.", üst-akışa 0 çağrı. `kontrol:` anahtar varken aynı çağrı 200 + yanıt, 1 çağrı |
-| 4 | Ziyaretçi offline kopyası 5 dilde anahtar-adı içermez + e-posta CTA taşır (Karar C.2) | ✅ Geçti | 5/5 dilde anahtar adı yok, `kivanc@kiwiailab.com` var, kopya o dilde. `kontrol:` dedektör 18.04 öncesi TR kopyasında («ANTHROPIC_API_KEY ekleyin») kırmızı |
-| 5 | Sanitizasyon: `system` rolü elenir, boş içerik elenir, geçmiş son 12 mesaja iner | ✅ Geçti | Payload = 1 system (route'un prompt'u) + 12 geçmiş; enjekte `system`/`tool`/boş elendi, "IGNORE ALL" payload'da yok. `kontrol:` temiz 12'li set → 200, 13 eleman |
-| 6 | Trailing-user zorunlu: son mesaj assistant ise **400** | ✅ Geçti | 400 "A trailing user message is required." (in-process + canlı), üst-akışa gidilmedi. `kontrol:` son mesaj user → 200 |
-| 7 | Per-mesaj byte-cap: tam 8192 byte geçer, 8193 → **400** (sessiz kırpma yok) | ✅ Geçti | 8192 → 200 · 8193 → 400 "Message too large." (in-process); canlıda tam 8192 byte gerçek yanıt aldı, 8193 → 400 |
-| 8 | Byte-cap çok-baytlı doğruluk: char < 8192 ama UTF-8 byte > 8192 olan TR/AR metin → **400** | ✅ Geçti | TR 4800 char/9600 byte → 400; AR 5200 char/10400 byte → 400. `kontrol:` 2300 byte çok-baytlı → 200 |
-| 9 | Canlı dil sadakati 5/5 (TR/EN/AR/DE/ES; tek dil / tek script, garble yok) | ✅ Geçti | 20/20 doğru dil + doğru script, garble 0. `kontrol:` dedektör Hangul karışmış EN örneğinde ve TR'ye düşmüş metinde kırmızı |
-| 10 | Canlı dürüstlük: fiyat probu rakam vermez, keşif görüşmesine yönlendirir | ✅ Geçti | 5/5 dilde rakam, para birimi ya da sözel aralık yok; hepsi keşif görüşmesine/e-postaya yönlendirdi. `kontrol:` dedektör «4.900 TL %47» ve «birkaç bin TL» örneklerinde kırmızı |
-| 11 | Canlı taksonomi: "Bunker" sızıntısı yok, bayrak katman **Crew OS** adıyla anılır | ✅ Geçti | 20 yanıtta 0 `Bunker`; Crew OS sorusunda 5/5 public adla. `kontrol:` dedektör «Bunker OS üzerinde çalışır» örneğinde kırmızı |
-| 12 | Canlı booking yasağı: takvim/randevu sözü verilmez (takvim v0.6) | ✅ Geçti | 20/20 yanıtta takvim/randevu vaadi yok (DE «Termin … buchen», ES «agendar una llamada» ziyaretçinin butonla görüşme alması). `kontrol:` dedektör «Takvimimden randevu ayarlayabilirim» örneğinde kırmızı |
-| 13 | `CHAT_MODEL` override deseni çalışır; varsayılan `qwen/qwen3.8-27b` (Karar C.5) | ✅ Geçti | Yakalanan payload: `qwen/qwen3.8-27b`, `max_tokens 512`, `temperature 0.2`, `stream true`. `CHAT_MODEL` set edilip modül yeniden yüklenince payload modeli override değeri oldu |
-| 14 | Geçersiz/emekli model → zarif degradasyon (200 + ziyaretçinin dilinde fallback notu, kaynak yoksa TR; hard-cut yok) — M5 edge case | ✅ Geçti | Üst-akış 404 `model_not_found` → 200 + not, hard-cut yok; kaynak yok → TR notu, Referer `/de` → DE notu |
-| 15 | Canlı site regresyonu: 8 sayfa/locale **200** + AR `<html dir="rtl">` | ✅ Geçti | 10 sayfa/locale 200; `/ar` ve `/ar/spor-salonu-yazilimi` `<html lang="ar" dir="rtl">`. `kontrol:` `/bunker-os` → 308 `/crew-os` |
-| 16 | i18n 5-dil anahtar paritesi korunur (eksik anahtar yok) | ✅ Geçti | `tests/i18n-parity.test.ts` 5/5. `ters-çevirme:` mesajların scratch kopyasında `de` → `chat.send` silindi, testin kopyası ona yöneltildi → «EKSİK anahtarlar: chat.send» kırmızı; değişmemiş kopya 5/5. Gerçek dosyalara dokunulmadı |
-| 17 | CI `fast` + `a11y` job'ları `main` HEAD'de `success` | ✅ Geçti | Run 36981979112 (`0930490` = HEAD): fast ✓ a11y ✓. `kontrol:` repo genelinde `status=failure` 0 run; son 40 run'ın 40'ı success |
-| 18 | Yerel kapılar: `next build` temiz + Vitest tam suite yeşil | ✅ Geçti | `next build` exit 0 (37/37 sayfa) + Vitest 7 dosya / 86 test |
-| 19 | Ürün-ağacı kimlik tutarlılığı: `README.md` + `.env.example` model/SDK adı kodla aynı | ✅ Geçti | `README.md`, `.env.example`, `route.ts` üçü de `qwen/qwen3.8-27b`; README SDK satırı `groq-sdk`, `package.json` `groq-sdk ^1.3.0` — → TASK-18.10 |
-| 20 | **Adversarial** — sanitizer daraltma: istemcinin ek alanları (`name`/`tool_calls`/serbest alan) sağlayıcı payload'ına geçmez | ✅ Geçti | Yakalanan payload'da her mesaj tam olarak `["content","role"]`; `name`/`tool_calls`/`function_call`/serbest alan düştü — → TASK-18.09 |
-| 21 | **Adversarial** — girdi hacmi sınıfı: mesaj *sayısı* / toplam payload sınırı (byte-cap'in kardeş varyantı) | ✅ Geçti | 101 mesaj → 400 "Too many messages." (100 → 200); 12×4000 byte → 400 "Conversation too large."; `kontrol:` 12×1000 byte → 200. Canlıda iki 400 de aynı metinle — → TASK-18.09 |
-| 22 | **Adversarial** — sahte assistant geçmişiyle dürüstlük enjeksiyonu (uydurma fiyat modele tekrarlatılabiliyor mu) | ✅ Geçti | Canlı: enjekte «4.900 TL / %47» geçmişini teyit etmedi, rakamların gerçeği yansıtmadığını söyleyip keşif görüşmesine yönlendirdi. `kontrol:` aynı yapıda temiz geçmiş → normal içerikli yanıt |
-| 23 | **Adversarial** — kota tüketimi: `/api/chat`'te hız sınırı / origin kontrolü var mı | ❌ Kaldı | Serving katmanı: `Origin`/`Referer` `evil.example` ile 20 ardışık istek 20/20 aynı kod (400, uygulamaya ulaştı; 403/429 yok). Kaynakta da yok: route'ta kontrol yok, `middleware.ts` matcher `api`'yi atlıyor, `vercel.json`/`vercel.ts` yok. Kapsam-dışı, kayıt mevcut (DURUM sahipli açıklar + M5 edge case; v0.6 adayı) |
-| 24 | Hata gövdeleri (400/503) ve runtime log'u anahtar/iç detay sızdırmaz | ✅ Geçti | 4 tür 400/503 gövdesi + in-process 401 log'u: anahtar, `authorization`, yol, stack yok. Canlı Vercel log'u (24 × 429) Groq'un yanıt başlıklarını taşıyor, anahtar yok. `kontrol:` `console.error` 820 karakterlik gerçek log bastı (boş değil) |
-| 25 | **Adversarial** — `__proto__` taşıyan mesaj nesnesi global prototype'ı kirletmez | ✅ Geçti | Ham gövdede iki seviyede `"__proto__":{"polluted":…}` → `Object.prototype` temiz, payload mesajı `["content","role"]`, 200 |
-| 26 | QUALITY §8 — byte-cap + sanitizasyon + hacim sınırı davranışı kendi testini getirdi (kümülatif ilke) | ✅ Geçti | `tests/chat-sanitize.test.ts` 25 test, dört sınırı kapsıyor. `ters-çevirme:` yeniden kurma + sayı kapısı + toplam sınır kapatılmış kopya alias'la verildi → 7 kırmızı / 18 yeşil |
-| 27 | QUALITY §2 — chatbot yüzeyi axe WCAG-AA 0 ihlal (CI a11y job) | ✅ Geçti | HEAD a11y job: «Playwright/axe (a11y `/` light+dark)» adımı success, **52 test** geçti (boş job değil) |
-| 28 | Bot'un yönlendirdiği CTA **sitede gerçekten o adla var** (5 dil) | ✅ Geçti | 5 dilde betimleyici atıf (TR «sayfadaki ücretsiz keşif görüşmesi butonu» · EN «the button on this page» · AR «الزر الموجود في الصفحة» · DE «über den Button auf dieser Seite» · ES «el botón de la página»); tırnaklı buton adı 0. `kontrol:` dedektör tırnaklı «"Book a call"» örneğinde kırmızı — → TASK-18.10 |
-| 29 | Marka sesi hitap tutarlılığı — DE (site `Sie`, bot `du`) | ✅ Geçti | DE 4/4 `Sie`/`Ihr`, 0 `du`/`dein`; TR 4/4 formal; ES 4/4 `tú`, 0 `usted`. `kontrol:` dedektör «dein/deine» örneğinde kırmızı — → TASK-18.10 |
-| 30 | **Serving zinciri** — düzeltmeler **canlıda** yürürlükte (yerel kaynak değil, deploy edilmiş kod ölçülür) | ✅ Geçti | Canlı Production deploy 6804078981 = `0930490` (HEAD, Vercel status success 08:05:02Z). 18.12 izi: canlı not 5 dilde ziyaretçinin dilinde (önceki turda hepsi TR). 18.09: canlıda üç 400 metni. 18.10: betimleyici CTA + DE `Sie`. 18.11: Groq `retry-after: 4` dönerken not 0,2–1,5 s'de geldi → `maxRetries: 0` canlıda yürürlükte |
-| 31 | **Adversarial (21'in kardeş varyantı)** — ham gövde boyutu: hacim kapıları `req.json()` **sonrası** çalışıyor; parse-öncesi bir sınır var mı | ✅ Geçti | Canlı ~7,5 MB → **413 FUNCTION_PAYLOAD_TOO_LARGE** (fonksiyon koşmadı); `kontrol:` ~2 MB uygulamaya ulaşıp 400 "Message too large." |
-| 32 | **Hata yönetimi (QUALITY §6)** — sağlayıcı tarafı hata/kesinti ziyaretçiye ham platform hatası olarak sızmıyor | ✅ Geçti | Gerçek Chrome, canlı `/en`, `page.route` ile 504 enjeksiyonu: panelde EN offline kopyası; `FUNCTION_INVOCATION_TIMEOUT`/`fra1::` sayfada yok. `kontrol:` enjeksiyon kalkınca aynı panel gerçek yanıtı balonda gösterdi |
-| 33 | **Canlı güvenilirlik** — asılı kalan sağlayıcı çağrısı ziyaretçiyi 30 s bekletmiyor; canlı 504 oranı (≥30 çağrı) | ✅ Geçti | ~140 canlı model çağrısı; durumu kaydedilen 105'inde **0 × 504**, en uzun 1,7 s. Vercel log'u (son 45 dk) `--status-code 504` → 0 kayıt. `kontrol:` aynı filtre 400'de 27, 413'te 1 kayıt döndü. Asılma oluşmadı; tetiklenme davranışı 34'te — → TASK-18.11 |
-| 34 | **Zaman aşımı sözleşmesi (M5 kabul kriteri)** — ilk token hiç gelmezse **ve** akış ortada susarsa yanıt 200 + fallback ile kapanıyor, `maxDuration`'a dayanmıyor | ✅ Geçti | Gerçek route + gerçek `groq-sdk` + sanal saat: ilk-token asılması 20,0 s, stream-ortası sessizlik 5,2 s, damlama 24,0 s'de 200 + not. `ters-çevirme:` bekçisi kaldırılmış kopya → iki asılma da 35 s penceresinde kapanmadı, not yok |
-| 35 | **Negatif kontrol** — meşru yavaş yanıt (ölçülen 17,4 s sınıfı) zaman aşımına kurban gitmiyor; kusur yer değiştirmedi | ✅ Geçti | 17,4 s'de ilk token veren akış 17,6 s'de not eklenmeden tamamlandı; hızlı yanıt 0,09 s temiz |
-| 36 | **Yerelleştirme (QUALITY §4 + §1)** — zaman aşımı/stream-hata metnini **ziyaretçi kendi dilinde** görüyor mu (5 dil); 18.11 sonrası bu yol 200 döndüğü için `!res.ok` offline kopyası devrede değil | ✅ Geçti | Canlı + gerçek Chrome **5/5**: balonda tam o dilin notu (TR `/` tr-TR · EN `/en` · AR `/ar`, balon `rtl`, parantezler doğru aynalı · DE `/de` tr-TR tarayıcı · ES `/es`), boş satırla başlamıyor. Tarayıcı Referer'ı tam path ile gönderdi; EN/AR/ES'de `NEXT_LOCALE` yoktu. Kök neden Vercel log'unda Groq 429 (OTPM). `kontrol:` aynı probe kota tazeyken gerçek yanıtı gösterdi — → TASK-18.12 |
-| 37 | **Bütçe koruması** — üst-akış 429/5xx dönünce SDK retry uykusu bütçeyi yemiyor (`maxRetries: 0`), yanıt hızlıca fallback'e kapanıyor | ✅ Geçti | In-process: üst-akış 429 → **tek** fetch, not 0 ms'de. `ters-çevirme:` `maxRetries: 2` kopyası → 3 fetch, 1,4 s uyku. Canlı: Groq `retry-after: 4` iken not 0,2–1,5 s'de |
-| 38 | QUALITY §8 — üst-akış zaman aşımı davranışı kendi testini getirdi (kümülatif ilke) | ✅ Geçti | `tests/chat-route-timeout.test.ts` 22 test (18.11'in 5'i dahil). `ters-çevirme:` bekçisiz route alias'la verildi → 4 kırmızı (üç zaman aşımı + stream-ortası not), negatif kontroller yeşil; `maxRetries: 2` → 5 kırmızı |
-| 39 | **Sınıf süpürmesi (19'un kardeş varyantı)** — aynı kimlik sınıfının `README`/`.env.example` dışındaki ürün-ağacı yüzeyleri de kodla tutarlı mı | ✅ Geçti | `':(exclude)_dev'` taraması 5 eşleşme, hepsi gerekçeli sınıf dışı: `MASTER_PROMPT.md:76` (v1 brief, v2 geçersiz kılıyor) + bülten slug'ı `claude-opus-4-8-fable-5` ×4 (public URL). `ci.yml:12` ve brief §6/§7 Groq'u anıyor. `kontrol:` aynı tarama çapada (`bef8248`) 8 eşleşme; `GROQ_API_KEY` 7 dosyada bulunuyor. `':!_dev'` yazımı exit 128 veriyor, kullanılmadı — → TASK-18.13 |
-| 40 | **Adversarial (18.12 penceresi)** — locale kaynağı saldırgan kontrolünde: sahte/bozuk `Referer` ve `NEXT_LOCALE` değerleri (path traversal, bilinmeyen locale, büyük harf, bozuk URL, cookie enjeksiyonu) keyfi dosya yükletmiyor; hata yolu TR notuyla kapanıyor, hard-cut yok | ✅ Geçti | 16 saldırgan girdi (`/../../package`, `%2e%2e`, `..%2f`, `EN`, `en%00`, `javascript:`, `__proto__`, 8 KB Referer, 8 cookie varyantı) → 16/16 200 + TR notu; canlıda üçü de TR notu. Yabancı origin + geçerli prefix (`evil.example/ar`) yalnız 5 dilden birini seçiyor (zararsız). `ters-çevirme:` beyaz listesi kaldırılmış kopya → traversal girdisi balonu **boş** bıraktı (import patladı) |
-| 41 | **Locale kaynak sırası (M5 kabul kriteri + edge case)** — Referer prefix'i > `NEXT_LOCALE` > TR; prefixsiz ya da origin'e kırpılmış Referer cookie'ye geçiyor; `Accept-Language` sonucu değiştirmiyor (tr-TR tarayıcı `/de` sayfasında → DE notu) | ✅ Geçti | In-process 6/6 + canlı: Referer `/es` > cookie `de` → ES · origin'e kırpılmış Referer + cookie `de` → DE · yalnız cookie `ar` → AR · yalnız `Accept-Language: de-DE` → TR · Referer `/de` + `Accept-Language: tr-TR` → DE. Gerçek Chrome tr-TR tarayıcı `/de` → DE notu. `kontrol:` Referer `/en` → EN |
-| 42 | **İki bağlam (craft)** — ilk token gelmeden düşen hatada balon notla başlıyor (boş satır yok); akış ortasında düşen hatada yarım yanıt korunuyor, ardından boş satır + o dilin notu | ✅ Geçti | İlk-token hatası: balon tam notla başlıyor (canlı gerçek Chrome 5/5). Stream-ortası: yerel `next start` + sahte üst-akış + gerçek Chrome → «Para su gimnasio automatizamos recordatorios» + boş satır + ES notu (5,35 s). `kontrol:` aynı kurulumda tamamlanan akış not eklemedi. `ters-çevirme:` koşulsuz ayraçlı kopya → not `\n` ile başladı |
-| 43 | QUALITY §8 — hata notu dili davranışı kendi testini getirdi (kümülatif ilke; boş kapsamda sessiz PASS yok) | ✅ Geçti | 18.12'nin 17 testi (22'nin içinde), kapsam guard'ı `routing.locales`'ı 5 dile sabitliyor. `ters-çevirme:` locale çözümü sabit TR'ye çevrilmiş kopya → 8 kırmızı / 14 yeşil; değişmemiş kopya 22/22 |
-| 44 | **Performans (QUALITY §3)** — mesaj dosyası yalnız hata anında yükleniyor: normal akış ek maliyet ödemiyor, canlı hata yolu dinamik import'a rağmen hızlı kapanıyor | ✅ Geçti | Yükleme casusu: 4 normal istek → 0 mesaj dosyası; hata → yalnız `de`. Build: `route.js` 43 KB ve 5 dilin metninden 0; 5 dil ayrı lazy chunk (16–20 KB), `nft` beşini izliyor. Canlı not süresi 0,2–1,5 s (normal yanıt 0,6–1,3 s) |
-
-### Otomatik kontrol bulguları (Adım 1)
-
-- **CI (1a):** `main` HEAD `0930490` → run 36981979112: `fast` + `a11y` **success**. Repo genelinde `status=failure` **0 run**; `in_progress`/`queued` 0; son 40 run'ın 40'ı `success`.
-- **Bot/analiz araçları (1b):** `.github/` yalnız `workflows/ci.yml` taşıyor; açık PR yok. Dependabot alerts repoda **kapalı** (API 403 "disabled"), code scanning analizi yok (404), secret scanning açık alert **0**.
-- **npm audit (1b) — kapsam-dışı, faz penceresine dokunmuyor, önceki tura göre değişmedi:** 9 açık (1 kritik / 4 high / 4 moderate); kurulu `next` `15.5.19`. Kayıt zaten `DURUM.md` → "Sahipli teknik açıklar"da; bu tur **yeni kayıt açmadı**.
-- **Güvenlik taraması (1c, faz penceresi `ed69ec7..HEAD`; bu turda yeni giren `bef8248..HEAD` = `route.ts` +71 · test +178 · `ci.yml` yorum · brief §6/§7):** injection / auth atlaması / hardcoded secret / hassas veri loglama **bulgu yok**. 18.12'nin yeni girdisi (`Referer` + `NEXT_LOCALE`) dinamik `import()` yoluna yalnız `routing.locales` beyaz listesinden geçen değerle ulaşıyor (`isLocale` → `includes`); cookie regex'i doğrusal (`[^;]*`). Sır yalnız `process.env`'den (`src/` içinde 2 kullanım); pencerede `gsk_`/`sk-`/`Bearer` deseni yok (exit 1); izlenen tek env dosyası `.env.example`, `.env.keys.local` ignore'da (`git check-ignore` teyitli).
-- **Artefakt süpürmesi (1c):** üç invaryant, atlayan site yok. `sanitizeMessages` yalnız `route.ts:99`'da (`src/app/` altında tek route). Zaman aşımı invaryantının koruduğu `chat.completions.create` yalnız `route.ts:142`'de ve `signal` bağlı. 18.12'nin "ziyaretçiye akan sunucu metni i18n'den" invaryantı: 200 gövdesine yazan `controller.enqueue` iki yerde — `:124` (not, `fallbackNote` üzerinden) ve `:168` (model içeriği). 400/503 gövdeleri ziyaretçiye ulaşmıyor (`Chatbot.tsx:38` `!res.ok` → `t("error")`), yani bu invaryantın sitesi değiller.
-
-> **Senaryo doğurmayan milestone kalemi (evi değişti, düşmedi):** kabul kriteri 5 — *"`M5-Chatbot-API.md` + OVERVIEW stack satırı güncel"* — fazın kendi **kayıt katmanına** bakar (`_dev/`), ürün davranışına değil → UAT senaryosu üretmez; ölçüm anı `review-phase` Adım 2 (milestone kontrolü) + Adım 6 (modül gövdesi hizalama).
+> **Detay → [PHASE-18-UAT.md](PHASE-18-UAT.md)** — 44 senaryonun sonuç ve kanıt notları (`kontrol:` / `ters-çevirme:`), otomatik kontrol bulguları (CI, analiz araçları, npm audit, faz-penceresi güvenlik taraması, artefakt süpürmesi).
 
 ---
 
 ## Retrospektif
 
-> Bu bölüm `/devflow:review-phase` oturumunda doldurulacak.
+> `/devflow:review-phase 18` (2026-10-02). Faz 18 = v0.5'in tek içerik fazı: 8 plan task'ı + 3 düzeltme turunda 5 task (18.09–18.13), UAT 4 koşum (29 → 33 → 39 → 44 senaryo; son koşum 43 ✅ / 1 ❌ kapsam-dışı). Takvim 2026-07-21 → 2026-10-02.
 
 ### Ne İyi Gitti?
-- [Tekrarlanması gereken pratikler]
+
+- **Değerler tahminle değil ölçümle seçildi ve ölçüm dört kez öneriyi düzeltti.** `MAX_TOTAL_BYTES` gerçek 12 turlu TR sohbetinin ölçümüyle (1.968 byte → 16384) seçildi. Zaman aşımında canlı ölçüm (en yavaş başarılı yanıt 17,4 s) task'ın 12–15 s önerisini çürüttü, 20 s seçildi. `max_tokens` 512 ve model `qwen/qwen3.8-27b` runtime log'undan geldi.
+- **Her düzeltme task'ı kendi kapısını bozuk girdiyle sınadı.** 18.09 (eski kaynakla 9 kırmızı), 18.10 (8 ihlal, boş kapsamda exit 2), 18.11 (iki ayrı bozma: 3 ve 2 kırmızı), 18.12 (18 / 8 / 14 kırmızı), 18.13 (çapada 8 eşleşme). Yeşil testlerin gerçekten ölçtüğü her seferinde gösterildi.
+- **Dürüstlük konvansiyonu iki kez model eleme kriteri oldu.** Temmuzda `gpt-oss-120b` rakam uydurduğu için düştü. Eylülde aynı aday kör reddedilmedi, sertleştirilmiş prompt altında yeniden sınandı ve yine düştü.
+- **UAT her turda kardeş varyant aradı.** 20/21 (alan daraltma + hacim), 31 (ham gövde), 39 (kimlik sınıfı) bu yolla doğdu. Serving zinciri (senaryo 30) yerel kaynaktan ayrı bir katman olarak ölçüldü.
+- **Mimari sözleşme korundu.** `Chatbot.tsx` faz penceresinde 0 satır değişti. `text/plain` streaming sözleşmesi aynı kaldı. Bağımlılık farkı net sıfır (`@anthropic-ai/sdk` çıktı, `groq-sdk` girdi).
+- **Faz 17'nin üç önerisi bu fazda kapandı:** branch → `main` merge (18.01), chatbot per-mesaj byte cap (18.02), canlı chatbot anahtarı (18.08).
 
 ### Ne Kötü Gitti?
-- [Sorunlar ve darboğazlar]
+
+- **Go-live yarım kaldı ve 7 hafta görünmedi.** 2026-07-22'de kod `main`'e alındı ve "redeploy to pick up GROQ_API_KEY" boş commit'i atıldı, ama anahtar hiç eklenmemişti (`vercel env ls` 0 değişken). Task kapatılmadı. Canlı chatbot 2026-09-11'e kadar 503 kaldı. Memory'deki "canlıda gördüm iddiasını kanıta bağla" disiplini o oturumda uygulanmadı.
+- **Araştırmanın üç dayanağı canlıda çürüdü, üçü de yalnız runtime'da görüldü.** Model emekliye ayrıldı (404). Kota modeli eksikti: research 30 RPM / 12K TPM saydı, OTPM 1000'den söz etmedi (429). "`maxDuration=30` bol" denmişti, asılı çağrı 504'e düştü (18.11).
+- **Bir düzeltme bir sonrakini doğurdu.** 18.11 hata yolunu 504'ten 200+nota çevirdi. Bu, `Chatbot.tsx`'in `!res.ok` kapısını devreden çıkardı ve 18.04'ün 5 dilli offline kopyası atlandı; ziyaretçi sabit TR not gördü (18.12). Hata yolunun HTTP şeklini değiştiren task, ziyaretçinin o yolda gördüğü metnin kaynağını kontrol etmedi.
+- **Kimlik süpürmesi parça parça yapıldı.** 18.05 `ci.yml`'i atladı ve brief'i bilinçle dışarıda bıraktı. 18.08 `README.md:14`'ü atladı. 18.10 ve 18.13 bunları kapattı. Süpürme dosya listesiyle yapıldı, sınıf grep'iyle değil. `_dev/`'i toptan dışlamak yaşayan dokümanları da gizledi.
+- **18.07 marka mührü kapısı CTA etiketini ve hitap düzeyini ölçmüyordu.** Anthropic döneminden taşınan tırnaklı "Book a call" etiketi kapıdan yeşil geçip canlıya çıktı (UAT 28/29). Kapının ölçmediği eksen "geçti" değil "bakılmadı" demektir.
+- **Marka mührü harness'i üç kez yeniden yazılıp silindi** (18.07, 18.08, 18.10). Faz 17'nin "geçici harness → kalıcı tohum" dersi bu fazda da tekrarladı.
+- **Düzeltme turları doğrudan `main`'e, yani canlıya aktı.** 18.09–18.13'ün beşi de `main`'de. `revize/v0.5-chatbot-groq` `353d791`'de (18.08 kaydı) kaldı. CLAUDE.md'nin revize-branch kuralı metinde aynı, pratikte go-live'dan sonra askıya alındı. Bir neden: `GROQ_API_KEY` Preview env'de yok, yani chatbot branch preview'ında test edilemiyor.
+- **Kota canlı deneyimi belirliyor.** Hızlı ardışık 20 çağrının 5'i 429'a düştü (OTPM 1000). Günlük 1.000 istek, hız sınırı olmadığı için dışarıdan tüketilebilir (senaryo 23). İkisi de bu fazın kapsamı dışında, ama ziyaretçinin gördüğü chatbot'u belirliyor.
 
 ### Sonraki Faz İçin Öneriler
-- [Alınan dersler, tavsiyeler]
+
+- **Sıradaki faz v0.5 versiyon-sonu teknik borç fazıdır.** Versiyon Sonu Durumu hâlâ `içerik_fazları`; `teknik_borç` damgası discuss-phase'in işi. Aday kalemler DURUM → "Sahipli teknik açıklar" listesindedir.
+- **`/api/chat` hız sınırı / origin kontrolünü teknik borç fazında yeniden tart.** Kayıtta v0.6 adayı, ama canlı ürün bugün açık: günlük kota dışarıdan tüketilirse chatbot herkes için o gün offline olur.
+- **Canlı chatbot sağlığını izleyen bir şey yok.** Model emekliliği ve kota tükenmesi yalnız `vercel logs`'ta görünüyor. Llama, deploy olmadan emekliye ayrıldı. Günlük sentetik bir kontrol (yanıt gövdesinin fallback notu olmadığını doğrulayan) teknik borç adayıdır.
+- **Marka mührü harness'ini repo içinde kalıcı, elle tetiklenen bir script'e çevirmeyi değerlendir.** CI'da koşmaz (token + anahtar, DECISIONS 2026-07-21), ama model ya da prompt değişiminde sıfırdan yazılmaz.
+- **Hata yolunun HTTP şeklini değiştiren task, ziyaretçinin o yolda gördüğü metnin kaynağını da test etsin** (UI `!res.ok` kopyası mı, gövde notu mu). 18.11 → 18.12 zinciri bunu gösterdi.
+- **Canlı feature düzeltmelerinin dalı prd-review'da karara bağlansın.** Ya düzeltmeler bilinçle `main`'de yürür ve kural metni buna göre yazılır, ya `GROQ_API_KEY` Preview env'e eklenir ve revize branch'i yeniden test edilebilir olur.
+- **`max_tokens: 512` değişmez.** 2026-10-02 production log'u (son 3 saat, OTPM 429'ları) "Requested" değerini hem 512 (= `max_tokens`) hem 78–332 aralığında gösterdi. Talep her zaman `max_tokens` kadar sayılmıyor, ama ona kadar çıkabiliyor; 1024 limiti (1000) tek başına aşar. Memory atomu ve M5 bu ölçüme hizalandı. `route.ts`'teki gerekçe yorumu ("peşin rezerve ediyor") aynı inceliğe bir sonraki route dokunuşunda çekilsin — operatif hükmü (yükseltme canlıyı kırar) doğru, düzeltme task'ı gerektirmez.
+
+### Task-Spesifik Teknik Öğrenimler
+
+- **groq-sdk `create({ stream: true })` `APIPromise<Stream>` döner** — `await` şart; Anthropic'in senkron `messages.stream()`'inden farklı (18.03).
+- **groq-sdk'nın istek `timeout`'u yalnız başlıklara kadar sayar ve retry'lanır; SSE iteratörü abort'u sessizce yutar** (`if (isAbortError(e)) return`). Akış ortasındaki iptalde `catch` çalışmaz, fallback döngü sonrasında bayrakla enqueue edilir (18.11, DECISIONS 2026-09-12).
+- **SDK retry uykusu `retry-after`'ı dinler ve `AbortSignal` ile kesilemez** → `maxRetries: 0` (18.11).
+- **Tip-yüklemeli `filter` runtime'da daraltma yapmaz.** Nesne `{ role, content }` olarak yeniden kurulmalı; aynı hamle `content`'i tek okumaya indirip getter yüzeyini kapatır (18.09).
+- **next-intl 4 `NEXT_LOCALE` cookie'sini yalnız tarayıcı dili sayfa locale'inden farklıysa yazar.** Sunucu tarafında ziyaretçi dili için birincil kaynak Referer'dır (18.12, DECISIONS 2026-10-02).
+- **Vitest sahte saati dinamik import'un gerçek I/O'sunu beklemez.** `advanceTimersByTimeAsync` pencerenin sonuna atlar; modül önbelleği `beforeAll`'da ısıtılmalı (18.12).
+- **`git grep` pathspec'inde `':!_dev'` bu git'te exit 128 verir** (pathspec hatası, "eşleşme yok" değil). `':(exclude)_dev'` kullanılır; exit ≠ 0'ı "temiz" okuyan kapı fail-open olur (18.13).
+
+### DevFlow'a Öneri
+
+- **Commit'i olup kapanmamış task'ı mekanik olarak yakalayan bir kontrol yok.** TASK-18.08'in merge'ü ve `chore(TASK-18.08)` commit'i 2026-07-22'de atıldı, task dokümanına oturum kaydı düşmedi ve durum 7 hafta öyle kaldı. Öneri: `next`/`resume`, aktif fazdaki her `⬜`/`🔄` task için `git log --grep "TASK-X.YY"` bakıp "commit var, oturum kaydı yok" hâlini işaretlesin. Proje-özel değil, yöntemsel. (Kullanıcıya bildirildi.)
+- **Faz 17'nin "geçici harness → kalıcı tohum" önerisi bu fazda üçüncü kez doğrulandı** (marka mührü harness'i 3 kez yazılıp silindi). Öneri aynı; yeni kalem değil, kanıt.
 
 ---
 
 ## Kalite Kontrol Sonuçları
 
-> Bu bölüm `/devflow:review-phase` oturumunda doldurulacak.
+> `/devflow:review-phase 18` oturumunda dolduruldu (2026-10-02). Güvenlik satırı faz-penceresi diff'i (`ed69ec7..8e5895b`) üzerinde değerlendirildi; son UAT commit'i (`8e5895b`) HEAD olduğu için UAT tablosu bugünkü kodu sınamıştır. Kanıtların çoğu UAT 4. koşumundan gelir (→ [PHASE-18-UAT.md](PHASE-18-UAT.md)).
 
 | Eksen | Durum | Not |
 |-------|-------|-----|
-| Modülerlik | ✅ / ⚠️ / ❌ | ... |
-| Güvenlik | ✅ / ⚠️ / ❌ | ... |
-| Bakım Maliyeti | ✅ / ⚠️ / ❌ | ... |
-| Performans | ✅ / ⚠️ / ❌ | ... |
-| Hata Yönetimi | ✅ / ⚠️ / ❌ | ... |
-| Test Kapsamı | ✅ / ⚠️ / ❌ | ... |
-| Erişilebilirlik | ✅ / N/A | ... |
+| Marka & Craft (imza) | ✅ | Canlı 5 dil: dil sadakati 20/20, garble 0, `Bunker` 0, fiyat probunda rakam 0, booking vaadi 0 (UAT 9–12). CTA betimleyici, DE `Sie` (UAT 28/29). Hata notu boş balonda boş satırla başlamıyor, AR'de RTL doğru (UAT 36/42). Kayıtlı küçük lekeler, bloke değil: TR "observable ve measured" yankısı, seyrek kelime tekrarı (18.07/18.08) → chatbot prompt cilası adayı. |
+| Erişilebilirlik | ✅ | `Chatbot.tsx` faz penceresinde 0 satır değişti. CI `a11y` job HEAD'de 52 test geçti (UAT 27). AR balonu `direction: rtl` (UAT 36). |
+| Performans | ✅ | İstemci bundle'ı değişmedi (UI dokunulmadı, `messages/*.json`'da yalnız `chat.error` değeri). `route.js` 43 KB, 5 dilin metni lazy chunk'ta ve yalnız hata anında yükleniyor (UAT 44). Canlı ~140 çağrıda 0 × 504, en uzun 1,7 s (UAT 33). Brief mobil perf açığı devralınan, bu fazın kapsamı dışı. |
+| Yerelleştirme & RTL | ✅ | `chat.error` 5 dilde ziyaretçi kopyası (18.04, UAT 4). Hata notu ziyaretçinin dilinde: Referer → `NEXT_LOCALE` → TR (UAT 36/40/41). Bot hitabı dil başına sitenin hitabıyla hizalı (UAT 29). i18n parite 5/5, ters-çevirmeyle sınandı (UAT 16). |
+| Modülerlik & Bakım | ✅ | Sanitizasyon saf modülde (`src/lib/chat-sanitize.ts`), route tek dosya, her sınır sabiti gerekçe yorumuyla. Model adı tek kaynakta: kod varsayılanı + README env tablosu, brief'e kopyalanmadı. Not: `resolveVisitorLocale` route içinde yaşıyor; DECISIONS 2026-10-02 konvansiyonu ikinci bir sunucu metni tüketicisi doğunca (v0.6 booking) onu `src/lib/`'e çıkarmayı gerektirir. |
+| Hata Yönetimi & Degradasyon | ✅ | Anahtar yok → 503 (UAT 3). Girdi ihlali → 400 (UAT 6/7/8/21). Üst-akış hatası, ilk-token asılması ve stream-ortası sessizlik → 200 + ziyaretçinin dilinde not, `maxDuration`'a dayanmıyor (UAT 14/34/35). Retry kapalı, 429'da not 0,2–1,5 s'de geliyor (UAT 37). Platform hatası sızmıyor (UAT 32). |
+| Güvenlik | ⚠️ | **Temiz olan:** girdi tam doğrulanıyor — dizi tipi, ham sayı ≤ 100, rol whitelist, `{role, content}` yeniden kurma, per-mesaj 8192 + toplam 16384 byte, trailing-user. Dinamik import yalnız `routing.locales` beyaz listesinden geçen değerle çalışıyor (path traversal 16/16 kapalı, UAT 40); `__proto__` kirletmiyor (UAT 25). Sır yalnız `process.env`'de, hata gövdeleri ve log anahtar taşımıyor (UAT 24). **⚠️ gerekçesi:** (1) `/api/chat`'te hız sınırı / origin kontrolü yok — kimliksiz POST sınırsız, günlük kota dışarıdan tüketilebilir (UAT 23 ❌, kapsam-dışı, v0.6 adayı). (2) npm audit 9 açık (1 kritik / 4 high / 4 moderate), çoğu `next@15.5.19` upstream'inde ve aralık-içi güncellemeyle kapanıyor; `package.json` Dokunulmaz → kullanıcı kararı bekliyor. groq-sdk sıfır açık ekledi. |
+| Test Kapsamı | ✅ | Vitest 39 → **86** (7 dosya). `chat-sanitize.test.ts` 25 test, `chat-route-timeout.test.ts` 22 test (gerçek `route.ts` + gerçek `groq-sdk`, yalnız `fetch` sahte, sanal saat). Her davranış değişikliği kendi testini getirdi ve kapı bozuk girdiyle sınandı (UAT 26/38/43). LLM çıktısı CI'da test edilmiyor (bilinçli, DECISIONS 2026-07-21); o eksenin kapısı elle koşulan marka mührü harness'i ve kalıcı değil (→ Ne Kötü Gitti). |
 
 ---
 
@@ -207,16 +190,20 @@
 
 - [PHASE-18-GOLIVE.md](PHASE-18-GOLIVE.md) — tarihsel-kayıt (marka mührü gate koşuları · model yeniden seçimi · iki canlı arızanın teşhisi · canlı kanıt artefaktları)
 - [PHASE-18-ARASTIRMA.md](PHASE-18-ARASTIRMA.md) — araştırma-detayı (değerlendirilen Groq istemcileri · streaming adaptasyonu · byte-cap ölçüm kararı · dikkat edilecekler · teknik kararlar C.1–C.6)
+- [PHASE-18-UAT.md](PHASE-18-UAT.md) — uat (4. koşumun 44 senaryosu ve kanıt notları · otomatik kontrol bulguları: CI, analiz araçları, npm audit, faz-penceresi güvenlik taraması, artefakt süpürmesi)
 
 ---
 
 ## Sonuç
 
-- **Tamamlanma Tarihi:** [Tarih]
-- **Toplam Task:** [Sayı]
-- **Notlar:** [Önemli kararlar, sonraki faza aktarılanlar]
+- **Tamamlanma Tarihi:** 2026-10-02
+- **Toplam Task:** 13 (18.01–18.08 plan + 18.09–18.13 üç düzeltme turu; hepsi ✅ ve arşivde)
+- **Milestone karşılandı (6/6 ayak):** `route.ts` Groq'a geçti, streaming/sanitizasyon/zarif offline korundu (UAT 1/2/3/5) · system prompt TR-birincil + rakam uydurma yasağı (UAT 9/10) · per-mesaj byte cap (UAT 7/8) · 5 dil gözle doğrulandı (18.07 + UAT 9) · chatbot canlıda çalışıyor (UAT 1/30) · `M5` + OVERVIEW stack satırı güncel (review Adım 2'de okundu). Kapanış notu gerekmedi.
+- **Kalite: 7 ✅ + 1 ⚠️** — ⚠️ Güvenlik (hız sınırı / origin yok, UAT 23; npm audit 9 açık, Dokunulmaz → kullanıcı kararı).
+- **Kararlar** → `docs/DECISIONS.md` 2026-07-21 (sağlayıcı), 2026-07-22 (dil kuralı + `temperature`), 2026-09-11 ×2 (model + `max_tokens`; betimleyici CTA atfı + hitap), 2026-09-12 (zaman aşımı), 2026-10-02 (ziyaretçi dilinde sunucu metni).
+- **Sonraki faza aktarılanlar:** v0.5 versiyon-sonu teknik borç fazı (discuss-phase `teknik_borç` damgalar). Adaylar: hız sınırı / origin, npm audit `next` güncellemesi, canlı chatbot sağlık kontrolü, marka mührü harness'inin kalıcılaşması, TB-3, prompt cilası, `GROQ_API_KEY` Preview env. Dal kuralı ve brief'in yetkisi → prd-review.
 
 ---
 
 **Oluşturulma:** 2026-07-21
-**Son Güncelleme:** 2026-10-02 — **verify-phase 18 (4. koşum):** UAT baştan koşuldu, küme 39 → 44; **43 ✅ / 1 ❌** (senaryo 23, kapsam-dışı). 18.12 canlıda gerçek Chrome 5/5, 18.13 CI yeşil; düzeltme task'ı çıkmadı → sırada review-phase 18.
+**Son Güncelleme:** 2026-10-02 — **review-phase 18: Faz 18 ✅ tamamlandı, faz donduruldu.** Milestone 6/6, kalite 7 ✅ + 1 ⚠️ (Güvenlik), düzeltme task'ı çıkmadı. Boyut (Adım 5b): retrospektif sonrası ~25,3k token → UAT Sonuçları [PHASE-18-UAT.md](PHASE-18-UAT.md)'ye bölündü, parent ~15,8k.

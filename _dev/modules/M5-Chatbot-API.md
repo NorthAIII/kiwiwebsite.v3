@@ -56,10 +56,10 @@
 
 - "Thinking" durumu Living Flow imzasını taklit eder — generic yükleniyor spinner'ı / "online" noktası kullanılmaz (brief).
 - Groq SDK versiyonu `^1.3.0` (OpenAI-uyumlu API); model varsayılanı `qwen/qwen3.8-27b`. Groq `llama-3.3-70b-versatile`'ı 2026-07 ile 2026-09 arasında emekliye ayırdı (canlı 404 `model_not_found`) → TASK-18.08 go-live'ında model yeniden seçildi; sağlayıcı/SDK/mimari değişmedi (DECISIONS 2026-09-11).
-- Ücretsiz kota (2026-09): 1.000 istek/gün + **8.000 token/dakika** + 1.000 çıktı token/dakika (OTPM). `max_tokens` peşin rezerve edilir → 512'de kalır (18.08). `MAX_TOTAL_BYTES` bu bütçenin girdi ayağını korur: sınır olmadan tek istek 12 × 8192 = 98KB (~25k token) gönderip TPM'i tek çağrıda yakabiliyordu (UAT 18 senaryo 21).
+- Ücretsiz kota (2026-09): 1.000 istek/gün + **8.000 token/dakika** + 1.000 çıktı token/dakika (OTPM). OTPM talebi `max_tokens`'a kadar sayılabiliyor → 512'de kalır (18.08; 1024 limiti tek başına aşıyordu). Ölçüm (production log, 2026-10-02): OTPM 429'larında "Requested" hem 512 hem 78–332 görüldü, yani talep her zaman tam `max_tokens` değil. `MAX_TOTAL_BYTES` bu bütçenin girdi ayağını korur: sınır olmadan tek istek 12 × 8192 = 98KB (~25k token) gönderip TPM'i tek çağrıda yakabiliyordu (UAT 18 senaryo 21).
 - Vercel'de canlı çalışması için env'e `GROQ_API_KEY` eklenmeli.
 - Bekleyen iş: chatbot'u gerçek "book a call" formuna/akışına bağlama (MASTER_PROMPT v2 §8).
 
 ---
 
-**Son Güncelleme:** 2026-10-02 — TASK-18.12: F5.1'e **hata notu dili** sözleşmesi eklendi. Not artık ziyaretçinin dilinde akıyor: Referer → `NEXT_LOCALE` → TR, metin `chat.error`'dan. Kabul kriteri ve edge case karşılıkları yazıldı (UAT 18 senaryo 36, DECISIONS 2026-10-02). Zaman sınırları, sanitizasyon, model, `max_tokens: 512` ve prompt değişmedi.
+**Son Güncelleme:** 2026-10-02 — review-phase 18: Teknik Notlar'daki kota satırı ölçüme hizalandı — OTPM talebi her zaman tam `max_tokens` değil, ama ona kadar çıkabiliyor; 512 değişmedi. Sözleşme, sınırlar ve kabul kriterleri aynı.
