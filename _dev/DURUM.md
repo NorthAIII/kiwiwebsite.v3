@@ -1,6 +1,6 @@
 # DURUM — Proje Dashboard
 
-**Son Güncelleme:** 2026-10-02 — **TASK-18.13 ✅:** bayat Anthropic referansları kapandı (`ci.yml` yorumu + brief §6/§7 + üç yaşayan `_dev` dokümanı); Faz 18'in 13 task'ı da ✅ → sırada verify-phase 18.
+**Son Güncelleme:** 2026-10-02 — **verify-phase 18 (4. koşum):** 44 senaryo / 43 ✅ / 1 ❌ (senaryo 23, kapsam-dışı); düzeltme task'ı çıkmadı → sırada review-phase 18.
 
 <!-- KURAL: Bu satır her oturum sonunda ÜZERİNE YAZILIR — tek satır, tek cümle. "Önceki:" / "Eski:" prefix ile kümülatif yığma YASAK; HTML comment'e sarma da yasak (CLAUDE.md → Doküman Disiplini). Tarih + kısa özet yeterli; detay için git log + ilgili PHASE/TASK dokümanları. -->
 
@@ -9,7 +9,7 @@
 ## Aktif Faz
 
 **Faz:** **Faz 18 — v0.5 Chatbot: ücretsiz sağlayıcı geçişi + canlıya alma** (🔄 girildi; discuss-phase ✅ 2026-07-21). Fazlar 1–17 ✅; v0.5 ilk içerik fazı. Milestone / 5 kabul kriteri → `docs/DECISIONS.md` 2026-07-21; kapsam kararları → `phases/PHASE-18.md`.
-**Adım:** **verify** — verify 3. koşumunun (2026-09-12, 39 senaryo / 36 ✅ / 3 ❌) iki kapsam-içi açığı da kapandı: **senaryo 36** (TASK-18.12 ✅, hata notu ziyaretçinin dilinde) ve **senaryo 39** (TASK-18.13 ✅, `ci.yml` yorumu + `MASTER_PROMPT_v2.md` §6/§7 Groq'a hizalandı). İkisinin de canlı/CI teyidi verify'da. Kapsam-dışı: senaryo 23 (hız sınırı/origin → v0.6). **Sıradaki: `/devflow:verify-phase 18`** — baştan (4. koşum).
+**Adım:** **review** — verify 4. koşumu (2026-10-02) baştan koşuldu: **44 senaryo / 43 ✅ / 1 ❌**. 18.12 canlıda teyitli (gerçek Chrome 5/5: hata notu ziyaretçinin dilinde), 18.13'ün CI teyidi yeşil. Tek ❌ senaryo 23 (hız sınırı/origin), kapsam-dışı ve kayıtlı (v0.6). **Sıradaki: `/devflow:review-phase 18`**.
 
 **v0.5 kapsamı ve açık kalemler** (re-kickoff 2026-07-21):
 
@@ -23,7 +23,7 @@
 
 **Kapatıldı:** BULGU-S2 / BULGU-S9 = `page.route` harness artefaktı (memory'de, takip gerektirmez).
 
-**İlerleme:** verify-phase 18 3. koşumu (2026-09-12) — **39 senaryo / 36 ✅ / 3 ❌**. Küme 33→39: 18.11 zaman aşımı sözleşmesi (34 iki asılma ayağı · 35 meşru yavaş yanıt · 36 fallback dili · 37 `maxRetries: 0` · 38 kümülatif test) + 19'un sınıf süpürmesinden 39. Canlı ~90 çağrı, **0 × 504** (önceki tur 47'de 2). CI `main` HEAD yeşil, Vitest 69/69, `next build` exit 0. Go-live detayı `PHASE-18-GOLIVE.md`'ye bölündü.
+**İlerleme:** verify-phase 18 4. koşumu (2026-10-02) — **44 senaryo / 43 ✅ / 1 ❌**. Küme 39→44: 18.12'nin hata notu dili sözleşmesi (40 locale girdisine adversarial · 41 kaynak sırası · 42 iki bağlam · 43 kümülatif test · 44 yükleme maliyeti). Canlı ~140 model çağrısı, **0 × 504**. CI `main` HEAD (`0930490`) yeşil, Vitest 86/86, `next build` exit 0.
 **Aktif Faz Dokümanı:** `phases/PHASE-18.md` (🔄 Faz 18). Faz geçmişi → `PHASES.md`; v0.4 release → `docs/RELEASE-v0.4.md`; Faz 17 → `phases/PHASE-17.md`.
 
 ---
@@ -42,12 +42,12 @@
 ## Aktif Task
 
 **Task:** yok — Faz 18'in 13 task'ı da ✅. Son tamamlanan: `tasks/archive/TASK-18.13.md`.
-**Durum:** Faz 18 🔄 (v0.5 içerik fazı, Adım **verify**). Versiyon Sonu Durumu **`içerik_fazları`**. Chatbot canlıda çalışıyor; 18.09/18.10/18.11 düzeltmelerinin üçü de canlıda teyitli (senaryo 30).
-**İlerleme:** Üçüncü verify turunun iki düzeltme task'ı da ✅ (18.12 + 18.13, 2026-10-02). Sırada `/devflow:verify-phase 18` — yine **baştan**.
+**Durum:** Faz 18 🔄 (v0.5 içerik fazı, Adım **review**). Versiyon Sonu Durumu **`içerik_fazları`**. Chatbot canlıda çalışıyor; 18.09–18.12 düzeltmelerinin dördü de canlıda teyitli (senaryo 30 + 36).
+**İlerleme:** verify 4. koşumu kapandı, kapsam-içi açık yok. Sırada `/devflow:review-phase 18`.
 
 ## Task Durumu (Aktif Faz)
 
-> **Faz 18 aktif (🔄)** — discuss ✅ + research ✅ + plan ✅ + verify-plan ✅ + UAT **üç kez** koşuldu; **13 task: 13 ✅** → Adım **verify**. Detay/icra → `tasks/archive/TASK-18.YY.md`; snapshot + Go-live + UAT → `phases/PHASE-18.md`.
+> **Faz 18 aktif (🔄)** — discuss ✅ + research ✅ + plan ✅ + verify-plan ✅ + UAT **dört kez** koşuldu; **13 task: 13 ✅** → Adım **review**. Detay/icra → `tasks/archive/TASK-18.YY.md`; snapshot + Go-live + UAT → `phases/PHASE-18.md`.
 
 | # | Task | Durum | Açıklama |
 |---|------|-------|----------|
@@ -96,7 +96,7 @@
 ## Hızlı Erişim
 
 **Aktif Task:** yok (13/13 ✅). Son tamamlanan: `tasks/archive/TASK-18.13.md`.
-**Aktif Faz:** **Faz 18 🔄** (v0.5 Chatbot Groq geçişi + canlıya alma; discuss ✅ + research ✅ + plan ✅ + verify-plan ✅ + 13 task ✅ + UAT ×3, Adım **verify**). **Aktif Versiyon v0.5.** Versiyon Sonu Durumu **`içerik_fazları`**. **Canlı = `main` HEAD** (her push deploy); chatbot canlıda (`qwen/qwen3.8-27b`). Faz dokümanı: `phases/PHASE-18.md` (→ **Go-live** + **UAT Sonuçları**); araştırma detayı → `phases/PHASE-18-ARASTIRMA.md`.
+**Aktif Faz:** **Faz 18 🔄** (v0.5 Chatbot Groq geçişi + canlıya alma; discuss ✅ + research ✅ + plan ✅ + verify-plan ✅ + 13 task ✅ + UAT ×4, Adım **review**). **Aktif Versiyon v0.5.** Versiyon Sonu Durumu **`içerik_fazları`**. **Canlı = `main` HEAD** (her push deploy); chatbot canlıda (`qwen/qwen3.8-27b`). Faz dokümanı: `phases/PHASE-18.md` (→ **Go-live** + **UAT Sonuçları**); araştırma detayı → `phases/PHASE-18-ARASTIRMA.md`.
 **v0.5 kaynağı (karar + 5 kabul kriteri):** `docs/DECISIONS.md` 2026-07-21; go-live'daki model + `max_tokens` kararları → DECISIONS 2026-09-11.
 **Sonraki versiyon adayları (→ `PRD/VERSIONS.md`):** **ana sayfa mesaj netliği / ilk-ekran anlaşılırlığı** (kullanıcı 2026-10-02: ziyaretçi kim olduğumuzu ve ne yaptığımızı anlamadan çıkıyor; teşhis + hero çapası çelişkisi → `PRD/NOTES.md`; booking/takvimle önceliği yarışır, sıra prd-refine'da damgalanır) · v0.6 booking/takvim · çeviri senkronu (non-TR + AR) · BULGU-S3 craft cila · TB-3 / npm audit / brief mobil perf · chatbot prompt cilası (TR yankı/tekrar lekeleri) · `GROQ_API_KEY` Preview env · **`/api/chat` hız sınırı / origin kontrolü** (verify 18 senaryo 23) · **npm audit `next` aralık-içi güncelleme** (1 kritik, Dokunulmaz onayı gerekir) · **brief'in yetkisi + kalan bayatlığı** (OVERVIEW "çelişkide v2 geçerli" + Korumalı `ILKELER.md:34` örneği; → `PRD/NOTES.md`).
 **Task Sistemi:** `tasks/TASKS-README.md`
