@@ -9,6 +9,10 @@
 
 <!-- Her yeni karar aşağıdaki formatta en üste eklenir (en yeni en üstte) -->
 
+### 2026-10-02 — Memory mezuniyeti: i18n "anahtar varlığı ≠ değer tazeliği" disiplini
+
+i18n "anahtar varlığı ≠ değer tazeliği" süreç disiplini artık `tests/i18n-parity.test.ts` (CI `fast` job → `npm run test`; 5 dilin anahtar kümesi karşılaştırılır, değerler değil) tarafından yakalanıyor — memory'den mezun edildi. (Claude kararı · audit-docs; politika yarısı zaten CLAUDE.md → Projeye Özgü Kurallar → i18n'de.)
+
 ### 2026-10-02 — Sunucunun ziyaretçiye akıttığı metin ziyaretçinin dilinde: Referer prefix'i → `NEXT_LOCALE` cookie'si → TR; metin `messages/*.json`'dan
 
 **Bağlam:** TASK-18.12 (verify 18, üçüncü düzeltme turu, UAT senaryo 36). `route.ts`'in hata/zaman-aşımı notu sabit Türkçeydi (`FALLBACK_MESSAGE`); EN/DE/AR/ES ziyaretçi canlıda Türkçe cümle görüyordu. TASK-18.11 bu yolu **ana** degradasyon yolu yaptı: asılı çağrı artık 504 değil 200+not ile kapanıyor, `Chatbot.tsx`'in `!res.ok` kapısı devreye girmiyor ve 5 dilde hazır `chat.error` atlanıyordu. Canlıda yol gerçekten tetikleniyor: hızlı ardışık 20 çağrının 5'i, kök neden Groq ücretsiz tier 429. Route locale'i bilmiyor, çünkü middleware matcher `api`'yi atlıyor.

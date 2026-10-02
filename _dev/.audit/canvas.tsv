@@ -5,7 +5,7 @@ id	path	status	status_reason	checked_version	last_checked	content_hash	exclude	a
 2	_dev/DURUM.md	pending		1	2026-07-21	8803be32562f3be7df27869a49320b75b1264b494bb4e5c4b0f602be29bd665a	0	2026-07-18	
 3	_dev/ILKELER.md	pending		1	2026-07-21	4b90e9061a5bbc91135b1502ddbcac12d43794a402eae8a94bda5d896c8a2da9	0	2026-07-18	
 4	_dev/INDEX.md	pending		1	2026-07-21	347be3cc8e33c760d1c5f2bc7367af07e0cf1e15baed353105846d1c5a1a21ff	0	2026-07-18	
-5	_dev/MEMORY.md	pending		1	2026-07-21	7da80e4a694c1d080e19b15ce2f721e55156893d3f74fd5214fef1c7ac4f6c10	0	2026-07-18	
+5	_dev/MEMORY.md	conformant		5	2026-10-02	3d4e0954dfe1f84f26b159d5e69b1bca7df3cb38a4dfbdaee9f0bc08952c0199	0	2026-07-18	
 6	_dev/MODULE-MAP.md	pending					0	2026-07-18	
 7	_dev/OVERVIEW.md	pending					0	2026-07-18	
 8	_dev/PHASES.md	pending					0	2026-07-18	
@@ -30,12 +30,17 @@ id	path	status	status_reason	checked_version	last_checked	content_hash	exclude	a
 172	_dev/docs/perf/README-v0.1.md	pending					0	2026-09-12	
 173	_dev/docs/perf/README-v0.2.md	pending					0	2026-09-12	
 24	_dev/docs/perf/README.md	pending					0	2026-07-18	
+180	_dev/memory/a11y-muhru-iki-gate.md	pending					0	2026-10-02	
 25	_dev/memory/a11y-olcum-tema-tuzagi.md	pending					0	2026-07-18	
 26	_dev/memory/aria-hidden-color-contrast-muafiyeti-degil.md	pending					0	2026-07-18	
 27	_dev/memory/axe-offscreen-inline-contrast.md	pending					0	2026-07-18	
 28	_dev/memory/axe-webgl-contrast-incomplete.md	pending					0	2026-07-18	
+181	_dev/memory/canli-dogrulama-kanit-artefakti.md	pending					0	2026-10-02	
+182	_dev/memory/ci-actions-rest-gozlemi.md	pending					0	2026-10-02	
 29	_dev/memory/devflow-sistemi.md	pending					0	2026-07-18	
 157	_dev/memory/groq-model-emekliligi-runtime-404.md	pending					0	2026-09-12	
+176	_dev/memory/host-uat-arac-envanteri.md	pending					0	2026-10-02	
+183	_dev/memory/lighthouse-host-yuku-gozlemi.md	pending					0	2026-10-02	
 30	_dev/memory/lighthouse-lantern-render-timing-korligi.md	pending					0	2026-07-18	
 31	_dev/memory/next-config-redirect-locale-prefix.md	pending					0	2026-07-18	
 32	_dev/memory/perf-olcum-devcontainer-kurulumu.md	pending					0	2026-07-18	
@@ -44,8 +49,11 @@ id	path	status	status_reason	checked_version	last_checked	content_hash	exclude	a
 35	_dev/memory/runtime-harness-selector-teyidi.md	pending					0	2026-07-18	
 36	_dev/memory/sandbox-runtime-browser-page-route.md	pending					0	2026-07-18	
 37	_dev/memory/tailwind-v4-translate-transition-property.md	pending					0	2026-07-18	
+184	_dev/memory/tarayici-accept-language-locale-yonlendirmesi.md	pending					0	2026-10-02	
 38	_dev/memory/tema-fix-html-dark-token-flip.md	pending					0	2026-07-18	
+185	_dev/memory/ui-etiketine-sabit-adla-atif-yapma.md	pending					0	2026-10-02	
 39	_dev/memory/vercel-git-disconnect-deploy-tetiklenmez.md	pending					0	2026-07-18	
+186	_dev/memory/yerel-prod-listening-pid-teyidi.md	pending					0	2026-10-02	
 40	_dev/modules/M1-LivingFlow-TasarimSistemi.md	pending					0	2026-07-18	
 41	_dev/modules/M2-Sayfalar-Bolumler.md	pending					0	2026-07-18	
 42	_dev/modules/M3-Etkilesim-Primitives.md	pending					0	2026-07-18	
@@ -64,6 +72,7 @@ id	path	status	status_reason	checked_version	last_checked	content_hash	exclude	a
 55	_dev/phases/PHASE-17.md	pending					0	2026-07-18	2026-09-12|c3e7c0f293e001fc36dd0c36fd876b4d812e890e597c776ce585caccb96927fc|dondurulmuş faz dokümanı (PHASES ✅): bölme yasak; içerik-koruyan reformat 20k altına indirmiyor (ölçüldü, en iyi ~110 token) — kalan doluluk meşru (audit-docs 2026-09-12)
 158	_dev/phases/PHASE-18-ARASTIRMA.md	pending					0	2026-09-12	
 159	_dev/phases/PHASE-18-GOLIVE.md	pending					0	2026-09-12	
+177	_dev/phases/PHASE-18-UAT.md	pending					0	2026-10-02	
 160	_dev/phases/PHASE-18.md	pending					0	2026-09-12	
 56	_dev/phases/PHASE-2.md	pending					0	2026-07-18	
 57	_dev/phases/PHASE-3.md	pending					0	2026-07-18	2026-09-12|19b1d90b8ac378ab8647839e868d764f62e048367c2e77f8ee832f17f6927c0f|dondurulmuş faz dokümanı (PHASES ✅): bölme yasak; içerik-koruyan reformat 20k altına indirmiyor (ölçüldü, en iyi ~110 token) — kalan doluluk meşru (audit-docs 2026-09-12)
@@ -127,6 +136,8 @@ id	path	status	status_reason	checked_version	last_checked	content_hash	exclude	a
 169	_dev/tasks/archive/TASK-18.09.md	pending					0	2026-09-12	
 170	_dev/tasks/archive/TASK-18.10.md	pending					0	2026-09-12	
 171	_dev/tasks/archive/TASK-18.11.md	pending					0	2026-09-12	
+178	_dev/tasks/archive/TASK-18.12.md	pending					0	2026-10-02	
+179	_dev/tasks/archive/TASK-18.13.md	pending					0	2026-10-02	
 107	_dev/tasks/archive/TASK-2.01.md	pending					0	2026-07-18	
 108	_dev/tasks/archive/TASK-2.02.md	pending					0	2026-07-18	
 109	_dev/tasks/archive/TASK-2.03.md	pending					0	2026-07-18	

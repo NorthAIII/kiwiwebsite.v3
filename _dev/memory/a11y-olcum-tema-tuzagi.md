@@ -17,4 +17,4 @@
 - Sonuç: panel içindeki `text-pulse` / `text-canvas/NN` öğeleri **light'ta geçer, dark'ta başarısız** (krem üstünde düşük kontrast). Tersi de mümkün.
 - **Kural:** bir kontrast düzeltmesini değerlendirirken her zaman **hem light hem dark**'ta doğrula (ILKELER "light & dark"). Bir öğenin bir temada geçmesi diğerini garanti etmez.
 
-İlişkili: [Perf ölçüm host-yükü + fresh-prod-serve disiplini](../MEMORY.md) (Süreç Disiplinleri) — aynı ölçüm-disiplini ailesi.
+İlişkili: [Lighthouse host-yükü](lighthouse-host-yuku-gozlemi.md) + [fresh-prod-serve listening-PID teyidi](yerel-prod-listening-pid-teyidi.md) (Süreç Disiplinleri) — aynı ölçüm-disiplini ailesi.
