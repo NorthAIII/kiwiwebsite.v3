@@ -58,3 +58,11 @@ Bulgu: sorun **içerik yokluğu değil, sıralama ve ilk-ekran yoğunluğu**.
 - **Ad fikri: "Ekip OS".** Kullanıcı Crew OS yerine Türkçe bir ad düşünüyor ("belki"). Açık soru: site 5 dilli ve public ad v0.3'te `/crew-os` olarak yerleşti (redirect, sitemap, namespace). Türkçe ad yalnız TR'de mi kullanılır, her dilde mi, yoksa Crew OS mu kalır? Mesaj revizesi netleşince karar verilir; şimdilik mockup'larda "Crew OS" kullanılır.
 - **Tanışma kanıtı fikri.** Crew OS bölümüne şu tür bir satır: "Bizimle nasıl tanıştınız? Size e-postayı otomasyonumuz gönderdi." Ajansın kendi işini kendi sistemiyle yürüttüğünün canlı kanıtı. Dürüstlük şartı: satır yalnız gerçekten o kanaldan gelen ziyaretçiye gösterilmeli (örn. e-posta linkindeki bir parametreyle). Herkese gösterilirse sahte iddia olur. Ticari e-posta mevzuatı (İYS, tacir/esnaf istisnası) ayrıca teyit edilmeli.
 ---
+### Ana sayfa mesajı — yön seçildi
+**Tarih:** 2026-10-03
+**Bağlam:** 3 ilk-ekran mockup'ı (A net tanım · B tek sahne · C uçtan uca akış) Design tuvalinde yan yana sunuldu (claude.ai artifact, sahibine özel).
+
+**Karar (kullanıcı):** **Yön B — Tek sahne.** Başlık: "Siz müşterinizle ilgilenirken, WhatsApp'ta bekleyen diğeri kaybolmasın." Alt metin: "Cevap, randevu, hatırlatma, takip: işletmenize biz kurarız, kendiliğinden çalışır." Altında sektör seçicili sahne kartı (spor salonu · klinik · e-ticaret · emlak): sahne cümlesi + Ne olur / Sistem / Sonuç. Spor salonu kartı "Alpfit'te şu an canlı" etiketini taşır, diğerleri dürüstçe "Örnek akış". Eyebrow "Kiwi AI Lab · İşletmeler için otomasyon".
+
+**Sıra (kullanıcı):** Önce Faz 19'un kalan iki task'ı (19.07 → 19.06) bitirilir. Ardından v0.5 kapanışı yapılır ve sonraki versiyon "ana sayfa mesajı" olarak tanımlanır. Kapsam adayları: yeni hero + sahne kartı + ana sayfa bölüm sırası (sektörler yukarı) + opsiyonel Crew OS tanışma kanıtı. Önce TR; diğer 4 dile anahtarlar eklenir.
+---
