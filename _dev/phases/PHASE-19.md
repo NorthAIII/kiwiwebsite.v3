@@ -131,7 +131,7 @@ mekanizma: "`npm audit` kritik + high 0" → kritik 0, kalan 2 high (`next`'in b
 
 **Uygulama tuzakları:**
 
-- **WAF publish canlıya anında dokunur, deploy'dan bağımsızdır.** Kural yalnız draft olarak stage edilir (`vercel firewall rules add --json …`, `vercel firewall diff`). `vercel firewall publish --yes`'i **kullanıcı** koşar, merge/canlı task'ında. Önce `--rate-limit-action log` ile eşleşme probe'la görülür, sonra 429'a geçilir (Vercel'in kademeli yayın pratiği).
+- **WAF publish canlıya anında dokunur, deploy'dan bağımsızdır.** Kural yalnız draft olarak stage edilir (`vercel firewall rules add --json …`, `vercel firewall diff`). `vercel firewall publish --yes`'i **kullanıcı** koşar, merge/canlı task'ında. Önce `log` aksiyonuyla eşleşme probe'la görülür, sonra 429'a geçilir (Vercel'in kademeli yayın pratiği). CLI 59.26.0'da `rules edit --rate-limit-action log` `--action`'sız sessizce yok sayılır; çalışan yol spec'ten türetilen `log` varyantıyla `rules edit --json`'dur (TASK-19.06 ilk oturumu).
 - **Kendi IP'n de sayılır.** Hobby'de system bypass yok (`Requires Pro or Enterprise`); probe patlaması geliştiricinin IP'sini ≤10 dk 429'da tutar. Bu yüzden origin probe'ları önce, limit patlaması en son koşulur. Pencere hizası bilinmediği için patlama 429 görene dek gönderir (en fazla 2×6+1 = 13 istek) ve kaçıncı istekte geldiğini raporlar.
 - **Sayaçlar bölge başınadır.** Farklı edge bölgelerinden gelen tek kaynak limiti N kat aşabilir; dağıtık kötüye kullanım zaten kapsam dışı. Fonksiyon bölgesi tek: `iad1`.
 - **Hobby kural bütçesi:** toplam 3 custom rule, bunun 1'i rate-limit. Bu faz rate-limit slotunu tüketir. Persistent action (`--duration`) Hobby'de yok.
@@ -171,7 +171,9 @@ mekanizma: "`npm audit` kritik + high 0" → kritik 0, kalan 2 high (`next`'in b
 
 ## Task Listesi
 
-> Bu bölüm `/devflow:plan-phase` oturumunda dolduruldu (2026-10-02). 7 task; hepsi `revize/v0.5-teknik-borc` dalında koşar (19.01 dalı açar), 19.07 `main`'e alır.
+> Bu bölüm `/devflow:plan-phase` oturumunda dolduruldu (2026-10-02). 7 task; 19.01 `revize/v0.5-teknik-borc` dalını açar, 19.07 `main`'e alır.
+>
+> **Plan revizyonu (2026-10-03, kullanıcı kararı):** 19.07 (merge + kod katmanının canlı ölçümü) 19.06'dan (WAF canlı) önce koşar; **tablo sırası çalıştırma sırasıdır.** 19.06 merge'den sonra `main` üzerinde koşar ve fazın son task'ıdır. Discuss'un "son task merge + canlı doğrulama" sırası bu ölçüde değişti. Gerekçe → `tasks/TASK-19.06.md` → Bağlam.
 
 <!-- KURAL: Task Listesi yalnızca özet tablodur (#, Task, Durum, kısa açıklama). Task'ın icra detayı / oturum kaydı / çalışma notu buraya değil `tasks/TASK-N.md`'ye yazılır — bu bölüme sızan detay şişmedir, temizlenir (bölme değil). -->
 
@@ -182,8 +184,8 @@ mekanizma: "`npm audit` kritik + high 0" → kritik 0, kalan 2 high (`next`'in b
 | 19.03 | TASK-19.03 | ✅ Tamamlandı | TB-G2 origin — kapıyı `route.ts`'in ilk işi yap (403 + red logu) + route testleri + yerel gerçek tarayıcı + M5 |
 | 19.04 | TASK-19.04 | ✅ Tamamlandı | TB-G2 hız sınırı — WAF kural spec'i `ops/firewall/chat-rate-limit.json` + `drift.mjs` + test (publish yok; stage → inspect ayağı koşum yasağıyla 19.06'nın stage adımına devredildi) |
 | 19.05 | TASK-19.05 | ✅ Tamamlandı | TB-G2 ölçüm — `ops/probe-chat-guard.mjs` (model çağırmaz) + yerel doğrulama + TESTING.md canlı katman |
-| 19.06 | TASK-19.06 | 🔴 Bloke | TB-G2 hız sınırı canlı — WAF `log` → 429 (publish kullanıcıda) + patlama ölçümü + drift 0 + M5/M6. Stage ✅ (sunucu kabul etti; 19.04'ün devrettiği iki kriter kapandı); kullanıcı publish'ten vazgeçti, taslak discard → akıbet kullanıcı kararında |
-| 19.07 | TASK-19.07 | ⬜ Bekliyor | Milestone — preview kapısı (duman + origin probu) → ff-merge `main` → canlı ölçüm (3 host, tarayıcı, 429 + sınırdaki offline kopyası, drift, audit) |
+| 19.07 | TASK-19.07 | ⬜ Bekliyor | Kod katmanı canlı — preview kapısı (duman + origin probu) → ff-merge `main` → canlı ölçüm (3 host, gerçek tarayıcı, red logu, audit, regresyon). WAF yok, pencere bütçesi yok |
+| 19.06 | TASK-19.06 | 🔄 Devam ediyor | TB-G2 hız sınırı canlı (merge sonrası, son task) — WAF `log` → 429 (publish kullanıcıda) + patlama + sınırdaki ziyaretçinin offline kopyası + drift 0 + M5/M6. İlk oturum: stage ✅ (sunucu kabul etti), publish'ten vazgeçildi → discard; revizyonla 19.07'nin arkasına alındı |
 
 **Durum simgeleri:** ⬜ Bekliyor | 🔄 Devam ediyor | ⏸️ Duraklatıldı | ✅ Tamamlandı | 🔴 Bloke | ❌ İptal
 
