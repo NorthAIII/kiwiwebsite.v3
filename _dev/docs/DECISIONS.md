@@ -15,16 +15,16 @@
 
 **Seçenekler:**
 1. v3'te devam: v0.5 kapanışı (UAT, review, senaryo testi, prd-review) → yeni versiyonda ana sayfa revizesi.
-2. Yeni repo ve klasör: v3 dondurulur, kararlar ve kanıtlanmış kod parçaları temiz bir brief'le taşınır.
+2. Ayrı repo: v3 dondurulur, kararlar ve kanıtlanmış kod parçaları temiz bir brief'le taşınır.
 
-**Karar (kullanıcı, 2026-10-03):** Seçenek 2. Bu karar 2026-06-27 ve 2026-10-03 tarihli "v3'te yerinde, sıfırdan başlanmaz" kararının yerine geçer (Superseded).
+**Karar (kullanıcı, 2026-10-03):** Seçenek 2. Yeni repo açılmadı: 2026-08-25'te başlanmış private `NorthAIII/kiwiwebsite.v4` (rakip ölçümü, jüri analizi, yön A sahnesi) sürdürülür. Bu karar 2026-06-27 ve 2026-10-03 tarihli "v3'te yerinde, sıfırdan başlanmaz" kararının yerine geçer (Superseded).
 - v3 canlıda kalır, **bakım modundadır:** yalnız canlıyı bozan sorun ya da güvenlik yaması (quick mode). Yeni özellik girmez.
 - Faz 19'un 7 task'ı tamam ve canlıda; verify-phase / review-phase ve v0.5 kapanış ritüeli (senaryo testi, prd-review) **yapılmaz**.
-- Yeni projenin tek girdisi `docs/V4-BRIEF.md`: mesaj kararları (yön B), marka/taksonomi kuralları, taşınacak kod, korunacak URL'ler, alan adı geçişi, açık sorular.
+- Yeni projenin tek girdisi v4 reposu `NorthAIII/kiwiwebsite.v4` → `_brief/03-v3-devir.md`: mesaj kararları (yön B), marka/taksonomi kuralları, taşınacak kod, korunacak URL'ler, alan adı geçişi, açık sorular.
 
 **Gerekçe:** Hedef bir üst seviye; v3 üzerine yama onu 19 fazlık yapıya bağlar. Altyapının değerli parçaları (chatbot, origin kapısı, WAF spec'i, çeviriler, Living Flow) kopyalanarak korunur. Canlı site korunmaya devam eder (Faz 19 güvenlik işleri canlıda). Bedel: i18n yönlendirmeleri, SEO ve test altyapısı yeni projede yeniden kurulur.
 
-**İlgili:** `docs/V4-BRIEF.md` · `PRD/NOTES.md` (ana sayfa mesajı notları) · `docs/RAKIP-ANALIZI-ILK-EKRAN.md`.
+**İlgili:** v4 reposu `NorthAIII/kiwiwebsite.v4` → `_brief/03-v3-devir.md` · `PRD/NOTES.md` (ana sayfa mesajı notları) · `docs/RAKIP-ANALIZI-ILK-EKRAN.md`.
 
 ---
 

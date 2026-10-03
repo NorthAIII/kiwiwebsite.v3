@@ -8,7 +8,7 @@
 > kanca hakkı testi, sınıflar ve eşikler, kümeleme/mezuniyet supapları, ne yazılır ne yazılmaz.
 > Yöntem oraya, kayıt buraya: index'e konan her karakter her oturumda yeniden ödenir.
 
-**Son Güncelleme:** 2026-10-03 — TASK-19.07: host araç atomuna canlı chatbot harness tuzakları (submit kontrolünü chatbot düğmesine daralt, hidrasyonu bekle) ve devcontainer `vercel login` notu eklendi; index satırı değişmedi.
+**Son Güncelleme:** 2026-10-03 — repo haritasına v4 (yeni site, private) eklendi; v3 bakım modunda.
 
 <!-- KURAL: Bu satır her güncellemede ÜZERİNE YAZILIR. "Önceki:" prefix ile kümülatif yığma YASAK (CLAUDE.md → Doküman Disiplini). -->
 
@@ -52,7 +52,7 @@
 - Repo: `github.com/NorthAIII/kiwiwebsite.v3` · Repo kökü: `/home/kivanc/projects/kiwiwebsite.v3`
 - Deploy: Vercel `north-ai/kiwi-ai-lab-v3` (her `main` push → otomatik deploy). Canlı: kiwiailab.com
 - Chatbot env: `GROQ_API_KEY` (zorunlu, canlıda Vercel env'de), `CHAT_MODEL` (opsiyonel, varsayılan `qwen/qwen3.8-27b`).
-- [Repo haritası](memory/repo-haritasi.md) — frontend = `NorthAIII/kiwiwebsite.v3` (bu repo, public); backend ayrı/private = `NorthAIII/kiwi-ai-lab`; eski repo'lar terk edilmiş öncül (yeniden kullanma).
+- [Repo haritası](memory/repo-haritasi.md) — canlı = `NorthAIII/kiwiwebsite.v3` (bu repo, bakım modunda); **yeni site = `kiwiwebsite.v4`** (private); backend ayrı/private = `NorthAIII/kiwi-ai-lab`; eski repo'lar terk edilmiş öncül (yeniden kullanma).
 - [CI (GitHub Actions) gözlemi `gh` olmadan da yapılabilir](memory/ci-actions-rest-gozlemi.md) — public repo: `/actions/runs?head_sha=<sha>` auth'suz REST.
 - [Host UAT araç envanteri](memory/host-uat-arac-envanteri.md) — host: node 24 · system Chrome 153 · `gh`/`vercel` yetkili · `:3000` yabancı → yerel `test:e2e`'yi override config'le koş.
 - [DevFlow sistemi](memory/devflow-sistemi.md) — DevFlow özel araç (`github.com/36337/DevFlow`); bu yüzden public repo'da `.claude/` gitignore'da, `_dev/` commit'lenir.

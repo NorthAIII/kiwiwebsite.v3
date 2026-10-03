@@ -52,7 +52,7 @@ Faz numaraları **global, sürekli ve append-only**'dir — versiyon değişse b
 
 > Yaklaşan faz konuları — **numarasız**. Faza girildiğinde (discuss-phase) buradan çıkar, numara (mevcut en büyük faz no + 1) alıp Faz Durumu tablosuna 🔄 olarak geçer. Aşağıdakiler güçlü revize için aday konulardır; kesin kapsam ve sıra PRD/discuss-phase'de netleşir.
 
-**v0.5 versiyon-sonu fazları:** Faz 19 sonrası senaryo testi ve prd-review **yapılmayacak** — v3 bakım moduna alındı, yeni site ayrı repoda (DECISIONS 2026-10-03, `docs/V4-BRIEF.md`).
+**v0.5 versiyon-sonu fazları:** Faz 19 sonrası senaryo testi ve prd-review **yapılmayacak** — v3 bakım moduna alındı, yeni site ayrı repoda (DECISIONS 2026-10-03, v4 reposu `NorthAIII/kiwiwebsite.v4` → `_brief/03-v3-devir.md`).
 
 <!-- KURAL: Bu liste YAKIN ufku tutar (örn. aktif versiyonun kalan fazları), uzak gelecek değil — uzak ileriye dönük plan PRD/VERSIONS.md'dedir. Numara YAZMA (numara faza girince damgalanır). Bir konu faza girince bu listeden silinir (mezuniyet — soft delete yasak: HTML comment/üstü çizili/"Önceki:" prefix yok). -->
 <!-- NOT: VERSIONS.md feature→versiyon haritasını tekrar etme; burada faz konusu (geliştirme birimi) + milestone tutulur, feature listesi değil. -->

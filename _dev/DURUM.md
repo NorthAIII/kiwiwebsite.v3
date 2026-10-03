@@ -1,6 +1,6 @@
 # DURUM — Proje Dashboard
 
-**Son Güncelleme:** 2026-10-03 — **v3 bakım moduna alındı:** Faz 19 task'ları 7/7 canlıda, UAT/review ve v0.5 kapanışı yapılmayacak; yeni site ayrı repoda başlıyor (brief `docs/V4-BRIEF.md`, DECISIONS 2026-10-03).
+**Son Güncelleme:** 2026-10-03 — **v3 bakım moduna alındı:** Faz 19 task'ları 7/7 canlıda, UAT/review ve v0.5 kapanışı yapılmayacak; yeni site ayrı repoda başlıyor (brief v4 reposu `NorthAIII/kiwiwebsite.v4` → `_brief/03-v3-devir.md`, DECISIONS 2026-10-03).
 
 <!-- KURAL: Bu satır her oturum sonunda ÜZERİNE YAZILIR — tek satır, tek cümle. "Önceki:" / "Eski:" prefix ile kümülatif yığma YASAK; HTML comment'e sarma da yasak (CLAUDE.md → Doküman Disiplini). Tarih + kısa özet yeterli; detay için git log + ilgili PHASE/TASK dokümanları. -->
 
@@ -9,7 +9,7 @@
 ## Aktif Faz
 
 **Faz:** Yok — **v3 bakım modunda** (DECISIONS 2026-10-03). Fazlar 1–19 kapandı; Faz 19'un 7 task'ı canlıda, UAT/review yapılmadı (kullanıcı kararı).
-**Adım:** **bakım** — v3'e yalnız canlıyı bozan sorun ya da güvenlik yaması girer (`/devflow:quick`). Yeni özellik girmez. Yeni site ayrı repoda: `docs/V4-BRIEF.md` yeni klasöre kopyalanır, orada `/devflow:kickoff` ile başlanır.
+**Adım:** **bakım** — v3'e yalnız canlıyı bozan sorun ya da güvenlik yaması girer (`/devflow:quick`). Yeni özellik girmez. Yeni site ayrı repoda: v4 reposu `NorthAIII/kiwiwebsite.v4` → `_brief/03-v3-devir.md` yeni klasöre kopyalanır, orada `/devflow:kickoff` ile başlanır.
 
 **v0.5 durumu ve açık kalemler:**
 
@@ -96,10 +96,10 @@
 
 ## Hızlı Erişim
 
-**Aktif Task:** yok (bakım modu). Son tamamlanan task: `tasks/archive/TASK-19.06.md`. **Yeni site brief'i:** `docs/V4-BRIEF.md`.
+**Aktif Task:** yok (bakım modu). Son tamamlanan task: `tasks/archive/TASK-19.06.md`. **Yeni site brief'i:** v4 reposu `NorthAIII/kiwiwebsite.v4` → `_brief/03-v3-devir.md`.
 **Aktif Faz:** Faz yok, Adım **bakım** (v3 bakım modu). **Aktif Versiyon v0.5.** Versiyon Sonu Durumu **`teknik_borç`**. **Canlı = `main` HEAD** (her push deploy); chatbot canlıda (`qwen/qwen3.8-27b`). Faz dokümanı: `phases/PHASE-19.md`; son tamamlanan: `phases/PHASE-18.md` (alt-dokümanlar: `-ARASTIRMA` · `-GOLIVE` · `-UAT`).
 **v0.5 kaynağı (karar + 5 kabul kriteri):** `docs/DECISIONS.md` 2026-07-21; go-live'daki model + `max_tokens` kararları → DECISIONS 2026-09-11; zaman aşımı → 2026-09-12; ziyaretçi dilinde sunucu metni → 2026-10-02.
-**Sonraki iş:** v3'te yeni versiyon açılmaz. Ana sayfa mesajı (yön B) ve diğer adaylar yeni sitede ele alınır → `docs/V4-BRIEF.md`.
+**Sonraki iş:** v3'te yeni versiyon açılmaz. Ana sayfa mesajı (yön B) ve diğer adaylar yeni sitede ele alınır → v4 reposu `NorthAIII/kiwiwebsite.v4` → `_brief/03-v3-devir.md`.
 **Task Sistemi:** `tasks/TASKS-README.md`
 **PRD (karar kaynağı):** `PRD/VIZYON.md` · `PRD/VERSIONS.md` · `PRD/features/`
 **Revize Backlog (bilinen sorunlar):** `docs/REVIZE-BACKLOG.md`
