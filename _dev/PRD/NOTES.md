@@ -36,3 +36,17 @@ Bulgu: sorun **içerik yokluğu değil, sıralama ve ilk-ekran yoğunluğu**.
 
 **Sonuç:** Konu prd-review'a (ya da daha önce açılırsa prd-refine'a) aittir. Tek kararla kapanabilir: brief'in yetkisi belirlenir, sonra OVERVIEW cümlesi + ILKELER örneği + README bağlantısı o karara göre hizalanır.
 ---
+### Ana sayfa mesajı — yön kararları (ilk-ekran notunun devamı)
+**Tarih:** 2026-10-03
+**Bağlam:** prd-refine açıldı ama v0.5 aktif olduğu için ertelendi. Ardından kullanıcıyla serbest tartışmada revizenin rotası yeniden değerlendirildi.
+
+**Kararlar (kullanıcı onaylı):**
+- **2026-06-27 "v3'te yerinde" kararı korunur.** Altyapı (Living Flow, 5 dil, tema, chatbot) sağlam; sıfırdan başlanmaz.
+- **2026-06-28 "cerrahi kopya" reframe'i geri alınır.** REVIZE-BACKLOG A2'deki ilk tespit ("ciddi yeniden yazım gerek") haklı çıktı. Ana sayfa mesajı ve akışı gerçekten baştan yazılır. VIZYON §4'teki hero "sabit çapa" statüsü düşer.
+- **Hedef:** ziyaretçi ilk ekranda 8 saniye içinde kim olduğumuzu, kime hitap ettiğimizi ve ne yaptığımızı anlamalı.
+- **"AI / yapay zekâ" kelimesi mesajda kullanılmaz.** Yalnız marka adında (Kiwi AI Lab) kalır.
+- **Süreç:** (1) TR + global rakiplerin ilk ekran taraması → (2) 3 mesaj yönü (metin) → (3) seçilen 2-3 yönle ilk-ekran mockup'ları → (4) mevcut sitede uygulama. Keşif adımları hafif yürür, ağır faz ritüeli yok.
+- **Çalışma yönü:** Yön A (düz/net kimlik + kitle) ile yön B'nin (sektöre göre somut örnek) birleşimi; rakip taraması sonrası teyit edilir.
+
+**Sonuç:** VIZYON §4 ve versiyon damgası prd-review / prd-refine'da bu kararlara göre güncellenir. Faz 19'un kalan iki task'ı (19.07, 19.06) beklemede kalabilir; keşif koda dokunmuyor.
+---
