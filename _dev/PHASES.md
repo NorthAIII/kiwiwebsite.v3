@@ -37,7 +37,7 @@ Faz numaraları **global, sürekli ve append-only**'dir — versiyon değişse b
 | 16 | v0.4 versiyon-sonu teknik borç (+ TR production release) | gym PNG disk hijyeni (TB-D1) + npm audit / bağımlılık denetimi (TB-D2); non-TR çeviri ertelendi (sonraki faz/prd-review). Kullanıcı önceliğiyle **v0.4 TR production release yapıldı** (canlı `f173234` — `docs/RELEASE-v0.4.md`); guardrail regresyonsuz | ✅ |
 | 17 | v0.4 versiyon-sonu senaryo testi | v0.4 ana sayfa + 5 alt sayfa uçtan-uca doğrulama (S1–S9: giriş/yolculuk/mod/kontrol/taksonomi/5-dil/chatbot/v0.4-guardrail/adversarial); v0.4 delta odağı = **Alpfit Plus ürün vitrini** (9 bölüm + `alpfit` namespace parite + before/after Living Flow + dürüstlük 4/4); branch/build + **canlı duman** (test-what's-live, v0.4 canlıda `f173234`); TR öncelik, chatbot 0-token, otonom, keşfet+kaydet+triyaj | ✅ |
 | 18 | v0.5 Chatbot — ücretsiz sağlayıcı geçişi + canlıya alma (C1) | Chatbot Anthropic Opus → **Groq** ($0/kartsız; go-live'da model `qwen/qwen3.8-27b` — DECISIONS 2026-09-11); `route.ts` OpenAI-uyumlu drop-in (streaming/sanitizasyon/zarif offline korunur) + system prompt **TR-birincil dil algılama** + **"rakam uydurma yasağı"** + per-mesaj byte cap (400) + `CHAT_MODEL` override korunur; **5-dil gözle doğrulama → Faz 18 sonunda canlıya alma** (canlı `/api/chat` 503/offline çözülür); `M5`+OVERVIEW stack güncellenir; UI dokunulmaz | ✅ |
-| 19 | v0.5 versiyon-sonu teknik borç — güvenlik (bağımlılık yaması + `/api/chat` kota koruması) | `next` aralık-içi 15.5.27 + npm audit kritik/high 0 (TB-G1); `/api/chat` hız sınırı + yabancı origin reddi canlıda ölçülüyor, kural repo'da kod, $0, sınıra takılan → mevcut 5-dil offline kopyası (TB-G2); UI/i18n dokunulmaz; guardrail (build/Vitest/CI a11y/First Load JS/i18n parite/sayfa-redirect) regresyonsuz; revize dalı → faz sonu `main` | 🔄 |
+| 19 | v0.5 versiyon-sonu teknik borç — güvenlik (bağımlılık yaması + `/api/chat` kota koruması) | `next` aralık-içi 15.5.27 + npm audit kritik/high 0 (TB-G1); `/api/chat` hız sınırı + yabancı origin reddi canlıda ölçülüyor, kural repo'da kod, $0, sınıra takılan → mevcut 5-dil offline kopyası (TB-G2); UI/i18n dokunulmaz; guardrail (build/Vitest/CI a11y/First Load JS/i18n parite/sayfa-redirect) regresyonsuz; revize dalı → faz sonu `main` | ✅ (task'lar 7/7 canlıda; UAT/review yapılmadı — v3 bakım moduna alındı, DECISIONS 2026-10-03) |
 
 **Durum simgeleri:**
 - 🔄 **Devam ediyor** — discuss-phase başladı (aktif faz)
@@ -52,7 +52,7 @@ Faz numaraları **global, sürekli ve append-only**'dir — versiyon değişse b
 
 > Yaklaşan faz konuları — **numarasız**. Faza girildiğinde (discuss-phase) buradan çıkar, numara (mevcut en büyük faz no + 1) alıp Faz Durumu tablosuna 🔄 olarak geçer. Aşağıdakiler güçlü revize için aday konulardır; kesin kapsam ve sıra PRD/discuss-phase'de netleşir.
 
-**v0.5 versiyon-sonu fazları** (numarasız) — Teknik Borç Kapatma Faz 19 olarak girildi; sırada (2) **Senaryo Testi** → sonra zorunlu **prd-review**. Just-in-time — discuss-phase promote eder, şimdi numaralanmaz/kapsamlanmaz. Faz 19'a alınmayan sahipli açıklar → DURUM.md (Aktif Faz → madde 6) ve `PRD/VERSIONS.md`.
+**v0.5 versiyon-sonu fazları:** Faz 19 sonrası senaryo testi ve prd-review **yapılmayacak** — v3 bakım moduna alındı, yeni site ayrı repoda (DECISIONS 2026-10-03, `docs/V4-BRIEF.md`).
 
 <!-- KURAL: Bu liste YAKIN ufku tutar (örn. aktif versiyonun kalan fazları), uzak gelecek değil — uzak ileriye dönük plan PRD/VERSIONS.md'dedir. Numara YAZMA (numara faza girince damgalanır). Bir konu faza girince bu listeden silinir (mezuniyet — soft delete yasak: HTML comment/üstü çizili/"Önceki:" prefix yok). -->
 <!-- NOT: VERSIONS.md feature→versiyon haritasını tekrar etme; burada faz konusu (geliştirme birimi) + milestone tutulur, feature listesi değil. -->
@@ -115,6 +115,6 @@ Faz numaraları **global, sürekli ve append-only**'dir — versiyon değişse b
 
 ---
 
-**Son Güncelleme:** 2026-10-02 — discuss-phase 19: Faz 19 (v0.5 versiyon-sonu teknik borç — güvenlik) Faz Durumu tablosuna 🔄 eklendi; Sıradaki Fazlar'dan teknik borç mezun edildi (senaryo testi + prd-review kalır); geçiş notu eklendi. Sıradaki adım **`/devflow:research-phase`**.
+**Son Güncelleme:** 2026-10-03 — Faz 19 task'ları tamam (UAT/review yapılmadı); v3 bakım moduna alındı, yeni site ayrı repoda (DECISIONS 2026-10-03). Sıradaki faz yok.
 
 <!-- KURAL: Bu satır her güncellemede ÜZERİNE YAZILIR. "Önceki:" prefix ile kümülatif yığma YASAK (CLAUDE.md → Doküman Disiplini). -->
