@@ -78,7 +78,7 @@
 | `docs/DECISIONS.md` | Önemli mimari ve tasarım kararları (güncel seri; giriş noktası) — eski kararlar tarih-aralığı arşivlerinde: `docs/DECISIONS-2026-07-02..2026-07-18.md`, `docs/DECISIONS-2026-06-27..2026-07-01.md` |
 | `docs/TESTING.md` | Test convention notu: komutlar + test yerleri + 3 katman (Vitest node/jsdom + Playwright/axe) + a11y ölçüm disiplini (özet/pointer) + kümülatif beklenti + CI + canlı katman (elle, CI dışı: `/api/chat` probe'u + WAF drift script'i, pencere bütçesi) |
 | `docs/REVIZE-BACKLOG.md` | Güçlü revize ham girdisi: kullanıcı tespitleri + bekleyen işler (PRD tohumu) |
-| `docs/UMAMI-ANALYTICS.md` | Umami analytics entegrasyon spec'i (bekliyor — kod, değerler, uyarılar) |
+| `docs/UMAMI-ANALYTICS.md` | Umami analytics entegrasyon spec'i (uygulandı, canlıda doğrulandı — kod, değerler, uyarılar) |
 | `docs/RELEASE-v0.2.md` | v0.2 production release runbook & checklist (hafif operasyonel oturum: temiz pencere → PR/merge → canlı duman testi → Umami +1). run-task 10'dan önce. |
 | `docs/RELEASE-v0.4.md` | **v0.4** TR production release kaydı (2026-07-16, canlı `f173234`): `revize/alpfit-plus`→`main` ff-merge + canlı duman testi ✓; TR tam, non-TR stale-TR ertelendi; açık takip chatbot env. |
 | `docs/perf/` | Ana sayfa Lighthouse perf/a11y tabanları (`README.md` = tuzaklar + kanonik artefakt index'i + aktif v0.3 ölçümleri + metodoloji; `README-v0.1.md` / `README-v0.2.md` = kapanmış versiyonların koşu arşivleri; `home-{mobile,desktop}-<tarih>.{html,json}` kanonik artefaktlar). İlk taban: v0.1 2026-06-28 (TD3). |
@@ -207,7 +207,7 @@ kiwiwebsite.v3/
 
 ---
 
-**Son Güncelleme:** 2026-10-02 — TASK-19.05: `docs/TESTING.md` satırına yeni "Canlı Katman (elle, CI dışı)" bölümü eklendi.
+**Son Güncelleme:** 2026-10-03 — audit-docs (çapraz düzeltme, OVERVIEW turu): `docs/UMAMI-ANALYTICS.md` satırındaki bayat "bekliyor" durumu "uygulandı, canlıda doğrulandı" yapıldı.
 
 <!-- KURAL: Bu satır her güncellemede ÜZERİNE YAZILIR. "Önceki:" prefix ile kümülatif yığma YASAK (CLAUDE.md → Doküman Disiplini). -->
 <!-- KURAL: Tamamlanmış fazların task arşiv listesini INDEX'e ekleme — `ls _dev/tasks/archive/` zaten görür. INDEX yalnızca aktif klasör konumlarını gösterir; statik liste dokümanı değildir. -->
