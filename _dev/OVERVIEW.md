@@ -36,11 +36,13 @@ Tekrarlayan operasyonel işi otomatikleştirmek isteyen işletmeler (spor salonu
 |--------|-----------|
 | Framework | Next.js 15 (App Router), React 19, TypeScript (strict) |
 | Styling | Tailwind CSS v4 (config `globals.css` içinde `@theme`) |
-| WebGL / 3D | three.js + @react-three/fiber + @react-three/drei + custom GLSL |
+| WebGL / 3D | three.js + @react-three/fiber + custom GLSL |
 | Hareket | GSAP + ScrollTrigger, Lenis (smooth scroll) |
 | i18n | next-intl (tr varsayılan + en/ar/de/es, `as-needed` prefix, AR RTL) |
 | AI / Chatbot | groq-sdk (OpenAI-uyumlu) — `/api/chat` streaming (varsayılan `qwen/qwen3.8-27b`, env `GROQ_API_KEY` + opsiyonel `CHAT_MODEL`) |
 | Tipografi | Fraunces (display serif) + Geist (grotesque sans) |
+| Analytics | Umami (self-hosted, `umami.kiwiailab.com`) — script `[locale]/layout.tsx` `<head>`'inde; spec `docs/UMAMI-ANALYTICS.md` |
+| Test / CI | Vitest (node + jsdom, Testing Library) · Playwright + axe (a11y) · GitHub Actions CI (build + Vitest · Playwright/axe); konvansiyon `docs/TESTING.md` |
 | Deployment | Vercel (`north-ai/kiwi-ai-lab-v3`), repo `github.com/NorthAIII/kiwiwebsite.v3` |
 
 ---
@@ -48,7 +50,7 @@ Tekrarlayan operasyonel işi otomatikleştirmek isteyen işletmeler (spor salonu
 ## Temel Özellikler
 
 - **The Living Flow** — cursor/scroll'a tepki veren, lazy-load + degradasyonlu (mobil/düşük güç → az parçacık; reduced-motion/no-WebGL → statik SVG) WebGL imza alanı.
-- **Çok dilli site** — 5 dil, AR için RTL; locale-prefixli route'lar, dünya-ikonu dil değiştirici.
+- **Çok dilli site** — 5 dil, AR için RTL; varsayılan TR prefixsiz, diğer diller locale-prefixli (`as-needed`), dünya-ikonu dil değiştirici.
 - **Canlı chatbot (Groq)** — `/api/chat` üzerinden streaming, kullanıcı dilini algılar (TR-birincil), key yoksa zarif "offline".
 - **Light/Dark tema** — `localStorage` + FOUC önleyici script, Living Flow temaya uyumlu.
 - **Sektör/ürün showcase sayfaları** — Crew OS (route `/crew-os`), Alpfit (spor salonu), vaka çalışmaları, bülten.
@@ -70,12 +72,16 @@ src/
 │   ├── sitemap.ts / robots.ts / icon.svg
 ├── components/              # Bölüm bileşenleri + UX primitives
 │   ├── living-flow/         # WebGL imza (LivingFlow, FlowCanvas, FlowScrim)
-│   ├── bunker-os/ · gym/ · forum/   # Sayfa-özel showcase/içerik bileşenleri
+│   ├── bunker-os/ · alpfit/ · forum/   # Sayfa-özel showcase/içerik bileşenleri
+│   ├── analytics/           # Umami script'i
+├── lib/                     # Chatbot sunucu yardımcıları: girdi temizliği + aynı-origin kapısı
 ├── i18n/                    # next-intl: routing, request, navigation
 └── middleware.ts            # next-intl middleware
 
 messages/                    # tr/en/ar/de/es.json çeviri dosyaları
-public/                      # Statik varlıklar (Alpfit ekran görüntüleri vb.)
+tests/                       # Vitest testleri (birim, route, i18n parite) + e2e/ (Playwright + axe a11y)
+ops/                         # Elle koşulan canlı-katman araçları (CI dışı): /api/chat probe'u + firewall/ (WAF kural spec'i + drift script'i)
+.github/workflows/ci.yml     # CI: build + Vitest · Playwright/axe
 ```
 
 ---
@@ -102,9 +108,18 @@ _dev/
 ├── DURUM.md           # Canlı dashboard
 ├── MEMORY.md          # Proje hafızası index'i
 ├── memory/            # Öğrenim dosyaları (ilk öğrenimde oluşur, lazy-load)
+├── BULGULAR.md        # Proje sorun kanvası index'i
+├── bulgular/          # Bulgu atomları + archive/ (gerektiğinde oluşur)
 ├── MODULE-MAP.md      # Modül/feature haritası (özet)
 ├── PHASES.md          # Faz durum özeti + sıradaki fazlar
 ├── QUALITY.md         # Kalite eksenleri
+│
+├── PRD/               # PRD dokümanları
+│   ├── VIZYON.md      # Merkezi vizyon (karar kaynağı)
+│   ├── VERSIONS.md    # Feature → versiyon haritası
+│   ├── SESSION-NOTES.md  # PRD çalışma durumu notları
+│   ├── NOTES.md       # Geliştirme sırasında not/analiz log'u
+│   └── features/      # Feature dokümanları
 │
 ├── modules/           # Modül detay dokümanları (M1–M6)
 ├── phases/            # Faz dokümanları (her faz ayrı)
@@ -112,7 +127,7 @@ _dev/
 └── tasks/             # Task dokümanları ve arşiv
 ```
 
-CLAUDE.md repo kökünde olacaktır (`/CLAUDE.md`) — kickoff-verify'da oluşturulur.
+CLAUDE.md repo kökündedir (`/CLAUDE.md`) — proje onu `.claude/CLAUDE.md`'de tutmayı seçtiyse yol odur (yer kararı: `kickoff-verify` Adım 3).
 
 ---
 
@@ -120,4 +135,4 @@ CLAUDE.md repo kökünde olacaktır (`/CLAUDE.md`) — kickoff-verify'da oluştu
 
 ---
 
-**Son Güncelleme:** 2026-09-11 — TASK-18.08 (v0.5 go-live): stack tablosu chatbot model varsayılanı `llama-3.3-70b-versatile` → `qwen/qwen3.8-27b` (Groq modeli emekliye ayırdı — DECISIONS 2026-09-11; kullanıcı onaylı, Korumalı doküman). Ayrıca Kapsam + Temel Özellikler satırlarındaki "Groq/Llama" ifadesi model ailesinden arındırılıp "Groq" yapıldı (model adı yalnız stack tablosunda tutulur → tekrar bayatlamaz). Sağlayıcı (Groq), SDK, kimlik, taksonomi ve kapsam değişmedi.
+**Son Güncelleme:** 2026-10-03 — audit-docs (kullanıcı onaylı olgu mutabakatı, Korumalı doküman): kaynak ağacı, stack tablosu ve doküman ağacı bugünkü repoya çekildi; amaç, kapsam ve kimlik değişmedi.
