@@ -50,3 +50,11 @@ Bulgu: sorun **içerik yokluğu değil, sıralama ve ilk-ekran yoğunluğu**.
 
 **Sonuç:** VIZYON §4 ve versiyon damgası prd-review / prd-refine'da bu kararlara göre güncellenir. Faz 19'un kalan iki task'ı (19.07, 19.06) beklemede kalabilir; keşif koda dokunmuyor.
 ---
+### Ana sayfa mesajı — kullanıcı fikirleri (Crew OS adı + tanışma kanıtı)
+**Tarih:** 2026-10-03
+**Bağlam:** Rakip taraması ve 3 mesaj yönü sunulduktan sonra kullanıcı iki fikir getirdi.
+
+- **Crew OS / Alpfit ayrımı korunur** (VIZYON §3 ile uyumlu).
+- **Ad fikri: "Ekip OS".** Kullanıcı Crew OS yerine Türkçe bir ad düşünüyor ("belki"). Açık soru: site 5 dilli ve public ad v0.3'te `/crew-os` olarak yerleşti (redirect, sitemap, namespace). Türkçe ad yalnız TR'de mi kullanılır, her dilde mi, yoksa Crew OS mu kalır? Mesaj revizesi netleşince karar verilir; şimdilik mockup'larda "Crew OS" kullanılır.
+- **Tanışma kanıtı fikri.** Crew OS bölümüne şu tür bir satır: "Bizimle nasıl tanıştınız? Size e-postayı otomasyonumuz gönderdi." Ajansın kendi işini kendi sistemiyle yürüttüğünün canlı kanıtı. Dürüstlük şartı: satır yalnız gerçekten o kanaldan gelen ziyaretçiye gösterilmeli (örn. e-posta linkindeki bir parametreyle). Herkese gösterilirse sahte iddia olur. Ticari e-posta mevzuatı (İYS, tacir/esnaf istisnası) ayrıca teyit edilmeli.
+---
