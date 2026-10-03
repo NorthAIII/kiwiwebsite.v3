@@ -16,7 +16,7 @@
 
 Geçemeyen istek **403** alır: gövde okunmadan, 503 anahtar kapısından ve sağlayıcı çağrısından önce. Böylece yabancı origin ne anahtar durumunu ne gövde doğrulama ayrıntısını öğrenir. Ziyaretçi 403'ü görmez; UI her `!res.ok`'ta 5 dilli `chat.error` kopyasını gösterir (UI ve i18n değişmedi).
 
-Red tek satırla loglanır: `console.warn("chat origin rejected", {origin, host, secFetchSite})`. Gövde ve diğer başlıklar loglanmaz. Gerekçe: yanlış-pozitif 403 chatbot'u sessizce kapatır ve canlıda yalnız `vercel logs`'ta görünür. Vercel serving zincirinde `host`'un herkese açık host'u taşıdığı **henüz ölçülmedi** → TASK-19.07 probe'u + verify-phase.
+Red tek satırla loglanır: `console.warn("chat origin rejected", {origin, host, secFetchSite})`. Gövde ve diğer başlıklar loglanmaz. Gerekçe: yanlış-pozitif 403 chatbot'u sessizce kapatır ve canlıda yalnız `vercel logs`'ta görünür. Vercel serving zincirinde `host` herkese açık host'u taşıyor (ölçüm 2026-10-03, TASK-19.07): preview'da 403·403·503, canlıda apex, `www` ve `vercel.app` üzerinden 403·403·400. Red satırlarının `host`'u isteğin geldiği host, gerçek tarayıcı isteği (`Sec-Fetch-Site: same-origin`) için red yok.
 
 Kapı yalnız tarayıcı vektörünü kapatır; curl iki başlığı da sahteleyebilir, o yolun kapısı WAF hız sınırıdır. Kaynak: DECISIONS 2026-10-02.
 
@@ -72,4 +72,4 @@ Kapı yalnız tarayıcı vektörünü kapatır; curl iki başlığı da sahteley
 
 ---
 
-**Son Güncelleme:** 2026-10-02 — TASK-19.03: F5.1'e origin kapısı paragrafı + 403 kabul kriteri eklendi; edge case'in origin yarısı "var", hız sınırı yarısı TASK-19.06'ya kaldı.
+**Son Güncelleme:** 2026-10-03 — TASK-19.07: F5.1 origin paragrafı canlı ölçümle güncellendi (`host` Vercel'de herkese açık host'u taşıyor; üç host, gerçek tarayıcı, red logu).

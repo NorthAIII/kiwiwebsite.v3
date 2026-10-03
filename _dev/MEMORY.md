@@ -8,7 +8,7 @@
 > kanca hakkı testi, sınıflar ve eşikler, kümeleme/mezuniyet supapları, ne yazılır ne yazılmaz.
 > Yöntem oraya, kayıt buraya: index'e konan her karakter her oturumda yeniden ödenir.
 
-**Son Güncelleme:** 2026-10-02 — TASK-19.05: host araç envanterine yerelde "model çağrılmadı" ölçümü eklendi (`GROQ_BASE_URL` → sayaçlı sahte üst-akış + pozitif kontrol); index satırı değişmedi.
+**Son Güncelleme:** 2026-10-03 — TASK-19.07: host araç atomuna canlı chatbot harness tuzakları (submit kontrolünü chatbot düğmesine daralt, hidrasyonu bekle) ve devcontainer `vercel login` notu eklendi; index satırı değişmedi.
 
 <!-- KURAL: Bu satır her güncellemede ÜZERİNE YAZILIR. "Önceki:" prefix ile kümülatif yığma YASAK (CLAUDE.md → Doküman Disiplini). -->
 
