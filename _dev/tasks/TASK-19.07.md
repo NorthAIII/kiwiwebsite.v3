@@ -53,7 +53,7 @@ Preview'da `GROQ_API_KEY` yok (bilinçli, DURUM madde 2). Origin kapısı 503 an
 - [ ] **1. Temiz pencere**
   - `git status` temiz; dal push'lu. İlgisiz yerel değişiklikler commit'e girmez.
   - Dal HEAD'i için CI (fast + a11y) yeşil — auth'suz REST `/actions/runs?head_sha=<sha>` ya da `gh`.
-  - Birleştirme öncesi diff: `git diff --stat origin/main...revize/v0.5-teknik-borc`. Beklenen dosyalar: `package-lock.json`, `src/lib/chat-origin.ts`, `src/app/api/chat/route.ts`, `tests/` altındaki chat/firewall testleri, `ops/`, `_dev/`. Başka dosya varsa **dur**, kullanıcıya getir (TASK-18.01 dersi: "yalnız X" premisi diff'le doğrulanır).
+  - Birleştirme öncesi diff: `git diff --stat origin/main...revize/v0.5-teknik-borc`. Beklenen dosyalar: `package-lock.json`, `src/lib/chat-origin.ts`, `src/app/api/chat/route.ts`, `tests/` altındaki chat/firewall testleri, `ops/`, `_dev/`, `CLAUDE.md` (audit-docs `ee598ef`, yalnız doküman). Başka dosya varsa **dur**, kullanıcıya getir (TASK-18.01 dersi: "yalnız X" premisi diff'le doğrulanır).
   - Firewall'ın başlangıç hâli: `vercel firewall overview` → `Not configured`, `vercel firewall diff --json` → `{"changes": []}`. Değilse **dur**: bekleyen bir taslak ya da canlı bir kural var demektir, bu task'ın ölçümünü ve 19.06'nın temiz başlangıcını bozar.
 
 - [ ] **2. Preview kapısı (birleştirmeden ÖNCE)**
@@ -141,7 +141,7 @@ Kod **değişmez.** Git birleştirme (dal → `main`), Vercel Production deploy 
 
 ## Oturum Kayıtları
 
-_(task çalıştırıldığında doldurulur)_
+**verify-plan — 2026-10-03:** 1. adımın beklenen diff listesine `CLAUDE.md` eklendi (`git diff --stat origin/main...origin/revize/v0.5-teknik-borc` ile ölçüldü; dalda audit-docs `ee598ef` değiştirdi). Ortam notu: bu oturumun devcontainer'ında `vercel` CLI kurulu değil (`command not found`). Task `vercel` CLI'ı yetkili ve proje bağlı bir ortamda koşar (MEMORY host araç envanteri).
 
 ---
 
