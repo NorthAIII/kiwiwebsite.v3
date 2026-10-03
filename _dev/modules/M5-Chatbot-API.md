@@ -18,12 +18,15 @@ Geçemeyen istek **403** alır: gövde okunmadan, 503 anahtar kapısından ve sa
 
 Red tek satırla loglanır: `console.warn("chat origin rejected", {origin, host, secFetchSite})`. Gövde ve diğer başlıklar loglanmaz. Gerekçe: yanlış-pozitif 403 chatbot'u sessizce kapatır ve canlıda yalnız `vercel logs`'ta görünür. Vercel serving zincirinde `host` herkese açık host'u taşıyor (ölçüm 2026-10-03, TASK-19.07): preview'da 403·403·503, canlıda apex, `www` ve `vercel.app` üzerinden 403·403·400. Red satırlarının `host`'u isteğin geldiği host, gerçek tarayıcı isteği (`Sec-Fetch-Site: same-origin`) için red yok.
 
-Kapı yalnız tarayıcı vektörünü kapatır; curl iki başlığı da sahteleyebilir, o yolun kapısı WAF hız sınırıdır. Kaynak: DECISIONS 2026-10-02.
+Kapı yalnız tarayıcı vektörünü kapatır; curl iki başlığı da sahteleyebilir, o yolun kapısı WAF hız sınırıdır (canlıda, TASK-19.06 — aşağıda). Kaynak: DECISIONS 2026-10-02.
+
+**Hız sınırı (WAF, TASK-19.06):** Vercel WAF kuralı `chat-rate-limit` canlıda: `POST /api/chat`, `fixed_window` 600 s, IP başına 6 istek, aşımda 429. Kod ve deploy'dan bağımsızdır, istek fonksiyona ulaşmadan edge'de sayılır (403/400 dahil, yanıt kodundan bağımsız). Tanım `ops/firewall/chat-rate-limit.json`'da, uygulama ve drift kontrolü → M6 F6.4. Ölçüm 2026-10-03: temiz pencerede 429 tam 7. istekte; 429 altındaki ziyaretçi `/` ve `/en`'de kendi dilinin `chat.error` kopyasını görüyor, Gönder düğmesi tekrar etkinleşiyor, Groq çağrılmıyor.
 
 **Hata notu dili (TASK-18.12):** Üst-akış hatasında ya da zaman aşımında akan not ziyaretçinin baktığı sayfanın dilindedir. Route locale'i bilmez (middleware `api`'yi atlar). Dil istekten şu sırayla çözülür: `Referer`'ın ilk path segmenti → `NEXT_LOCALE` cookie'si → `tr`. `Accept-Language` kullanılmaz. Metin `messages/<locale>.json` → `chat.error`'dır, yani HTTP hatasında UI'ın gösterdiği offline kopyasıyla aynıdır. Yalnız hata anında dinamik import'la yüklenir ve parantez içinde akar; `\n\n` ayracı yalnız ziyaretçiye metin ulaştıysa eklenir. Konvansiyon ve gerekçe → DECISIONS 2026-10-02.
 
 **Kabul Kriterleri:**
 - Same-origin olmayan istek 403 alır; gövde okunmaz, sağlayıcı çağrılmaz. Kapı 503 anahtar kapısından da önce gelir.
+- Tek IP 10 dk içinde 7. `POST /api/chat`'te edge'de 429 alır; ziyaretçi kendi dilinin offline kopyasını görür ve en fazla 10 dk bekler.
 - `GROQ_API_KEY` yoksa istek zarif şekilde başarısız olur (503; UI "offline" gösterir).
 - Girdi sanitize edilir; geçmiş 12 mesajla sınırlanır; per-mesaj byte-cap aşımı 400 ile reddedilir.
 - Sağlayıcıya giden her mesaj yalnız `{role, content}` taşır — istemcinin eklediği başka alan geçmez.
@@ -39,7 +42,7 @@ Kapı yalnız tarayıcı vektörünü kapatır; curl iki başlığı da sahteley
 - Sağlayıcı asılı kalırsa (ilk token hiç gelmez ya da akış ortada susar) ziyaretçi 30 s beklemez: üst-akış zaman aşımı devreye girer ve aynı fallback metni akar. Zaman aşımı olmadan tek kapı platformun `maxDuration`'ıdır — o sınırda fonksiyon öldürülür, `catch` **hiç çalışmaz**, ziyaretçi ham 504 alır (UAT 18 senaryo 33'te canlıda 47 çağrının 2'si).
 - Kötüye kullanım: girdi uzunluğu/rol enjeksiyonu sanitize edilmeli (güvenlik ekseni). Üç hacim sınırı birbirinin yerini tutmaz: per-mesaj cap tek uzun mesajı, toplam byte çok sayıda sınır-altı mesajı, sayı kapısı dev dizinin taranmasını kapatır.
 - Origin kontrolü **var** (TASK-19.03, kodda): yabancı origin ve tarayıcı işareti taşımayan istek 403 alır. Ama curl başlıkları sahteleyebildiği için kotayı tek başına korumaz.
-- Hız sınırı **yok** (route, middleware ve `vercel.json` katmanlarının hiçbirinde) → başlıkları sahteleyen kimliksiz POST sınırsız; günlük kota dışarıdan tüketilebilir (UAT 18 senaryo 23). Faz 19 / TB-G2 kapatıyor: hız sınırı Vercel WAF kuralı (DECISIONS 2026-10-02); bu satır TASK-19.06'da güncellenir.
+- Hız sınırı **var** (Vercel WAF, TASK-19.06): başlıkları sahteleyen kimliksiz POST de IP başına 10 dk'da 6 ile sınırlı → tek kaynak günlük kotayı bitiremez (≤864/gün). Bilinçli kalıntılar (DECISIONS 2026-10-02): sayaç edge bölgesi başınadır, dağıtık kötüye kullanım kapsam dışıdır; pencere başındaki 6'lık patlama dakikalık OTPM'i (1.000) periyodik doyurabilir.
 - Model adı geçerliliği (env override yanlışsa).
 - Locale sinyali yoksa ya da yanıltıcıysa hata notu TR'ye düşer. Örnekler: Referer'ı tümden kapatan gizlilik ayarı + tarayıcı dili sayfayla aynı olduğu için cookie'nin hiç yazılmamış olması. Accept-Language'e bilinçle bakılmaz; `/de`'deki tr-TR tarayıcıyı yanlış dile götürürdü.
 
@@ -72,4 +75,4 @@ Kapı yalnız tarayıcı vektörünü kapatır; curl iki başlığı da sahteley
 
 ---
 
-**Son Güncelleme:** 2026-10-03 — TASK-19.07: F5.1 origin paragrafı canlı ölçümle güncellendi (`host` Vercel'de herkese açık host'u taşıyor; üç host, gerçek tarayıcı, red logu).
+**Son Güncelleme:** 2026-10-03 — TASK-19.06: WAF hız sınırı canlıda — F5.1'e hız sınırı paragrafı + kabul kriteri, edge case "yok" → "var" + bilinçli kalıntılar.

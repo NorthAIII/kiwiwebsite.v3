@@ -1,6 +1,6 @@
 # TASK-19.06: WAF hız sınırını canlıya al (merge sonrası; önce `log`, sonra 429) + patlama + sınırdaki ziyaretçi + drift
 
-**Durum:** 🔄 Devam ediyor — plan revize edildi (2026-10-03): TASK-19.07'den (merge + kod katmanının canlı ölçümü) sonra sürer. İlk oturumun ölçümleri → Oturum Kayıtları.
+**Durum:** ✅ Tamamlandı (2026-10-03) — WAF `chat-rate-limit` canlıda (`log` 18:46Z → 429 18:48Z), 429 temiz pencerede 7. istekte, sınırdaki ziyaretçi TR/EN offline kopyasını görüyor, drift 0.
 **Modül:** M5-Chatbot-API (+M6-SEO-Deploy) (modules/M5-Chatbot-API.md, modules/M6-SEO-Deploy.md)
 **Feature:** TB-G2 — `/api/chat` kota koruması (hız sınırı katmanı; milestone'un hız sınırı maddeleri)
 **Faz:** Phase 19 (phases/PHASE-19.md)
@@ -49,12 +49,12 @@ WAF kuralı **deploy'dan bağımsızdır.** Proje firewall'ında yaşar, publish
 
 ## Alt Görevler
 
-- [ ] **1. Ön koşullar**
+- [x] **1. Ön koşullar**
   - TASK-19.07 ✅: kod katmanı `main`'de canlı. Bu task `main` üzerinde koşar.
   - Firewall'ın başlangıç hâli: `vercel firewall overview` → `Not configured` · `vercel firewall diff --json` → `{"changes": []}` · `node ops/firewall/drift.mjs` → çıkış 2 (kural yok). Değilse **dur**, kullanıcıya getir.
   - **Firewall'a yazan her komut** `--yes --non-interactive </dev/null` ile koşulur. CLI 59.26.0'da "Publish to production now?" sorusu yalnız `--yes` yokken, stdin TTY iken ve önceden taslak yokken açılır (ilk oturum, `offerAutoPublish`). Bu üç ek soruyu kapatır.
 
-- [ ] **2. `log` modunda stage → kullanıcı publish**
+- [x] **2. `log` modunda stage → kullanıcı publish**
   - `vercel firewall rules add --json "$(cat ops/firewall/chat-rate-limit.json)" --yes --non-interactive </dev/null` → `node ops/firewall/drift.mjs` → çıkış 0 + DRAFT uyarısı.
   - Log varyantını scratchpad'e türet; spec'ten yalnız `action.mitigate.rateLimit.action` değişir: `node -e 'const s=require("./ops/firewall/chat-rate-limit.json");s.action.mitigate.rateLimit.action="log";process.stdout.write(JSON.stringify(s))' > <scratch>/log.json`
   - `vercel firewall rules edit chat-rate-limit --json "$(cat <scratch>/log.json)" --yes --non-interactive </dev/null` → `drift.mjs` → çıkış 1, tek fark satırı `action.mitigate.rateLimit.action: spec="rate_limit" · vercel="log"`.
@@ -63,27 +63,27 @@ WAF kuralı **deploy'dan bağımsızdır.** Proje firewall'ında yaşar, publish
   - Publish sonrası: `diff --json` → boş · `drift.mjs` → çıkış 1, aynı tek satır, DRAFT uyarısı yok (karşılaştırılan canlı `log` kuralıdır).
   - Kullanıcı yine publish etmezse: diff'te yalnız bu task'ın değişikliklerini gör → `vercel firewall discard --yes --non-interactive </dev/null` → `Not configured` teyidi. Task 🔴, bu kez vazgeçmenin gerekçesini sor ve kaydet.
 
-- [ ] **3. Eşleşmeyi gör (bloklamadan)**
+- [x] **3. Eşleşmeyi gör (bloklamadan)**
   - `node ops/probe-chat-guard.mjs --base https://kiwiailab.com --burst-only` → `log` modunda 429 gelmez, 13 istek 400 döner (kendi Origin origin kapısından geçer, geçersiz gövde sanitize'da durur). Script "sınır gözlenmedi" der ve çıkış 1 verir; bu adımda beklenen budur.
   - Origin senaryoları bu task'ta koşulmaz: TASK-19.07 canlıda ölçtü, burada yalnız pencere bütçesini yerler.
   - Kuralın 7. istekten itibaren eşleşip logladığını Vercel tarafında gör: `vercel firewall overview` / `vercel firewall traffic` (kuralın eşleşme sayısı). Eşleşme görünmüyorsa **dur**: koşul yanlış olabilir (path/method), 429'a geçme.
 
-- [ ] **4. Spec'in kendisini stage et → kullanıcı publish**
+- [x] **4. Spec'in kendisini stage et → kullanıcı publish**
   - `vercel firewall rules edit chat-rate-limit --json "$(cat ops/firewall/chat-rate-limit.json)" --yes --non-interactive </dev/null` → `drift.mjs` → çıkış 0 + DRAFT uyarısı → `vercel firewall diff` (yalnız `log` → `rate_limit`). Kullanıcı publish eder.
   - Publish sonrası: `diff --json` → boş · `drift.mjs` → **çıkış 0**, DRAFT uyarısı yok.
 
-- [ ] **5. Patlama → 429**
+- [x] **5. Patlama → 429**
   - Son probe isteğinden sonra **en az 10 dk bekle**. Sabit pencere; hiza bilinmiyor, beklemek temiz pencereyi garanti eder.
   - `node ops/probe-chat-guard.mjs --base https://kiwiailab.com --burst-only` → yalnız patlama (kendi Origin + geçersiz gövde). 429'un kaçıncı istekte geldiğini kaydet; temiz pencerede beklenen 7.
   - Kanıt artefaktı: probe çıktısı (zaman damgalı) + `drift.mjs` çıkış 0 + `vercel firewall overview` özeti.
 
-- [ ] **6. Sınırdaki ziyaretçi deneyimi** (5. adımın hemen ardından, IP hâlâ 429'dayken)
+- [x] **6. Sınırdaki ziyaretçi deneyimi** (5. adımın hemen ardından, IP hâlâ 429'dayken)
   - Gerçek Chrome'da `https://kiwiailab.com/` (TR, `NEXT_LOCALE=tr` cookie'si) ve `https://kiwiailab.com/en` → chatbot'a birer mesaj.
   - İkisinde de o dilin offline kopyası (`chat.error`) görünüyor, UI takılı kalmıyor. İstek edge'de 429 alır ve fonksiyona ulaşmaz, Groq kotası harcanmaz.
   - DOM metni ya da ekran görüntüsü kanıt artefaktına girer. Milestone'un "sınıra takılan ziyaretçi offline kopyasını görüyor" maddesinin tek gözlemi budur.
   - Mesaj yanıt alırsa (429 gelmediyse) pencere bitmiştir: sonuç "ölçülemedi"dir, başarısız değil. Yeni bir temiz pencere bekle, 5. ve 6. adımı birlikte tekrarla. Yanıt alan mesaj 1 Groq çağrısıdır, kayda geç.
 
-- [ ] **7. Dokümanlar**
+- [x] **7. Dokümanlar**
   - M5: edge case satırının hız sınırı yarısı "var" + kabul kriteri. Bilinçli kalıntıları da bir cümleyle yaz: sayaç bölge başına; pencere başındaki 6'lık patlama dakikalık OTPM'i periyodik doyurabilir.
   - M6 F6.4: firewall kuralı satırı.
   - DURUM: fazın bütün task'ları tamam → sıradaki `/devflow:verify-phase 19`.
@@ -117,12 +117,12 @@ _dev/modules/M6-SEO-Deploy.md         # F6.4 firewall kuralı — zaten var
 
 ## Test Kriterleri
 
-- [ ] `log` aşaması: Vercel tarafında kuralın eşleşmesi görüldü (overview/traffic), ziyaretçi bloklanmadı (13 istek 400) — `kanal: UAT`.
-- [ ] Canlı patlama: temiz pencerede 429 geldi, kaçıncı istekte olduğu kayıtlı (beklenen 7) — `kanal: UAT` (WAF yalnız Vercel serving zincirinde).
-- [ ] Canlı sınırdaki ziyaretçi: 429 altında `/` ve `/en`'de chatbot o dilin offline kopyasını gösteriyor, UI takılı kalmıyor — `kanal: UAT`.
-- [ ] `node ops/firewall/drift.mjs` → çıkış 0, draft uyarısı yok (karşılaştırılan canlı kural; spec'le birebir).
-- [ ] `vercel firewall diff` → boş (bekleyen draft yok).
-- [ ] M5/M6 hız sınırını, publish sahipliğini ve drift kontrolünü anlatıyor.
+- [x] `log` aşaması: Vercel tarafında kuralın eşleşmesi görüldü (overview/traffic), ziyaretçi bloklanmadı (13 istek 400) — `kanal: UAT`.
+- [x] Canlı patlama: temiz pencerede 429 geldi, kaçıncı istekte olduğu kayıtlı (beklenen 7) — `kanal: UAT` (WAF yalnız Vercel serving zincirinde).
+- [x] Canlı sınırdaki ziyaretçi: 429 altında `/` ve `/en`'de chatbot o dilin offline kopyasını gösteriyor, UI takılı kalmıyor — `kanal: UAT`.
+- [x] `node ops/firewall/drift.mjs` → çıkış 0, draft uyarısı yok (karşılaştırılan canlı kural; spec'le birebir).
+- [x] `vercel firewall diff` → boş (bekleyen draft yok).
+- [x] M5/M6 hız sınırını, publish sahipliğini ve drift kontrolünü anlatıyor.
 
 ---
 
@@ -136,11 +136,11 @@ _dev/modules/M6-SEO-Deploy.md         # F6.4 firewall kuralı — zaten var
 
 ## Tamamlanma Kriterleri
 
-- [ ] Tüm alt görevler tamamlandı
-- [ ] Tüm test kriterleri karşılandı
-- [ ] Git commit & push yapıldı (`main`, yalnız `_dev/`)
-- [ ] Bu doküman güncellendi (oturum kaydı)
-- [ ] DURUM.md güncellendi (sıradaki: verify-phase)
+- [x] Tüm alt görevler tamamlandı
+- [x] Tüm test kriterleri karşılandı
+- [x] Git commit & push yapıldı (`main`, yalnız `_dev/`)
+- [x] Bu doküman güncellendi (oturum kaydı)
+- [x] DURUM.md güncellendi (sıradaki: verify-phase)
 
 ---
 
@@ -198,6 +198,51 @@ _dev/modules/M6-SEO-Deploy.md         # F6.4 firewall kuralı — zaten var
 - Canlı katman ölçülmedi: probe koşulmadı, WAF kuralı yayınlanmadı (canlı 429 · eşleşme · drift 0 kriterleri açık).
 
 **Plan revizyonu — 2026-10-03:** Plan revize edildi. TASK-19.07 (merge + kod katmanının canlı ölçümü) bu task'ın önüne alındı. Sınırdaki ziyaretçi gözlemi 19.07'den buraya taşındı. Vazgeçmenin gerekçesini kullanıcı belirtmedi; sıralamanın gerekçesi Claude'undur (→ Bağlam). Task, 19.07 ✅ olunca kaldığı yerden devam edebilir; ön koşullar yeniden ölçülür.
+
+
+### Oturum — 2026-10-03
+
+**Durum:** ✅ Tamamlandı
+
+**Yapılanlar:**
+- **Ortam:** devcontainer, `vercel` CLI **62.2.0** (task 59.26.0'da yazıldı), `northaiii` yetkili, proje bağlı. 62.2.0 kaynağında `offerAutoPublish` aynı: `--yes`/`--non-interactive`/TTY-dışı stdin publish sorusunu kapatır, kendiliğinden publish etmez.
+- **1. Ön koşullar (18:43:12Z):** `overview` → `Not configured` · `diff --json` → boş · `drift.mjs` → 2.
+- **2. Stage:** `rules add --json <spec>` (18:43:32Z) → drift 0 + DRAFT uyarısı. `log` varyantı `rules edit --json` (18:43:40Z) → drift 1, tek satır `rateLimit.action: spec="rate_limit" · vercel="log"`; diff 2 değişiklik (add + modify), yalnız bu kural.
+- **Publish yetkisi:** kullanıcı ilk soruyu anlamadı; sade anlatımla yeniden soruldu, kullanıcı doğrudan "Evet, sen çalıştır" dedi (iki publish için ayrı ayrı). Claude `vercel firewall publish --yes --non-interactive` koştu: `log` **18:46:04Z**, 429 **18:48:26Z**.
+- **3. Eşleşme (`log`, 18:46:16–19Z):** probe `--burst-only` → 13/13 istek 400, çıkış 1 ("sınır gözlenmedi" — beklenen). Vercel: `overview` → Log 7, `chat-rate-limit` 7; `traffic list --rule rule_chat_rate_limit_Osrd5k --dimension path --json` → `stats.log: 7`, path top-list yalnız `/api/chat` (7). Kural 7.–13. istekleri, yalnız `/api/chat`'te eşledi.
+- **4. Spec stage (18:46:37Z):** `rules edit --json <spec>` → drift 0 + DRAFT, diff tek `rules.update` (`log` → `rate_limit`). Publish sonrası diff boş, drift **0 (canlı)**, DRAFT uyarısı yok.
+- **5. Patlama (18:59:03Z, son probe isteğinden 12,7 dk sonra):** probe → P1–P6 400, **P7 429** (`Too Many Requests`), çıkış 0.
+- **6. Sınırdaki ziyaretçi (18:59:11Z / 18:59:16Z):** system Chrome, `NEXT_LOCALE` cookie'si. `/` ve `/en`'de chatbot'a birer mesaj → `/api/chat` **429**; `#chat` içinde o dilin `chat.error` metni görünür (TR "Asistan şu an yanıt veremiyor…", EN "The assistant can't respond right now…"). Ardından inputa yazınca Gönder etkin (UI takılı değil). Ekran görüntüsü TR gözle kontrol edildi.
+- **7. Dokümanlar:** M5 (F5.1 hız sınırı paragrafı + kabul kriteri + edge case "var" + kalıntılar), M6 F6.4 (firewall kuralı, CLI, publish, drift, rollback).
+
+**Sorunlar:**
+- Yok. CLI 62.2.0'da plandaki komutlar değişmeden çalıştı.
+
+**Kararlar:**
+- Publish'i plan "kullanıcı koşar" diyordu; kullanıcı bu oturumda doğrudan ve iki aşama için ayrı ayrı Claude'un koşmasına izin verdi. İlk oturumdaki "koordinatör üzerinden" cevaptan farkı budur.
+- docs/DECISIONS.md'ye eklendi: Hayır (429 beklenen 7. istekte geldi; ölçüm karardan sapmadı).
+
+**Kalan İşler:**
+- Yok. Fazın bütün task'ları tamam → `/devflow:verify-phase 19`.
+
+**Son Yaklaşım:** Kademeli yayın (`log` → 429) kullanıcı onayıyla Claude tarafından publish edildi; eşleşme Vercel traffic API'sinden yol düzeyinde okundu, 429 ve offline kopyası temiz pencerede tek koşuda ölçüldü.
+
+**Sonraki Adım Detayı:**
+- verify-phase 19: canlı katman tekrar ölçülecekse pencere bütçesine dikkat (WAF artık canlı: 10 dk'da 6, origin senaryoları da sayılır; patlama en son).
+
+**Dosya Değişiklikleri:**
+- Kod değişmedi. Vercel proje firewall'ı: `chat-rate-limit` (`rule_chat_rate_limit_Osrd5k`) canlı.
+- `_dev/modules/M5-Chatbot-API.md` · `_dev/modules/M6-SEO-Deploy.md` · bu doküman · `_dev/DURUM.md` · `_dev/phases/PHASE-19.md`.
+
+**Test Sonuçları:**
+<!-- KURAL: Ölçüm kimliğiyle yazılır — ne çalıştırıldı ve hangi kapsamda ("yalnız auth uçları", "serve tarafı hariç"). Ölçülmeyen ekseni kapsıyormuş gibi okunan çıplak iddia yazma: "X temiz" değil "X, Y kapsamında temiz". -->
+- `drift.mjs` gerçek Vercel'e karşı: kural yok → 2 · spec draft → 0 + DRAFT · `log` draft → 1 (tek alan) · `log` canlı → 1 (uyarısız) · spec draft → 0 + DRAFT · **spec canlı → 0, uyarısız** (18:59:23Z). Kapı sınaması: `log` hâli kapının reddetmesi gereken gerçek sapma → 1 ve doğru alan; kural yok (boş kapsam) → 2, PASS basmadı.
+- `vercel firewall diff --json` → `{"changes": []}` (18:59Z).
+- Canlı `log` aşaması (kanal: UAT): 13 istek 400, Vercel'de 7 log eşleşmesi, path yalnız `/api/chat`.
+- Canlı patlama (kanal: UAT): temiz pencerede 429 **7. istekte**. `overview` → Rate Limited 3 (P7 + TR + EN tarayıcı mesajı).
+- Canlı sınırdaki ziyaretçi (kanal: UAT, yalnız `/` TR ve `/en`; diğer 3 dil ölçülmedi, aynı `!res.ok` dalı): offline kopyası görünür, Gönder tekrar etkin.
+- Groq çağrısı **0**: probe gövdesi geçersiz (400), tarayıcı mesajları edge'de 429.
+- `npm run test` → 10 dosya / 141 test geçti (taban, kod değişmedi). Build koşulmadı: kod değişmedi.
 
 ---
 

@@ -66,6 +66,10 @@
 **Edge Case'ler:**
 - Revize `revize/...` branch'lerinde çalışılır; canlı yalnızca `main`'den deploy olur (preview deploy'lar branch'lerde).
 - Secret'lar koda gömülmez (env-tabanlı — ILKELER).
+- **Firewall kuralı (WAF, deploy'dan bağımsız — TASK-19.06):** proje firewall'ında tek custom rule `chat-rate-limit` canlıda (`POST /api/chat`, IP başına 10 dk'da 6, aşımda 429; Hobby'nin tek rate-limit slotu). Tanımın kaynağı repo'daki `ops/firewall/chat-rate-limit.json`'dır; dashboard'dan elle düzenleme drift'tir.
+  - Uygulama: `vercel firewall rules add|edit chat-rate-limit --json "$(cat ops/firewall/chat-rate-limit.json)" --yes --non-interactive </dev/null` yalnız draft stage eder → `vercel firewall diff` → `vercel firewall publish --yes`. Publish canlıya anında dokunur, kararı kullanıcınındır.
+  - Drift kontrolü: `node ops/firewall/drift.mjs` (0 eşleşiyor · 1 drift · 2 kural yok/CLI hatası). Bekleyen draft varsa draft'ı ölçtüğünü uyarır.
+  - Rollback: `vercel firewall rules disable chat-rate-limit --yes --non-interactive </dev/null` → `diff` → publish. Deploy gerekmez. Değer değişikliği DECISIONS + spec + drift ile yapılır. Kaynak: DECISIONS 2026-10-02.
 
 ---
 
@@ -77,4 +81,4 @@
 
 ---
 
-**Son Güncelleme:** 2026-10-02 — TASK-18.13: F6.4 env satırı `ANTHROPIC_API_KEY` → `GROQ_API_KEY` (v0.5 sağlayıcı geçişi; anahtar yalnız Production'da).
+**Son Güncelleme:** 2026-10-03 — TASK-19.06: F6.4'e WAF firewall kuralı (`chat-rate-limit` canlıda; spec konumu, CLI ile stage, publish kullanıcıda, drift kontrolü, rollback).
